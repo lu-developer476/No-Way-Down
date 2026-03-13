@@ -5,6 +5,7 @@ import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { AllySystem } from '../systems/AllySystem';
+import { ZombieWaveZone, ZombieWaveZoneConfig } from '../systems/ZombieWaveZone';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
@@ -40,6 +41,7 @@ export class GameScene extends Phaser.Scene {
   private missionSystem?: MissionSystem;
   private staircaseSystem?: StaircaseSystem;
   private allySystem?: AllySystem;
+  private zombieWaveZoneSystem?: ZombieWaveZone;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -124,6 +126,84 @@ export class GameScene extends Phaser.Scene {
       this.zombieSystem?.spawn(spawnX, levelHeight - 140);
     });
 
+    const zombieWaveZonesFromJson: ZombieWaveZoneConfig[] = [
+      {
+        id: 'pasillo-zona-01',
+        trigger: {
+          x: 980,
+          y: levelHeight - 150,
+          width: 140,
+          height: 220
+        },
+        blockers: {
+          left: {
+            x: 840,
+            y: levelHeight / 2,
+            width: 30,
+            height: levelHeight
+          },
+          right: {
+            x: 1150,
+            y: levelHeight / 2,
+            width: 30,
+            height: levelHeight
+          }
+        },
+        wave: {
+          leftSpawnPoints: [
+            { x: 860, y: levelHeight - 140 },
+            { x: 900, y: levelHeight - 140 }
+          ],
+          rightSpawnPoints: [
+            { x: 1100, y: levelHeight - 140 },
+            { x: 1140, y: levelHeight - 140 }
+          ],
+          zombiesPerSide: 3
+        }
+      },
+      {
+        id: 'pasillo-zona-02',
+        trigger: {
+          x: 1620,
+          y: levelHeight - 150,
+          width: 140,
+          height: 220
+        },
+        blockers: {
+          left: {
+            x: 1470,
+            y: levelHeight / 2,
+            width: 30,
+            height: levelHeight
+          },
+          right: {
+            x: 1770,
+            y: levelHeight / 2,
+            width: 30,
+            height: levelHeight
+          }
+        },
+        wave: {
+          leftSpawnPoints: [
+            { x: 1488, y: levelHeight - 140 },
+            { x: 1520, y: levelHeight - 140 }
+          ],
+          rightSpawnPoints: [
+            { x: 1735, y: levelHeight - 140 },
+            { x: 1760, y: levelHeight - 140 }
+          ],
+          zombiesPerSide: 4
+        }
+      }
+    ];
+
+    this.zombieWaveZoneSystem = new ZombieWaveZone(
+      this,
+      this.zombieSystem,
+      this.players,
+      zombieWaveZonesFromJson
+    );
+
     const leadPlayer = this.players[0];
     if (leadPlayer) {
       this.allySystem.spawnInitialAllies(leadPlayer);
@@ -183,6 +263,7 @@ export class GameScene extends Phaser.Scene {
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
+    this.zombieWaveZoneSystem?.update();
 
     this.updateMissionProgress(zombiesRemaining);
 

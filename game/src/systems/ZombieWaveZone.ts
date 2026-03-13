@@ -1,0 +1,182 @@
+import Phaser from 'phaser';
+import { Player } from '../entities/Player';
+import { Zombie } from '../entities/Zombie';
+import { ZombieSystem } from './ZombieSystem';
+
+export interface ZombieWaveSpawnPoint {
+  x: number;
+  y: number;
+}
+
+export interface ZombieWaveZoneConfig {
+  id: string;
+  trigger: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+  blockers: {
+    left: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+    right: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+  };
+  wave: {
+    leftSpawnPoints: ZombieWaveSpawnPoint[];
+    rightSpawnPoints: ZombieWaveSpawnPoint[];
+    zombiesPerSide: number;
+  };
+}
+
+type WaveState = 'idle' | 'active' | 'completed';
+
+interface RuntimeZone {
+  config: ZombieWaveZoneConfig;
+  trigger: Phaser.GameObjects.Zone;
+  leftBlocker: Phaser.GameObjects.Rectangle;
+  rightBlocker: Phaser.GameObjects.Rectangle;
+  spawnedZombies: Zombie[];
+  state: WaveState;
+}
+
+export class ZombieWaveZone {
+  private readonly scene: Phaser.Scene;
+  private readonly zombieSystem: ZombieSystem;
+  private readonly players: Player[];
+  private readonly zones: RuntimeZone[];
+
+  constructor(scene: Phaser.Scene, zombieSystem: ZombieSystem, players: Player[], configs: ZombieWaveZoneConfig[]) {
+    this.scene = scene;
+    this.zombieSystem = zombieSystem;
+    this.players = players;
+    this.zones = configs.map((config) => this.createRuntimeZone(config));
+
+    this.bindTriggerOverlaps();
+  }
+
+  update(): void {
+    this.zones.forEach((zone) => {
+      if (zone.state !== 'active') {
+        return;
+      }
+
+      const hasAliveZombies = zone.spawnedZombies.some((zombie) => zombie.active);
+      if (!hasAliveZombies) {
+        this.completeZone(zone);
+      }
+    });
+  }
+
+  private createRuntimeZone(config: ZombieWaveZoneConfig): RuntimeZone {
+    const trigger = this.scene.add.zone(
+      config.trigger.x,
+      config.trigger.y,
+      config.trigger.width,
+      config.trigger.height
+    );
+    this.scene.physics.add.existing(trigger, true);
+
+    const leftBlocker = this.createBlocker(config.blockers.left);
+    const rightBlocker = this.createBlocker(config.blockers.right);
+
+    this.setBlockerEnabled(leftBlocker, false);
+    this.setBlockerEnabled(rightBlocker, false);
+
+    return {
+      config,
+      trigger,
+      leftBlocker,
+      rightBlocker,
+      spawnedZombies: [],
+      state: 'idle'
+    };
+  }
+
+  private createBlocker(bounds: { x: number; y: number; width: number; height: number }): Phaser.GameObjects.Rectangle {
+    const blocker = this.scene.add.rectangle(bounds.x, bounds.y, bounds.width, bounds.height, 0xef4444, 0.12);
+    blocker.setVisible(false);
+    this.scene.physics.add.existing(blocker, true);
+
+    this.players.forEach((player) => {
+      this.scene.physics.add.collider(player, blocker);
+    });
+
+    return blocker;
+  }
+
+  private bindTriggerOverlaps(): void {
+    this.zones.forEach((zone) => {
+      this.players.forEach((player) => {
+        this.scene.physics.add.overlap(player, zone.trigger, () => {
+          this.activateZone(zone);
+        });
+      });
+    });
+  }
+
+  private activateZone(zone: RuntimeZone): void {
+    if (zone.state !== 'idle') {
+      return;
+    }
+
+    zone.state = 'active';
+    this.setBlockerEnabled(zone.leftBlocker, true);
+    this.setBlockerEnabled(zone.rightBlocker, true);
+    zone.trigger.setActive(false).setVisible(false);
+    const triggerBody = zone.trigger.body as Phaser.Physics.Arcade.StaticBody;
+    triggerBody.enable = false;
+    zone.spawnedZombies = this.spawnWave(zone.config);
+
+    this.scene.registry.set('interactionHint', `Zona ${zone.config.id} activa: elimina a todos los zombies`);
+  }
+
+  private spawnWave(config: ZombieWaveZoneConfig): Zombie[] {
+    const spawned: Zombie[] = [];
+    const totalPerSide = config.wave.zombiesPerSide;
+
+    for (let i = 0; i < totalPerSide; i += 1) {
+      const leftSpawnPoint = config.wave.leftSpawnPoints[i % config.wave.leftSpawnPoints.length];
+      const rightSpawnPoint = config.wave.rightSpawnPoints[i % config.wave.rightSpawnPoints.length];
+
+      const leftZombie = this.zombieSystem.spawn(leftSpawnPoint.x, leftSpawnPoint.y);
+      const rightZombie = this.zombieSystem.spawn(rightSpawnPoint.x, rightSpawnPoint.y);
+
+      if (leftZombie) {
+        spawned.push(leftZombie);
+      }
+
+      if (rightZombie) {
+        spawned.push(rightZombie);
+      }
+    }
+
+    return spawned;
+  }
+
+  private completeZone(zone: RuntimeZone): void {
+    zone.state = 'completed';
+    this.setBlockerEnabled(zone.leftBlocker, false);
+    this.setBlockerEnabled(zone.rightBlocker, false);
+    this.scene.registry.set('interactionHint', 'Zona despejada. Avance desbloqueado.');
+  }
+
+  private setBlockerEnabled(blocker: Phaser.GameObjects.Rectangle, enabled: boolean): void {
+    blocker.setVisible(enabled);
+
+    const body = blocker.body as Phaser.Physics.Arcade.StaticBody;
+    body.enable = enabled;
+
+    if (enabled) {
+      body.updateFromGameObject();
+    }
+  }
+}

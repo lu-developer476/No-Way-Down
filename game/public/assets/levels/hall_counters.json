@@ -1,0 +1,44 @@
+[
+  {
+    "type": "bank_counter_straight_long",
+    "position": { "x": 2920, "y": 1180 },
+    "size": { "width": 520, "height": 120 },
+    "collision": "partial",
+    "cover": true
+  },
+  {
+    "type": "bank_counter_straight_long",
+    "position": { "x": 3460, "y": 1180 },
+    "size": { "width": 520, "height": 120 },
+    "collision": "partial",
+    "cover": true
+  },
+  {
+    "type": "bank_counter_curved_long",
+    "position": { "x": 4020, "y": 1160 },
+    "size": { "width": 420, "height": 180 },
+    "collision": "partial",
+    "cover": true
+  },
+  {
+    "type": "bank_counter_curved_long",
+    "position": { "x": 4420, "y": 1340 },
+    "size": { "width": 420, "height": 180 },
+    "collision": "partial",
+    "cover": true
+  },
+  {
+    "type": "bank_counter_straight_long",
+    "position": { "x": 3920, "y": 1400 },
+    "size": { "width": 560, "height": 120 },
+    "collision": "partial",
+    "cover": true
+  },
+  {
+    "type": "bank_counter_straight_long",
+    "position": { "x": 3340, "y": 1400 },
+    "size": { "width": 500, "height": 120 },
+    "collision": "partial",
+    "cover": true
+  }
+]

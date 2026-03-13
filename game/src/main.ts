@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
-import { CafeteriaScene } from './scenes/CafeteriaScene';
+import { GameScene } from './scenes/GameScene';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
@@ -18,7 +18,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false
     }
   },
-  scene: [BootScene, CafeteriaScene]
+  scene: [BootScene, GameScene]
 };
 
 void new Phaser.Game(config);

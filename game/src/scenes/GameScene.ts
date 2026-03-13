@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
+import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
+import { StaircaseSystem } from '../systems/StaircaseSystem';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_DAMAGE_COOLDOWN_MS = 800;
@@ -17,6 +19,12 @@ export class GameScene extends Phaser.Scene {
   private player?: Player;
   private projectileSystem?: ProjectileSystem;
   private zombieSystem?: ZombieSystem;
+  private missionSystem?: MissionSystem;
+  private staircaseSystem?: StaircaseSystem;
+  private missionStatusText?: Phaser.GameObjects.Text;
+  private transitionOverlay?: Phaser.GameObjects.Rectangle;
+  private transitionText?: Phaser.GameObjects.Text;
+  private hasTriggeredTransition = false;
   private lastDamageTimestamp = 0;
 
   constructor() {
@@ -29,6 +37,8 @@ export class GameScene extends Phaser.Scene {
     const floorHeight = 64;
     const floorY = levelHeight - floorHeight / 2;
     const tableTopY = levelHeight - 146;
+    const stairsX = levelWidth - 190;
+    const stairsY = levelHeight - 96;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
     this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
@@ -56,8 +66,6 @@ export class GameScene extends Phaser.Scene {
       this.addTableVisual(table.x, table.y, table.width, table.height);
     });
 
-    this.addBlockedStairMarker(levelWidth - 190, levelHeight - 96);
-
     this.projectileSystem = new ProjectileSystem(this);
     this.player = new Player(this, 140, levelHeight - 140, this.projectileSystem);
     this.zombieSystem = new ZombieSystem(this);
@@ -71,21 +79,25 @@ export class GameScene extends Phaser.Scene {
       this.zombieSystem?.spawn(spawnX, levelHeight - 140);
     });
 
+    this.setupMissionSystem();
+    this.staircaseSystem = new StaircaseSystem(this, this.player, stairsX, stairsY);
+    this.createMissionStatusUI();
+
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#0f172a');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 6', {
+    this.add.text(16, 16, 'No Way Down - Etapa 7', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
-    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE', {
+    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE | Interactuar: E', {
       color: '#cbd5e1',
       fontSize: '14px'
     }).setScrollFactor(0);
 
     this.registry.set('playerHealth', this.player.getHealth());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
-    this.registry.set('currentObjective', 'Explorar el comedor y buscar salida');
+    this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
@@ -100,11 +112,102 @@ export class GameScene extends Phaser.Scene {
       this.registry.set('playerHealth', this.player.getHealth());
     }
 
-    if (this.zombieSystem) {
-      this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
-    }
+    const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
+    this.registry.set('zombiesRemaining', zombiesRemaining);
+
+    this.updateMissionProgress(zombiesRemaining);
+
+    this.staircaseSystem?.update(() => {
+      this.triggerPlaceholderTransition();
+    });
 
     this.projectileSystem?.update();
+  }
+
+  private setupMissionSystem(): void {
+    const objectives: MissionObjective[] = [
+      {
+        id: 'clear-dining-room',
+        description: 'Elimina todos los zombies del comedor',
+        completedDescription: 'Comedor asegurado. La escalera está activa.',
+        isCompleted: (context) => context.zombiesRemaining === 0
+      }
+    ];
+
+    this.missionSystem = new MissionSystem(objectives);
+  }
+
+  private updateMissionProgress(zombiesRemaining: number): void {
+    if (!this.missionSystem) {
+      return;
+    }
+
+    const completedObjective = this.missionSystem.update({ zombiesRemaining });
+
+    if (completedObjective) {
+      this.registry.set('currentObjective', completedObjective.completedDescription);
+      this.showMissionStatus('Misión completada: escuadrón despejado');
+      this.staircaseSystem?.unlock();
+    } else {
+      this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
+    }
+  }
+
+  private createMissionStatusUI(): void {
+    this.missionStatusText = this.add.text(this.scale.width / 2, 98, '', {
+      color: '#bbf7d0',
+      fontSize: '22px',
+      backgroundColor: '#052e16',
+      padding: { x: 12, y: 8 }
+    })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(10)
+      .setVisible(false);
+
+    this.transitionOverlay = this.add.rectangle(
+      this.scale.width / 2,
+      this.scale.height / 2,
+      this.scale.width,
+      this.scale.height,
+      0x020617,
+      0.88
+    )
+      .setScrollFactor(0)
+      .setDepth(20)
+      .setVisible(false);
+
+    this.transitionText = this.add.text(this.scale.width / 2, this.scale.height / 2, '', {
+      color: '#f8fafc',
+      fontSize: '28px',
+      align: 'center'
+    })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(21)
+      .setVisible(false);
+  }
+
+  private showMissionStatus(message: string): void {
+    this.missionStatusText?.setText(message).setVisible(true);
+
+    this.time.delayedCall(2200, () => {
+      this.missionStatusText?.setVisible(false);
+    });
+  }
+
+  private triggerPlaceholderTransition(): void {
+    if (this.hasTriggeredTransition) {
+      return;
+    }
+
+    this.hasTriggeredTransition = true;
+    this.physics.pause();
+
+    this.transitionOverlay?.setVisible(true);
+    this.transitionText
+      ?.setText('Subiendo al siguiente nivel...\n(Transición placeholder)')
+      .setVisible(true);
   }
 
   private createPlatform(group: Phaser.Physics.Arcade.StaticGroup, config: PlatformConfig): void {
@@ -127,16 +230,6 @@ export class GameScene extends Phaser.Scene {
   private addTableVisual(x: number, y: number, width: number, height: number): void {
     this.add.rectangle(x, y, width, height, 0x7c3f16);
     this.add.rectangle(x, y + 16, width - 26, 8, 0x5b2d0e, 0.75);
-  }
-
-  private addBlockedStairMarker(x: number, y: number): void {
-    this.add.rectangle(x, y, 150, 110, 0x111827, 0.85).setStrokeStyle(2, 0x94a3b8, 0.8);
-    this.add.text(x - 57, y - 22, 'ESCALERA\nBLOQUEADA', {
-      color: '#f87171',
-      fontSize: '14px',
-      align: 'center'
-    });
-    this.add.rectangle(x, y + 20, 120, 10, 0xdc2626, 0.9);
   }
 
   private handlePlayerZombieOverlap(): void {

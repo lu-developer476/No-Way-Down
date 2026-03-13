@@ -27,6 +27,7 @@ npm --prefix game run generate:bank-counter-spritesheet
 Esto produce:
 
 - `game/public/assets/tilesets/bank_counter_spritesheet.png`
+- `game/public/assets/tilesets/bank_counter_spritesheet.svg` (fuente no binaria editable)
 - `game/public/assets/tilesets/bank_counter_spritesheet_coords.json`
 
 Coordenadas incluidas:

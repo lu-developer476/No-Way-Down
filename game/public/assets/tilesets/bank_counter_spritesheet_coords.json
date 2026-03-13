@@ -1,5 +1,6 @@
 {
   "image": "bank_counter_spritesheet.png",
+  "source": "bank_counter_spritesheet.svg",
   "spriteSize": {
     "width": 64,
     "height": 48

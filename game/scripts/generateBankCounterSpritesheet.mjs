@@ -201,9 +201,28 @@ const outputPath = path.resolve(scriptDir, '../public/assets/tilesets/bank_count
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, png);
 
+const svgPath = path.resolve(scriptDir, '../public/assets/tilesets/bank_counter_spritesheet.svg');
+const rows = [];
+for (let y = 0; y < height; y++) {
+  for (let x = 0; x < width; x++) {
+    const [r, g, b, a] = pixels[y][x];
+    if (a === 0) continue;
+    rows.push(`<rect x="${x}" y="${y}" width="1" height="1" fill="rgba(${r}, ${g}, ${b}, ${(a / 255).toFixed(3)})" />`);
+  }
+}
+const svg = [
+  `<?xml version="1.0" encoding="UTF-8"?>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" shape-rendering="crispEdges">`,
+  ...rows,
+  '</svg>',
+  '',
+].join('\n');
+fs.writeFileSync(svgPath, svg);
+
 const coordinatesPath = path.resolve(scriptDir, '../public/assets/tilesets/bank_counter_spritesheet_coords.json');
 const coords = {
   image: 'bank_counter_spritesheet.png',
+  source: 'bank_counter_spritesheet.svg',
   spriteSize: { width: TILE_WIDTH, height: TILE_HEIGHT },
   sprites: {
     modulo_central: { x: 0, y: 0, width: 64, height: 48 },
@@ -215,5 +234,6 @@ const coords = {
 };
 fs.writeFileSync(coordinatesPath, `${JSON.stringify(coords, null, 2)}\n`);
 
-console.log(`Spritesheet generado en: ${outputPath}`);
+console.log(`Spritesheet PNG generado en: ${outputPath}`);
+console.log(`Spritesheet SVG (no binario) generado en: ${svgPath}`);
 console.log(`Coordenadas guardadas en: ${coordinatesPath}`);

@@ -1,0 +1,126 @@
+{
+  "bloqueos": [
+    {
+      "id": "barrera-z1-atras",
+      "area": { "x": 320, "y": 960, "width": 24, "height": 440 }
+    },
+    {
+      "id": "barrera-z1-adelante",
+      "area": { "x": 680, "y": 960, "width": 24, "height": 440 }
+    },
+    {
+      "id": "barrera-z2-atras",
+      "area": { "x": 860, "y": 880, "width": 24, "height": 520 }
+    },
+    {
+      "id": "barrera-z2-adelante",
+      "area": { "x": 1220, "y": 880, "width": 24, "height": 520 }
+    },
+    {
+      "id": "barrera-z3-atras",
+      "area": { "x": 1400, "y": 780, "width": 24, "height": 520 }
+    },
+    {
+      "id": "barrera-z3-adelante",
+      "area": { "x": 1750, "y": 780, "width": 24, "height": 520 }
+    },
+    {
+      "id": "barrera-z4-atras",
+      "area": { "x": 1940, "y": 720, "width": 24, "height": 560 }
+    },
+    {
+      "id": "barrera-z4-adelante",
+      "area": { "x": 2340, "y": 720, "width": 24, "height": 560 }
+    },
+    {
+      "id": "barrera-z5-atras",
+      "area": { "x": 2520, "y": 680, "width": 24, "height": 560 }
+    },
+    {
+      "id": "barrera-z5-adelante",
+      "area": { "x": 2880, "y": 680, "width": 24, "height": 560 }
+    }
+  ],
+  "zonas": [
+    {
+      "id": "zona-1-escaleras-bajas",
+      "nombre": "Zona 1: escaleras bajas",
+      "trigger": { "x": 500, "y": 980, "width": 180, "height": 180 },
+      "bloquearAlActivar": ["barrera-z1-atras", "barrera-z1-adelante"],
+      "oleadas": [
+        {
+          "cantidad": 6,
+          "puntosAparicion": [
+            { "x": 430, "y": 980 },
+            { "x": 520, "y": 940 },
+            { "x": 610, "y": 980 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zona-2-rellano-intermedio",
+      "nombre": "Zona 2: rellano intermedio",
+      "trigger": { "x": 1040, "y": 900, "width": 220, "height": 180 },
+      "bloquearAlActivar": ["barrera-z2-atras", "barrera-z2-adelante"],
+      "oleadas": [
+        {
+          "cantidad": 8,
+          "puntosAparicion": [
+            { "x": 920, "y": 900 },
+            { "x": 1040, "y": 860 },
+            { "x": 1160, "y": 900 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zona-3-acceso-segundo-piso",
+      "nombre": "Zona 3: acceso al segundo piso",
+      "trigger": { "x": 1560, "y": 790, "width": 220, "height": 180 },
+      "bloquearAlActivar": ["barrera-z3-atras", "barrera-z3-adelante"],
+      "oleadas": [
+        {
+          "cantidad": 10,
+          "puntosAparicion": [
+            { "x": 1450, "y": 790 },
+            { "x": 1560, "y": 750 },
+            { "x": 1680, "y": 790 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zona-4-sector-central",
+      "nombre": "Zona 4: sector central del segundo piso",
+      "trigger": { "x": 2140, "y": 720, "width": 220, "height": 180 },
+      "bloquearAlActivar": ["barrera-z4-atras", "barrera-z4-adelante"],
+      "oleadas": [
+        {
+          "cantidad": 12,
+          "puntosAparicion": [
+            { "x": 2020, "y": 730 },
+            { "x": 2140, "y": 690 },
+            { "x": 2260, "y": 730 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zona-5-salida-final",
+      "nombre": "Zona 5: salida o transición final",
+      "trigger": { "x": 2700, "y": 680, "width": 220, "height": 180 },
+      "bloquearAlActivar": ["barrera-z5-atras", "barrera-z5-adelante"],
+      "oleadas": [
+        {
+          "cantidad": 14,
+          "puntosAparicion": [
+            { "x": 2580, "y": 680 },
+            { "x": 2700, "y": 640 },
+            { "x": 2820, "y": 680 }
+          ]
+        }
+      ]
+    }
+  ]
+}

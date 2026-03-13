@@ -1,0 +1,26 @@
+{
+  "escalera_ascendente_sucia_sangre": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "escalera_descendente_sucia_sangre": {
+    "x": 32,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "base_escalera_sucia_sangre": {
+    "x": 64,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "borde_escalera_sucia_sangre": {
+    "x": 96,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  }
+}

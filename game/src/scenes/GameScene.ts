@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
+import { ZombieSystem } from '../systems/ZombieSystem';
 
 export class GameScene extends Phaser.Scene {
   private player?: Player;
   private projectileSystem?: ProjectileSystem;
+  private zombieSystem?: ZombieSystem;
 
   constructor() {
     super('GameScene');
@@ -28,13 +30,20 @@ export class GameScene extends Phaser.Scene {
 
     this.projectileSystem = new ProjectileSystem(this);
     this.player = new Player(this, 120, levelHeight - 140, this.projectileSystem);
+    this.zombieSystem = new ZombieSystem(this);
 
     this.physics.add.collider(this.player, ground);
+    this.zombieSystem.createColliders(ground, this.player);
+    this.zombieSystem.createProjectileOverlap(this.projectileSystem.getGroup());
+
+    this.zombieSystem.spawn(700, levelHeight - 140);
+    this.zombieSystem.spawn(1050, levelHeight - 140);
+    this.zombieSystem.spawn(1380, levelHeight - 140);
 
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#111827');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 3', {
+    this.add.text(16, 16, 'No Way Down - Etapa 4', {
       color: '#f9fafb',
       fontSize: '18px'
     }).setScrollFactor(0);
@@ -46,6 +55,11 @@ export class GameScene extends Phaser.Scene {
 
   update(): void {
     this.player?.update();
+
+    if (this.player) {
+      this.zombieSystem?.update(this.player.x);
+    }
+
     this.projectileSystem?.update();
   }
 }

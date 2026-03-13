@@ -1,0 +1,66 @@
+{
+  "corridorTopY": 72,
+  "floorY": 656,
+  "levelWidth": 2200,
+  "overlayDepth": 8.5,
+  "nearExitThresholdX": 260,
+  "audioKeys": {
+    "eco-edificio": "level4-echo-loop",
+    "alarma-lejana": "level4-distant-alarm",
+    "puertas-trabadas": "level4-locked-doors",
+    "multitudes-caos-exterior": "level4-outside-crowd",
+    "tension-cerca-salida": "level4-exit-tension"
+  },
+  "triggers": [
+    {
+      "id": "segmento-entrada",
+      "kind": "segment",
+      "x": 280,
+      "y": 360,
+      "width": 380,
+      "height": 560,
+      "once": true,
+      "events": [
+        { "type": "luces-parpadeantes", "cooldownMs": 3000 },
+        { "type": "eco-edificio", "cooldownMs": 4200, "render": { "textHint": "Tubos y paredes vibran con eco..." } }
+      ]
+    },
+    {
+      "id": "tramo-central-alarma",
+      "kind": "segment",
+      "x": 980,
+      "y": 360,
+      "width": 420,
+      "height": 560,
+      "once": false,
+      "events": [
+        { "type": "alarma-lejana", "cooldownMs": 5000, "render": { "durationMs": 1600 } },
+        { "type": "multitudes-caos-exterior", "cooldownMs": 4500 }
+      ]
+    },
+    {
+      "id": "puertas-laterales",
+      "kind": "trigger",
+      "x": 1550,
+      "y": 360,
+      "width": 220,
+      "height": 560,
+      "once": false,
+      "events": [
+        { "type": "puertas-trabadas", "cooldownMs": 3200 }
+      ]
+    },
+    {
+      "id": "zona-salida",
+      "kind": "trigger",
+      "x": 2070,
+      "y": 360,
+      "width": 240,
+      "height": 560,
+      "once": false,
+      "events": [
+        { "type": "tension-cerca-salida", "cooldownMs": 1200, "render": { "intensity": 1.1 } }
+      ]
+    }
+  ]
+}

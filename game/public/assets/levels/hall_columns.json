@@ -1,0 +1,74 @@
+[
+  {
+    "type": "column",
+    "position": { "x": 3050, "y": 1080 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 3520, "y": 1080 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 3980, "y": 1080 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 4460, "y": 1080 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 3050, "y": 1360 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 3520, "y": 1360 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 3980, "y": 1360 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  },
+  {
+    "type": "column",
+    "position": { "x": 4460, "y": 1360 },
+    "size": { "width": 180, "height": 180 },
+    "collision": true,
+    "cover": true,
+    "material": "stone",
+    "variant": "large"
+  }
+]

@@ -3,7 +3,7 @@ import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
-import { StaircaseSystem } from '../systems/StaircaseSystem';
+import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -96,17 +96,31 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.setupMissionSystem();
-    this.staircaseSystem = new StaircaseSystem(this, this.player, stairsX, stairsY);
+    this.staircaseSystem = new StaircaseSystem(this, this.player);
+    this.staircaseSystem.registerStair({
+      id: 'dining-to-upper',
+      x: stairsX,
+      y: stairsY,
+      width: 150,
+      height: 110,
+      prompt: 'Mantén E para subir al siguiente piso',
+      activeLabel: 'ESCALERA\nACTIVA',
+      inactiveLabel: 'ESCALERA\nBLOQUEADA',
+      target: {
+        sceneKey: 'UpperFloorScene',
+        spawnPoint: { x: 220, y: levelHeight - 140 }
+      }
+    });
     this.createMissionStatusUI();
 
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#0f172a');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 8', {
+    this.add.text(16, 16, 'No Way Down - Etapa 9', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
-    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE | Interactuar: E', {
+    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE | Mantener E: Escaleras', {
       color: '#cbd5e1',
       fontSize: '14px'
     }).setScrollFactor(0);
@@ -134,8 +148,8 @@ export class GameScene extends Phaser.Scene {
     this.updateMissionProgress(zombiesRemaining);
 
     if (!this.hasPlayerBeenDefeated) {
-      this.staircaseSystem?.update(() => {
-        this.triggerPlaceholderTransition();
+      this.staircaseSystem?.update((target) => {
+        this.triggerPlaceholderTransition(target);
       });
     }
 
@@ -165,7 +179,7 @@ export class GameScene extends Phaser.Scene {
     if (completedObjective) {
       this.registry.set('currentObjective', completedObjective.completedDescription);
       this.showMissionStatus('Misión completada: escuadrón despejado');
-      this.staircaseSystem?.unlock();
+      this.staircaseSystem?.unlock('dining-to-upper');
     } else {
       this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
     }
@@ -214,7 +228,7 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private triggerPlaceholderTransition(): void {
+  private triggerPlaceholderTransition(target: StairTransitionTarget): void {
     if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
       return;
     }
@@ -224,8 +238,12 @@ export class GameScene extends Phaser.Scene {
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
-      ?.setText('Subiendo al siguiente nivel...\n(Transición placeholder)')
+      ?.setText('Subiendo al siguiente nivel...')
       .setVisible(true);
+
+    this.time.delayedCall(500, () => {
+      this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });
+    });
   }
 
   private createPlatform(group: Phaser.Physics.Arcade.StaticGroup, config: PlatformConfig): void {

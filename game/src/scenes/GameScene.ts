@@ -3,10 +3,14 @@ import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
 
+const PLAYER_CONTACT_DAMAGE = 10;
+const PLAYER_DAMAGE_COOLDOWN_MS = 800;
+
 export class GameScene extends Phaser.Scene {
   private player?: Player;
   private projectileSystem?: ProjectileSystem;
   private zombieSystem?: ZombieSystem;
+  private lastDamageTimestamp = 0;
 
   constructor() {
     super('GameScene');
@@ -35,6 +39,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, ground);
     this.zombieSystem.createColliders(ground, this.player);
     this.zombieSystem.createProjectileOverlap(this.projectileSystem.getGroup());
+    this.physics.add.overlap(this.player, this.zombieSystem.getGroup(), this.handlePlayerZombieOverlap, undefined, this);
 
     this.zombieSystem.spawn(700, levelHeight - 140);
     this.zombieSystem.spawn(1050, levelHeight - 140);
@@ -43,7 +48,7 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#111827');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 4', {
+    this.add.text(16, 16, 'No Way Down - Etapa 5', {
       color: '#f9fafb',
       fontSize: '18px'
     }).setScrollFactor(0);
@@ -51,6 +56,14 @@ export class GameScene extends Phaser.Scene {
       color: '#cbd5e1',
       fontSize: '14px'
     }).setScrollFactor(0);
+
+    this.registry.set('playerHealth', this.player.getHealth());
+    this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
+    this.registry.set('currentObjective', 'Limpiar el comedor');
+
+    if (!this.scene.isActive('UIScene')) {
+      this.scene.launch('UIScene');
+    }
   }
 
   update(): void {
@@ -58,8 +71,27 @@ export class GameScene extends Phaser.Scene {
 
     if (this.player) {
       this.zombieSystem?.update(this.player.x);
+      this.registry.set('playerHealth', this.player.getHealth());
+    }
+
+    if (this.zombieSystem) {
+      this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     }
 
     this.projectileSystem?.update();
+  }
+
+  private handlePlayerZombieOverlap(): void {
+    if (!this.player) {
+      return;
+    }
+
+    const now = this.time.now;
+    if (now - this.lastDamageTimestamp < PLAYER_DAMAGE_COOLDOWN_MS) {
+      return;
+    }
+
+    this.player.takeDamage(PLAYER_CONTACT_DAMAGE);
+    this.lastDamageTimestamp = now;
   }
 }

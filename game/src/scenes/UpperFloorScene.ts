@@ -14,6 +14,7 @@ import {
 import { visualTheme } from './visualTheme';
 
 const API_MESSAGE_DURATION_MS = 2600;
+const ARCADE_CAMERA_ZOOM = 1.2;
 
 interface UpperFloorSceneData {
   respawnPoint?: Checkpoint;
@@ -39,7 +40,10 @@ export class UpperFloorScene extends Phaser.Scene {
     const floorHeight = 64;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
-    this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
+    this.cameras.main
+      .setBounds(0, 0, levelWidth, levelHeight)
+      .setZoom(ARCADE_CAMERA_ZOOM)
+      .setRoundPixels(true);
 
     this.drawUpperFloorBackground(levelWidth, levelHeight, floorHeight);
 
@@ -137,8 +141,20 @@ export class UpperFloorScene extends Phaser.Scene {
       this.add.rectangle(x, 42, 52, 8, palette.lamp, 0.23).setDepth(2);
     }
 
+
+    for (let x = 120; x < levelWidth; x += 260) {
+      this.add.rectangle(x, 190, 120, 56, 0x0c1220, 0.34).setDepth(1).setScrollFactor(0.5, 1);
+      this.add.rectangle(x - 34, 190, 20, 56, 0x334155, 0.24).setDepth(1).setScrollFactor(0.5, 1);
+      this.add.rectangle(x + 38, 190, 16, 56, 0x1f2937, 0.32).setDepth(1).setScrollFactor(0.5, 1);
+    }
+
     for (let x = 100; x < levelWidth; x += 200) {
       this.add.rectangle(x, levelHeight - floorHeight - 120, 14, 140, 0x64748b, 0.4).setDepth(2);
+    }
+
+    for (let x = 180; x < levelWidth; x += 300) {
+      this.add.rectangle(x, levelHeight - floorHeight - 54, 90, 26, 0x0f172a, 0.52).setDepth(3).setScrollFactor(0.88, 1);
+      this.add.rectangle(x + 34, levelHeight - floorHeight - 56, 20, 8, 0xeab308, 0.22).setDepth(3).setScrollFactor(0.88, 1);
     }
   }
 
@@ -200,9 +216,20 @@ export class UpperFloorScene extends Phaser.Scene {
   private updateSharedCamera(): void {
     const center = getAveragePlayerPosition(this.players);
     const camera = this.cameras.main;
+    const velocityLookAhead = this.players.length > 0
+      ? this.players.reduce((acc, player) => {
+          const body = player.body as Phaser.Physics.Arcade.Body | null;
+          return acc + (body?.velocity.x ?? 0);
+        }, 0) / this.players.length
+      : 0;
+    const lookAheadX = Phaser.Math.Clamp(velocityLookAhead * 0.18, -70, 70);
+    const focusYOffset = 30;
 
-    camera.scrollX = Phaser.Math.Linear(camera.scrollX, center.x - camera.width / 2, 0.08);
-    camera.scrollY = Phaser.Math.Linear(camera.scrollY, center.y - camera.height / 2, 0.08);
+    const visibleWidth = camera.width / camera.zoom;
+    const visibleHeight = camera.height / camera.zoom;
+
+    camera.scrollX = Phaser.Math.Linear(camera.scrollX, center.x + lookAheadX - visibleWidth / 2, 0.08);
+    camera.scrollY = Phaser.Math.Linear(camera.scrollY, center.y + focusYOffset - visibleHeight / 2, 0.08);
   }
 
   private enforcePlayerSeparation(): void {

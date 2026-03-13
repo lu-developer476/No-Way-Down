@@ -18,7 +18,7 @@ export class ZombieSystem {
   }
 
   spawn(x: number, y: number): Zombie | null {
-    const zombie = this.zombies.get(x, y, 'zombie-placeholder') as Zombie | null;
+    const zombie = this.zombies.get(x, y, 'zombie-base-0') as Zombie | null;
     if (!zombie) {
       return null;
     }

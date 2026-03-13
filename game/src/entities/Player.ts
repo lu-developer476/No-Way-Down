@@ -20,13 +20,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: PlayerConfig;
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem, profile: PlayerConfig) {
-    super(scene, x, y, 'player-placeholder');
+    super(scene, x, y, 'player-base-0');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
     this.setCollideWorldBounds(true);
-    this.setSize(32, 48);
+    this.setSize(18, 40);
+    this.setOffset(7, 8);
 
     this.projectileSystem = projectileSystem;
     this.profile = profile;
@@ -41,6 +42,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.rightKey = keyboard.addKey(profile.controls.right);
     this.jumpKey = keyboard.addKey(profile.controls.jump);
     this.shootKey = keyboard.addKey(profile.controls.shoot);
+
+    this.play('player-idle', true);
   }
 
   update(): void {
@@ -49,14 +52,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    let isMovingHorizontally = false;
+
     if (this.leftKey.isDown) {
       this.setVelocityX(-MOVE_SPEED);
       this.lookDirection = -1;
       this.setFlipX(true);
+      isMovingHorizontally = true;
     } else if (this.rightKey.isDown) {
       this.setVelocityX(MOVE_SPEED);
       this.lookDirection = 1;
       this.setFlipX(false);
+      isMovingHorizontally = true;
     } else {
       this.setVelocityX(0);
     }
@@ -68,11 +75,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
+      this.play('player-shoot', true);
       this.projectileSystem.tryFire({
         originX: this.x + this.lookDirection * 24,
         originY: this.y - 6,
         direction: this.lookDirection
       });
+    }
+
+    if (!this.anims.isPlaying || this.anims.currentAnim?.key === 'player-idle' || this.anims.currentAnim?.key === 'player-run') {
+      this.play(isMovingHorizontally ? 'player-run' : 'player-idle', true);
     }
   }
 
@@ -83,6 +95,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.healthPoints = Math.max(0, this.healthPoints - amount);
     this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
+    this.play('player-hurt', true);
     this.setTintFill(0xf87171);
     this.scene.time.delayedCall(120, () => {
       if (this.active) {

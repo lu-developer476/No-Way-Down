@@ -21,7 +21,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private attackReadyAt = 0;
 
   constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile) {
-    super(scene, x, y, 'player-placeholder');
+    super(scene, x, y, 'ally-base-0');
 
     this.profile = profile;
 
@@ -29,10 +29,13 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setCollideWorldBounds(true);
-    this.setSize(28, 44);
+    this.setSize(18, 40);
+    this.setOffset(7, 8);
     this.setTint(profile.tint);
     this.setAlpha(0.92);
     this.setPushable(false);
+
+    this.play('ally-idle', true);
   }
 
   getId(): string {
@@ -61,6 +64,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     if (Math.abs(deltaX) <= ALLY_STOP_RADIUS && Math.abs(deltaY) <= ALLY_STOP_RADIUS) {
       this.setVelocityX(0);
+      this.play('ally-idle', true);
       return;
     }
 
@@ -69,6 +73,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const direction = Math.sign(deltaX);
 
     this.setVelocityX(direction * speed);
+    this.play('ally-run', true);
 
     if (direction < 0) {
       this.setFlipX(true);
@@ -104,6 +109,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     target.takeDamage(1);
     this.attackReadyAt = currentTime + ALLY_ATTACK_COOLDOWN_MS;
 
+    this.play('ally-shoot', true);
     this.setTintFill(0xfef08a);
     this.scene.time.delayedCall(90, () => {
       if (this.active) {

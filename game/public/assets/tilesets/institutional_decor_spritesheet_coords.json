@@ -1,0 +1,92 @@
+{
+  "banco_limpio": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "banco_roto": {
+    "x": 32,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "banco_ensangrentado": {
+    "x": 64,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "silla_oficina_limpia": {
+    "x": 96,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "silla_oficina_rota": {
+    "x": 128,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "silla_oficina_ensangrentada": {
+    "x": 160,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "casillero_cerrado": {
+    "x": 192,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "casillero_abierto": {
+    "x": 224,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "casillero_roto": {
+    "x": 256,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "casillero_sucio_sangre": {
+    "x": 288,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "maceta_grande": {
+    "x": 320,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "lampara_techo": {
+    "x": 352,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "divisor_vidrio_intacto": {
+    "x": 384,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "divisor_vidrio_roto": {
+    "x": 416,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  },
+  "divisor_vidrio_ensangrentado": {
+    "x": 448,
+    "y": 0,
+    "w": 32,
+    "h": 32
+  }
+}

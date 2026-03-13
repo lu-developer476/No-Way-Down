@@ -83,3 +83,36 @@ Esto produce:
 - `game/public/assets/tilesets/institutional_stone_columns_spritesheet.png`
 - `game/public/assets/tilesets/institutional_stone_columns_spritesheet.svg` (fuente no binaria editable)
 - `game/public/assets/tilesets/institutional_stone_columns_spritesheet_coords.json`
+
+## Institutional decor spritesheet
+
+Sprites pixel art de objetos decorativos para gran salón institucional con estética bancaria (32x32 por variante).
+
+Variantes incluidas:
+
+- `banco_limpio`
+- `banco_roto`
+- `banco_ensangrentado`
+- `silla_oficina_limpia`
+- `silla_oficina_rota`
+- `silla_oficina_ensangrentada`
+- `casillero_cerrado`
+- `casillero_abierto`
+- `casillero_roto`
+- `casillero_sucio_sangre`
+- `maceta_grande`
+- `lampara_techo`
+- `divisor_vidrio_intacto`
+- `divisor_vidrio_roto`
+- `divisor_vidrio_ensangrentado`
+
+Generación local:
+
+```bash
+npm --prefix game run generate:institutional-decor-spritesheet
+```
+
+Esto produce únicamente archivos no binarios:
+
+- `game/public/assets/tilesets/institutional_decor_spritesheet.svg` (fuente editable)
+- `game/public/assets/tilesets/institutional_decor_spritesheet_coords.json`

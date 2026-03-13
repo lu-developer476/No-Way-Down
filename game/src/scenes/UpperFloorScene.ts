@@ -3,14 +3,18 @@ import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
+import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 
 const MAX_PLAYER_SEPARATION_PX = 320;
+const DEFAULT_PLAYER_ID = 'local-player';
+const API_MESSAGE_DURATION_MS = 2600;
 
 interface UpperFloorSceneData {
   respawnPoint?: {
     x: number;
     y: number;
   };
+  skipLoad?: boolean;
 }
 
 export class UpperFloorScene extends Phaser.Scene {
@@ -19,6 +23,7 @@ export class UpperFloorScene extends Phaser.Scene {
   private staircaseSystem?: StaircaseSystem;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
+  private apiStatusText?: Phaser.GameObjects.Text;
   private hasTriggeredTransition = false;
 
   constructor() {
@@ -77,10 +82,20 @@ export class UpperFloorScene extends Phaser.Scene {
     this.createTransitionUI();
     this.registry.set('currentObjective', 'Explora el piso superior y regresa cuando quieras.');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 11 (Piso Superior placeholder)', {
+    this.add.text(16, 16, 'No Way Down - Etapa 13 (Piso Superior)', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
+    this.add.text(16, 40, 'O: cargar | P: guardar', {
+      color: '#cbd5e1',
+      fontSize: '14px'
+    }).setScrollFactor(0);
+
+    this.registerApiControls();
+
+    if (!data.skipLoad) {
+      void this.loadProgressFromApi();
+    }
   }
 
   update(): void {
@@ -119,6 +134,17 @@ export class UpperFloorScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(21)
+      .setVisible(false);
+
+    this.apiStatusText = this.add.text(this.scale.width / 2, 100, '', {
+      color: '#bfdbfe',
+      fontSize: '18px',
+      backgroundColor: '#0b1120',
+      padding: { x: 10, y: 6 }
+    })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(22)
       .setVisible(false);
   }
 
@@ -179,5 +205,85 @@ export class UpperFloorScene extends Phaser.Scene {
 
     p1.setPosition(midpointX - normalizedX * allowedHalfDistance, midpointY - normalizedY * allowedHalfDistance);
     p2.setPosition(midpointX + normalizedX * allowedHalfDistance, midpointY + normalizedY * allowedHalfDistance);
+  }
+
+  private registerApiControls(): void {
+    this.input.keyboard?.on('keydown-P', () => {
+      void this.saveProgressToApi();
+    });
+
+    this.input.keyboard?.on('keydown-O', () => {
+      void this.loadProgressFromApi();
+    });
+  }
+
+  private getPlayerId(): string {
+    return import.meta.env.VITE_PLAYER_ID ?? DEFAULT_PLAYER_ID;
+  }
+
+  private buildProgressPayload(): PlayerProgressPayload {
+    const checkpoint = this.players[0] ? { x: this.players[0].x, y: this.players[0].y } : { x: 140, y: this.scale.height - 130 };
+
+    return {
+      user_id: this.getPlayerId(),
+      current_level: this.scene.key,
+      life: this.players.filter((player) => !player.isDead()).length,
+      allies_rescued: 0,
+      checkpoint: `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`
+    };
+  }
+
+  private parseCheckpoint(value: string): { x: number; y: number } | undefined {
+    const [xPart, yPart] = value.split(',');
+    const x = Number(xPart);
+    const y = Number(yPart);
+
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      return undefined;
+    }
+
+    return { x, y };
+  }
+
+  private async saveProgressToApi(): Promise<void> {
+    try {
+      await progressApi.saveProgress(this.buildProgressPayload());
+      this.showApiStatus('Progreso guardado en servidor.', false);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No se pudo guardar progreso.';
+      this.showApiStatus(`No se pudo guardar: ${message}`, true);
+    }
+  }
+
+  private async loadProgressFromApi(): Promise<void> {
+    try {
+      const progress = await progressApi.loadProgress(this.getPlayerId());
+      const loadedCheckpoint = this.parseCheckpoint(progress.checkpoint);
+      this.showApiStatus('Partida cargada desde servidor.', false);
+
+      if (progress.current_level !== this.scene.key) {
+        this.scene.start(progress.current_level, { respawnPoint: loadedCheckpoint, skipLoad: true });
+        return;
+      }
+
+      this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No se pudo cargar progreso.';
+      this.showApiStatus(`No se pudo cargar: ${message}`, true);
+    }
+  }
+
+  private showApiStatus(message: string, isError: boolean): void {
+    this.apiStatusText
+      ?.setText(message)
+      .setStyle({
+        color: isError ? '#fecaca' : '#bfdbfe',
+        backgroundColor: isError ? '#450a0a' : '#0b1120'
+      })
+      .setVisible(true);
+
+    this.time.delayedCall(API_MESSAGE_DURATION_MS, () => {
+      this.apiStatusText?.setVisible(false);
+    });
   }
 }

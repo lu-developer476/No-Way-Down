@@ -23,6 +23,16 @@ cd game
 npm install
 ```
 
+### Variables de entorno del frontend
+
+```bash
+cp game/.env.example game/.env
+```
+
+Variables importantes:
+- `VITE_BACKEND_URL` → URL base del backend (ej: `http://127.0.0.1:8000`)
+- `VITE_PLAYER_ID` → identificador del jugador para guardar/cargar progreso
+
 ### Ejecutar en desarrollo
 
 ```bash

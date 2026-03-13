@@ -1,0 +1,34 @@
+{
+  "image": "institutional_stone_columns_spritesheet.png",
+  "source": "institutional_stone_columns_spritesheet.svg",
+  "spriteSize": {
+    "width": 32,
+    "height": 96
+  },
+  "sprites": {
+    "base_columna": {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    },
+    "columna_completa": {
+      "x": 32,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    },
+    "columna_danada": {
+      "x": 64,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    },
+    "columna_sombra": {
+      "x": 96,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    }
+  }
+}

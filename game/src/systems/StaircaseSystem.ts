@@ -35,16 +35,16 @@ interface StairRuntime {
 
 export class StaircaseSystem {
   private readonly scene: Phaser.Scene;
-  private readonly player: Player;
+  private readonly players: Player[];
   private readonly interactionKey: Phaser.Input.Keyboard.Key;
   private readonly promptText: Phaser.GameObjects.Text;
   private readonly holdProgressText: Phaser.GameObjects.Text;
   private readonly stairs = new Map<string, StairRuntime>();
   private holdingSinceMs: number | null = null;
 
-  constructor(scene: Phaser.Scene, player: Player) {
+  constructor(scene: Phaser.Scene, players: Player[]) {
     this.scene = scene;
-    this.player = player;
+    this.players = players;
 
     const keyboard = this.scene.input.keyboard;
     if (!keyboard) {
@@ -154,9 +154,13 @@ export class StaircaseSystem {
   private findOverlappedStair(): StairRuntime | undefined {
     for (const stair of this.stairs.values()) {
       const stairBounds = stair.triggerZone.getBounds();
-      const playerBounds = this.player.getBounds();
 
-      if (Phaser.Geom.Intersects.RectangleToRectangle(stairBounds, playerBounds)) {
+      const hasPlayerInStair = this.players.some((player) => {
+        const playerBounds = player.getBounds();
+        return Phaser.Geom.Intersects.RectangleToRectangle(stairBounds, playerBounds);
+      });
+
+      if (hasPlayerInStair) {
         return stair;
       }
     }

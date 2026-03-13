@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
+import { PlayerConfig } from '../config/localMultiplayer';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -7,15 +8,18 @@ const DEFAULT_MAX_HEALTH = 100;
 const DAMAGE_INVULNERABILITY_MS = 900;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-  private shootKey: Phaser.Input.Keyboard.Key;
+  private readonly leftKey: Phaser.Input.Keyboard.Key;
+  private readonly rightKey: Phaser.Input.Keyboard.Key;
+  private readonly jumpKey: Phaser.Input.Keyboard.Key;
+  private readonly shootKey: Phaser.Input.Keyboard.Key;
   private lookDirection: 1 | -1 = 1;
   private projectileSystem: ProjectileSystem;
   private healthPoints = DEFAULT_MAX_HEALTH;
   private invulnerableUntil = 0;
   private isDeadState = false;
+  private readonly profile: PlayerConfig;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem) {
+  constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem, profile: PlayerConfig) {
     super(scene, x, y, 'player-placeholder');
 
     scene.add.existing(this);
@@ -25,13 +29,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setSize(32, 48);
 
     this.projectileSystem = projectileSystem;
+    this.profile = profile;
+    this.setTint(profile.color);
+
     const keyboard = scene.input.keyboard;
     if (!keyboard) {
       throw new Error('Keyboard input is not available in this scene.');
     }
 
-    this.cursors = keyboard.createCursorKeys();
-    this.shootKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.leftKey = keyboard.addKey(profile.controls.left);
+    this.rightKey = keyboard.addKey(profile.controls.right);
+    this.jumpKey = keyboard.addKey(profile.controls.jump);
+    this.shootKey = keyboard.addKey(profile.controls.shoot);
   }
 
   update(): void {
@@ -40,11 +49,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    if (this.cursors.left?.isDown) {
+    if (this.leftKey.isDown) {
       this.setVelocityX(-MOVE_SPEED);
       this.lookDirection = -1;
       this.setFlipX(true);
-    } else if (this.cursors.right?.isDown) {
+    } else if (this.rightKey.isDown) {
       this.setVelocityX(MOVE_SPEED);
       this.lookDirection = 1;
       this.setFlipX(false);
@@ -54,7 +63,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     const body = this.body as Phaser.Physics.Arcade.Body | null;
 
-    if (this.cursors.up?.isDown && body?.blocked.down) {
+    if (this.jumpKey.isDown && body?.blocked.down) {
       this.setVelocityY(-JUMP_SPEED);
     }
 
@@ -78,6 +87,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.time.delayedCall(120, () => {
       if (this.active) {
         this.clearTint();
+        this.setTint(this.profile.color);
       }
     });
 
@@ -99,5 +109,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   getHealth(): number {
     return this.healthPoints;
+  }
+
+  getProfile(): PlayerConfig {
+    return this.profile;
   }
 }

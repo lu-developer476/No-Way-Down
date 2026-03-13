@@ -5,9 +5,11 @@ import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { AllySystem } from '../systems/AllySystem';
+import { getActivePlayerConfigs } from '../config/localMultiplayer';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
+const MAX_PLAYER_SEPARATION_PX = 320;
 
 interface PlatformConfig {
   x: number;
@@ -26,7 +28,7 @@ interface GameSceneData {
 }
 
 export class GameScene extends Phaser.Scene {
-  private player?: Player;
+  private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
@@ -85,25 +87,39 @@ export class GameScene extends Phaser.Scene {
       y: levelHeight - 140
     });
 
-    this.player = new Player(this, this.respawnPoint.x, this.respawnPoint.y, this.projectileSystem);
+    const activePlayerConfigs = getActivePlayerConfigs();
+    this.players = activePlayerConfigs.map((config, index) => new Player(
+      this,
+      this.respawnPoint!.x + index * 42,
+      this.respawnPoint!.y,
+      this.projectileSystem!,
+      config
+    ));
+
     this.zombieSystem = new ZombieSystem(this);
     this.allySystem = new AllySystem(this);
 
-    this.physics.add.collider(this.player, environment);
-    this.zombieSystem.createColliders(environment, this.player);
+    this.players.forEach((player) => {
+      this.physics.add.collider(player, environment);
+      this.physics.add.overlap(player, this.zombieSystem?.getGroup()!, () => this.handlePlayerZombieOverlap(player), undefined, this);
+      this.zombieSystem?.createColliders(environment, player);
+    });
+
     this.zombieSystem.createProjectileOverlap(this.projectileSystem.getGroup());
     this.allySystem.createEnvironmentColliders(environment);
     this.allySystem.createZombieOverlap(this.zombieSystem.getGroup());
-    this.physics.add.overlap(this.player, this.zombieSystem.getGroup(), this.handlePlayerZombieOverlap, undefined, this);
 
     [560, 1030, 1460, 1860, 2060].forEach((spawnX) => {
       this.zombieSystem?.spawn(spawnX, levelHeight - 140);
     });
 
-    this.allySystem.spawnInitialAllies(this.player);
+    const leadPlayer = this.players[0];
+    if (leadPlayer) {
+      this.allySystem.spawnInitialAllies(leadPlayer);
+    }
 
     this.setupMissionSystem();
-    this.staircaseSystem = new StaircaseSystem(this, this.player);
+    this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'dining-to-upper',
       x: stairsX,
@@ -120,19 +136,23 @@ export class GameScene extends Phaser.Scene {
     });
     this.createMissionStatusUI();
 
-    this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#0f172a');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 10', {
+    this.add.text(16, 16, 'No Way Down - Etapa 11', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
-    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE | Aliados IA activos', {
-      color: '#cbd5e1',
-      fontSize: '14px'
-    }).setScrollFactor(0);
+    this.add.text(
+      16,
+      40,
+      'P1: ← → / ↑ / SPACE | P2: A D / W / F | Cámara compartida | Aliados IA activos',
+      {
+        color: '#cbd5e1',
+        fontSize: '14px'
+      }
+    ).setScrollFactor(0);
 
-    this.registry.set('playerHealth', this.player.getHealth());
+    this.registry.set('playerHealth', this.getTeamHealthTotal());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
 
@@ -142,13 +162,19 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(): void {
-    this.player?.update();
+    this.players.forEach((player) => player.update());
+    this.enforcePlayerSeparation();
+    this.updateSharedCamera();
 
-    if (this.player) {
-      this.zombieSystem?.update(this.player.x);
-      this.allySystem?.update(this.player, this.zombieSystem?.getActiveZombies() ?? [], this.time.now);
-      this.registry.set('playerHealth', this.player.getHealth());
+    const leadPlayerX = this.getAveragePlayerPosition().x;
+    this.zombieSystem?.update(leadPlayerX);
+
+    const leadPlayer = this.players[0];
+    if (leadPlayer) {
+      this.allySystem?.update(leadPlayer, this.zombieSystem?.getActiveZombies() ?? [], this.time.now);
     }
+
+    this.registry.set('playerHealth', this.getTeamHealthTotal());
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
@@ -276,19 +302,19 @@ export class GameScene extends Phaser.Scene {
     this.add.rectangle(x, y + 16, width - 26, 8, 0x5b2d0e, 0.75);
   }
 
-  private handlePlayerZombieOverlap(): void {
-    if (!this.player || this.hasPlayerBeenDefeated) {
+  private handlePlayerZombieOverlap(player: Player): void {
+    if (this.hasPlayerBeenDefeated) {
       return;
     }
 
-    const didTakeDamage = this.player.takeDamage(PLAYER_CONTACT_DAMAGE, this.time.now);
+    const didTakeDamage = player.takeDamage(PLAYER_CONTACT_DAMAGE, this.time.now);
     if (!didTakeDamage) {
       return;
     }
 
-    this.registry.set('playerHealth', this.player.getHealth());
+    this.registry.set('playerHealth', this.getTeamHealthTotal());
 
-    if (this.player.isDead()) {
+    if (player.isDead()) {
       this.handlePlayerDefeat();
     }
   }
@@ -303,7 +329,7 @@ export class GameScene extends Phaser.Scene {
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
-      ?.setText('Has caído en combate.\nReiniciando...')
+      ?.setText('Un jugador ha caído en combate.\nReiniciando...')
       .setStyle({ color: '#fecaca' })
       .setVisible(true);
 
@@ -323,5 +349,59 @@ export class GameScene extends Phaser.Scene {
     }
 
     return fallback;
+  }
+
+  private getTeamHealthTotal(): number {
+    return this.players.reduce((acc, player) => acc + player.getHealth(), 0);
+  }
+
+  private getAveragePlayerPosition(): Phaser.Math.Vector2 {
+    if (this.players.length === 0) {
+      return new Phaser.Math.Vector2(0, 0);
+    }
+
+    const totals = this.players.reduce(
+      (acc, player) => ({ x: acc.x + player.x, y: acc.y + player.y }),
+      { x: 0, y: 0 }
+    );
+
+    return new Phaser.Math.Vector2(totals.x / this.players.length, totals.y / this.players.length);
+  }
+
+  private updateSharedCamera(): void {
+    const center = this.getAveragePlayerPosition();
+    const camera = this.cameras.main;
+    const lerpFactor = 0.08;
+
+    const targetScrollX = center.x - camera.width / 2;
+    const targetScrollY = center.y - camera.height / 2;
+
+    camera.scrollX = Phaser.Math.Linear(camera.scrollX, targetScrollX, lerpFactor);
+    camera.scrollY = Phaser.Math.Linear(camera.scrollY, targetScrollY, lerpFactor);
+  }
+
+  private enforcePlayerSeparation(): void {
+    if (this.players.length <= 1) {
+      return;
+    }
+
+    const p1 = this.players[0];
+    const p2 = this.players[1];
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance <= MAX_PLAYER_SEPARATION_PX || distance === 0) {
+      return;
+    }
+
+    const midpointX = (p1.x + p2.x) / 2;
+    const midpointY = (p1.y + p2.y) / 2;
+    const normalizedX = dx / distance;
+    const normalizedY = dy / distance;
+    const allowedHalfDistance = MAX_PLAYER_SEPARATION_PX / 2;
+
+    p1.setPosition(midpointX - normalizedX * allowedHalfDistance, midpointY - normalizedY * allowedHalfDistance);
+    p2.setPosition(midpointX + normalizedX * allowedHalfDistance, midpointY + normalizedY * allowedHalfDistance);
   }
 }

@@ -53,6 +53,21 @@ export class ZombieSystem {
     return this.zombies;
   }
 
+  getActiveZombies(): Zombie[] {
+    const activeZombies: Zombie[] = [];
+
+    this.zombies.children.each((child) => {
+      const zombie = child as Zombie;
+      if (zombie.active) {
+        activeZombies.push(zombie);
+      }
+
+      return true;
+    });
+
+    return activeZombies;
+  }
+
   getActiveCount(): number {
     let activeZombies = 0;
 

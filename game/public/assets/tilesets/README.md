@@ -138,3 +138,25 @@ Esto produce únicamente archivos no binarios:
 
 - `game/public/assets/tilesets/institutional_stairs_spritesheet.svg` (fuente editable)
 - `game/public/assets/tilesets/institutional_stairs_spritesheet_coords.json`
+
+## Zombie damage tilesheet
+
+Tiles pixel art de escenario dañado por ataque zombie (32x32 por variante), diseñados para reutilizar la misma paleta institucional de pisos, concreto, madera y vidrio.
+
+Variantes incluidas:
+
+- `piso_roto`
+- `mesa_rota`
+- `vidrio_roto`
+- `pared_agrietada`
+
+Generación local:
+
+```bash
+npm --prefix game run generate:zombie-damage-tilesheet
+```
+
+Esto produce únicamente archivos no binarios:
+
+- `game/public/assets/tilesets/institutional_zombie_damage_tilesheet.svg` (fuente editable)
+- `game/public/assets/tilesets/institutional_zombie_damage_tilesheet_coords.json`

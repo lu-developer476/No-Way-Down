@@ -8,7 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "generate:institutional-tileset": "node scripts/generateInstitutionalTileset.mjs",
-    "generate:bank-counter-spritesheet": "node scripts/generateBankCounterSpritesheet.mjs"
+    "generate:bank-counter-spritesheet": "node scripts/generateBankCounterSpritesheet.mjs",
+    "generate:dining-tables-spritesheet": "node scripts/generateDiningTablesSpritesheet.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

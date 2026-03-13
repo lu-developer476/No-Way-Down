@@ -37,3 +37,26 @@ Coordenadas incluidas:
 - `modulo_con_vidrio`: `x=128, y=0, w=64, h=48`
 - `modulo_con_computadora`: `x=192, y=0, w=64, h=48`
 - `modulo_con_silla_detras`: `x=256, y=0, w=64, h=48`
+
+## Institutional dining tables spritesheet
+
+Sprites pixel art de mesas de comedor institucional (64x32 por variante).
+
+Variantes incluidas:
+
+- `mesa_vacia`
+- `mesa_con_bandeja`
+- `mesa_volcada_zombie`
+- `mesa_danada`
+
+Generación local:
+
+```bash
+npm --prefix game run generate:dining-tables-spritesheet
+```
+
+Esto produce:
+
+- `game/public/assets/tilesets/institutional_dining_tables_spritesheet.png`
+- `game/public/assets/tilesets/institutional_dining_tables_spritesheet.svg` (fuente no binaria editable)
+- `game/public/assets/tilesets/institutional_dining_tables_spritesheet_coords.json`

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:institutional-tileset": "node scripts/generateInstitutionalTileset.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

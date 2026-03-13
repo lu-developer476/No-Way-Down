@@ -1,3 +1,4 @@
 node_modules
 dist
 .vite
+public/assets/tilesets/institutional_hall_tileset.png

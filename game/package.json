@@ -12,7 +12,8 @@
     "generate:dining-tables-spritesheet": "node scripts/generateDiningTablesSpritesheet.mjs",
     "generate:stone-columns-spritesheet": "node scripts/generateStoneColumnsSpritesheet.mjs",
     "generate:tall-windows-spritesheet": "node scripts/generateInstitutionalTallWindowsSpritesheet.mjs",
-    "generate:institutional-decor-spritesheet": "node scripts/generateInstitutionalDecorSpritesheet.mjs"
+    "generate:institutional-decor-spritesheet": "node scripts/generateInstitutionalDecorSpritesheet.mjs",
+    "generate:stairs-spritesheet": "node scripts/generateInstitutionalStairsSpritesheet.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

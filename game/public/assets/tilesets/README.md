@@ -116,3 +116,25 @@ Esto produce únicamente archivos no binarios:
 
 - `game/public/assets/tilesets/institutional_decor_spritesheet.svg` (fuente editable)
 - `game/public/assets/tilesets/institutional_decor_spritesheet_coords.json`
+
+## Institutional stairs spritesheet
+
+Sprites pixel art de escaleras interiores de edificio institucional (32x32 por variante), pensadas para gameplay de plataformas.
+
+Variantes incluidas:
+
+- `escalera_ascendente_sucia_sangre`
+- `escalera_descendente_sucia_sangre`
+- `base_escalera_sucia_sangre`
+- `borde_escalera_sucia_sangre`
+
+Generación local:
+
+```bash
+npm --prefix game run generate:stairs-spritesheet
+```
+
+Esto produce únicamente archivos no binarios:
+
+- `game/public/assets/tilesets/institutional_stairs_spritesheet.svg` (fuente editable)
+- `game/public/assets/tilesets/institutional_stairs_spritesheet_coords.json`

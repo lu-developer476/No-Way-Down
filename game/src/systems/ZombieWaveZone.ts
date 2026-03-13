@@ -201,6 +201,18 @@ export class ZombieWaveZone {
     });
   }
 
+  getTotalZonesCount(): number {
+    return this.zones.length;
+  }
+
+  getCompletedZonesCount(): number {
+    return this.zones.filter((zone) => zone.state === 'completed').length;
+  }
+
+  areAllZonesCompleted(): boolean {
+    return this.getTotalZonesCount() > 0 && this.getCompletedZonesCount() === this.getTotalZonesCount();
+  }
+
   private createRuntimeZone(config: ZombieWaveZoneConfig): RuntimeZone {
     const trigger = this.scene.add.zone(
       config.trigger.x,

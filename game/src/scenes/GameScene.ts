@@ -6,6 +6,7 @@ import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { AllySystem } from '../systems/AllySystem';
 import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
+import { LevelExitSystem } from '../systems/LevelExitSystem';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
@@ -43,6 +44,7 @@ export class GameScene extends Phaser.Scene {
   private staircaseSystem?: StaircaseSystem;
   private allySystem?: AllySystem;
   private zombieWaveZoneSystem?: ZombieWaveZone;
+  private levelExitSystem?: LevelExitSystem;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -140,6 +142,30 @@ export class GameScene extends Phaser.Scene {
       zombieWaveZonesFromJson
     );
 
+    this.levelExitSystem = new LevelExitSystem(
+      this,
+      this.players,
+      {
+        requiredCleanupZones: 5,
+        exitZone: {
+          x: 7920,
+          y: levelHeight - 140,
+          width: 180,
+          height: 240
+        },
+        transitionTarget: {
+          sceneKey: 'UpperFloorScene',
+          spawnPoint: { x: 220, y: levelHeight - 140 }
+        },
+        completedMessage: 'Nivel completado: pasillo despejado.',
+        transitionMessage: 'Subiendo al siguiente nivel...',
+        transitionDelayMs: 700
+      },
+      () => this.zombieWaveZoneSystem?.getCompletedZonesCount() ?? 0,
+      (message) => this.showMissionStatus(message),
+      (transitionMessage) => this.triggerLevelExitTransition(transitionMessage)
+    );
+
     const leadPlayer = this.players[0];
     if (leadPlayer) {
       this.allySystem.spawnInitialAllies(leadPlayer);
@@ -200,6 +226,7 @@ export class GameScene extends Phaser.Scene {
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
     this.zombieWaveZoneSystem?.update();
+    this.levelExitSystem?.update();
 
     this.updateMissionProgress(zombiesRemaining);
 
@@ -295,7 +322,7 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private triggerPlaceholderTransition(target: StairTransitionTarget): void {
+  private triggerLevelExitTransition(message: string): void {
     if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
       return;
     }
@@ -305,8 +332,16 @@ export class GameScene extends Phaser.Scene {
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
-      ?.setText('Subiendo al siguiente nivel...')
+      ?.setText(message)
       .setVisible(true);
+  }
+
+  private triggerPlaceholderTransition(target: StairTransitionTarget): void {
+    if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
+      return;
+    }
+
+    this.triggerLevelExitTransition('Subiendo al siguiente nivel...');
 
     this.time.delayedCall(500, () => {
       this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });

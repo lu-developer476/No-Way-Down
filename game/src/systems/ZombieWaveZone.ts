@@ -37,6 +37,40 @@ export interface ZombieWaveZoneConfig {
   };
 }
 
+interface SubsueloSegment {
+  id: number;
+  posicionX: {
+    inicioPx: number;
+    finPx: number;
+  };
+}
+
+interface SubsueloCleanupZone {
+  id: string;
+  segmentosCubiertos: number[];
+  activacion: ZombieWaveSpawnPoint;
+  spawnsZombies: ZombieWaveSpawnPoint[];
+  zombiesIniciales: number;
+}
+
+export interface SubsueloLevelConfigJson {
+  dimensiones: {
+    altoTotalPx: number;
+  };
+  segmentos: SubsueloSegment[];
+  zonasLimpiezaZombies: SubsueloCleanupZone[];
+}
+
+export interface ZombieWaveJsonAdapterOptions {
+  triggerSize?: {
+    width: number;
+    height: number;
+  };
+  blockerWidth?: number;
+  blockerPadding?: number;
+  spawnYOffset?: number;
+}
+
 type WaveState = 'idle' | 'active' | 'completed';
 
 interface RuntimeZone {
@@ -46,6 +80,97 @@ interface RuntimeZone {
   rightBlocker: Phaser.GameObjects.Rectangle;
   spawnedZombies: Zombie[];
   state: WaveState;
+}
+
+const DEFAULT_ADAPTER_OPTIONS: Required<ZombieWaveJsonAdapterOptions> = {
+  triggerSize: {
+    width: 140,
+    height: 220
+  },
+  blockerWidth: 30,
+  blockerPadding: 32,
+  spawnYOffset: 0
+};
+
+export function createZombieWaveZonesFromLevelJson(
+  levelJson: SubsueloLevelConfigJson,
+  options: ZombieWaveJsonAdapterOptions = {}
+): ZombieWaveZoneConfig[] {
+  const mergedOptions: Required<ZombieWaveJsonAdapterOptions> = {
+    triggerSize: options.triggerSize ?? DEFAULT_ADAPTER_OPTIONS.triggerSize,
+    blockerWidth: options.blockerWidth ?? DEFAULT_ADAPTER_OPTIONS.blockerWidth,
+    blockerPadding: options.blockerPadding ?? DEFAULT_ADAPTER_OPTIONS.blockerPadding,
+    spawnYOffset: options.spawnYOffset ?? DEFAULT_ADAPTER_OPTIONS.spawnYOffset
+  };
+
+  return levelJson.zonasLimpiezaZombies.map((zone) => {
+    const coveredSegments = levelJson.segmentos.filter((segment) => zone.segmentosCubiertos.includes(segment.id));
+
+    if (coveredSegments.length === 0) {
+      throw new Error(`Zombie cleanup zone "${zone.id}" has no valid covered segments in level JSON.`);
+    }
+
+    const leftBoundary = Math.min(...coveredSegments.map((segment) => segment.posicionX.inicioPx));
+    const rightBoundary = Math.max(...coveredSegments.map((segment) => segment.posicionX.finPx));
+
+    const leftSpawnPoints = zone.spawnsZombies
+      .filter((spawnPoint) => spawnPoint.x <= zone.activacion.x)
+      .map((spawnPoint) => ({
+        x: spawnPoint.x,
+        y: spawnPoint.y + mergedOptions.spawnYOffset
+      }));
+
+    const rightSpawnPoints = zone.spawnsZombies
+      .filter((spawnPoint) => spawnPoint.x > zone.activacion.x)
+      .map((spawnPoint) => ({
+        x: spawnPoint.x,
+        y: spawnPoint.y + mergedOptions.spawnYOffset
+      }));
+
+    const fallbackSplitIndex = Math.ceil(zone.spawnsZombies.length / 2);
+    const safeLeftSpawns = leftSpawnPoints.length > 0
+      ? leftSpawnPoints
+      : zone.spawnsZombies.slice(0, fallbackSplitIndex).map((spawnPoint) => ({
+        x: spawnPoint.x,
+        y: spawnPoint.y + mergedOptions.spawnYOffset
+      }));
+
+    const safeRightSpawns = rightSpawnPoints.length > 0
+      ? rightSpawnPoints
+      : zone.spawnsZombies.slice(fallbackSplitIndex).map((spawnPoint) => ({
+        x: spawnPoint.x,
+        y: spawnPoint.y + mergedOptions.spawnYOffset
+      }));
+
+    return {
+      id: zone.id,
+      trigger: {
+        x: zone.activacion.x,
+        y: zone.activacion.y,
+        width: mergedOptions.triggerSize.width,
+        height: mergedOptions.triggerSize.height
+      },
+      blockers: {
+        left: {
+          x: leftBoundary - mergedOptions.blockerPadding,
+          y: levelJson.dimensiones.altoTotalPx / 2,
+          width: mergedOptions.blockerWidth,
+          height: levelJson.dimensiones.altoTotalPx
+        },
+        right: {
+          x: rightBoundary + mergedOptions.blockerPadding,
+          y: levelJson.dimensiones.altoTotalPx / 2,
+          width: mergedOptions.blockerWidth,
+          height: levelJson.dimensiones.altoTotalPx
+        }
+      },
+      wave: {
+        leftSpawnPoints: safeLeftSpawns,
+        rightSpawnPoints: safeRightSpawns,
+        zombiesPerSide: Math.max(1, Math.ceil(zone.zombiesIniciales / 2))
+      }
+    };
+  });
 }
 
 export class ZombieWaveZone {

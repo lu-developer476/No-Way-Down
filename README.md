@@ -1,6 +1,6 @@
 # No Way Down
 
-Scaffold inicial del proyecto para un juego 2D cooperativo web ambientado en el comedor del piso -1 de la Casa Central del Banco de la Nación Argentina.
+Scaffold inicial del proyecto para un juego 2D cooperativo web ambientado en el comedor del 1° subsuelo de la Casa Central del Banco de la Nación Argentina.
 
 ## Estructura del repositorio
 

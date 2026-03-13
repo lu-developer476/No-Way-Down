@@ -19,7 +19,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
       detectionRange?: number;
     } = {}
   ) {
-    super(scene, x, y, 'zombie-placeholder');
+    super(scene, x, y, 'zombie-base-0');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -29,7 +29,10 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.detectionRange = options.detectionRange ?? DEFAULT_DETECTION_RANGE;
 
     this.setCollideWorldBounds(true);
-    this.setSize(32, 48);
+    this.setSize(18, 40);
+    this.setOffset(7, 8);
+
+    this.play('zombie-idle', true);
   }
 
   update(targetX: number): void {
@@ -41,11 +44,13 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
     if (Math.abs(distanceX) > this.detectionRange) {
       this.setVelocityX(0);
+      this.play('zombie-idle', true);
       return;
     }
 
     const direction = Math.sign(distanceX);
     this.setVelocityX(direction * this.moveSpeed);
+    this.play('zombie-run', true);
 
     if (direction < 0) {
       this.setFlipX(true);
@@ -60,6 +65,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.healthPoints -= amount;
+    this.play('zombie-hurt', true);
 
     if (this.healthPoints <= 0) {
       this.die();

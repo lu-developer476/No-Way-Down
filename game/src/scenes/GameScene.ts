@@ -3,11 +3,12 @@ import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
-import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
+import { StairSystem } from '../systems/StairSystem';
 import { AllySystem } from '../systems/AllySystem';
 import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
 import { LevelExitSystem } from '../systems/LevelExitSystem';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
+import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
@@ -41,7 +42,7 @@ export class GameScene extends Phaser.Scene {
   private projectileSystem?: ProjectileSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
-  private staircaseSystem?: StaircaseSystem;
+  private stairSystem?: StairSystem;
   private allySystem?: AllySystem;
   private zombieWaveZoneSystem?: ZombieWaveZone;
   private levelExitSystem?: LevelExitSystem;
@@ -63,8 +64,6 @@ export class GameScene extends Phaser.Scene {
     const floorHeight = 64;
     const floorY = levelHeight - floorHeight / 2;
     const tableTopY = levelHeight - 146;
-    const stairsX = levelWidth - 190;
-    const stairsY = levelHeight - 96;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
     this.cameras.main
@@ -172,23 +171,11 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.setupMissionSystem();
-    this.staircaseSystem = new StaircaseSystem(this, this.players);
-    this.staircaseSystem.registerStair({
-      id: 'dining-to-upper',
-      x: stairsX,
-      y: stairsY,
-      width: 150,
-      height: 110,
-      prompt: 'Mantén E para subir al siguiente piso',
-      activeLabel: 'ESCALERA\nACTIVA',
-      inactiveLabel: 'ESCALERA\nBLOQUEADA',
-      target: {
-        sceneKey: 'UpperFloorScene',
-        spawnPoint: { x: 220, y: levelHeight - 140 }
-      }
+    this.stairSystem = new StairSystem(this, stairConfigLevel2);
+    stairConfigLevel2.stairs.forEach((stair) => {
+      this.addStairVisual(stair.x, stair.y, stair.width, stair.height);
     });
 
-    this.addStairVisual(stairsX, stairsY, 150, 110);
     this.createMissionStatusUI();
 
     this.cameras.main.setBackgroundColor('#0a1020');
@@ -231,9 +218,7 @@ export class GameScene extends Phaser.Scene {
     this.updateMissionProgress(zombiesRemaining);
 
     if (!this.hasPlayerBeenDefeated) {
-      this.staircaseSystem?.update((target) => {
-        this.triggerPlaceholderTransition(target);
-      });
+      this.stairSystem?.update(this.players);
     }
 
     this.projectileSystem?.update();
@@ -262,7 +247,6 @@ export class GameScene extends Phaser.Scene {
     if (completedObjective) {
       this.registry.set('currentObjective', completedObjective.completedDescription);
       this.showMissionStatus('Misión completada: escuadrón despejado');
-      this.staircaseSystem?.unlock('dining-to-upper');
     } else {
       this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
     }
@@ -334,18 +318,6 @@ export class GameScene extends Phaser.Scene {
     this.transitionText
       ?.setText(message)
       .setVisible(true);
-  }
-
-  private triggerPlaceholderTransition(target: StairTransitionTarget): void {
-    if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
-      return;
-    }
-
-    this.triggerLevelExitTransition('Subiendo al siguiente nivel...');
-
-    this.time.delayedCall(500, () => {
-      this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });
-    });
   }
 
   private createPlatform(group: Phaser.Physics.Arcade.StaticGroup, config: PlatformConfig): void {

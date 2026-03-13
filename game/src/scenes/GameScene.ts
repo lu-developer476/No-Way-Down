@@ -19,6 +19,7 @@ import { visualTheme } from './visualTheme';
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
+const ARCADE_CAMERA_ZOOM = 1.25;
 
 interface PlatformConfig {
   x: number;
@@ -61,7 +62,10 @@ export class GameScene extends Phaser.Scene {
     const stairsY = levelHeight - 96;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
-    this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
+    this.cameras.main
+      .setBounds(0, 0, levelWidth, levelHeight)
+      .setZoom(ARCADE_CAMERA_ZOOM)
+      .setRoundPixels(true);
 
     this.drawDiningHallBackground(levelWidth, levelHeight, floorHeight);
 
@@ -75,10 +79,11 @@ export class GameScene extends Phaser.Scene {
     });
 
     const tablePlatforms: PlatformConfig[] = [
-      { x: 420, y: tableTopY, width: 210, height: 26 },
-      { x: 850, y: tableTopY, width: 210, height: 26 },
-      { x: 1280, y: tableTopY, width: 210, height: 26 },
-      { x: 1710, y: tableTopY, width: 210, height: 26 }
+      { x: 350, y: tableTopY, width: 220, height: 26 },
+      { x: 760, y: tableTopY - 12, width: 240, height: 26 },
+      { x: 1180, y: tableTopY + 8, width: 210, height: 26 },
+      { x: 1600, y: tableTopY - 6, width: 250, height: 26 },
+      { x: 1960, y: tableTopY + 12, width: 180, height: 26 }
     ];
 
     tablePlatforms.forEach((table) => {
@@ -115,7 +120,7 @@ export class GameScene extends Phaser.Scene {
     this.allySystem.createEnvironmentColliders(environment);
     this.allySystem.createZombieOverlap(this.zombieSystem.getGroup());
 
-    [560, 1030, 1460, 1860, 2060].forEach((spawnX) => {
+    [500, 910, 1330, 1720, 2040].forEach((spawnX) => {
       this.zombieSystem?.spawn(spawnX, levelHeight - 140);
     });
 
@@ -347,13 +352,25 @@ export class GameScene extends Phaser.Scene {
       this.add.rectangle(x, 108, 72, 46, 0x7dd3fc, 0.08).setDepth(1);
     }
 
+    for (let x = 120; x < levelWidth; x += 280) {
+      this.add.rectangle(x, 184, 150, 60, 0x0b1220, 0.35).setDepth(1).setScrollFactor(0.5, 1);
+      this.add.rectangle(x + 44, 184, 26, 60, 0x1e293b, 0.4).setDepth(1).setScrollFactor(0.5, 1);
+      this.add.rectangle(x - 40, 184, 18, 54, 0x334155, 0.25).setDepth(1).setScrollFactor(0.5, 1);
+    }
+
     for (let x = 120; x < levelWidth; x += 180) {
       this.add.rectangle(x, levelHeight - floorHeight - 120, 16, 160, 0x475569, 0.45).setDepth(2);
       this.add.rectangle(x + 6, levelHeight - floorHeight - 120, 4, 160, 0x94a3b8, 0.28).setDepth(2);
+      this.add.rectangle(x + 50, levelHeight - floorHeight - 108, 68, 32, 0x111827, 0.34).setDepth(2).setScrollFactor(0.8, 1);
     }
 
     for (let x = 70; x < levelWidth; x += 140) {
       this.add.rectangle(x, levelHeight - floorHeight - 24, 36, 20, palette.hazard, 0.14).setDepth(3);
+    }
+
+    for (let x = 200; x < levelWidth; x += 360) {
+      this.add.rectangle(x, levelHeight - floorHeight - 52, 96, 24, 0x0f172a, 0.5).setDepth(3).setScrollFactor(0.9, 1);
+      this.add.rectangle(x + 40, levelHeight - floorHeight - 54, 26, 8, 0xeab308, 0.24).setDepth(3).setScrollFactor(0.9, 1);
     }
 
     for (let x = 150; x < levelWidth; x += 260) {
@@ -436,9 +453,20 @@ export class GameScene extends Phaser.Scene {
     const center = this.getAveragePlayerPosition();
     const camera = this.cameras.main;
     const lerpFactor = 0.08;
+    const velocityLookAhead = this.players.length > 0
+      ? this.players.reduce((acc, player) => {
+          const body = player.body as Phaser.Physics.Arcade.Body | null;
+          return acc + (body?.velocity.x ?? 0);
+        }, 0) / this.players.length
+      : 0;
+    const lookAheadX = Phaser.Math.Clamp(velocityLookAhead * 0.18, -80, 80);
+    const focusYOffset = 34;
 
-    const targetScrollX = center.x - camera.width / 2;
-    const targetScrollY = center.y - camera.height / 2;
+    const visibleWidth = camera.width / camera.zoom;
+    const visibleHeight = camera.height / camera.zoom;
+
+    const targetScrollX = center.x + lookAheadX - visibleWidth / 2;
+    const targetScrollY = center.y + focusYOffset - visibleHeight / 2;
 
     camera.scrollX = Phaser.Math.Linear(camera.scrollX, targetScrollX, lerpFactor);
     camera.scrollY = Phaser.Math.Linear(camera.scrollY, targetScrollY, lerpFactor);

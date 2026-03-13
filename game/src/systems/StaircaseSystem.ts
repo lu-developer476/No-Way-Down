@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
+import { visualTheme } from '../scenes/visualTheme';
 
 const INTERACTION_HOLD_DURATION_MS = 450;
 
@@ -54,14 +55,14 @@ export class StaircaseSystem {
     this.interactionKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
     this.promptText = this.scene.add.text(0, 0, '', {
-      color: '#dcfce7',
+      color: visualTheme.palette.uiAccent,
       fontSize: '16px',
-      backgroundColor: '#052e16',
+      backgroundColor: '#132018',
       padding: { x: 8, y: 6 }
     }).setOrigin(0.5).setVisible(false);
 
     this.holdProgressText = this.scene.add.text(0, 0, '', {
-      color: '#bbf7d0',
+      color: '#b4f5ce',
       fontSize: '14px'
     }).setOrigin(0.5).setVisible(false);
   }
@@ -70,11 +71,11 @@ export class StaircaseSystem {
     const triggerZone = this.scene.add.zone(config.x, config.y, config.width, config.height);
     this.scene.physics.add.existing(triggerZone, true);
 
-    const inactiveVisual = this.scene.add.rectangle(config.x, config.y, config.width, config.height, 0x111827, 0.7)
-      .setStrokeStyle(2, 0x94a3b8, 0.8);
+    const inactiveVisual = this.scene.add.rectangle(config.x, config.y, config.width, config.height, 0x111827, 0.18)
+      .setStrokeStyle(2, 0x64748b, 0.7);
 
-    const activeVisual = this.scene.add.rectangle(config.x, config.y, config.width, config.height, 0x14532d, 0.35)
-      .setStrokeStyle(2, 0x86efac, 0.9)
+    const activeVisual = this.scene.add.rectangle(config.x, config.y, config.width, config.height, 0x14532d, 0.16)
+      .setStrokeStyle(2, 0x86efac, 0.85)
       .setVisible(false);
 
     const label = this.scene.add.text(
@@ -82,7 +83,7 @@ export class StaircaseSystem {
       config.y - Math.max(20, config.height * 0.22),
       config.inactiveLabel ?? 'ESCALERA\nBLOQUEADA',
       {
-        color: '#f87171',
+        color: visualTheme.palette.uiDanger,
         fontSize: '14px',
         align: 'center'
       }

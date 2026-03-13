@@ -1,0 +1,23 @@
+export const visualTheme = {
+  palette: {
+    skyTop: 0x121a2a,
+    skyBottom: 0x0a1020,
+    wallFar: 0x1b2336,
+    wallMid: 0x27324a,
+    wallNear: 0x33445e,
+    floorDark: 0x263142,
+    floorLight: 0x3a4b63,
+    platformTop: 0x5c687d,
+    platformEdge: 0x3b4258,
+    hazard: 0xcc3f3f,
+    lamp: 0xe8d087,
+    uiAccent: '#9ae6b4',
+    uiDanger: '#fca5a5',
+    player: 0xeab308,
+    zombie: 0x7fb069,
+    allyA: 0x93c5fd,
+    allyB: 0xc4b5fd,
+    bullet: 0xfff3c4
+  }
+} as const;
+

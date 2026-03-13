@@ -11,6 +11,7 @@ import {
   getScenePlayerId,
   parseCheckpoint
 } from './sceneShared';
+import { visualTheme } from './visualTheme';
 
 const API_MESSAGE_DURATION_MS = 2600;
 
@@ -40,14 +41,15 @@ export class UpperFloorScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
     this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
 
-    this.add.rectangle(levelWidth / 2, levelHeight / 2, levelWidth, levelHeight, 0x0f172a);
-    this.add.rectangle(levelWidth / 2, levelHeight / 2 - 70, levelWidth, 180, 0x1e293b);
-    this.add.rectangle(levelWidth / 2, levelHeight - floorHeight / 2, levelWidth, floorHeight, 0x334155);
+    this.drawUpperFloorBackground(levelWidth, levelHeight, floorHeight);
 
     const environment = this.physics.add.staticGroup();
     environment.create(levelWidth / 2, levelHeight - floorHeight / 2, 'ground-placeholder')
       .setDisplaySize(levelWidth, floorHeight)
-      .refreshBody();
+      .refreshBody()
+      .setDepth(4);
+
+    this.add.rectangle(levelWidth / 2, levelHeight - floorHeight + 8, levelWidth, 8, visualTheme.palette.platformTop).setDepth(5);
 
     this.projectileSystem = new ProjectileSystem(this);
 
@@ -81,6 +83,7 @@ export class UpperFloorScene extends Phaser.Scene {
       startsUnlocked: true
     });
 
+    this.addStairVisual(120, levelHeight - 94, 150, 108);
     this.createTransitionUI();
     this.registry.set('currentObjective', 'Explora el piso superior y regresa cuando quieras.');
 
@@ -113,6 +116,34 @@ export class UpperFloorScene extends Phaser.Scene {
     this.staircaseSystem?.update((target) => {
       this.transitionToTarget(target);
     });
+  }
+
+  private drawUpperFloorBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
+    const { palette } = visualTheme;
+    const backdrop = this.add.graphics();
+    backdrop.fillGradientStyle(palette.skyTop, palette.skyTop, palette.skyBottom, palette.skyBottom, 1);
+    backdrop.fillRect(0, 0, levelWidth, levelHeight);
+    backdrop.fillStyle(0x1a2235, 1);
+    backdrop.fillRect(0, 68, levelWidth, 130);
+    backdrop.fillStyle(0x263248, 1);
+    backdrop.fillRect(0, 170, levelWidth, 138);
+    backdrop.fillStyle(0x2f3d56, 1);
+    backdrop.fillRect(0, levelHeight - floorHeight - 62, levelWidth, 62);
+    backdrop.destroy();
+
+    for (let x = 80; x < levelWidth; x += 170) {
+      this.add.rectangle(x, 110, 58, 40, 0x0f172a, 0.65).setDepth(1);
+      this.add.rectangle(x, 110, 52, 34, 0x38bdf8, 0.09).setDepth(1);
+      this.add.rectangle(x, 42, 52, 8, palette.lamp, 0.23).setDepth(2);
+    }
+
+    for (let x = 100; x < levelWidth; x += 200) {
+      this.add.rectangle(x, levelHeight - floorHeight - 120, 14, 140, 0x64748b, 0.4).setDepth(2);
+    }
+  }
+
+  private addStairVisual(x: number, y: number, width: number, height: number): void {
+    this.add.tileSprite(x, y + 4, width, height, 'stair-placeholder').setDepth(7).setAlpha(0.9);
   }
 
   private createTransitionUI(): void {

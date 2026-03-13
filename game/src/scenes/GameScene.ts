@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
+import { ProjectileSystem } from '../systems/ProjectileSystem';
 
 export class GameScene extends Phaser.Scene {
   private player?: Player;
+  private projectileSystem?: ProjectileSystem;
 
   constructor() {
     super('GameScene');
@@ -24,17 +26,19 @@ export class GameScene extends Phaser.Scene {
       .setDisplaySize(levelWidth, groundHeight)
       .refreshBody();
 
-    this.player = new Player(this, 120, levelHeight - 140);
+    this.projectileSystem = new ProjectileSystem(this);
+    this.player = new Player(this, 120, levelHeight - 140, this.projectileSystem);
+
     this.physics.add.collider(this.player, ground);
 
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#111827');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 2', {
+    this.add.text(16, 16, 'No Way Down - Etapa 3', {
       color: '#f9fafb',
       fontSize: '18px'
     }).setScrollFactor(0);
-    this.add.text(16, 40, 'Mover: ← → | Saltar: ↑', {
+    this.add.text(16, 40, 'Mover: ← → | Saltar: ↑ | Disparar: SPACE', {
       color: '#cbd5e1',
       fontSize: '14px'
     }).setScrollFactor(0);
@@ -42,5 +46,6 @@ export class GameScene extends Phaser.Scene {
 
   update(): void {
     this.player?.update();
+    this.projectileSystem?.update();
   }
 }

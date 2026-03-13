@@ -1,0 +1,37 @@
+{
+  "rellanos": [
+    {
+      "id": "landing-a-safe",
+      "tipo": "rest",
+      "etiqueta": "Rellano A · zona segura",
+      "area": { "x": 740, "y": 510, "width": 220, "height": 120 }
+    },
+    {
+      "id": "landing-b-combat",
+      "tipo": "combat",
+      "etiqueta": "Rellano B · limpieza zombie",
+      "area": { "x": 1160, "y": 390, "width": 250, "height": 140 },
+      "combate": {
+        "spawnPoints": [
+          { "x": 1040, "y": 390 },
+          { "x": 1210, "y": 390 },
+          { "x": 1320, "y": 390 }
+        ],
+        "zombiesPorOleada": 4,
+        "oleadas": 2
+      }
+    },
+    {
+      "id": "landing-c-checkpoint",
+      "tipo": "checkpoint",
+      "etiqueta": "Rellano C · checkpoint",
+      "area": { "x": 1490, "y": 260, "width": 220, "height": 130 },
+      "checkpoint": {
+        "id": "stairs-level4-c",
+        "x": 1490,
+        "y": 240,
+        "saveOnce": true
+      }
+    }
+  ]
+}

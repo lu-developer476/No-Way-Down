@@ -49,6 +49,25 @@ export class ZombieSystem {
     );
   }
 
+  getGroup(): Phaser.Physics.Arcade.Group {
+    return this.zombies;
+  }
+
+  getActiveCount(): number {
+    let activeZombies = 0;
+
+    this.zombies.children.each((child) => {
+      const zombie = child as Zombie;
+      if (zombie.active) {
+        activeZombies += 1;
+      }
+
+      return true;
+    });
+
+    return activeZombies;
+  }
+
   update(targetX: number): void {
     this.zombies.children.each((child) => {
       const zombie = child as Zombie;

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
 import { GameScene } from './scenes/GameScene';
+import { UIScene } from './scenes/UIScene';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
@@ -18,7 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false
     }
   },
-  scene: [BootScene, GameScene]
+  scene: [BootScene, GameScene, UIScene]
 };
 
 void new Phaser.Game(config);

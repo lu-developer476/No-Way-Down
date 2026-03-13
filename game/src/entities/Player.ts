@@ -3,12 +3,14 @@ import { ProjectileSystem } from '../systems/ProjectileSystem';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
+const DEFAULT_MAX_HEALTH = 100;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private shootKey: Phaser.Input.Keyboard.Key;
   private lookDirection: 1 | -1 = 1;
   private projectileSystem: ProjectileSystem;
+  private healthPoints = DEFAULT_MAX_HEALTH;
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem) {
     super(scene, x, y, 'player-placeholder');
@@ -55,5 +57,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         direction: this.lookDirection
       });
     }
+  }
+
+  takeDamage(amount: number): void {
+    if (amount <= 0 || !this.active) {
+      return;
+    }
+
+    this.healthPoints = Math.max(0, this.healthPoints - amount);
+  }
+
+  getHealth(): number {
+    return this.healthPoints;
   }
 }

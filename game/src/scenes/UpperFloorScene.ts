@@ -4,16 +4,18 @@ import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
+import {
+  Checkpoint,
+  enforceMaxPlayerSeparation,
+  getAveragePlayerPosition,
+  getScenePlayerId,
+  parseCheckpoint
+} from './sceneShared';
 
-const MAX_PLAYER_SEPARATION_PX = 320;
-const DEFAULT_PLAYER_ID = 'local-player';
 const API_MESSAGE_DURATION_MS = 2600;
 
 interface UpperFloorSceneData {
-  respawnPoint?: {
-    x: number;
-    y: number;
-  };
+  respawnPoint?: Checkpoint;
   skipLoad?: boolean;
 }
 
@@ -165,46 +167,15 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   private updateSharedCamera(): void {
-    if (this.players.length === 0) {
-      return;
-    }
-
-    const center = this.players.reduce(
-      (acc, player) => ({ x: acc.x + player.x, y: acc.y + player.y }),
-      { x: 0, y: 0 }
-    );
-
-    const averageX = center.x / this.players.length;
-    const averageY = center.y / this.players.length;
+    const center = getAveragePlayerPosition(this.players);
     const camera = this.cameras.main;
 
-    camera.scrollX = Phaser.Math.Linear(camera.scrollX, averageX - camera.width / 2, 0.08);
-    camera.scrollY = Phaser.Math.Linear(camera.scrollY, averageY - camera.height / 2, 0.08);
+    camera.scrollX = Phaser.Math.Linear(camera.scrollX, center.x - camera.width / 2, 0.08);
+    camera.scrollY = Phaser.Math.Linear(camera.scrollY, center.y - camera.height / 2, 0.08);
   }
 
   private enforcePlayerSeparation(): void {
-    if (this.players.length <= 1) {
-      return;
-    }
-
-    const p1 = this.players[0];
-    const p2 = this.players[1];
-    const dx = p2.x - p1.x;
-    const dy = p2.y - p1.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance <= MAX_PLAYER_SEPARATION_PX || distance === 0) {
-      return;
-    }
-
-    const midpointX = (p1.x + p2.x) / 2;
-    const midpointY = (p1.y + p2.y) / 2;
-    const normalizedX = dx / distance;
-    const normalizedY = dy / distance;
-    const allowedHalfDistance = MAX_PLAYER_SEPARATION_PX / 2;
-
-    p1.setPosition(midpointX - normalizedX * allowedHalfDistance, midpointY - normalizedY * allowedHalfDistance);
-    p2.setPosition(midpointX + normalizedX * allowedHalfDistance, midpointY + normalizedY * allowedHalfDistance);
+    enforceMaxPlayerSeparation(this.players);
   }
 
   private registerApiControls(): void {
@@ -218,7 +189,7 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   private getPlayerId(): string {
-    return import.meta.env.VITE_PLAYER_ID ?? DEFAULT_PLAYER_ID;
+    return getScenePlayerId();
   }
 
   private buildProgressPayload(): PlayerProgressPayload {
@@ -231,18 +202,6 @@ export class UpperFloorScene extends Phaser.Scene {
       allies_rescued: 0,
       checkpoint: `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`
     };
-  }
-
-  private parseCheckpoint(value: string): { x: number; y: number } | undefined {
-    const [xPart, yPart] = value.split(',');
-    const x = Number(xPart);
-    const y = Number(yPart);
-
-    if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      return undefined;
-    }
-
-    return { x, y };
   }
 
   private async saveProgressToApi(): Promise<void> {
@@ -258,7 +217,7 @@ export class UpperFloorScene extends Phaser.Scene {
   private async loadProgressFromApi(): Promise<void> {
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
-      const loadedCheckpoint = this.parseCheckpoint(progress.checkpoint);
+      const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
       this.showApiStatus('Partida cargada desde servidor.', false);
 
       if (progress.current_level !== this.scene.key) {

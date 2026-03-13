@@ -7,11 +7,16 @@ import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSyst
 import { AllySystem } from '../systems/AllySystem';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
+import {
+  Checkpoint,
+  enforceMaxPlayerSeparation,
+  getAveragePlayerPosition,
+  getScenePlayerId,
+  parseCheckpoint
+} from './sceneShared';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
-const MAX_PLAYER_SEPARATION_PX = 320;
-const DEFAULT_PLAYER_ID = 'local-player';
 const API_MESSAGE_DURATION_MS = 2600;
 
 interface PlatformConfig {
@@ -21,13 +26,8 @@ interface PlatformConfig {
   height: number;
 }
 
-interface RespawnPoint {
-  x: number;
-  y: number;
-}
-
 interface GameSceneData {
-  respawnPoint?: RespawnPoint;
+  respawnPoint?: Checkpoint;
   skipLoad?: boolean;
 }
 
@@ -44,7 +44,7 @@ export class GameScene extends Phaser.Scene {
   private apiStatusText?: Phaser.GameObjects.Text;
   private hasTriggeredTransition = false;
   private hasPlayerBeenDefeated = false;
-  private respawnPoint?: RespawnPoint;
+  private respawnPoint?: Checkpoint;
 
   constructor() {
     super('GameScene');
@@ -360,8 +360,8 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private resolveRespawnPoint(data: GameSceneData, fallback: RespawnPoint): RespawnPoint {
-    const checkpoint = this.registry.get('checkpoint') as RespawnPoint | undefined;
+  private resolveRespawnPoint(data: GameSceneData, fallback: Checkpoint): Checkpoint {
+    const checkpoint = this.registry.get('checkpoint') as Checkpoint | undefined;
     if (checkpoint?.x !== undefined && checkpoint?.y !== undefined) {
       return checkpoint;
     }
@@ -378,16 +378,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private getAveragePlayerPosition(): Phaser.Math.Vector2 {
-    if (this.players.length === 0) {
-      return new Phaser.Math.Vector2(0, 0);
-    }
-
-    const totals = this.players.reduce(
-      (acc, player) => ({ x: acc.x + player.x, y: acc.y + player.y }),
-      { x: 0, y: 0 }
-    );
-
-    return new Phaser.Math.Vector2(totals.x / this.players.length, totals.y / this.players.length);
+    return getAveragePlayerPosition(this.players);
   }
 
   private updateSharedCamera(): void {
@@ -403,28 +394,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private enforcePlayerSeparation(): void {
-    if (this.players.length <= 1) {
-      return;
-    }
-
-    const p1 = this.players[0];
-    const p2 = this.players[1];
-    const dx = p2.x - p1.x;
-    const dy = p2.y - p1.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance <= MAX_PLAYER_SEPARATION_PX || distance === 0) {
-      return;
-    }
-
-    const midpointX = (p1.x + p2.x) / 2;
-    const midpointY = (p1.y + p2.y) / 2;
-    const normalizedX = dx / distance;
-    const normalizedY = dy / distance;
-    const allowedHalfDistance = MAX_PLAYER_SEPARATION_PX / 2;
-
-    p1.setPosition(midpointX - normalizedX * allowedHalfDistance, midpointY - normalizedY * allowedHalfDistance);
-    p2.setPosition(midpointX + normalizedX * allowedHalfDistance, midpointY + normalizedY * allowedHalfDistance);
+    enforceMaxPlayerSeparation(this.players);
   }
 
   private registerApiControls(): void {
@@ -438,7 +408,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private getPlayerId(): string {
-    return import.meta.env.VITE_PLAYER_ID ?? DEFAULT_PLAYER_ID;
+    return getScenePlayerId();
   }
 
   private buildProgressPayload(): PlayerProgressPayload {
@@ -451,18 +421,6 @@ export class GameScene extends Phaser.Scene {
       allies_rescued: 0,
       checkpoint: `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`
     };
-  }
-
-  private parseCheckpoint(value: string): RespawnPoint | undefined {
-    const [xPart, yPart] = value.split(',');
-    const x = Number(xPart);
-    const y = Number(yPart);
-
-    if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      return undefined;
-    }
-
-    return { x, y };
   }
 
   private async saveProgressToApi(): Promise<void> {
@@ -478,7 +436,7 @@ export class GameScene extends Phaser.Scene {
   private async loadProgressFromApi(): Promise<void> {
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
-      const loadedCheckpoint = this.parseCheckpoint(progress.checkpoint);
+      const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
 
       if (loadedCheckpoint) {
         this.registry.set('checkpoint', loadedCheckpoint);

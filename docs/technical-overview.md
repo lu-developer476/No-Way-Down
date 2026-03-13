@@ -5,15 +5,22 @@
 - `backend/`: API con Django + Django REST Framework.
 - `docs/`: documentación de soporte.
 
-## Contrato inicial de API
+## Contrato API actual
 - `GET /api/health/`: estado del backend.
-- `POST /api/sessions/`: crea una sesión placeholder preparada para 4 jugadores + aliados IA.
+- `POST /api/progress/`: upsert de progreso por `user_id`.
+- `GET /api/progress/<user_id>/`: lectura de progreso persistido.
 
-## Criterios de diseño para escalar
-1. Cliente desacoplado por escenas (Boot + Gameplay).
-2. Backend con endpoints pequeños y orientados a sesión/lobby.
-3. Integración de Supabase configurada por variables de entorno para autenticación futura.
-4. Multijugador local humano desacoplado por configuración (`game/src/config/localMultiplayer.ts`).
+## Persistencia (Etapa 12)
+1. Backend Django desacoplado de la lógica de Phaser.
+2. Modelo `PlayerProgress` para guardar estado mínimo de partida:
+   - `user_id`
+   - `current_level`
+   - `life`
+   - `allies_rescued`
+   - `checkpoint`
+3. Settings separados por entorno (`development`/`production`).
+4. Producción preparada para PostgreSQL de Supabase via variables de entorno.
 
 ## Referencias
 - `docs/local-multiplayer.md`: decisiones de Etapa 11 para 2 jugadores y plan de escalado a 3/4.
+- `docs/backend-render-supabase.md`: guía de despliegue backend en Render + Supabase.

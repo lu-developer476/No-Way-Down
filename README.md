@@ -65,11 +65,12 @@ python manage.py runserver
 python manage.py test
 ```
 
-## Endpoints iniciales
+## Endpoints backend (Etapa 12)
 
 - `GET http://127.0.0.1:8000/api/health/`
-- `POST http://127.0.0.1:8000/api/sessions/`
+- `POST http://127.0.0.1:8000/api/progress/` (crea/actualiza progreso por `user_id`)
+- `GET http://127.0.0.1:8000/api/progress/<user_id>/` (obtiene progreso de un jugador)
 
-## Nota de etapa
+## Variables para producción (Render + Supabase)
 
-Esta etapa sólo crea el scaffold técnico y un placeholder visual básico, sin gameplay complejo.
+Ver `docs/backend-render-supabase.md` para el detalle completo.

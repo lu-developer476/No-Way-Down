@@ -14,6 +14,7 @@ import {
   getScenePlayerId,
   parseCheckpoint
 } from './sceneShared';
+import { visualTheme } from './visualTheme';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -139,9 +140,11 @@ export class GameScene extends Phaser.Scene {
         spawnPoint: { x: 220, y: levelHeight - 140 }
       }
     });
+
+    this.addStairVisual(stairsX, stairsY, 150, 110);
     this.createMissionStatusUI();
 
-    this.cameras.main.setBackgroundColor('#0f172a');
+    this.cameras.main.setBackgroundColor('#0a1020');
 
     this.add.text(16, 16, 'No Way Down - Etapa 13', {
       color: '#f8fafc',
@@ -305,23 +308,71 @@ export class GameScene extends Phaser.Scene {
   private createPlatform(group: Phaser.Physics.Arcade.StaticGroup, config: PlatformConfig): void {
     group.create(config.x, config.y, 'ground-placeholder')
       .setDisplaySize(config.width, config.height)
-      .refreshBody();
+      .refreshBody()
+      .setDepth(4);
+
+    const topY = config.y - config.height / 2 + 6;
+    this.add.rectangle(config.x, topY, config.width, 8, visualTheme.palette.platformTop).setDepth(5);
+
+    const panelCount = Math.max(2, Math.floor(config.width / 96));
+    const panelWidth = config.width / panelCount;
+    for (let i = 0; i < panelCount; i += 1) {
+      this.add.rectangle(
+        config.x - config.width / 2 + panelWidth * (i + 0.5),
+        config.y + 2,
+        panelWidth - 10,
+        Math.max(8, config.height - 14),
+        i % 2 === 0 ? visualTheme.palette.floorDark : visualTheme.palette.floorLight,
+        0.8
+      ).setDepth(5);
+    }
   }
 
   private drawDiningHallBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
-    this.add.rectangle(levelWidth / 2, levelHeight / 2, levelWidth, levelHeight, 0x1f2937);
-    this.add.rectangle(levelWidth / 2, levelHeight / 2 - 90, levelWidth, 170, 0x334155);
-    this.add.rectangle(levelWidth / 2, levelHeight - floorHeight / 2, levelWidth, floorHeight, 0x475569);
+    const { palette } = visualTheme;
 
-    const dividerSpacing = 280;
-    for (let x = 160; x < levelWidth; x += dividerSpacing) {
-      this.add.rectangle(x, levelHeight / 2 - 96, 16, 158, 0x64748b, 0.45);
+    const base = this.add.graphics();
+    base.fillGradientStyle(palette.skyTop, palette.skyTop, palette.skyBottom, palette.skyBottom, 1);
+    base.fillRect(0, 0, levelWidth, levelHeight);
+    base.fillStyle(palette.wallFar, 1);
+    base.fillRect(0, 54, levelWidth, 210);
+    base.fillStyle(palette.wallMid, 1);
+    base.fillRect(0, 150, levelWidth, 170);
+    base.fillStyle(palette.wallNear, 1);
+    base.fillRect(0, levelHeight - floorHeight - 58, levelWidth, 58);
+    base.destroy();
+
+    for (let x = 90; x < levelWidth; x += 210) {
+      this.add.rectangle(x, 108, 80, 54, 0x111827, 0.75).setDepth(1);
+      this.add.rectangle(x, 108, 72, 46, 0x7dd3fc, 0.08).setDepth(1);
+    }
+
+    for (let x = 120; x < levelWidth; x += 180) {
+      this.add.rectangle(x, levelHeight - floorHeight - 120, 16, 160, 0x475569, 0.45).setDepth(2);
+      this.add.rectangle(x + 6, levelHeight - floorHeight - 120, 4, 160, 0x94a3b8, 0.28).setDepth(2);
+    }
+
+    for (let x = 70; x < levelWidth; x += 140) {
+      this.add.rectangle(x, levelHeight - floorHeight - 24, 36, 20, palette.hazard, 0.14).setDepth(3);
+    }
+
+    for (let x = 150; x < levelWidth; x += 260) {
+      this.add.rectangle(x, 34, 64, 9, palette.lamp, 0.3).setDepth(3);
+      this.add.rectangle(x, 42, 42, 4, palette.lamp, 0.2).setDepth(3);
     }
   }
 
   private addTableVisual(x: number, y: number, width: number, height: number): void {
-    this.add.rectangle(x, y, width, height, 0x7c3f16);
-    this.add.rectangle(x, y + 16, width - 26, 8, 0x5b2d0e, 0.75);
+    this.add.rectangle(x, y, width, height, 0x5b4634).setDepth(6);
+    this.add.rectangle(x, y + 10, width - 14, 8, 0x3d2d20, 0.9).setDepth(6);
+    this.add.rectangle(x - width / 2 + 18, y + 18, 10, 22, 0x2d3748).setDepth(6);
+    this.add.rectangle(x + width / 2 - 18, y + 18, 10, 22, 0x2d3748).setDepth(6);
+  }
+
+  private addStairVisual(x: number, y: number, width: number, height: number): void {
+    this.add.tileSprite(x, y + 6, width, height, 'stair-placeholder').setDepth(7).setAlpha(0.9);
+    this.add.rectangle(x - width / 2, y, 6, height, 0x0f172a, 0.8).setDepth(7);
+    this.add.rectangle(x + width / 2, y, 6, height, 0x0f172a, 0.8).setDepth(7);
   }
 
   private handlePlayerZombieOverlap(player: Player): void {

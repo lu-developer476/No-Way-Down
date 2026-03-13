@@ -4,6 +4,7 @@ import { ProjectileSystem } from '../systems/ProjectileSystem';
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
 const DEFAULT_MAX_HEALTH = 100;
+const DAMAGE_INVULNERABILITY_MS = 900;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -11,6 +12,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private lookDirection: 1 | -1 = 1;
   private projectileSystem: ProjectileSystem;
   private healthPoints = DEFAULT_MAX_HEALTH;
+  private invulnerableUntil = 0;
+  private isDeadState = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem) {
     super(scene, x, y, 'player-placeholder');
@@ -32,6 +35,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(): void {
+    if (this.isDeadState) {
+      this.setVelocity(0, 0);
+      return;
+    }
+
     if (this.cursors.left?.isDown) {
       this.setVelocityX(-MOVE_SPEED);
       this.lookDirection = -1;
@@ -59,12 +67,34 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  takeDamage(amount: number): void {
-    if (amount <= 0 || !this.active) {
-      return;
+  takeDamage(amount: number, currentTime: number): boolean {
+    if (amount <= 0 || !this.active || this.isDeadState || !this.canTakeDamage(currentTime)) {
+      return false;
     }
 
     this.healthPoints = Math.max(0, this.healthPoints - amount);
+    this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
+    this.setTintFill(0xf87171);
+    this.scene.time.delayedCall(120, () => {
+      if (this.active) {
+        this.clearTint();
+      }
+    });
+
+    if (this.healthPoints <= 0) {
+      this.isDeadState = true;
+      this.setVelocity(0, 0);
+    }
+
+    return true;
+  }
+
+  canTakeDamage(currentTime: number): boolean {
+    return currentTime >= this.invulnerableUntil;
+  }
+
+  isDead(): boolean {
+    return this.isDeadState;
   }
 
   getHealth(): number {

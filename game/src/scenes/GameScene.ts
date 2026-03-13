@@ -6,13 +6,22 @@ import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StaircaseSystem } from '../systems/StaircaseSystem';
 
 const PLAYER_CONTACT_DAMAGE = 10;
-const PLAYER_DAMAGE_COOLDOWN_MS = 800;
+const PLAYER_RESPAWN_DELAY_MS = 1800;
 
 interface PlatformConfig {
   x: number;
   y: number;
   width: number;
   height: number;
+}
+
+interface RespawnPoint {
+  x: number;
+  y: number;
+}
+
+interface GameSceneData {
+  respawnPoint?: RespawnPoint;
 }
 
 export class GameScene extends Phaser.Scene {
@@ -25,13 +34,14 @@ export class GameScene extends Phaser.Scene {
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
   private hasTriggeredTransition = false;
-  private lastDamageTimestamp = 0;
+  private hasPlayerBeenDefeated = false;
+  private respawnPoint?: RespawnPoint;
 
   constructor() {
     super('GameScene');
   }
 
-  create(): void {
+  create(data: GameSceneData = {}): void {
     const levelWidth = 2200;
     const levelHeight = this.scale.height;
     const floorHeight = 64;
@@ -67,7 +77,13 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.projectileSystem = new ProjectileSystem(this);
-    this.player = new Player(this, 140, levelHeight - 140, this.projectileSystem);
+
+    this.respawnPoint = this.resolveRespawnPoint(data, {
+      x: 140,
+      y: levelHeight - 140
+    });
+
+    this.player = new Player(this, this.respawnPoint.x, this.respawnPoint.y, this.projectileSystem);
     this.zombieSystem = new ZombieSystem(this);
 
     this.physics.add.collider(this.player, environment);
@@ -86,7 +102,7 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#0f172a');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 7', {
+    this.add.text(16, 16, 'No Way Down - Etapa 8', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
@@ -117,9 +133,11 @@ export class GameScene extends Phaser.Scene {
 
     this.updateMissionProgress(zombiesRemaining);
 
-    this.staircaseSystem?.update(() => {
-      this.triggerPlaceholderTransition();
-    });
+    if (!this.hasPlayerBeenDefeated) {
+      this.staircaseSystem?.update(() => {
+        this.triggerPlaceholderTransition();
+      });
+    }
 
     this.projectileSystem?.update();
   }
@@ -138,7 +156,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateMissionProgress(zombiesRemaining: number): void {
-    if (!this.missionSystem) {
+    if (!this.missionSystem || this.hasPlayerBeenDefeated) {
       return;
     }
 
@@ -197,7 +215,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private triggerPlaceholderTransition(): void {
-    if (this.hasTriggeredTransition) {
+    if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
       return;
     }
 
@@ -233,16 +251,51 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handlePlayerZombieOverlap(): void {
-    if (!this.player) {
+    if (!this.player || this.hasPlayerBeenDefeated) {
       return;
     }
 
-    const now = this.time.now;
-    if (now - this.lastDamageTimestamp < PLAYER_DAMAGE_COOLDOWN_MS) {
+    const didTakeDamage = this.player.takeDamage(PLAYER_CONTACT_DAMAGE, this.time.now);
+    if (!didTakeDamage) {
       return;
     }
 
-    this.player.takeDamage(PLAYER_CONTACT_DAMAGE);
-    this.lastDamageTimestamp = now;
+    this.registry.set('playerHealth', this.player.getHealth());
+
+    if (this.player.isDead()) {
+      this.handlePlayerDefeat();
+    }
+  }
+
+  private handlePlayerDefeat(): void {
+    if (this.hasPlayerBeenDefeated) {
+      return;
+    }
+
+    this.hasPlayerBeenDefeated = true;
+    this.physics.pause();
+
+    this.transitionOverlay?.setVisible(true);
+    this.transitionText
+      ?.setText('Has caído en combate.\nReiniciando...')
+      .setStyle({ color: '#fecaca' })
+      .setVisible(true);
+
+    this.time.delayedCall(PLAYER_RESPAWN_DELAY_MS, () => {
+      this.scene.restart({ respawnPoint: this.respawnPoint });
+    });
+  }
+
+  private resolveRespawnPoint(data: GameSceneData, fallback: RespawnPoint): RespawnPoint {
+    const checkpoint = this.registry.get('checkpoint') as RespawnPoint | undefined;
+    if (checkpoint?.x !== undefined && checkpoint?.y !== undefined) {
+      return checkpoint;
+    }
+
+    if (data.respawnPoint?.x !== undefined && data.respawnPoint?.y !== undefined) {
+      return data.respawnPoint;
+    }
+
+    return fallback;
   }
 }

@@ -23,6 +23,12 @@ cd game
 npm install
 ```
 
+### Variables de entorno
+
+```bash
+cp .env.example .env
+```
+
 ### Ejecutar en desarrollo
 
 ```bash
@@ -69,6 +75,8 @@ python manage.py test
 
 - `GET http://127.0.0.1:8000/api/health/`
 - `POST http://127.0.0.1:8000/api/sessions/`
+- `POST http://127.0.0.1:8000/api/progress/<slot_id>/`
+- `GET http://127.0.0.1:8000/api/progress/<slot_id>/`
 
 ## Nota de etapa
 

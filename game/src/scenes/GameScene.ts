@@ -6,6 +6,7 @@ import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { AllySystem } from '../systems/AllySystem';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
+import { loadGameProgress, saveGameProgress } from '../services/progressApi';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -27,6 +28,8 @@ interface GameSceneData {
   respawnPoint?: RespawnPoint;
 }
 
+const DEFAULT_PROGRESS_SLOT = 'slot-principal';
+
 export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
@@ -37,6 +40,7 @@ export class GameScene extends Phaser.Scene {
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
+  private apiMessageText?: Phaser.GameObjects.Text;
   private hasTriggeredTransition = false;
   private hasPlayerBeenDefeated = false;
   private respawnPoint?: RespawnPoint;
@@ -135,6 +139,7 @@ export class GameScene extends Phaser.Scene {
       }
     });
     this.createMissionStatusUI();
+    this.registerProgressControls();
 
     this.cameras.main.setBackgroundColor('#0f172a');
 
@@ -145,7 +150,7 @@ export class GameScene extends Phaser.Scene {
     this.add.text(
       16,
       40,
-      'P1: ← → / ↑ / SPACE | P2: A D / W / F | Cámara compartida | Aliados IA activos',
+      'P1: ← → / ↑ / SPACE | P2: A D / W / F | [S] Guardar | [L] Cargar',
       {
         color: '#cbd5e1',
         fontSize: '14px'
@@ -252,6 +257,74 @@ export class GameScene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(21)
       .setVisible(false);
+
+    this.apiMessageText = this.add.text(this.scale.width / 2, this.scale.height - 26, '', {
+      color: '#e2e8f0',
+      fontSize: '16px',
+      backgroundColor: '#0f172a',
+      padding: { x: 10, y: 5 }
+    })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(30)
+      .setVisible(false);
+  }
+
+  private registerProgressControls(): void {
+    this.input.keyboard?.on('keydown-S', () => {
+      void this.handleSaveProgress();
+    });
+
+    this.input.keyboard?.on('keydown-L', () => {
+      void this.handleLoadProgress();
+    });
+  }
+
+  private async handleSaveProgress(): Promise<void> {
+    const firstPlayer = this.players[0];
+    const fallbackRespawnPoint = {
+      x: firstPlayer?.x ?? this.respawnPoint?.x ?? 140,
+      y: firstPlayer?.y ?? this.respawnPoint?.y ?? this.scale.height - 140
+    };
+
+    try {
+      await saveGameProgress(DEFAULT_PROGRESS_SLOT, {
+        sceneKey: this.scene.key,
+        respawnPoint: fallbackRespawnPoint,
+        checkpoint: this.registry.get('checkpoint') as RespawnPoint | undefined,
+        playerPositions: this.players.map((player) => ({ x: player.x, y: player.y, health: player.getHealth() })),
+        teamHealth: this.getTeamHealthTotal(),
+        zombiesRemaining: this.zombieSystem?.getActiveCount() ?? 0,
+        currentObjective: (this.registry.get('currentObjective') as string | undefined) ?? ''
+      });
+
+      this.showApiMessage('Partida guardada correctamente.');
+    } catch {
+      this.showApiMessage('No se pudo guardar. Verifica la conexión con el backend.', '#fecaca');
+    }
+  }
+
+  private async handleLoadProgress(): Promise<void> {
+    try {
+      const progress = await loadGameProgress(DEFAULT_PROGRESS_SLOT);
+
+      if (progress.checkpoint) {
+        this.registry.set('checkpoint', progress.checkpoint);
+      }
+
+      this.registry.set('currentObjective', progress.currentObjective);
+      this.showApiMessage('Partida cargada.');
+      this.scene.start(progress.sceneKey, { respawnPoint: progress.respawnPoint });
+    } catch {
+      this.showApiMessage('No se pudo cargar. Verifica red o partida guardada.', '#fecaca');
+    }
+  }
+
+  private showApiMessage(message: string, color = '#bfdbfe'): void {
+    this.apiMessageText?.setText(message).setStyle({ color }).setVisible(true);
+    this.time.delayedCall(2200, () => {
+      this.apiMessageText?.setVisible(false);
+    });
   }
 
   private showMissionStatus(message: string): void {

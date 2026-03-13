@@ -60,3 +60,26 @@ Esto produce:
 - `game/public/assets/tilesets/institutional_dining_tables_spritesheet.png`
 - `game/public/assets/tilesets/institutional_dining_tables_spritesheet.svg` (fuente no binaria editable)
 - `game/public/assets/tilesets/institutional_dining_tables_spritesheet_coords.json`
+
+## Institutional stone columns spritesheet
+
+Sprites pixel art de columnas de piedra institucional (32x96 por variante).
+
+Variantes incluidas:
+
+- `base_columna`
+- `columna_completa`
+- `columna_danada`
+- `columna_sombra`
+
+Generación local:
+
+```bash
+npm --prefix game run generate:stone-columns-spritesheet
+```
+
+Esto produce:
+
+- `game/public/assets/tilesets/institutional_stone_columns_spritesheet.png`
+- `game/public/assets/tilesets/institutional_stone_columns_spritesheet.svg` (fuente no binaria editable)
+- `game/public/assets/tilesets/institutional_stone_columns_spritesheet_coords.json`

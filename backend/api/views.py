@@ -1,8 +1,12 @@
 from datetime import datetime, timezone
 
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from .models import PlayerProgress
+from .serializers import PlayerProgressSerializer
 
 
 class HealthView(APIView):
@@ -19,15 +23,29 @@ class HealthView(APIView):
         )
 
 
-class SessionCreateView(APIView):
+class PlayerProgressUpsertView(APIView):
     authentication_classes = []
     permission_classes = []
 
     def post(self, request):
-        payload = {
-            'session_id': 'local-placeholder-session',
-            'max_players': 4,
-            'ai_allies_enabled': True,
-            'map_id': 'cafeteria_bna_piso_m1',
-        }
-        return Response(payload, status=status.HTTP_201_CREATED)
+        user_id = request.data.get('user_id')
+        if not user_id:
+            return Response({'detail': 'user_id es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        instance = PlayerProgress.objects.filter(user_id=user_id).first()
+        serializer = PlayerProgressSerializer(instance=instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        response_status = status.HTTP_200_OK if instance else status.HTTP_201_CREATED
+        return Response(serializer.data, status=response_status)
+
+
+class PlayerProgressDetailView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, user_id):
+        instance = get_object_or_404(PlayerProgress, user_id=user_id)
+        serializer = PlayerProgressSerializer(instance)
+        return Response(serializer.data)

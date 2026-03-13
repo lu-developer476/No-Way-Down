@@ -4,6 +4,7 @@ import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
+import { AllySystem } from '../systems/AllySystem';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -30,6 +31,7 @@ export class GameScene extends Phaser.Scene {
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
   private staircaseSystem?: StaircaseSystem;
+  private allySystem?: AllySystem;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -85,15 +87,20 @@ export class GameScene extends Phaser.Scene {
 
     this.player = new Player(this, this.respawnPoint.x, this.respawnPoint.y, this.projectileSystem);
     this.zombieSystem = new ZombieSystem(this);
+    this.allySystem = new AllySystem(this);
 
     this.physics.add.collider(this.player, environment);
     this.zombieSystem.createColliders(environment, this.player);
     this.zombieSystem.createProjectileOverlap(this.projectileSystem.getGroup());
+    this.allySystem.createEnvironmentColliders(environment);
+    this.allySystem.createZombieOverlap(this.zombieSystem.getGroup());
     this.physics.add.overlap(this.player, this.zombieSystem.getGroup(), this.handlePlayerZombieOverlap, undefined, this);
 
     [560, 1030, 1460, 1860, 2060].forEach((spawnX) => {
       this.zombieSystem?.spawn(spawnX, levelHeight - 140);
     });
+
+    this.allySystem.spawnInitialAllies(this.player);
 
     this.setupMissionSystem();
     this.staircaseSystem = new StaircaseSystem(this, this.player);
@@ -116,11 +123,11 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.cameras.main.setBackgroundColor('#0f172a');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 9', {
+    this.add.text(16, 16, 'No Way Down - Etapa 10', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
-    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE | Mantener E: Escaleras', {
+    this.add.text(16, 40, 'Comedor piso -1 | Mover: ← → | Saltar: ↑ | Disparar: SPACE | Aliados IA activos', {
       color: '#cbd5e1',
       fontSize: '14px'
     }).setScrollFactor(0);
@@ -139,6 +146,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.player) {
       this.zombieSystem?.update(this.player.x);
+      this.allySystem?.update(this.player, this.zombieSystem?.getActiveZombies() ?? [], this.time.now);
       this.registry.set('playerHealth', this.player.getHealth());
     }
 

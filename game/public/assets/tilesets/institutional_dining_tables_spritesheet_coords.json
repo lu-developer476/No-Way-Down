@@ -1,0 +1,34 @@
+{
+  "image": "institutional_dining_tables_spritesheet.png",
+  "source": "institutional_dining_tables_spritesheet.svg",
+  "spriteSize": {
+    "width": 64,
+    "height": 32
+  },
+  "sprites": {
+    "mesa_vacia": {
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 32
+    },
+    "mesa_con_bandeja": {
+      "x": 64,
+      "y": 0,
+      "width": 64,
+      "height": 32
+    },
+    "mesa_volcada_zombie": {
+      "x": 128,
+      "y": 0,
+      "width": 64,
+      "height": 32
+    },
+    "mesa_danada": {
+      "x": 192,
+      "y": 0,
+      "width": 64,
+      "height": 32
+    }
+  }
+}

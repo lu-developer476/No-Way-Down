@@ -5,6 +5,7 @@ export type PlayerSlot = 1 | 2 | 3 | 4;
 export interface PlayerControlScheme {
   left: number;
   right: number;
+  down: number;
   jump: number;
   shoot: number;
 }
@@ -24,6 +25,7 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.LEFT,
       right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+      down: Phaser.Input.Keyboard.KeyCodes.DOWN,
       jump: Phaser.Input.Keyboard.KeyCodes.UP,
       shoot: Phaser.Input.Keyboard.KeyCodes.SPACE
     }
@@ -35,6 +37,7 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
       jump: Phaser.Input.Keyboard.KeyCodes.W,
       shoot: Phaser.Input.Keyboard.KeyCodes.F
     }
@@ -46,6 +49,7 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.J,
       right: Phaser.Input.Keyboard.KeyCodes.L,
+      down: Phaser.Input.Keyboard.KeyCodes.K,
       jump: Phaser.Input.Keyboard.KeyCodes.I,
       shoot: Phaser.Input.Keyboard.KeyCodes.H
     }
@@ -57,6 +61,7 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR,
       right: Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX,
+      down: Phaser.Input.Keyboard.KeyCodes.NUMPAD_FIVE,
       jump: Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT,
       shoot: Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO
     }

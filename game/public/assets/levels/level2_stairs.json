@@ -1,0 +1,20 @@
+{
+  "stairs": [
+    {
+      "id": "dining-main-stair",
+      "x": 2010,
+      "y": 768,
+      "width": 150,
+      "height": 120,
+      "topY": 620,
+      "bottomY": 822,
+      "alignX": 2010,
+      "attachMargin": 24,
+      "climbSpeed": 120,
+      "animations": {
+        "idle": "player-idle",
+        "climb": "player-run"
+      }
+    }
+  ]
+}

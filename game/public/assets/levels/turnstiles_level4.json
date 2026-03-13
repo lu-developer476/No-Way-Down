@@ -1,0 +1,87 @@
+{
+  "level_id": "level4_segundo_piso",
+  "asset_type": "turnstiles",
+  "version": 1,
+  "defaults": {
+    "size": { "width": 96, "height": 48 },
+    "collision": {
+      "shape": "rectangle",
+      "offset": { "x": 0, "y": 0 },
+      "isBlocking": true,
+      "blocksProjectiles": false
+    },
+    "interaction": {
+      "radius": 72,
+      "holdToInteractMs": 300
+    },
+    "state": "blocked"
+  },
+  "turnstiles": [
+    {
+      "id": "L4-TURNSTILE-01",
+      "position": { "x": 3320, "y": 500 },
+      "size": { "width": 96, "height": 48 },
+      "collision": {
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true,
+        "blocksProjectiles": false
+      },
+      "state": "blocked",
+      "interaction": {
+        "radius": 72,
+        "holdToInteractMs": 300,
+        "requiresCredential": true,
+        "credentialTags": ["nivel4_seguridad", "llave_molinete"]
+      },
+      "durability": {
+        "maxHp": 100,
+        "destroyedAtHp": 0
+      }
+    },
+    {
+      "id": "L4-TURNSTILE-02",
+      "position": { "x": 3480, "y": 500 },
+      "size": { "width": 96, "height": 48 },
+      "collision": {
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true,
+        "blocksProjectiles": false
+      },
+      "state": "blocked",
+      "interaction": {
+        "radius": 72,
+        "holdToInteractMs": 300,
+        "requiresCredential": true,
+        "credentialTags": ["nivel4_seguridad", "llave_molinete"]
+      },
+      "durability": {
+        "maxHp": 100,
+        "destroyedAtHp": 0
+      }
+    },
+    {
+      "id": "L4-TURNSTILE-03",
+      "position": { "x": 3640, "y": 500 },
+      "size": { "width": 96, "height": 48 },
+      "collision": {
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true,
+        "blocksProjectiles": false
+      },
+      "state": "blocked",
+      "interaction": {
+        "radius": 72,
+        "holdToInteractMs": 300,
+        "requiresCredential": true,
+        "credentialTags": ["nivel4_seguridad", "llave_molinete"]
+      },
+      "durability": {
+        "maxHp": 100,
+        "destroyedAtHp": 0
+      }
+    }
+  ]
+}

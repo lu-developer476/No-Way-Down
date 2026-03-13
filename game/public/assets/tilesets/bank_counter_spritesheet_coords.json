@@ -1,0 +1,39 @@
+{
+  "image": "bank_counter_spritesheet.png",
+  "spriteSize": {
+    "width": 64,
+    "height": 48
+  },
+  "sprites": {
+    "modulo_central": {
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 48
+    },
+    "modulo_extremo": {
+      "x": 64,
+      "y": 0,
+      "width": 64,
+      "height": 48
+    },
+    "modulo_con_vidrio": {
+      "x": 128,
+      "y": 0,
+      "width": 64,
+      "height": 48
+    },
+    "modulo_con_computadora": {
+      "x": 192,
+      "y": 0,
+      "width": 64,
+      "height": 48
+    },
+    "modulo_con_silla_detras": {
+      "x": 256,
+      "y": 0,
+      "width": 64,
+      "height": 48
+    }
+  }
+}

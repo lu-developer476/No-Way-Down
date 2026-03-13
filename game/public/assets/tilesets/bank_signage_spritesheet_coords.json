@@ -1,0 +1,34 @@
+{
+  "image": "bank_signage_spritesheet.png",
+  "source": "bank_signage_spritesheet.svg",
+  "spriteSize": {
+    "width": 48,
+    "height": 16
+  },
+  "sprites": {
+    "cartel_institucional": {
+      "x": 0,
+      "y": 0,
+      "width": 48,
+      "height": 16
+    },
+    "panel_informativo": {
+      "x": 48,
+      "y": 0,
+      "width": 48,
+      "height": 16
+    },
+    "senal_salida": {
+      "x": 96,
+      "y": 0,
+      "width": 48,
+      "height": 16
+    },
+    "senal_escalera": {
+      "x": 144,
+      "y": 0,
+      "width": 48,
+      "height": 16
+    }
+  }
+}

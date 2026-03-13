@@ -1,0 +1,42 @@
+{
+  "segments": [
+    {
+      "id": "nivel4-tramo-1",
+      "start": { "x": 220, "y": 1360 },
+      "end": { "x": 640, "y": 1120 },
+      "zone": { "x": 430, "y": 1240, "width": 520, "height": 320 },
+      "nextUpSegmentId": "nivel4-rellano-1"
+    },
+    {
+      "id": "nivel4-rellano-1",
+      "start": { "x": 640, "y": 1120 },
+      "end": { "x": 900, "y": 1120 },
+      "zone": { "x": 770, "y": 1120, "width": 320, "height": 140 },
+      "nextUpSegmentId": "nivel4-tramo-2",
+      "nextDownSegmentId": "nivel4-tramo-1"
+    },
+    {
+      "id": "nivel4-tramo-2",
+      "start": { "x": 900, "y": 1120 },
+      "end": { "x": 1260, "y": 860 },
+      "zone": { "x": 1080, "y": 990, "width": 460, "height": 300 },
+      "nextUpSegmentId": "nivel4-rellano-2",
+      "nextDownSegmentId": "nivel4-rellano-1"
+    },
+    {
+      "id": "nivel4-rellano-2",
+      "start": { "x": 1260, "y": 860 },
+      "end": { "x": 1520, "y": 860 },
+      "zone": { "x": 1390, "y": 860, "width": 300, "height": 130 },
+      "nextUpSegmentId": "nivel4-tramo-3",
+      "nextDownSegmentId": "nivel4-tramo-2"
+    },
+    {
+      "id": "nivel4-tramo-3",
+      "start": { "x": 1520, "y": 860 },
+      "end": { "x": 1740, "y": 620 },
+      "zone": { "x": 1630, "y": 740, "width": 280, "height": 300 },
+      "nextDownSegmentId": "nivel4-rellano-2"
+    }
+  ]
+}

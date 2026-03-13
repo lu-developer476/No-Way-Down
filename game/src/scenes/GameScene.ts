@@ -3,13 +3,14 @@ import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
-import { StairSystem } from '../systems/StairSystem';
+import { StairSegmentSystem } from '../systems/StairSegmentSystem';
 import { AllySystem } from '../systems/AllySystem';
 import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
 import { LevelExitSystem } from '../systems/LevelExitSystem';
 import { VerticalSpawnSystem } from '../systems/VerticalSpawnSystem';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
+import level4StairSegments from '../../public/assets/levels/level4_stair_segments.json';
 import verticalSpawnConfig from '../../public/assets/levels/level2_vertical_spawns.json';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
@@ -44,7 +45,7 @@ export class GameScene extends Phaser.Scene {
   private projectileSystem?: ProjectileSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
-  private stairSystem?: StairSystem;
+  private stairSegmentSystem?: StairSegmentSystem;
   private allySystem?: AllySystem;
   private zombieWaveZoneSystem?: ZombieWaveZone;
   private levelExitSystem?: LevelExitSystem;
@@ -182,10 +183,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.setupMissionSystem();
-    this.stairSystem = new StairSystem(this, stairConfigLevel2);
+    this.stairSegmentSystem = StairSegmentSystem.fromLegacyStairAreas(this, stairConfigLevel2);
     stairConfigLevel2.stairs.forEach((stair) => {
       this.addStairVisual(stair.x, stair.y, stair.width, stair.height);
     });
+
+    // Ejemplo de integración para Nivel 4 (escaleras por tramos + rellanos desde JSON):
+    // const level4Stairs = new StairSegmentSystem(this, level4StairSegments);
 
     this.createMissionStatusUI();
 
@@ -230,7 +234,7 @@ export class GameScene extends Phaser.Scene {
     this.updateMissionProgress(zombiesRemaining);
 
     if (!this.hasPlayerBeenDefeated) {
-      this.stairSystem?.update(this.players);
+      this.stairSegmentSystem?.update(this.players);
     }
 
     this.projectileSystem?.update();
@@ -448,6 +452,10 @@ export class GameScene extends Phaser.Scene {
     this.time.delayedCall(PLAYER_RESPAWN_DELAY_MS, () => {
       this.scene.restart({ respawnPoint: this.respawnPoint });
     });
+  }
+
+  private createLevel4StairSegmentSystemExample(): StairSegmentSystem {
+    return new StairSegmentSystem(this, level4StairSegments);
   }
 
   private resolveRespawnPoint(data: GameSceneData, fallback: Checkpoint): Checkpoint {

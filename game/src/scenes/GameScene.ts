@@ -150,24 +150,10 @@ export class GameScene extends Phaser.Scene {
     this.createMissionStatusUI();
 
     this.cameras.main.setBackgroundColor('#0a1020');
-
-    this.add.text(16, 16, 'No Way Down - Etapa 13', {
-      color: '#f8fafc',
-      fontSize: '18px'
-    }).setScrollFactor(0);
-    this.add.text(
-      16,
-      40,
-      'P1: ← → / ↑ / SPACE | P2: A D / W / F | O: cargar | P: guardar',
-      {
-        color: '#cbd5e1',
-        fontSize: '14px'
-      }
-    ).setScrollFactor(0);
-
     this.registry.set('playerHealth', this.getTeamHealthTotal());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
+    this.registry.set('interactionHint', '');
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');

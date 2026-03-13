@@ -119,9 +119,12 @@ export class StaircaseSystem {
     const activeRuntime = this.findOverlappedStair();
 
     if (!activeRuntime || !activeRuntime.unlocked) {
+      this.scene.registry.set('interactionHint', '');
       this.resetInteractionPrompt();
       return;
     }
+
+    this.scene.registry.set('interactionHint', 'E · INTERACTUAR');
 
     this.promptText
       .setText(activeRuntime.config.prompt)
@@ -141,6 +144,7 @@ export class StaircaseSystem {
         .setVisible(true);
 
       if (holdProgress >= 1) {
+        this.scene.registry.set('interactionHint', '');
         this.resetInteractionPrompt();
         onInteract(activeRuntime.config.target, activeRuntime.config.id);
       }

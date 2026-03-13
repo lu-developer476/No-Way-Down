@@ -90,16 +90,7 @@ export class UpperFloorScene extends Phaser.Scene {
     this.addStairVisual(120, levelHeight - 94, 150, 108);
     this.createTransitionUI();
     this.registry.set('currentObjective', 'Explora el piso superior y regresa cuando quieras.');
-
-    this.add.text(16, 16, 'No Way Down - Etapa 13 (Piso Superior)', {
-      color: '#f8fafc',
-      fontSize: '18px'
-    }).setScrollFactor(0);
-    this.add.text(16, 40, 'O: cargar | P: guardar', {
-      color: '#cbd5e1',
-      fontSize: '14px'
-    }).setScrollFactor(0);
-
+    this.registry.set('interactionHint', '');
     this.registerApiControls();
 
     if (!data.skipLoad) {

@@ -1,29 +1,23 @@
 import Phaser from 'phaser';
 
 export class UIScene extends Phaser.Scene {
-  private healthText?: Phaser.GameObjects.Text;
+  private healthValue = 0;
+  private maxHealthValue = 100;
+  private healthFill?: Phaser.GameObjects.Rectangle;
+  private healthLabel?: Phaser.GameObjects.Text;
   private zombieCountText?: Phaser.GameObjects.Text;
   private objectiveText?: Phaser.GameObjects.Text;
+  private interactionText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
   }
 
   create(): void {
-    this.healthText = this.add.text(16, 16, '', {
-      color: '#f9fafb',
-      fontSize: '18px'
-    });
+    this.cameras.main.setRoundPixels(true);
+    this.createHudFrame();
 
-    this.zombieCountText = this.add.text(16, 44, '', {
-      color: '#f9fafb',
-      fontSize: '18px'
-    });
-
-    this.objectiveText = this.add.text(16, 72, '', {
-      color: '#facc15',
-      fontSize: '18px'
-    });
+    this.registry.events.on('changedata-interactionHint', this.handleInteractionHintChanged, this);
 
     this.registry.events.on('changedata-playerHealth', this.handleHealthChanged, this);
     this.registry.events.on('changedata-zombiesRemaining', this.handleZombiesChanged, this);
@@ -33,6 +27,7 @@ export class UIScene extends Phaser.Scene {
       this.registry.events.off('changedata-playerHealth', this.handleHealthChanged, this);
       this.registry.events.off('changedata-zombiesRemaining', this.handleZombiesChanged, this);
       this.registry.events.off('changedata-currentObjective', this.handleObjectiveChanged, this);
+      this.registry.events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
     });
 
     this.refreshFromRegistry();
@@ -42,10 +37,16 @@ export class UIScene extends Phaser.Scene {
     this.handleHealthChanged(this.registry, this.registry.get('playerHealth') ?? 0);
     this.handleZombiesChanged(this.registry, this.registry.get('zombiesRemaining') ?? 0);
     this.handleObjectiveChanged(this.registry, this.registry.get('currentObjective') ?? '');
+    this.handleInteractionHintChanged(this.registry, this.registry.get('interactionHint') ?? '');
   }
 
   private handleHealthChanged(_parent: Phaser.Data.DataManager, value: number): void {
-    this.healthText?.setText(`Vida: ${value}`);
+    this.healthValue = Math.max(0, Math.round(value));
+    this.maxHealthValue = Math.max(this.maxHealthValue, this.healthValue);
+
+    const width = Phaser.Math.Clamp((this.healthValue / this.maxHealthValue) * 184, 0, 184);
+    this.healthFill?.setSize(width, 14);
+    this.healthLabel?.setText(`VIDA ${this.healthValue}`);
   }
 
   private handleZombiesChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -53,7 +54,60 @@ export class UIScene extends Phaser.Scene {
   }
 
   private handleObjectiveChanged(_parent: Phaser.Data.DataManager, value: string): void {
-    this.objectiveText?.setText(`Objetivo: ${value}`);
+    this.objectiveText?.setText(value ? `OBJETIVO: ${value}` : 'OBJETIVO: ...');
   }
 
+  private handleInteractionHintChanged(_parent: Phaser.Data.DataManager, value: string): void {
+    const hint = value?.trim();
+    this.interactionText
+      ?.setText(hint || '')
+      .setVisible(Boolean(hint));
+  }
+
+  private createHudFrame(): void {
+    const pixelFont = '"Courier New", monospace';
+
+    this.add.rectangle(168, 76, 304, 120, 0x0b1020, 0.84)
+      .setStrokeStyle(3, 0x38bdf8, 0.9)
+      .setScrollFactor(0);
+
+    this.add.rectangle(108, 44, 184, 14, 0x1f2937, 1)
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setStrokeStyle(2, 0x94a3b8, 1);
+
+    this.healthFill = this.add.rectangle(110, 46, 180, 10, 0x22c55e, 1)
+      .setOrigin(0, 0)
+      .setScrollFactor(0);
+
+    this.healthLabel = this.add.text(24, 40, 'VIDA 0', {
+      color: '#e2e8f0',
+      fontSize: '14px',
+      fontFamily: pixelFont
+    }).setScrollFactor(0);
+
+    this.zombieCountText = this.add.text(24, 66, '', {
+      color: '#fca5a5',
+      fontSize: '14px',
+      fontFamily: pixelFont
+    }).setScrollFactor(0);
+
+    this.objectiveText = this.add.text(24, 90, '', {
+      color: '#fde047',
+      fontSize: '13px',
+      fontFamily: pixelFont,
+      wordWrap: { width: 278 }
+    }).setScrollFactor(0);
+
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 28, '', {
+      color: '#bbf7d0',
+      fontSize: '13px',
+      fontFamily: pixelFont,
+      backgroundColor: '#052e16',
+      padding: { x: 8, y: 4 }
+    })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+  }
 }

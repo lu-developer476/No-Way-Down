@@ -7,8 +7,10 @@ import { StairSystem } from '../systems/StairSystem';
 import { AllySystem } from '../systems/AllySystem';
 import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
 import { LevelExitSystem } from '../systems/LevelExitSystem';
+import { VerticalSpawnSystem } from '../systems/VerticalSpawnSystem';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
+import verticalSpawnConfig from '../../public/assets/levels/level2_vertical_spawns.json';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
@@ -46,6 +48,7 @@ export class GameScene extends Phaser.Scene {
   private allySystem?: AllySystem;
   private zombieWaveZoneSystem?: ZombieWaveZone;
   private levelExitSystem?: LevelExitSystem;
+  private verticalSpawnSystem?: VerticalSpawnSystem;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -141,6 +144,14 @@ export class GameScene extends Phaser.Scene {
       zombieWaveZonesFromJson
     );
 
+    // Ejemplo de integración: spawn vertical configurable por JSON (escaleras/puertas laterales).
+    this.verticalSpawnSystem = VerticalSpawnSystem.fromJson(
+      this,
+      this.zombieSystem,
+      this.players,
+      verticalSpawnConfig
+    );
+
     this.levelExitSystem = new LevelExitSystem(
       this,
       this.players,
@@ -213,6 +224,7 @@ export class GameScene extends Phaser.Scene {
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
     this.zombieWaveZoneSystem?.update();
+    this.verticalSpawnSystem?.update(this.time.now);
     this.levelExitSystem?.update();
 
     this.updateMissionProgress(zombiesRemaining);

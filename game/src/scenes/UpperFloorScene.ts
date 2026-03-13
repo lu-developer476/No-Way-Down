@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
+import { getActivePlayerConfigs } from '../config/localMultiplayer';
+
+const MAX_PLAYER_SEPARATION_PX = 320;
 
 interface UpperFloorSceneData {
   respawnPoint?: {
@@ -11,7 +14,7 @@ interface UpperFloorSceneData {
 }
 
 export class UpperFloorScene extends Phaser.Scene {
-  private player?: Player;
+  private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
   private staircaseSystem?: StaircaseSystem;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
@@ -42,11 +45,20 @@ export class UpperFloorScene extends Phaser.Scene {
     this.projectileSystem = new ProjectileSystem(this);
 
     const spawnPoint = data.respawnPoint ?? { x: 140, y: levelHeight - 130 };
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, this.projectileSystem);
+    const activePlayerConfigs = getActivePlayerConfigs();
+    this.players = activePlayerConfigs.map((config, index) => new Player(
+      this,
+      spawnPoint.x + index * 42,
+      spawnPoint.y,
+      this.projectileSystem!,
+      config
+    ));
 
-    this.physics.add.collider(this.player, environment);
+    this.players.forEach((player) => {
+      this.physics.add.collider(player, environment);
+    });
 
-    this.staircaseSystem = new StaircaseSystem(this, this.player);
+    this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'upper-to-dining',
       x: 120,
@@ -63,18 +75,18 @@ export class UpperFloorScene extends Phaser.Scene {
     });
 
     this.createTransitionUI();
-
-    this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     this.registry.set('currentObjective', 'Explora el piso superior y regresa cuando quieras.');
 
-    this.add.text(16, 16, 'No Way Down - Etapa 9 (Piso Superior placeholder)', {
+    this.add.text(16, 16, 'No Way Down - Etapa 11 (Piso Superior placeholder)', {
       color: '#f8fafc',
       fontSize: '18px'
     }).setScrollFactor(0);
   }
 
   update(): void {
-    this.player?.update();
+    this.players.forEach((player) => player.update());
+    this.enforcePlayerSeparation();
+    this.updateSharedCamera();
     this.projectileSystem?.update();
 
     if (this.hasTriggeredTransition) {
@@ -124,5 +136,48 @@ export class UpperFloorScene extends Phaser.Scene {
     this.time.delayedCall(500, () => {
       this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });
     });
+  }
+
+  private updateSharedCamera(): void {
+    if (this.players.length === 0) {
+      return;
+    }
+
+    const center = this.players.reduce(
+      (acc, player) => ({ x: acc.x + player.x, y: acc.y + player.y }),
+      { x: 0, y: 0 }
+    );
+
+    const averageX = center.x / this.players.length;
+    const averageY = center.y / this.players.length;
+    const camera = this.cameras.main;
+
+    camera.scrollX = Phaser.Math.Linear(camera.scrollX, averageX - camera.width / 2, 0.08);
+    camera.scrollY = Phaser.Math.Linear(camera.scrollY, averageY - camera.height / 2, 0.08);
+  }
+
+  private enforcePlayerSeparation(): void {
+    if (this.players.length <= 1) {
+      return;
+    }
+
+    const p1 = this.players[0];
+    const p2 = this.players[1];
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance <= MAX_PLAYER_SEPARATION_PX || distance === 0) {
+      return;
+    }
+
+    const midpointX = (p1.x + p2.x) / 2;
+    const midpointY = (p1.y + p2.y) / 2;
+    const normalizedX = dx / distance;
+    const normalizedY = dy / distance;
+    const allowedHalfDistance = MAX_PLAYER_SEPARATION_PX / 2;
+
+    p1.setPosition(midpointX - normalizedX * allowedHalfDistance, midpointY - normalizedY * allowedHalfDistance);
+    p2.setPosition(midpointX + normalizedX * allowedHalfDistance, midpointY + normalizedY * allowedHalfDistance);
   }
 }

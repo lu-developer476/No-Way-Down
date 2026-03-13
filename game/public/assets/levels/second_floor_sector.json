@@ -1,0 +1,193 @@
+{
+  "sector_id": "S4",
+  "sector_name": "Sector principal del segundo piso",
+  "context": {
+    "style": "institucional_monumental",
+    "description": "Espacio interior amplio con piedra clara, columnas monumentales, accesos controlados y circulación lateral.",
+    "bounds": {
+      "x": 4401,
+      "y": 0,
+      "width": 3100,
+      "height": 1700
+    },
+    "grid_unit": 40
+  },
+  "plataformas_transitables": [
+    {
+      "id": "PF-S4-01",
+      "tipo": "corredor_principal",
+      "bounds": { "x": 4680, "y": 620, "width": 2340, "height": 300 },
+      "uso": "avance_frontal_y_reposicion"
+    },
+    {
+      "id": "PF-S4-02",
+      "tipo": "lateral_norte",
+      "bounds": { "x": 4760, "y": 240, "width": 2160, "height": 220 },
+      "uso": "flanqueo_izq_der"
+    },
+    {
+      "id": "PF-S4-03",
+      "tipo": "lateral_sur",
+      "bounds": { "x": 4780, "y": 980, "width": 2100, "height": 240 },
+      "uso": "retirada_controlada_y_contraataque"
+    },
+    {
+      "id": "PF-S4-04",
+      "tipo": "nodo_oeste_de_entrada",
+      "bounds": { "x": 4480, "y": 660, "width": 260, "height": 220 },
+      "uso": "transicion_desde_molinetes"
+    },
+    {
+      "id": "PF-S4-05",
+      "tipo": "nodo_este_de_salida",
+      "bounds": { "x": 7040, "y": 640, "width": 300, "height": 240 },
+      "uso": "preparacion_hacia_salida"
+    }
+  ],
+  "columnas": [
+    { "id": "CL-S4-01", "position": { "x": 5100, "y": 360 }, "radio": 42 },
+    { "id": "CL-S4-02", "position": { "x": 5820, "y": 340 }, "radio": 42 },
+    { "id": "CL-S4-03", "position": { "x": 6540, "y": 360 }, "radio": 42 },
+    { "id": "CL-S4-04", "position": { "x": 5100, "y": 1110 }, "radio": 42 },
+    { "id": "CL-S4-05", "position": { "x": 5820, "y": 1130 }, "radio": 42 },
+    { "id": "CL-S4-06", "position": { "x": 6540, "y": 1110 }, "radio": 42 }
+  ],
+  "barreras": [
+    {
+      "id": "BR-S4-01",
+      "tipo": "media_cobertura",
+      "bounds": { "x": 5320, "y": 700, "width": 180, "height": 70 },
+      "orientacion": "horizontal"
+    },
+    {
+      "id": "BR-S4-02",
+      "tipo": "media_cobertura",
+      "bounds": { "x": 6050, "y": 770, "width": 180, "height": 70 },
+      "orientacion": "horizontal"
+    },
+    {
+      "id": "BR-S4-03",
+      "tipo": "cobertura_alta",
+      "bounds": { "x": 5710, "y": 560, "width": 120, "height": 200 },
+      "orientacion": "vertical"
+    },
+    {
+      "id": "BR-S4-04",
+      "tipo": "cobertura_alta",
+      "bounds": { "x": 5710, "y": 920, "width": 120, "height": 200 },
+      "orientacion": "vertical"
+    }
+  ],
+  "puertas": [
+    {
+      "id": "DR-S4-ENTRADA-OESTE",
+      "position": { "x": 4520, "y": 760 },
+      "ancho": 120,
+      "conecta_con": "S3_acceso_segundo_piso",
+      "estado_inicial": "abierta"
+    },
+    {
+      "id": "DR-S4-SALIDA-ESTE",
+      "position": { "x": 7240, "y": 760 },
+      "ancho": 140,
+      "conecta_con": "S5_zona_final",
+      "estado_inicial": "bloqueada_por_combate"
+    }
+  ],
+  "spawns": [
+    {
+      "id": "SP-S4-A",
+      "position": { "x": 4920, "y": 1060 },
+      "enemy_profile": "walker_pack",
+      "max_active": 6,
+      "respawn_s": 11
+    },
+    {
+      "id": "SP-S4-B",
+      "position": { "x": 5900, "y": 320 },
+      "enemy_profile": "runner_flank",
+      "max_active": 4,
+      "respawn_s": 14
+    },
+    {
+      "id": "SP-S4-C",
+      "position": { "x": 6760, "y": 980 },
+      "enemy_profile": "mixed_pressure",
+      "max_active": 5,
+      "respawn_s": 13
+    },
+    {
+      "id": "SP-S4-D",
+      "position": { "x": 7060, "y": 620 },
+      "enemy_profile": "late_push",
+      "max_active": 3,
+      "respawn_s": 18
+    }
+  ],
+  "triggers_combate": [
+    {
+      "id": "TC-S4-01",
+      "tipo": "enter_area",
+      "area": { "x": 5060, "y": 620, "width": 420, "height": 260 },
+      "action": "start_wave_group_alpha"
+    },
+    {
+      "id": "TC-S4-02",
+      "tipo": "cross_line",
+      "line": {
+        "from": { "x": 5960, "y": 560 },
+        "to": { "x": 5960, "y": 1080 }
+      },
+      "action": "start_wave_group_beta"
+    },
+    {
+      "id": "TC-S4-03",
+      "tipo": "enter_area",
+      "area": { "x": 6720, "y": 620, "width": 340, "height": 260 },
+      "action": "start_final_sector_wave_and_unlock_exit_when_clear"
+    }
+  ],
+  "puntos_cobertura": [
+    {
+      "id": "CV-S4-01",
+      "position": { "x": 5250, "y": 740 },
+      "cover_type": "half",
+      "facing": "east",
+      "source": "barrera_marmol"
+    },
+    {
+      "id": "CV-S4-02",
+      "position": { "x": 6120, "y": 810 },
+      "cover_type": "half",
+      "facing": "west",
+      "source": "barrera_marmol"
+    },
+    {
+      "id": "CV-S4-03",
+      "position": { "x": 5760, "y": 640 },
+      "cover_type": "full",
+      "facing": "north",
+      "source": "pedestal_escultura"
+    },
+    {
+      "id": "CV-S4-04",
+      "position": { "x": 5760, "y": 1020 },
+      "cover_type": "full",
+      "facing": "south",
+      "source": "pedestal_escultura"
+    },
+    {
+      "id": "CV-S4-05",
+      "position": { "x": 6640, "y": 740 },
+      "cover_type": "half",
+      "facing": "west",
+      "source": "banco_piedra"
+    }
+  ],
+  "design_notes": {
+    "arcade_legibility": "El corredor principal se mantiene limpio con nodos de decisión claros (oeste, centro y este) y siluetas de cobertura repetibles.",
+    "densidad_espacial": "Se evita vacío mediante columnas en doble línea, barreras centrales y spawns escalonados por profundidad.",
+    "multi_enemy_combat": "Cuatro spawns con perfiles diferenciados permiten presión frontal, lateral y de cierre sin saturar un único punto.",
+    "balance_circulacion_cobertura": "Las rutas laterales norte/sur habilitan flanqueo mientras la cobertura del eje central ofrece pausas tácticas controladas."
+  }
+}

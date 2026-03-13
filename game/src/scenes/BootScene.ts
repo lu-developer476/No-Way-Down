@@ -23,6 +23,11 @@ export class BootScene extends Phaser.Scene {
     graphics.fillCircle(6, 6, 6);
     graphics.generateTexture('bullet-placeholder', 12, 12);
 
+    graphics.clear();
+    graphics.fillStyle(0x16a34a, 1);
+    graphics.fillRect(0, 0, 32, 48);
+    graphics.generateTexture('zombie-placeholder', 32, 48);
+
     graphics.destroy();
 
     this.scene.start('GameScene');

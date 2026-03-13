@@ -53,6 +53,11 @@ export class ProjectileSystem {
     return true;
   }
 
+
+  getGroup(): Phaser.Physics.Arcade.Group {
+    return this.projectiles;
+  }
+
   update(): void {
     const worldBounds = this.scene.physics.world.bounds;
 

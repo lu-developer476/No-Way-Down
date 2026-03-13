@@ -1,0 +1,76 @@
+{
+  "mixedSpawns": {
+    "minPlayerDistance": 220,
+    "unsafePlayerDistance": 140,
+    "retryDelayMs": 300,
+    "pointsBySource": {
+      "stairs_top": [
+        { "id": "st-top-1", "x": 1500, "y": 560 },
+        { "id": "st-top-2", "x": 1620, "y": 540 }
+      ],
+      "stairs_bottom": [
+        { "id": "st-bottom-1", "x": 520, "y": 1030 },
+        { "id": "st-bottom-2", "x": 640, "y": 1000 }
+      ],
+      "side_doors": [
+        { "id": "door-left", "x": 1880, "y": 760 },
+        { "id": "door-right", "x": 2400, "y": 730 }
+      ],
+      "upper_floor_ends": [
+        { "id": "up-west", "x": 2020, "y": 640 },
+        { "id": "up-east", "x": 2860, "y": 640 }
+      ]
+    },
+    "zoneWaves": {
+      "zona-3-acceso-segundo-piso": [
+        {
+          "id": "z3-wave-1",
+          "totalZombies": 6,
+          "spawnIntervalMs": 500,
+          "maxAlive": 4,
+          "sources": [
+            { "source": "stairs_top", "weight": 2 },
+            { "source": "stairs_bottom", "weight": 1 },
+            { "source": "side_doors", "weight": 2 }
+          ]
+        },
+        {
+          "id": "z3-wave-2",
+          "totalZombies": 8,
+          "spawnIntervalMs": 420,
+          "maxAlive": 5,
+          "sources": [
+            { "source": "side_doors", "weight": 2 },
+            { "source": "upper_floor_ends", "weight": 2 },
+            { "source": "stairs_bottom", "weight": 1 }
+          ]
+        }
+      ],
+      "zona-4-sector-central": [
+        {
+          "id": "z4-wave-1",
+          "totalZombies": 10,
+          "spawnIntervalMs": 380,
+          "maxAlive": 6,
+          "sources": [
+            { "source": "side_doors", "weight": 2 },
+            { "source": "upper_floor_ends", "weight": 3 },
+            { "source": "stairs_top", "weight": 1 }
+          ]
+        },
+        {
+          "id": "z4-wave-2",
+          "totalZombies": 12,
+          "spawnIntervalMs": 330,
+          "maxAlive": 7,
+          "sources": [
+            { "source": "stairs_top", "weight": 2 },
+            { "source": "stairs_bottom", "weight": 2 },
+            { "source": "side_doors", "weight": 2 },
+            { "source": "upper_floor_ends", "weight": 3 }
+          ]
+        }
+      ]
+    }
+  }
+}

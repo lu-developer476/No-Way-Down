@@ -10,7 +10,8 @@
     "generate:institutional-tileset": "node scripts/generateInstitutionalTileset.mjs",
     "generate:bank-counter-spritesheet": "node scripts/generateBankCounterSpritesheet.mjs",
     "generate:dining-tables-spritesheet": "node scripts/generateDiningTablesSpritesheet.mjs",
-    "generate:stone-columns-spritesheet": "node scripts/generateStoneColumnsSpritesheet.mjs"
+    "generate:stone-columns-spritesheet": "node scripts/generateStoneColumnsSpritesheet.mjs",
+    "generate:tall-windows-spritesheet": "node scripts/generateInstitutionalTallWindowsSpritesheet.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

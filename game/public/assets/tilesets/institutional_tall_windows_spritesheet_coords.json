@@ -1,0 +1,28 @@
+{
+  "image": null,
+  "source": "institutional_tall_windows_spritesheet.svg",
+  "spriteSize": {
+    "width": 32,
+    "height": 96
+  },
+  "sprites": {
+    "ventana_cerrada": {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    },
+    "ventana_luz_exterior": {
+      "x": 32,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    },
+    "ventana_rota_zombie": {
+      "x": 64,
+      "y": 0,
+      "width": 32,
+      "height": 96
+    }
+  }
+}

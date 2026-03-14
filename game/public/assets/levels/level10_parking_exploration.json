@@ -1,0 +1,76 @@
+{
+  "levelId": "level10_b3_estacionamiento",
+  "vehicles": [
+    {
+      "id": "camioneta_mordida",
+      "label": "Camioneta utilitaria",
+      "kind": "interactive",
+      "visualPlaceholder": "veh_camioneta_mordida_placeholder",
+      "grantsItemIds": ["llave_garage_a", "registro_mantenimiento"]
+    },
+    {
+      "id": "sedan_aliada",
+      "label": "Sedán gris recuperable",
+      "kind": "interactive",
+      "visualPlaceholder": "veh_sedan_aliada_placeholder",
+      "requiredKeyId": "llave_sedan_gris",
+      "grantsItemIds": ["botiquin_rapido", "municion_9mm"]
+    },
+    {
+      "id": "patrullero_sin_bateria",
+      "label": "Patrullero fuera de servicio",
+      "kind": "interactive",
+      "visualPlaceholder": "veh_patrullero_sin_bateria_placeholder",
+      "grantsItemIds": ["bateria_auxiliar"]
+    },
+    {
+      "id": "hatchback_oxidado",
+      "label": "Hatchback oxidado",
+      "kind": "decorative",
+      "visualPlaceholder": "veh_hatchback_oxidado_placeholder"
+    },
+    {
+      "id": "pickup_volcada",
+      "label": "Pickup volcada",
+      "kind": "decorative",
+      "visualPlaceholder": "veh_pickup_volcada_placeholder"
+    }
+  ],
+  "resources": [
+    {
+      "id": "llave_garage_a",
+      "label": "Llave de jaula A",
+      "category": "key",
+      "foundAtVehicleId": "camioneta_mordida"
+    },
+    {
+      "id": "registro_mantenimiento",
+      "label": "Registro de mantenimiento de flota",
+      "category": "story-item",
+      "foundAtVehicleId": "camioneta_mordida"
+    },
+    {
+      "id": "llave_sedan_gris",
+      "label": "Llave del sedán gris",
+      "category": "key"
+    },
+    {
+      "id": "botiquin_rapido",
+      "label": "Botiquín de primeros auxilios",
+      "category": "medical",
+      "foundAtVehicleId": "sedan_aliada"
+    },
+    {
+      "id": "municion_9mm",
+      "label": "Munición 9mm",
+      "category": "ammo",
+      "foundAtVehicleId": "sedan_aliada"
+    },
+    {
+      "id": "bateria_auxiliar",
+      "label": "Batería auxiliar",
+      "category": "vehicle-part",
+      "foundAtVehicleId": "patrullero_sin_bateria"
+    }
+  ]
+}

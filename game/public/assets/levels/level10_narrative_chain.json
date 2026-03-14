@@ -1,0 +1,145 @@
+{
+  "levelId": "level10_b3_estacionamiento",
+  "registryKey": "level10NarrativeState",
+  "failChainOnObjectiveFailure": true,
+  "beats": [
+    {
+      "id": "intro_b3_cinematica",
+      "label": "Cinemática inicial en subsuelo 3",
+      "description": "Las hermanas y el grupo llegan al 3° subsuelo e identifican el estacionamiento como única salida posible.",
+      "completion": {
+        "type": "cinematic-played",
+        "targetId": "intro_b3"
+      },
+      "visualPlaceholders": ["cinematic_intro_b3_placeholder", "parking_b3_wide_placeholder"]
+    },
+    {
+      "id": "explorar_estacionamiento",
+      "label": "Explora el estacionamiento y revisa vehículos",
+      "description": "Reconocer vehículos interactivos y decorativos para detectar rutas y recursos.",
+      "completion": {
+        "type": "parking-explored",
+        "targetId": "zonas_estacionamiento_completas"
+      },
+      "visualPlaceholders": ["parking_lane_a_placeholder", "parking_lane_b_placeholder"]
+    },
+    {
+      "id": "asegurar_recursos_y_llaves",
+      "label": "Asegura recursos, llaves y objetos vehiculares",
+      "description": "Recolectar llaves y componentes para habilitar una opción de escape.",
+      "completion": {
+        "type": "resources-secured",
+        "targetId": "kit_escape_listo"
+      },
+      "visualPlaceholders": ["pickup_items_ui_placeholder", "veh_inventory_placeholder"]
+    },
+    {
+      "id": "mordida_en_camioneta",
+      "label": "Evento de mordida cerca de la camioneta",
+      "description": "Una de las gemelas es mordida al aproximarse a la camioneta utilitaria.",
+      "completion": {
+        "type": "twin-bitten",
+        "targetId": "camioneta_mordida"
+      },
+      "visualPlaceholders": ["bite_event_camioneta_placeholder"]
+    },
+    {
+      "id": "auto_utilizable_aliada",
+      "label": "Descubrir auto utilizable por la aliada",
+      "description": "Otra aliada confirma que el sedán gris puede ponerse en marcha.",
+      "completion": {
+        "type": "usable-car-discovered",
+        "targetId": "sedan_aliada"
+      },
+      "visualPlaceholders": ["sedan_ready_placeholder", "ally_driver_placeholder"]
+    },
+    {
+      "id": "defensa_principal_10_min",
+      "label": "Resistir 10 minutos junto al auto",
+      "description": "Combate principal de resistencia alrededor del vehículo utilizable.",
+      "completion": {
+        "type": "resistance-completed",
+        "targetId": "defensa_auto_principal",
+        "durationMs": 600000
+      },
+      "failure": {
+        "type": "manual-fail"
+      },
+      "visualPlaceholders": ["horde_main_wave_placeholder", "car_defense_zone_placeholder"]
+    },
+    {
+      "id": "infeccion_en_progreso",
+      "label": "Progresión de la infección durante la defensa",
+      "description": "La gemela mordida empeora mientras el grupo sostiene la posición.",
+      "completion": {
+        "type": "infection-progressed",
+        "targetId": "gemela_infectada_fase_3"
+      },
+      "visualPlaceholders": ["infection_progress_overlay_placeholder"]
+    },
+    {
+      "id": "cinematica_post_muerte",
+      "label": "Cinemática posterior: muerte entre hermanas",
+      "description": "Se resuelve la tragedia entre hermanas y el suicidio ocurre fuera de cámara directa.",
+      "completion": {
+        "type": "sister-death-cinematic-played",
+        "targetId": "post_defensa_hermanas"
+      },
+      "visualPlaceholders": ["post_battle_sisters_placeholder", "offscreen_suicide_audio_placeholder"]
+    },
+    {
+      "id": "escape_duo_auto",
+      "label": "Escapar en auto con dos personajes",
+      "description": "Dos personajes logran subir al vehículo y abandonar el estacionamiento.",
+      "completion": {
+        "type": "duo-escaped",
+        "targetId": "sedan_aliada"
+      },
+      "visualPlaceholders": ["duo_escape_placeholder"]
+    },
+    {
+      "id": "trayecto_hacia_santelmo",
+      "label": "Cinemática de trayecto hacia San Telmo",
+      "description": "Secuencia de conducción nocturna rumbo al barrio.",
+      "completion": {
+        "type": "road-cinematic-played",
+        "targetId": "ruta_san_telmo"
+      },
+      "visualPlaceholders": ["road_trip_to_santelmo_placeholder"]
+    },
+    {
+      "id": "emboscada_dos_cuadras",
+      "label": "Emboscada final a dos cuadras",
+      "description": "El vehículo es detenido por una emboscada antes de entrar al barrio.",
+      "completion": {
+        "type": "ambush-triggered",
+        "targetId": "emboscada_2_cuadras"
+      },
+      "visualPlaceholders": ["ambush_blockade_placeholder"]
+    },
+    {
+      "id": "defensa_final_2_min",
+      "label": "Combate final de resistencia (2 minutos)",
+      "description": "Última defensa para abrir un hueco y continuar el viaje.",
+      "completion": {
+        "type": "resistance-completed",
+        "targetId": "defensa_final_barrio",
+        "durationMs": 120000
+      },
+      "failure": {
+        "type": "manual-fail"
+      },
+      "visualPlaceholders": ["final_holdout_placeholder", "burning_street_placeholder"]
+    },
+    {
+      "id": "final_abierto",
+      "label": "Cinemática final abierta",
+      "description": "La historia cierra con un final abierto al llegar al borde de San Telmo.",
+      "completion": {
+        "type": "open-ending-cinematic-played",
+        "targetId": "ending_open_santelmo"
+      },
+      "visualPlaceholders": ["open_ending_santelmo_placeholder"]
+    }
+  ]
+}

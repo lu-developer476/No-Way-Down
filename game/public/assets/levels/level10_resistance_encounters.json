@@ -1,0 +1,17 @@
+{
+  "levelId": "level10_b3_estacionamiento",
+  "encounters": [
+    {
+      "id": "defensa_auto_principal",
+      "label": "Defensa principal en estacionamiento",
+      "durationMs": 600000,
+      "zoneId": "zona_auto_escape"
+    },
+    {
+      "id": "defensa_final_barrio",
+      "label": "Defensa final a dos cuadras de San Telmo",
+      "durationMs": 120000,
+      "zoneId": "zona_emboscada_final"
+    }
+  ]
+}

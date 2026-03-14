@@ -1,0 +1,155 @@
+{
+  "levelId": "level9",
+  "registryKey": "level9DescentPressure",
+  "maxPressure": 100,
+  "collapseThreshold": 90,
+  "finalSegmentId": "b3_03_nexo_final",
+  "segments": [
+    {
+      "id": "b3_01_escalera_reingreso",
+      "label": "Reingreso al tramo de escaleras",
+      "order": 1,
+      "trigger": { "x": 980, "y": 1320, "width": 360, "height": 280 },
+      "pressureOnEnter": 12,
+      "objectiveOnEnter": "Desciendan juntos al tercer subsuelo.",
+      "events": [
+        {
+          "id": "b3_01_visceras",
+          "label": "Escalones cubiertos de vísceras",
+          "trigger": { "x": 1040, "y": 1420, "width": 280, "height": 190 },
+          "pressureDelta": 8,
+          "narrativeHint": "El grupo baja más lento. El olor lo cubre todo.",
+          "fatigueModifiers": [
+            { "characterId": "lujan", "delta": 7, "note": "Respiración entrecortada por náusea." },
+            { "characterId": "teo", "delta": 5, "note": "Pierde ritmo al cubrir retaguardia." }
+          ],
+          "cinematic": {
+            "cinematicId": "level9_descent_gore_pan",
+            "subtitle": "No hay forma limpia de bajar.",
+            "priority": "normal"
+          }
+        },
+        {
+          "id": "b3_01_codo_ciego",
+          "label": "Codo sin visibilidad",
+          "trigger": { "x": 1160, "y": 1520, "width": 260, "height": 180 },
+          "pressureDelta": 9,
+          "combat": {
+            "encounterId": "descent_blind_corner_1",
+            "enemyType": "zombie_runner",
+            "count": 4,
+            "spawnPoints": [
+              { "x": 1230, "y": 1570 },
+              { "x": 1270, "y": 1610 }
+            ],
+            "metadata": {
+              "waveStyle": "ambush",
+              "allowFlank": true
+            }
+          },
+          "fatigueModifiers": [
+            { "characterId": "mateo", "delta": 6, "note": "Golpe en costilla al cubrir la curva." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b3_02_descanso_colapsado",
+      "label": "Descanso intermedio colapsado",
+      "order": 2,
+      "trigger": { "x": 1360, "y": 1700, "width": 420, "height": 260 },
+      "pressureOnEnter": 16,
+      "objectiveOnEnter": "Mantener cohesión y abrir paso en el descanso.",
+      "events": [
+        {
+          "id": "b3_02_arrastre",
+          "label": "Arrastre de heridos",
+          "trigger": { "x": 1420, "y": 1750, "width": 280, "height": 170 },
+          "pressureDelta": 10,
+          "narrativeHint": "Dos aliados casi no pueden apoyar la pierna.",
+          "fatigueModifiers": [
+            { "characterId": "lujan", "delta": 8, "note": "Herida abierta empeora con el esfuerzo." },
+            { "characterId": "teo", "delta": 4, "note": "Temblor en brazos por tensión sostenida." }
+          ],
+          "cinematic": {
+            "cinematicId": "level9_descent_wounded_push",
+            "subtitle": "Sigan bajando. No miren atrás.",
+            "priority": "high"
+          }
+        },
+        {
+          "id": "b3_02_sala_de_humo",
+          "label": "Paso con humo y gritos",
+          "trigger": { "x": 1540, "y": 1820, "width": 300, "height": 200 },
+          "pressureDelta": 14,
+          "combat": {
+            "encounterId": "descent_smoke_wave",
+            "enemyType": "zombie_brute",
+            "count": 2,
+            "spawnPoints": [
+              { "x": 1590, "y": 1880 },
+              { "x": 1660, "y": 1880 }
+            ],
+            "metadata": {
+              "supportEnemyType": "zombie_standard",
+              "supportCount": 5
+            }
+          },
+          "fatigueModifiers": [
+            { "characterId": "mateo", "delta": 7, "note": "Cede momentáneamente por el humo." },
+            { "characterId": "teo", "delta": 6, "note": "Visión borrosa durante el empuje." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b3_03_nexo_final",
+      "label": "Nexo final al 3° subsuelo",
+      "order": 3,
+      "trigger": { "x": 1750, "y": 1980, "width": 460, "height": 320 },
+      "pressureOnEnter": 12,
+      "objectiveOnEnter": "Cerrar descenso y asegurar el acceso al 3° subsuelo.",
+      "events": [
+        {
+          "id": "b3_03_porton",
+          "label": "Apertura forzada del portón",
+          "trigger": { "x": 1840, "y": 2060, "width": 260, "height": 170 },
+          "pressureDelta": 8,
+          "narrativeHint": "El metal cede con un estruendo que atrae infectados.",
+          "fatigueModifiers": [
+            { "characterId": "lujan", "delta": 5, "note": "Pierde estabilidad al empujar el portón." }
+          ]
+        },
+        {
+          "id": "b3_03_oleada_final",
+          "label": "Última oleada antes de cerrar",
+          "trigger": { "x": 1940, "y": 2140, "width": 300, "height": 220 },
+          "pressureDelta": 11,
+          "combat": {
+            "encounterId": "descent_final_wave",
+            "enemyType": "zombie_standard",
+            "count": 8,
+            "spawnPoints": [
+              { "x": 2010, "y": 2190 },
+              { "x": 2080, "y": 2220 },
+              { "x": 2150, "y": 2190 }
+            ],
+            "metadata": {
+              "runnerReinforcements": 3,
+              "cinematicSync": "level9_descent_last_stand"
+            }
+          },
+          "cinematic": {
+            "cinematicId": "level9_descent_lockdown",
+            "subtitle": "¡Adentro, ahora!",
+            "priority": "high"
+          },
+          "fatigueModifiers": [
+            { "characterId": "teo", "delta": 8, "note": "Queda al límite sosteniendo la línea." },
+            { "characterId": "mateo", "delta": 6, "note": "Recibe un corte superficial durante la retirada." }
+          ]
+        }
+      ]
+    }
+  ]
+}

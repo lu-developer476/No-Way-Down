@@ -1,0 +1,116 @@
+{
+  "levelId": "level7_quinto_piso",
+  "registryProgressKey": "level7CombatProgress",
+  "registryNarrativeGateKey": "level7NarrativeCombatGates",
+  "zones": [
+    {
+      "id": "l7-z1-llegada-bomberos",
+      "label": "Llegada al piso y puesto de bomberos voluntarios",
+      "section_id": "S1",
+      "trigger": { "x": 430, "y": 380, "width": 760, "height": 520 },
+      "lock_mode": "tension",
+      "waves": [
+        { "wave": 1, "enemies": 4, "spawn_ids": ["SP-S1-01", "SP-S2-01"] }
+      ]
+    },
+    {
+      "id": "l7-z2-tramo-inicial-oficinas",
+      "label": "Primer tramo del pasillo (oficinas, baño mujeres y mini cocina)",
+      "section_id": "S2",
+      "trigger": { "x": 1470, "y": 400, "width": 1080, "height": 440 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 5, "spawn_ids": ["SP-S2-01", "SP-S3-01"] },
+        { "wave": 2, "enemies": 4, "spawn_ids": ["SP-S2-01", "SP-S3-02"] }
+      ]
+    },
+    {
+      "id": "l7-z3-area-desarrollo",
+      "label": "Área de Desarrollo",
+      "section_id": "S3",
+      "trigger": { "x": 2630, "y": 460, "width": 980, "height": 540 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 6, "spawn_ids": ["SP-S3-01", "SP-S3-02"] },
+        { "wave": 2, "enemies": 5, "spawn_ids": ["SP-S3-02", "SP-S4-01"] }
+      ],
+      "narrative_gate": {
+        "checkpointId": "cp7-desarrollo-recuperar-pertenencias",
+        "checkpointLabel": "Checkpoint Desarrollo",
+        "blocksUntilCleared": true,
+        "onCombatClearedObjective": "Combate despejado en Desarrollo. Activa el checkpoint narrativo del equipo IA."
+      }
+    },
+    {
+      "id": "l7-z4-tramo-intermedio",
+      "label": "Tramo intermedio del pasillo",
+      "section_id": "S4",
+      "trigger": { "x": 3670, "y": 500, "width": 760, "height": 420 },
+      "lock_mode": "tension",
+      "waves": [
+        { "wave": 1, "enemies": 5, "spawn_ids": ["SP-S4-01", "SP-S5-01"] }
+      ]
+    },
+    {
+      "id": "l7-z5-zona-banios-soporte",
+      "label": "Zona intermedia previa (baños y cubículo de Mesa de Soporte)",
+      "section_id": "S8",
+      "trigger": { "x": 3120, "y": 1080, "width": 700, "height": 420 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 4, "spawn_ids": ["SP-S8-01", "SP-S9-01"] },
+        { "wave": 2, "enemies": 4, "spawn_ids": ["SP-S8-01", "SP-S4-01"] }
+      ]
+    },
+    {
+      "id": "l7-z6-segundo-pasillo-instalacion",
+      "label": "Segundo pasillo (Instalación e Implementación)",
+      "section_id": "S6",
+      "trigger": { "x": 5920, "y": 620, "width": 860, "height": 420 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 5, "spawn_ids": ["SP-S6-01", "SP-S5-02"] },
+        { "wave": 2, "enemies": 4, "spawn_ids": ["SP-S6-01", "SP-S7-01"] }
+      ]
+    },
+    {
+      "id": "l7-z7-continuacion-equipamiento",
+      "label": "Continuación del segundo pasillo (Equipamiento y escalera desconocida)",
+      "section_id": "S7",
+      "trigger": { "x": 6820, "y": 650, "width": 760, "height": 380 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 5, "spawn_ids": ["SP-S7-01", "SP-S10-01"] },
+        { "wave": 2, "enemies": 5, "spawn_ids": ["SP-S7-01", "SP-S6-01"] }
+      ]
+    },
+    {
+      "id": "l7-z8-recorrido-final-comunicaciones",
+      "label": "Recorrido final del pasillo (Servicios de Comunicaciones y Subgerencia)",
+      "section_id": "S5",
+      "trigger": { "x": 4750, "y": 610, "width": 920, "height": 480 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 6, "spawn_ids": ["SP-S5-01", "SP-S5-02"] },
+        { "wave": 2, "enemies": 6, "spawn_ids": ["SP-S5-02", "SP-S6-01"] }
+      ],
+      "narrative_gate": {
+        "checkpointId": "cp7-comunicaciones-recuperar-pertenencias",
+        "checkpointLabel": "Checkpoint Comunicaciones",
+        "blocksUntilCleared": true,
+        "onCombatClearedObjective": "Comunicaciones asegurada. Ejecuta el checkpoint narrativo con el aliado de enlace."
+      }
+    },
+    {
+      "id": "l7-z9-previo-cinematica",
+      "label": "Punto previo a la cinemática",
+      "section_id": "S10",
+      "trigger": { "x": 7780, "y": 620, "width": 760, "height": 400 },
+      "lock_mode": "block",
+      "waves": [
+        { "wave": 1, "enemies": 6, "spawn_ids": ["SP-S10-01", "SP-S11-01"] },
+        { "wave": 2, "enemies": 7, "spawn_ids": ["SP-S10-01", "SP-S11-01"] }
+      ]
+    }
+  ]
+}

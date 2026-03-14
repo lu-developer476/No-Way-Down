@@ -1,0 +1,216 @@
+{
+  "levelId": "level9_planta_baja",
+  "registryKey": "level9.exit.routes",
+  "routes": [
+    {
+      "id": "A",
+      "label": "Salida A",
+      "description": "Puerta aparentemente funcional, pero corresponde a una falsa salida.",
+      "initialState": "falsa_salida",
+      "inspectionOutcomes": [
+        {
+          "type": "narrative",
+          "eventId": "exit_a_operativa_aparente",
+          "description": "Parece operativa a primera vista."
+        }
+      ],
+      "activationOutcomes": [
+        {
+          "type": "retreat",
+          "eventId": "exit_a_falsa_salida_retroceso",
+          "description": "El equipo avanza y debe retroceder por bloqueo de ruta real.",
+          "payload": {
+            "forcedRetreat": true,
+            "distance": "short"
+          }
+        },
+        {
+          "type": "narrative",
+          "eventId": "exit_a_morale_hit",
+          "description": "La escuadra pierde tiempo y moral por la falsa esperanza."
+        }
+      ],
+      "triggerOutcomes": {
+        "zone_enter": [
+          {
+            "type": "narrative",
+            "eventId": "exit_a_zone_warning",
+            "description": "Se escucha eco metálico: posible cerramiento exterior."
+          }
+        ]
+      },
+      "triggers": [
+        {
+          "type": "zone_enter",
+          "id": "a_warning",
+          "label": "Zona de acceso A",
+          "consumesAfterUse": true
+        },
+        {
+          "type": "interaction",
+          "id": "a_handle_check",
+          "label": "Revisar manija"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "label": "Salida B",
+      "description": "Salida obstruida por derrumbe parcial.",
+      "initialState": "obstruida",
+      "inspectionOutcomes": [
+        {
+          "type": "narrative",
+          "eventId": "exit_b_blocked_confirmed",
+          "description": "El paso está cerrado por escombros inestables."
+        }
+      ],
+      "activationOutcomes": [
+        {
+          "type": "ally_loss",
+          "eventId": "exit_b_ally_lost",
+          "description": "Intentar forzar la salida provoca pérdida de personajes.",
+          "payload": {
+            "minLoss": 1,
+            "maxLoss": 2
+          }
+        },
+        {
+          "type": "combat",
+          "eventId": "exit_b_noise_horde",
+          "description": "El ruido atrae infectados cercanos.",
+          "payload": {
+            "spawnGroup": "close_horde"
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "type": "activation",
+          "id": "b_force_attempt",
+          "label": "Forzar escombros"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "label": "Salida C",
+      "description": "Paso colapsado con flujo de huida caótico.",
+      "initialState": "caotica",
+      "inspectionOutcomes": [
+        {
+          "type": "narrative",
+          "eventId": "exit_c_chaotic_flow",
+          "description": "La circulación es errática y no segura para la escuadra."
+        }
+      ],
+      "activationOutcomes": [
+        {
+          "type": "combat",
+          "eventId": "exit_c_panic_encounter",
+          "description": "Se detona un encuentro por embudo de enemigos.",
+          "payload": {
+            "arena": "service_corridor"
+          }
+        }
+      ],
+      "triggerOutcomes": {
+        "inspection": [
+          {
+            "type": "state_change",
+            "eventId": "exit_c_marked_unreliable",
+            "description": "El líder marca la ruta C como no prioritaria."
+          }
+        ]
+      },
+      "triggers": [
+        {
+          "type": "inspection",
+          "id": "c_scout_report",
+          "label": "Informe de reconocimiento",
+          "consumesAfterUse": true
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "label": "Salida D",
+      "description": "Sector con alta carga infecciosa.",
+      "initialState": "infectada",
+      "inspectionOutcomes": [
+        {
+          "type": "narrative",
+          "eventId": "exit_d_infected_area",
+          "description": "Temperatura alta, fluidos y actividad hostil detectada."
+        }
+      ],
+      "activationOutcomes": [
+        {
+          "type": "combat",
+          "eventId": "exit_d_infected_engagement",
+          "description": "Activación de combate en zona infectada.",
+          "payload": {
+            "wavePreset": "infected_narrow_hall"
+          }
+        }
+      ],
+      "triggerOutcomes": {
+        "zone_enter": [
+          {
+            "type": "combat",
+            "eventId": "exit_d_ambush",
+            "description": "Emboscada inmediata al cruzar el umbral."
+          }
+        ]
+      },
+      "triggers": [
+        {
+          "type": "zone_enter",
+          "id": "d_threshold",
+          "label": "Umbral infectado",
+          "consumesAfterUse": true
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "label": "Salida E",
+      "description": "Salida operativa con persianas parcialmente bajas.",
+      "initialState": "operativa_persianas_bajas",
+      "inspectionOutcomes": [
+        {
+          "type": "narrative",
+          "eventId": "exit_e_viable_but_shutters",
+          "description": "Ruta viable si se coordina el paso bajo persiana."
+        }
+      ],
+      "activationOutcomes": [
+        {
+          "type": "progress",
+          "eventId": "exit_e_escape_window",
+          "description": "Se habilita ventana de evacuación de la escuadra.",
+          "payload": {
+            "windowSeconds": 30
+          }
+        }
+      ],
+      "triggerOutcomes": {
+        "interaction": [
+          {
+            "type": "narrative",
+            "eventId": "exit_e_manual_lift",
+            "description": "Acción coordinada para elevar persiana el tiempo suficiente."
+          }
+        ]
+      },
+      "triggers": [
+        {
+          "type": "interaction",
+          "id": "e_shutter_lift",
+          "label": "Elevar persiana",
+          "consumesAfterUse": true
+        }
+      ]
+    }
+  ]
+}

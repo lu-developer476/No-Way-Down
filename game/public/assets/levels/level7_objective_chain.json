@@ -1,0 +1,63 @@
+{
+  "levelId": "level7_quinto_piso",
+  "registryKey": "level7ObjectiveChainState",
+  "objectives": [
+    {
+      "id": "nivel7-llegar-quinto-piso",
+      "label": "Llegar al quinto piso",
+      "description": "Sube y asegura el acceso inicial al piso 5.",
+      "completion": {
+        "type": "section-entered",
+        "targetId": "nivel7-quinto-piso"
+      }
+    },
+    {
+      "id": "nivel7-avanzar-desarrollo",
+      "label": "Avanzar hasta Desarrollo",
+      "completion": {
+        "type": "section-entered",
+        "targetId": "nivel7-desarrollo"
+      }
+    },
+    {
+      "id": "nivel7-checkpoint-pertenencias-1",
+      "label": "Completar checkpoint 1 de pertenencias",
+      "completion": {
+        "type": "checkpoint-completed",
+        "targetId": "cp7-desarrollo-recuperar-pertenencias"
+      }
+    },
+    {
+      "id": "nivel7-avanzar-comunicaciones",
+      "label": "Avanzar hasta Servicios de Comunicaciones",
+      "completion": {
+        "type": "section-entered",
+        "targetId": "nivel7-servicios-comunicaciones"
+      }
+    },
+    {
+      "id": "nivel7-checkpoint-pertenencias-2",
+      "label": "Completar checkpoint 2 de pertenencias",
+      "completion": {
+        "type": "checkpoint-completed",
+        "targetId": "cp7-comunicaciones-recuperar-pertenencias"
+      }
+    },
+    {
+      "id": "nivel7-disparar-llamada",
+      "label": "Disparar la cinemática de llamada",
+      "completion": {
+        "type": "cinematic-played",
+        "targetId": "level7_checkpoint2_office_call"
+      }
+    },
+    {
+      "id": "nivel7-rescatar-companera-piso4",
+      "label": "Rescatar compañera en el 4° piso",
+      "description": "Baja al cuarto piso y rescata a tu compañera en la oficina.",
+      "completion": {
+        "type": "manual"
+      }
+    }
+  ]
+}

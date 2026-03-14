@@ -1,0 +1,32 @@
+{
+  "levelId": "level7_comunicaciones",
+  "cinematics": [
+    {
+      "id": "level7_checkpoint2_office_call",
+      "trigger": {
+        "type": "narrative-checkpoint",
+        "checkpointId": "level7-checkpoint-2"
+      },
+      "movementLocked": true,
+      "preDialoguePauseMs": 700,
+      "dialogue": [
+        {
+          "speaker": "Compañera (Oficina 4° piso)",
+          "text": "¡Me escuchas! Estoy atrapada en la oficina del cuarto piso.",
+          "durationMs": 2400
+        },
+        {
+          "speaker": "Compañera (Oficina 4° piso)",
+          "text": "Necesito rescate urgente, están entrando por todos lados.",
+          "durationMs": 2400
+        },
+        {
+          "speaker": "Compañera (Oficina 4° piso)",
+          "text": "Estoy rodeada de zombies. Baja ahora, por favor.",
+          "durationMs": 2600
+        }
+      ],
+      "objectiveAfterCall": "Nuevo objetivo: baja al 4° piso y rescata a tu compañera en la oficina de Comunicaciones."
+    }
+  ]
+}

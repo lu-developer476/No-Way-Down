@@ -8,10 +8,12 @@ import { AllySystem } from '../systems/AllySystem';
 import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
 import { LevelExitSystem } from '../systems/LevelExitSystem';
 import { VerticalSpawnSystem } from '../systems/VerticalSpawnSystem';
+import { NarrativeCheckpointSystem } from '../systems/NarrativeCheckpointSystem';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
 import level4StairSegments from '../../public/assets/levels/level4_stair_segments.json';
 import verticalSpawnConfig from '../../public/assets/levels/level2_vertical_spawns.json';
+import level7NarrativeCheckpoints from '../../public/assets/levels/level7_narrative_checkpoints.json';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
@@ -50,6 +52,7 @@ export class GameScene extends Phaser.Scene {
   private zombieWaveZoneSystem?: ZombieWaveZone;
   private levelExitSystem?: LevelExitSystem;
   private verticalSpawnSystem?: VerticalSpawnSystem;
+  private narrativeCheckpointSystem?: NarrativeCheckpointSystem;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -177,6 +180,36 @@ export class GameScene extends Phaser.Scene {
       (transitionMessage) => this.triggerLevelExitTransition(transitionMessage)
     );
 
+    // Ejemplo de integración para Nivel 7: checkpoints narrativos configurados por JSON.
+    // GameScene sólo conecta callbacks; la lógica de estado queda en NarrativeCheckpointSystem.
+    this.narrativeCheckpointSystem = NarrativeCheckpointSystem.fromJson(
+      this,
+      this.players,
+      level7NarrativeCheckpoints,
+      {
+        isCombatPending: () => (this.zombieSystem?.getActiveCount() ?? 0) > 0,
+        onCheckpointActivated: ({ checkpoint }) => {
+          this.showMissionStatus(`Checkpoint activado: ${checkpoint.label}`);
+        },
+        onCombatResolutionRequired: ({ checkpoint }) => {
+          this.registry.set('interactionHint', `Resuelve el combate en ${checkpoint.label} para continuar.`);
+        },
+        onRecoveryRequested: ({ checkpoint }) => new Promise<void>((resolve) => {
+          this.showMissionStatus(`Recuperando pertenencias en ${checkpoint.label}...`);
+          this.time.delayedCall(1000, () => resolve());
+        }),
+        onRecoveryCompleted: ({ checkpoint }) => {
+          this.showMissionStatus(`Pertenencias recuperadas en ${checkpoint.label}.`);
+        },
+        onObjectiveUpdated: (objectiveText) => {
+          this.registry.set('currentObjective', objectiveText);
+        }
+      },
+      {
+        stateRegistryKey: 'level7NarrativeCheckpoints'
+      }
+    );
+
     const leadPlayer = this.players[0];
     if (leadPlayer) {
       this.allySystem.spawnInitialAllies(leadPlayer);
@@ -230,6 +263,7 @@ export class GameScene extends Phaser.Scene {
     this.zombieWaveZoneSystem?.update();
     this.verticalSpawnSystem?.update(this.time.now);
     this.levelExitSystem?.update();
+    this.narrativeCheckpointSystem?.update();
 
     this.updateMissionProgress(zombiesRemaining);
 

@@ -1,0 +1,43 @@
+{
+  "levelId": "level7_quinto_piso",
+  "checkpoints": [
+    {
+      "id": "cp7-desarrollo-recuperar-pertenencias",
+      "label": "Área de Desarrollo",
+      "area": {
+        "x": 3320,
+        "y": 520,
+        "width": 420,
+        "height": 260
+      },
+      "objectiveOnComplete": "Objetivo actualizado: asegurar el acceso a Comunicaciones.",
+      "recoveryEventId": "recuperacion-desarrollo",
+      "participants": [
+        "ia_tecnico_1",
+        "ia_tecnico_2"
+      ],
+      "metadata": {
+        "storyBeat": "recuperacion_equipo_ia"
+      }
+    },
+    {
+      "id": "cp7-comunicaciones-recuperar-pertenencias",
+      "label": "Servicios de Comunicaciones",
+      "area": {
+        "x": 6280,
+        "y": 480,
+        "width": 460,
+        "height": 280
+      },
+      "objectiveOnComplete": "Objetivo actualizado: prepara la extracción final del equipo.",
+      "recoveryEventId": "recuperacion-comunicaciones",
+      "participants": [
+        "jugador",
+        "ia_comunicaciones"
+      ],
+      "metadata": {
+        "storyBeat": "recuperacion_equipo_jugador"
+      }
+    }
+  ]
+}

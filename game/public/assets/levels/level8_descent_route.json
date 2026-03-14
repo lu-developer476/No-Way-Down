@@ -1,0 +1,124 @@
+{
+  "levelId": "level8_descent_4_to_1",
+  "finalSectionId": "floor1_objective",
+  "registryRouteKey": "level8TimedDescent",
+  "sections": [
+    {
+      "id": "floor4_departure",
+      "label": "Salida del piso 4",
+      "floor": 4,
+      "trigger": { "x": 1580, "y": 980, "width": 420, "height": 260 },
+      "objectiveOnEnter": "Bajar al piso 1 antes de que se agote el tiempo.",
+      "optionalSkirmishHint": "Puedes avanzar sin limpiar todo: prioriza abrirte paso.",
+      "encounters": [
+        {
+          "id": "f4_hall_pressure",
+          "label": "Presión en pasillo de salida",
+          "trigger": { "x": 1410, "y": 980, "width": 280, "height": 220 },
+          "required": false,
+          "hintOnActivate": "Contacto frontal en piso 4: rompe la línea y avanza.",
+          "hintOnClear": "Ruta despejada en piso 4.",
+          "spawnWaves": [
+            {
+              "enemyType": "zombie",
+              "count": 5,
+              "spawnPoints": [
+                { "x": 1280, "y": 930 },
+                { "x": 1260, "y": 1010 }
+              ],
+              "metadata": { "pressure": "opening", "floor": 4 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "floor3_stairs",
+      "label": "Escalera intermedia piso 3",
+      "floor": 3,
+      "trigger": { "x": 1160, "y": 860, "width": 330, "height": 260 },
+      "objectiveOnEnter": "Desciende por piso 3 sin perder el ritmo.",
+      "optionalSkirmishHint": "Enfrentamiento opcional detectado: evita estancarte.",
+      "encounters": [
+        {
+          "id": "f3_side_room",
+          "label": "Ala lateral infestada",
+          "trigger": { "x": 980, "y": 840, "width": 250, "height": 210 },
+          "required": false,
+          "hintOnActivate": "Hostiles emergen del ala lateral.",
+          "spawnWaves": [
+            {
+              "enemyType": "zombie",
+              "count": 4,
+              "spawnPoints": [
+                { "x": 890, "y": 820 },
+                { "x": 900, "y": 900 }
+              ],
+              "metadata": { "pressure": "optional", "floor": 3 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "floor2_chokepoint",
+      "label": "Cuello de botella piso 2",
+      "floor": 2,
+      "trigger": { "x": 760, "y": 760, "width": 360, "height": 270 },
+      "objectiveOnEnter": "Cruza el piso 2 y conserva tiempo para la llegada final.",
+      "encounters": [
+        {
+          "id": "f2_stair_guard",
+          "label": "Guardia en descanso de escalera",
+          "trigger": { "x": 640, "y": 730, "width": 230, "height": 220 },
+          "required": false,
+          "hintOnActivate": "Amenaza en descanso de escalera: decisión táctica rápida.",
+          "spawnWaves": [
+            {
+              "enemyType": "zombie",
+              "count": 6,
+              "spawnPoints": [
+                { "x": 560, "y": 690 },
+                { "x": 560, "y": 780 },
+                { "x": 520, "y": 740 }
+              ],
+              "metadata": { "pressure": "stair_guard", "floor": 2 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "floor1_objective",
+      "label": "Objetivo final piso 1",
+      "floor": 1,
+      "trigger": { "x": 420, "y": 650, "width": 420, "height": 320 },
+      "completionZone": { "x": 260, "y": 640, "width": 220, "height": 220 },
+      "objectiveOnEnter": "Asegura el piso 1 y elimina la resistencia obligatoria.",
+      "requireRequiredEncountersToComplete": true,
+      "encounters": [
+        {
+          "id": "f1_final_hold",
+          "label": "Resistencia final",
+          "trigger": { "x": 330, "y": 650, "width": 280, "height": 260 },
+          "required": true,
+          "hintOnActivate": "Última defensa enemiga: elimina la amenaza para completar el descenso.",
+          "hintOnClear": "Resistencia final neutralizada.",
+          "spawnWaves": [
+            {
+              "enemyType": "zombie",
+              "count": 8,
+              "spawnPoints": [
+                { "x": 220, "y": 590 },
+                { "x": 220, "y": 700 },
+                { "x": 340, "y": 580 },
+                { "x": 340, "y": 720 }
+              ],
+              "metadata": { "pressure": "finale", "floor": 1 }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

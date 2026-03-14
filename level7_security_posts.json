@@ -1,0 +1,82 @@
+{
+  "posts": [
+    {
+      "id": "l7_north_corridor_watch_01",
+      "floor": 7,
+      "position": { "x": 220, "y": 128 },
+      "size": { "width": 96, "height": 64 },
+      "blocksVision": true,
+      "providesCover": true,
+      "isCollidable": true,
+      "resources": [
+        { "id": "ammo_box_9mm", "type": "ammo", "quantity": 30 }
+      ],
+      "events": [
+        {
+          "id": "watch_01_alarm",
+          "trigger": "on_alert",
+          "description": "Activa alarma local si detecta intrusos"
+        }
+      ]
+    },
+    {
+      "id": "l7_main_access_guard_02",
+      "floor": 7,
+      "position": { "x": 640, "y": 250 },
+      "size": { "width": 104, "height": 72 },
+      "blocksVision": true,
+      "providesCover": true,
+      "isCollidable": true,
+      "resources": [
+        { "id": "first_aid_kit", "type": "healing", "quantity": 1 }
+      ],
+      "events": [
+        {
+          "id": "guard_02_radio_log",
+          "trigger": "on_interact",
+          "description": "Reproduce registro de radio con pista narrativa"
+        }
+      ]
+    },
+    {
+      "id": "l7_east_perimeter_post_03",
+      "floor": 7,
+      "position": { "x": 1040, "y": 156 },
+      "size": { "width": 88, "height": 88 },
+      "blocksVision": false,
+      "providesCover": true,
+      "isCollidable": true,
+      "resources": [
+        { "id": "battery_pack", "type": "energy", "quantity": 2 }
+      ],
+      "events": [
+        {
+          "id": "post_03_motion_sensor",
+          "trigger": "on_enter",
+          "description": "Dispara sensor de movimiento del perímetro"
+        }
+      ]
+    },
+    {
+      "id": "l7_supply_watch_post_04",
+      "floor": 7,
+      "position": { "x": 420, "y": 488 },
+      "size": { "width": 120, "height": 80 },
+      "blocksVision": true,
+      "providesCover": false,
+      "isCollidable": true,
+      "resources": [
+        { "id": "keycard_security", "type": "key_item", "quantity": 1 }
+      ],
+      "events": [
+        {
+          "id": "post_04_supply_drop",
+          "trigger": "on_interact",
+          "description": "Entrega recursos al equipo al asegurar el puesto"
+        }
+      ]
+    }
+  ],
+  "collisionPadding": 2,
+  "coverPadding": 8
+}

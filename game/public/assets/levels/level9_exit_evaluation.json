@@ -1,0 +1,142 @@
+{
+  "levelId": "level9_planta_baja",
+  "mode": "semi_free",
+  "openAfterBacktrackFromExitId": "A",
+  "orderedExitIds": ["B", "C", "D", "E"],
+  "exits": [
+    {
+      "id": "B",
+      "label": "Salida B",
+      "description": "Evento trágico: derrumbe secundario durante el intento.",
+      "outcomes": [
+        {
+          "type": "combat",
+          "eventId": "exit_b_crush_wave",
+          "description": "El estruendo atrae infectados hacia la retaguardia.",
+          "payload": {
+            "wavePreset": "stairwell_backflow"
+          }
+        },
+        {
+          "type": "narrative",
+          "eventId": "exit_b_tragic_loss",
+          "description": "Dos miembros quedan sepultados. La pérdida es irreversible.",
+          "payload": {
+            "irreversibleLoss": 2,
+            "canRecover": false
+          }
+        },
+        {
+          "type": "route_state",
+          "eventId": "exit_b_marked_fatal",
+          "description": "La salida queda marcada como inviable tras la tragedia.",
+          "payload": {
+            "status": "fatal"
+          }
+        }
+      ],
+      "routeState": {
+        "stateId": "fatal",
+        "tags": ["blocked", "high_risk"]
+      }
+    },
+    {
+      "id": "C",
+      "label": "Salida C",
+      "description": "Intento de flanqueo en zona caótica.",
+      "outcomes": [
+        {
+          "type": "combat",
+          "eventId": "exit_c_flank_scramble",
+          "description": "Se produce una refriega corta mientras el grupo rodea el cuello de botella.",
+          "payload": {
+            "arena": "garage_lateral_pass"
+          }
+        },
+        {
+          "type": "narrative",
+          "eventId": "exit_c_chaos_but_escape",
+          "description": "Con mucho caos, el equipo logra salir de la situación."
+        },
+        {
+          "type": "route_state",
+          "eventId": "exit_c_flank_success",
+          "description": "La ruta C pasa a estado de escape parcial.",
+          "payload": {
+            "status": "escaped_partial"
+          }
+        }
+      ],
+      "routeState": {
+        "stateId": "escaped_partial",
+        "tags": ["flank", "unstable"]
+      }
+    },
+    {
+      "id": "D",
+      "label": "Salida D",
+      "description": "Salida infectada con presión constante.",
+      "outcomes": [
+        {
+          "type": "combat",
+          "eventId": "exit_d_infected_push",
+          "description": "Oleadas cortas en pasillo estrecho con infectados rápidos.",
+          "payload": {
+            "wavePreset": "infected_tight_corridor"
+          }
+        },
+        {
+          "type": "narrative",
+          "eventId": "exit_d_hard_flank_success",
+          "description": "El flanqueo se completa con dificultad, pero el grupo sobrevive."
+        },
+        {
+          "type": "route_state",
+          "eventId": "exit_d_flanked",
+          "description": "Ruta D marcada como cruzada bajo amenaza.",
+          "payload": {
+            "status": "crossed_with_difficulty"
+          }
+        }
+      ],
+      "routeState": {
+        "stateId": "crossed_with_difficulty",
+        "tags": ["infected", "flank"]
+      }
+    },
+    {
+      "id": "E",
+      "label": "Salida E",
+      "description": "Salida operativa con persianas bajas.",
+      "requiresEvaluated": ["B", "C", "D"],
+      "outcomes": [
+        {
+          "type": "narrative",
+          "eventId": "exit_e_shutters_viable",
+          "description": "La salida funciona, pero exige pasar bajo persianas bajas."
+        },
+        {
+          "type": "route_state",
+          "eventId": "exit_e_primary_route_confirmed",
+          "description": "Se confirma E como ruta principal para evacuar.",
+          "payload": {
+            "status": "primary"
+          }
+        },
+        {
+          "type": "narrative",
+          "eventId": "exit_e_new_plan_cinematic",
+          "description": "Se activa la cinemática del nuevo plan de escape.",
+          "payload": {
+            "cinematicId": "level9_new_plan"
+          }
+        }
+      ],
+      "routeState": {
+        "stateId": "primary_escape",
+        "isFinal": true,
+        "tags": ["operational", "cinematic"]
+      }
+    }
+  ]
+}

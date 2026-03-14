@@ -1,0 +1,29 @@
+{
+  "levelId": "level9",
+  "cinematicId": "level9_exit_a_false_hope",
+  "movementLocked": true,
+  "preDialoguePauseMs": 500,
+  "threatRevealPauseMs": 700,
+  "fallbackPauseMs": 600,
+  "dialogue": [
+    {
+      "speaker": "Líder",
+      "text": "¡Puertas giratorias al frente! Si cruzamos, salimos a Plaza de Mayo.",
+      "durationMs": 1800
+    },
+    {
+      "speaker": "Explorador",
+      "text": "Esperen... hay una columna enorme de infectados marchando por la avenida. Nos vieron.",
+      "durationMs": 2400
+    },
+    {
+      "speaker": "Líder",
+      "text": "¡No podemos sostener esta salida! Repliegue táctico, vuelvan al interior ahora.",
+      "durationMs": 2200
+    }
+  ],
+  "objectiveAfterCinematic": {
+    "id": "level9_regroup_interior_route",
+    "label": "Replegarse y buscar otra ruta de escape dentro del edificio"
+  }
+}

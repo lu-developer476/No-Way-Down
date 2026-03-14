@@ -1,0 +1,115 @@
+{
+  "levelId": "level8",
+  "siegeId": "level8-floor1-final-siege",
+  "requiredToCompleteLevel": true,
+  "reunionCinematicId": "level8-reunion-cinematic",
+  "trigger": {
+    "x": 920,
+    "y": 520,
+    "width": 340,
+    "height": 220
+  },
+  "combatArea": {
+    "x": 1080,
+    "y": 500,
+    "width": 760,
+    "height": 300
+  },
+  "spawnMode": "waves",
+  "blockProgressionDuringSiege": true,
+  "blockers": [
+    {
+      "id": "level8-final-siege-backtrack-blocker",
+      "bounds": {
+        "x": 650,
+        "y": 500,
+        "width": 64,
+        "height": 280
+      }
+    },
+    {
+      "id": "level8-final-siege-door-blocker",
+      "bounds": {
+        "x": 1320,
+        "y": 500,
+        "width": 56,
+        "height": 260
+      }
+    }
+  ],
+  "maxAliveEnemies": 8,
+  "spawnTickMs": 180,
+  "spawnPoints": [
+    { "id": "lobby-left", "x": 840, "y": 560, "lane": "lobby" },
+    { "id": "lobby-right", "x": 1150, "y": 560, "lane": "lobby" },
+    { "id": "hall-center", "x": 980, "y": 540, "lane": "hall" },
+    { "id": "door-front", "x": 1260, "y": 548, "lane": "door" },
+    { "id": "stairs-tail", "x": 730, "y": 548, "lane": "stairs" }
+  ],
+  "waves": [
+    {
+      "id": "wave-1-vanguardia",
+      "label": "Primera presión sobre la puerta",
+      "enemies": [
+        {
+          "enemyType": "zombie",
+          "count": 8,
+          "spawnPointIds": ["hall-center", "lobby-left", "lobby-right"],
+          "spawnIntervalMs": 220
+        }
+      ]
+    },
+    {
+      "id": "wave-2-rompe-linea",
+      "label": "Intento de ruptura coordinado",
+      "enemies": [
+        {
+          "enemyType": "zombie",
+          "count": 10,
+          "spawnPointIds": ["stairs-tail", "hall-center", "door-front"],
+          "spawnIntervalMs": 180
+        }
+      ]
+    },
+    {
+      "id": "wave-3-empuje-final",
+      "label": "Último empuje antes del rescate",
+      "enemies": [
+        {
+          "enemyType": "zombie",
+          "count": 12,
+          "spawnPointIds": ["lobby-left", "lobby-right", "door-front", "stairs-tail"],
+          "spawnIntervalMs": 160
+        }
+      ]
+    }
+  ],
+  "urgencyTimer": {
+    "enabled": true,
+    "durationMs": 45000,
+    "warningEveryMs": 5000,
+    "hintOnStart": "¡Urgente! Defiendan la puerta del piso 1.",
+    "hintOnWarning": "La puerta está por ceder. Resistan {seconds}s más.",
+    "hintOnExpired": "¡La presión aumenta! Llegan más infectados.",
+    "spawnReinforcementOnExpire": {
+      "enabled": true,
+      "wave": {
+        "id": "timer-reinforcement",
+        "label": "Refuerzo por demora",
+        "enemies": [
+          {
+            "enemyType": "zombie",
+            "count": 6,
+            "spawnPointIds": ["hall-center", "door-front"],
+            "spawnIntervalMs": 140
+          }
+        ]
+      }
+    }
+  },
+  "compactGroup": {
+    "totalEnemies": 18,
+    "spawnPointIds": ["hall-center", "door-front", "lobby-right"],
+    "spawnIntervalMs": 130
+  }
+}

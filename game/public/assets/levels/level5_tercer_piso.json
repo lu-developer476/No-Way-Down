@@ -1,0 +1,299 @@
+{
+  "level_name": "Nivel 5 - Tercer Piso Institucional",
+  "sections": [
+    {
+      "id": "S1",
+      "name": "acceso por escaleras",
+      "description": "Ingreso desde el nivel anterior hacia el corredor perimetral del tercer piso, con columnas de piedra y visibilidad parcial hacia el hall central.",
+      "bounds": { "x": 0, "y": 0, "width": 980, "height": 760 },
+      "entry_point": { "x": 120, "y": 680 },
+      "path_hint": [
+        { "x": 280, "y": 640 },
+        { "x": 520, "y": 580 },
+        { "x": 820, "y": 520 }
+      ],
+      "landmarks": [
+        "stone_column_cluster_a_placeholder",
+        "institutional_wall_lamp_a_placeholder",
+        "safety_railing_internal_corner_placeholder"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "corredor inicial",
+      "description": "Tramo recto del anillo perimetral con accesos secundarios cerrados y cobertura dispersa.",
+      "bounds": { "x": 981, "y": 0, "width": 1450, "height": 760 },
+      "entry_point": { "x": 1040, "y": 520 },
+      "path_hint": [
+        { "x": 1300, "y": 520 },
+        { "x": 1640, "y": 500 },
+        { "x": 2070, "y": 500 }
+      ],
+      "office_accesses": [
+        { "x": 1360, "y": 420, "state": "blocked" },
+        { "x": 1880, "y": 420, "state": "locked" }
+      ],
+      "landmarks": [
+        "institutional_floor_runner_a_placeholder",
+        "stone_column_pair_b_placeholder",
+        "security_railing_straight_placeholder"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "galería con vista al hall",
+      "description": "Balcón longitudinal abierto al hall central, con barandas de seguridad y puntos de presión de fuego cruzado.",
+      "bounds": { "x": 2432, "y": 0, "width": 1680, "height": 860 },
+      "entry_point": { "x": 2500, "y": 500 },
+      "path_hint": [
+        { "x": 2780, "y": 470 },
+        { "x": 3200, "y": 460 },
+        { "x": 3640, "y": 470 },
+        { "x": 3980, "y": 500 }
+      ],
+      "balcony_edges": [
+        { "x": 2700, "y": 360, "width": 300, "height": 40 },
+        { "x": 3200, "y": 350, "width": 340, "height": 40 },
+        { "x": 3720, "y": 360, "width": 300, "height": 40 }
+      ],
+      "landmarks": [
+        "institutional_balcony_railing_b_placeholder",
+        "stone_column_long_series_placeholder",
+        "interior_chandelier_glow_placeholder"
+      ]
+    },
+    {
+      "id": "S4",
+      "name": "sector de oficinas",
+      "description": "Zona de acceso a oficinas administrativas con puertas dobles, archivo lateral y cobertura media-alta.",
+      "bounds": { "x": 4113, "y": 120, "width": 1620, "height": 980 },
+      "entry_point": { "x": 4180, "y": 560 },
+      "path_hint": [
+        { "x": 4440, "y": 600 },
+        { "x": 4830, "y": 640 },
+        { "x": 5220, "y": 620 },
+        { "x": 5540, "y": 580 }
+      ],
+      "office_accesses": [
+        { "x": 4480, "y": 500, "state": "open" },
+        { "x": 5000, "y": 500, "state": "open" },
+        { "x": 5400, "y": 500, "state": "blocked" }
+      ],
+      "landmarks": [
+        "double_office_door_institutional_placeholder",
+        "stone_archive_cabinet_placeholder",
+        "institutional_ceiling_lamp_warm_placeholder"
+      ]
+    },
+    {
+      "id": "S5",
+      "name": "corredor final",
+      "description": "Último tramo perimetral que reconecta con la salida del nivel, más estrecho y con presión de emboscada.",
+      "bounds": { "x": 5734, "y": 180, "width": 1240, "height": 840 },
+      "entry_point": { "x": 5800, "y": 600 },
+      "path_hint": [
+        { "x": 6040, "y": 620 },
+        { "x": 6360, "y": 640 },
+        { "x": 6670, "y": 640 }
+      ],
+      "landmarks": [
+        "narrow_stone_corridor_section_placeholder",
+        "safety_railing_corner_end_placeholder",
+        "institutional_emergency_light_placeholder"
+      ]
+    },
+    {
+      "id": "S6",
+      "name": "salida del nivel",
+      "description": "Vestíbulo de extracción en extremo de ala con cierre de combate y transición al siguiente destino.",
+      "bounds": { "x": 6975, "y": 260, "width": 780, "height": 680 },
+      "entry_point": { "x": 7040, "y": 620 },
+      "extraction_pad": { "x": 7420, "y": 560, "radius": 110 },
+      "landmarks": [
+        "institutional_exit_door_reinforced_placeholder",
+        "final_security_railing_gate_placeholder",
+        "interior_directional_signage_placeholder"
+      ]
+    }
+  ],
+  "spawn_points": [
+    { "id": "SP-S1-01", "section_id": "S1", "position": { "x": 760, "y": 500 }, "enemy_type": "walker", "max_active": 4 },
+    { "id": "SP-S2-01", "section_id": "S2", "position": { "x": 1480, "y": 440 }, "enemy_type": "runner", "max_active": 3 },
+    { "id": "SP-S2-02", "section_id": "S2", "position": { "x": 2140, "y": 520 }, "enemy_type": "walker", "max_active": 5 },
+    { "id": "SP-S3-01", "section_id": "S3", "position": { "x": 2940, "y": 460 }, "enemy_type": "crawler", "max_active": 4 },
+    { "id": "SP-S3-02", "section_id": "S3", "position": { "x": 3800, "y": 460 }, "enemy_type": "runner", "max_active": 4 },
+    { "id": "SP-S4-01", "section_id": "S4", "position": { "x": 4700, "y": 560 }, "enemy_type": "walker", "max_active": 5 },
+    { "id": "SP-S4-02", "section_id": "S4", "position": { "x": 5340, "y": 560 }, "enemy_type": "brute", "max_active": 1 },
+    { "id": "SP-S5-01", "section_id": "S5", "position": { "x": 6240, "y": 620 }, "enemy_type": "runner", "max_active": 4 },
+    { "id": "SP-S6-01", "section_id": "S6", "position": { "x": 7280, "y": 520 }, "enemy_type": "walker", "max_active": 3 }
+  ],
+  "combat_zones": [
+    {
+      "id": "CZ1",
+      "name": "umbral de escaleras",
+      "section_id": "S1",
+      "area": { "x": 280, "y": 430, "width": 620, "height": 260 },
+      "activation_trigger": {
+        "type": "cross_line",
+        "line": {
+          "from": { "x": 340, "y": 620 },
+          "to": { "x": 620, "y": 560 }
+        },
+        "action": "lock_entry_and_spawn_wave"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 8 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S1-01"], "enemies": 4 },
+        { "wave": 2, "spawns": ["SP-S1-01", "SP-S2-01"], "enemies": 4 }
+      ]
+    },
+    {
+      "id": "CZ2",
+      "name": "presión en corredor inicial",
+      "section_id": "S2",
+      "area": { "x": 1260, "y": 390, "width": 1040, "height": 280 },
+      "activation_trigger": {
+        "type": "enter_area",
+        "position": { "x": 1620, "y": 510 },
+        "radius": 120,
+        "action": "start_crossfire_event"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 12 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S2-01"], "enemies": 5 },
+        { "wave": 2, "spawns": ["SP-S2-01", "SP-S2-02"], "enemies": 7 }
+      ]
+    },
+    {
+      "id": "CZ3",
+      "name": "galería del hall central",
+      "section_id": "S3",
+      "area": { "x": 2700, "y": 350, "width": 1220, "height": 260 },
+      "activation_trigger": {
+        "type": "enter_area",
+        "position": { "x": 3220, "y": 470 },
+        "radius": 160,
+        "action": "activate_balcony_ambush"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 14 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S3-01"], "enemies": 6 },
+        { "wave": 2, "spawns": ["SP-S3-01", "SP-S3-02"], "enemies": 8 }
+      ]
+    },
+    {
+      "id": "CZ4",
+      "name": "bloque administrativo",
+      "section_id": "S4",
+      "area": { "x": 4400, "y": 500, "width": 1160, "height": 320 },
+      "activation_trigger": {
+        "type": "objective_progress",
+        "condition": "combat_zone_CZ3_cleared",
+        "action": "unlock_office_and_spawn_counterattack"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 15 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S4-01"], "enemies": 7 },
+        { "wave": 2, "spawns": ["SP-S4-01", "SP-S4-02"], "enemies": 8 }
+      ]
+    },
+    {
+      "id": "CZ5",
+      "name": "tramo final y extracción",
+      "section_id": "S5",
+      "area": { "x": 5960, "y": 530, "width": 1700, "height": 260 },
+      "activation_trigger": {
+        "type": "enter_area",
+        "position": { "x": 6400, "y": 640 },
+        "radius": 130,
+        "action": "final_lockdown_before_exit"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 16 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S5-01"], "enemies": 7 },
+        { "wave": 2, "spawns": ["SP-S5-01", "SP-S6-01"], "enemies": 9 }
+      ]
+    }
+  ],
+  "cover_objects": [
+    {
+      "id": "CV-S1-01",
+      "section_id": "S1",
+      "position": { "x": 460, "y": 560 },
+      "size": { "width": 110, "height": 60 },
+      "cover_type": "half",
+      "asset_placeholder": "stone_column_base_cover_placeholder"
+    },
+    {
+      "id": "CV-S2-01",
+      "section_id": "S2",
+      "position": { "x": 1560, "y": 520 },
+      "size": { "width": 140, "height": 70 },
+      "cover_type": "full",
+      "asset_placeholder": "archivador_metal_institucional_placeholder"
+    },
+    {
+      "id": "CV-S2-02",
+      "section_id": "S2",
+      "position": { "x": 2010, "y": 520 },
+      "size": { "width": 120, "height": 60 },
+      "cover_type": "half",
+      "asset_placeholder": "bench_stone_corridor_placeholder"
+    },
+    {
+      "id": "CV-S3-01",
+      "section_id": "S3",
+      "position": { "x": 3080, "y": 460 },
+      "size": { "width": 160, "height": 55 },
+      "cover_type": "half",
+      "asset_placeholder": "balcony_railing_reinforced_segment_placeholder"
+    },
+    {
+      "id": "CV-S3-02",
+      "section_id": "S3",
+      "position": { "x": 3580, "y": 460 },
+      "size": { "width": 110, "height": 110 },
+      "cover_type": "full",
+      "asset_placeholder": "stone_column_square_placeholder"
+    },
+    {
+      "id": "CV-S4-01",
+      "section_id": "S4",
+      "position": { "x": 4880, "y": 620 },
+      "size": { "width": 150, "height": 80 },
+      "cover_type": "full",
+      "asset_placeholder": "office_reception_desk_placeholder"
+    },
+    {
+      "id": "CV-S4-02",
+      "section_id": "S4",
+      "position": { "x": 5260, "y": 620 },
+      "size": { "width": 100, "height": 70 },
+      "cover_type": "half",
+      "asset_placeholder": "document_cart_placeholder"
+    },
+    {
+      "id": "CV-S5-01",
+      "section_id": "S5",
+      "position": { "x": 6320, "y": 650 },
+      "size": { "width": 130, "height": 70 },
+      "cover_type": "half",
+      "asset_placeholder": "baranda_reforzada_final_placeholder"
+    },
+    {
+      "id": "CV-S6-01",
+      "section_id": "S6",
+      "position": { "x": 7200, "y": 560 },
+      "size": { "width": 140, "height": 80 },
+      "cover_type": "full",
+      "asset_placeholder": "security_checkpoint_cover_placeholder"
+    }
+  ],
+  "exit_point": {
+    "id": "EXIT-L5-01",
+    "position": { "x": 7420, "y": 560 },
+    "interaction_radius": 110,
+    "destination_level": "level6_azotea_tecnica",
+    "unlock_condition": "all_combat_zones_cleared"
+  }
+}

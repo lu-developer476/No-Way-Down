@@ -1,0 +1,422 @@
+{
+  "level_name": "Nivel 7 - Quinto Piso Técnico Administrativo",
+  "sections": [
+    {
+      "id": "S1",
+      "name": "acceso por escaleras",
+      "description": "Arribo desde el cuarto piso a una caja de escaleras modernizada con control de acceso electrónico.",
+      "bounds": { "x": 0, "y": 0, "width": 860, "height": 760 },
+      "entry_point": { "x": 120, "y": 650 },
+      "path_hint": [
+        { "x": 240, "y": 620 },
+        { "x": 430, "y": 570 },
+        { "x": 760, "y": 520 }
+      ],
+      "landmarks": [
+        "modern_stair_access_door_placeholder",
+        "emergency_light_panel_placeholder",
+        "institutional_floor_sign_5f_placeholder"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "inicio del pasillo",
+      "description": "Comienzo de un pasillo principal largo, más iluminado y limpio que los niveles previos.",
+      "bounds": { "x": 861, "y": 0, "width": 1220, "height": 760 },
+      "entry_point": { "x": 930, "y": 540 },
+      "path_hint": [
+        { "x": 1120, "y": 520 },
+        { "x": 1450, "y": 500 },
+        { "x": 1920, "y": 500 }
+      ],
+      "landmarks": [
+        "long_modern_corridor_lights_placeholder",
+        "admin_direction_signage_placeholder"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "área de Desarrollo",
+      "description": "Sector de estaciones técnicas y escritorios modulares donde se activa el primer checkpoint narrativo.",
+      "bounds": { "x": 2082, "y": 0, "width": 1100, "height": 920 },
+      "entry_point": { "x": 2140, "y": 520 },
+      "path_hint": [
+        { "x": 2360, "y": 500 },
+        { "x": 2620, "y": 560 },
+        { "x": 3010, "y": 600 }
+      ],
+      "landmarks": [
+        "development_open_desks_placeholder",
+        "whiteboard_cluster_placeholder",
+        "server_cabinet_small_placeholder"
+      ]
+    },
+    {
+      "id": "S4",
+      "name": "tramo medio del pasillo",
+      "description": "Sección ancha del corredor con cruces laterales y tránsito hostil intermitente.",
+      "bounds": { "x": 3183, "y": 80, "width": 980, "height": 840 },
+      "entry_point": { "x": 3240, "y": 560 },
+      "path_hint": [
+        { "x": 3420, "y": 570 },
+        { "x": 3680, "y": 590 },
+        { "x": 4060, "y": 600 }
+      ],
+      "landmarks": [
+        "modern_wall_panels_placeholder",
+        "ceiling_cable_tray_placeholder"
+      ]
+    },
+    {
+      "id": "S5",
+      "name": "área de Servicios de Comunicaciones",
+      "description": "Núcleo técnico con racks, paneles de red y accesos restringidos, donde ocurre el segundo checkpoint narrativo.",
+      "bounds": { "x": 4164, "y": 20, "width": 1240, "height": 980 },
+      "entry_point": { "x": 4230, "y": 600 },
+      "path_hint": [
+        { "x": 4470, "y": 620 },
+        { "x": 4800, "y": 600 },
+        { "x": 5280, "y": 590 }
+      ],
+      "landmarks": [
+        "communications_rack_row_placeholder",
+        "network_patch_panel_placeholder",
+        "access_control_turn_panel_placeholder"
+      ]
+    },
+    {
+      "id": "S6",
+      "name": "sector hacia Instalación e Implementación",
+      "description": "Conexión a oficinas de implementación con cajas técnicas y material desplegable.",
+      "bounds": { "x": 5405, "y": 140, "width": 980, "height": 880 },
+      "entry_point": { "x": 5460, "y": 610 },
+      "path_hint": [
+        { "x": 5640, "y": 640 },
+        { "x": 5900, "y": 650 },
+        { "x": 6260, "y": 650 }
+      ],
+      "landmarks": [
+        "installation_supply_cases_placeholder",
+        "rollup_cable_drums_placeholder"
+      ]
+    },
+    {
+      "id": "S7",
+      "name": "sector hacia Equipamiento",
+      "description": "Área de resguardo de equipos con armarios altos y pasillos estrechos de maniobra.",
+      "bounds": { "x": 6386, "y": 180, "width": 860, "height": 860 },
+      "entry_point": { "x": 6440, "y": 650 },
+      "path_hint": [
+        { "x": 6600, "y": 660 },
+        { "x": 6820, "y": 660 },
+        { "x": 7160, "y": 650 }
+      ],
+      "landmarks": [
+        "equipment_lockers_placeholder",
+        "it_transport_crates_placeholder"
+      ]
+    },
+    {
+      "id": "S8",
+      "name": "baños",
+      "description": "Bloque sanitario lateral con visibilidad reducida y rutas de flanqueo.",
+      "bounds": { "x": 2740, "y": 930, "width": 760, "height": 620 },
+      "entry_point": { "x": 2810, "y": 980 },
+      "path_hint": [
+        { "x": 2980, "y": 1020 },
+        { "x": 3180, "y": 1060 }
+      ],
+      "landmarks": [
+        "restroom_signage_modern_placeholder",
+        "mirror_counter_placeholder"
+      ]
+    },
+    {
+      "id": "S9",
+      "name": "cocina pequeña",
+      "description": "Kitchenette compacta de personal con mesa alta y máquinas de café, útil como pausa táctica.",
+      "bounds": { "x": 3501, "y": 930, "width": 760, "height": 620 },
+      "entry_point": { "x": 3570, "y": 980 },
+      "path_hint": [
+        { "x": 3760, "y": 1040 },
+        { "x": 4020, "y": 1060 }
+      ],
+      "landmarks": [
+        "office_kitchen_counter_placeholder",
+        "coffee_machine_station_placeholder",
+        "mini_fridge_placeholder"
+      ]
+    },
+    {
+      "id": "S10",
+      "name": "puestos de guardia",
+      "description": "Puesto de seguridad reforzado que controla el último tramo del piso.",
+      "bounds": { "x": 7247, "y": 150, "width": 920, "height": 900 },
+      "entry_point": { "x": 7310, "y": 640 },
+      "path_hint": [
+        { "x": 7500, "y": 640 },
+        { "x": 7760, "y": 620 },
+        { "x": 8070, "y": 610 }
+      ],
+      "landmarks": [
+        "security_desk_modular_placeholder",
+        "cctv_monitor_wall_placeholder",
+        "armored_glass_partition_placeholder"
+      ]
+    },
+    {
+      "id": "S11",
+      "name": "punto de cinemática final",
+      "description": "Extremo del piso junto a ventanales, donde se activa el evento final de llamado de rescate.",
+      "bounds": { "x": 8168, "y": 200, "width": 760, "height": 860 },
+      "entry_point": { "x": 8220, "y": 620 },
+      "path_hint": [
+        { "x": 8400, "y": 610 },
+        { "x": 8620, "y": 600 },
+        { "x": 8880, "y": 580 }
+      ],
+      "landmarks": [
+        "fifth_floor_window_line_placeholder",
+        "emergency_radio_terminal_placeholder"
+      ]
+    }
+  ],
+  "spawn_points": [
+    { "id": "SP-S1-01", "section_id": "S1", "position": { "x": 680, "y": 520 }, "enemy_type": "walker", "max_active": 4 },
+    { "id": "SP-S2-01", "section_id": "S2", "position": { "x": 1320, "y": 460 }, "enemy_type": "runner", "max_active": 3 },
+    { "id": "SP-S3-01", "section_id": "S3", "position": { "x": 2460, "y": 520 }, "enemy_type": "walker", "max_active": 5 },
+    { "id": "SP-S3-02", "section_id": "S3", "position": { "x": 2940, "y": 640 }, "enemy_type": "crawler", "max_active": 3 },
+    { "id": "SP-S4-01", "section_id": "S4", "position": { "x": 3780, "y": 560 }, "enemy_type": "runner", "max_active": 4 },
+    { "id": "SP-S5-01", "section_id": "S5", "position": { "x": 4560, "y": 520 }, "enemy_type": "walker", "max_active": 5 },
+    { "id": "SP-S5-02", "section_id": "S5", "position": { "x": 5160, "y": 620 }, "enemy_type": "brute", "max_active": 1 },
+    { "id": "SP-S6-01", "section_id": "S6", "position": { "x": 5960, "y": 700 }, "enemy_type": "runner", "max_active": 4 },
+    { "id": "SP-S7-01", "section_id": "S7", "position": { "x": 6900, "y": 700 }, "enemy_type": "walker", "max_active": 4 },
+    { "id": "SP-S8-01", "section_id": "S8", "position": { "x": 3180, "y": 1140 }, "enemy_type": "crawler", "max_active": 2 },
+    { "id": "SP-S9-01", "section_id": "S9", "position": { "x": 3960, "y": 1120 }, "enemy_type": "walker", "max_active": 2 },
+    { "id": "SP-S10-01", "section_id": "S10", "position": { "x": 7860, "y": 580 }, "enemy_type": "runner", "max_active": 5 },
+    { "id": "SP-S11-01", "section_id": "S11", "position": { "x": 8740, "y": 560 }, "enemy_type": "walker", "max_active": 3 }
+  ],
+  "combat_zones": [
+    {
+      "id": "CZ1",
+      "name": "embudo de acceso",
+      "section_id": "S1",
+      "area": { "x": 220, "y": 430, "width": 560, "height": 270 },
+      "activation_trigger": {
+        "type": "cross_line",
+        "line": {
+          "from": { "x": 320, "y": 620 },
+          "to": { "x": 600, "y": 570 }
+        },
+        "action": "seal_stair_access_and_spawn_wave"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 8 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S1-01"], "enemies": 4 },
+        { "wave": 2, "spawns": ["SP-S1-01", "SP-S2-01"], "enemies": 4 }
+      ]
+    },
+    {
+      "id": "CZ2",
+      "name": "presión en Desarrollo",
+      "section_id": "S3",
+      "area": { "x": 2320, "y": 420, "width": 820, "height": 320 },
+      "activation_trigger": {
+        "type": "objective_progress",
+        "condition": "combat_zone_CZ1_cleared",
+        "action": "start_development_recovery_assault"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 12 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S3-01"], "enemies": 6 },
+        { "wave": 2, "spawns": ["SP-S3-01", "SP-S3-02", "SP-S4-01"], "enemies": 6 }
+      ]
+    },
+    {
+      "id": "CZ3",
+      "name": "nodo de Comunicaciones",
+      "section_id": "S5",
+      "area": { "x": 4380, "y": 480, "width": 950, "height": 320 },
+      "activation_trigger": {
+        "type": "enter_area",
+        "position": { "x": 4750, "y": 610 },
+        "radius": 150,
+        "action": "start_communications_checkpoint_battle"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 14 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S5-01"], "enemies": 7 },
+        { "wave": 2, "spawns": ["SP-S5-01", "SP-S5-02", "SP-S6-01"], "enemies": 7 }
+      ]
+    },
+    {
+      "id": "CZ4",
+      "name": "avance hacia Equipamiento",
+      "section_id": "S7",
+      "area": { "x": 6520, "y": 560, "width": 700, "height": 260 },
+      "activation_trigger": {
+        "type": "objective_progress",
+        "condition": "checkpoint_CP2_completed",
+        "action": "open_equipment_corridor_and_spawn_counterwave"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 10 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S7-01"], "enemies": 5 },
+        { "wave": 2, "spawns": ["SP-S7-01", "SP-S10-01"], "enemies": 5 }
+      ]
+    },
+    {
+      "id": "CZ5",
+      "name": "asalto a puestos de guardia",
+      "section_id": "S10",
+      "area": { "x": 7420, "y": 500, "width": 720, "height": 320 },
+      "activation_trigger": {
+        "type": "enter_area",
+        "position": { "x": 7730, "y": 620 },
+        "radius": 140,
+        "action": "lock_security_sector_for_final_push"
+      },
+      "clear_condition": { "type": "eliminate_enemies", "count": 13 },
+      "waves": [
+        { "wave": 1, "spawns": ["SP-S10-01"], "enemies": 6 },
+        { "wave": 2, "spawns": ["SP-S10-01", "SP-S11-01"], "enemies": 7 }
+      ]
+    }
+  ],
+  "checkpoint_events": [
+    {
+      "id": "CP1",
+      "name": "checkpoint_desarrollo_recuperacion_ia",
+      "section_id": "S3",
+      "trigger": {
+        "type": "objective_progress",
+        "condition": "combat_zone_CZ2_cleared"
+      },
+      "participants": ["ally_ai_dev_01", "ally_ai_dev_02"],
+      "objective": "Dos personajes IA recuperan sus pertenencias en el área de Desarrollo.",
+      "sequence": [
+        "ally_ai_dev_01_moves_to_bag",
+        "ally_ai_dev_02_covers_corridor",
+        "both_confirm_recovery"
+      ],
+      "completion_flag": "checkpoint_CP1_completed",
+      "narrative_log": "Checkpoint 1 completado: equipo de Desarrollo recuperó pertenencias críticas."
+    },
+    {
+      "id": "CP2",
+      "name": "checkpoint_comunicaciones_recuperacion_con_jugador",
+      "section_id": "S5",
+      "trigger": {
+        "type": "objective_progress",
+        "condition": "combat_zone_CZ3_cleared"
+      },
+      "participants": ["player", "ally_field_01"],
+      "objective": "Jugador y aliado recuperan pertenencias y equipo de enlace en Comunicaciones.",
+      "sequence": [
+        "player_interacts_with_locker",
+        "ally_field_01_collects_radio_case",
+        "joint_confirmation"
+      ],
+      "completion_flag": "checkpoint_CP2_completed",
+      "narrative_log": "Checkpoint 2 completado: equipo de Comunicaciones recuperado y enlace restablecido."
+    }
+  ],
+  "security_posts": [
+    {
+      "id": "SEC-01",
+      "section_id": "S10",
+      "position": { "x": 7540, "y": 590 },
+      "coverage_radius": 220,
+      "state": "hostile",
+      "asset_placeholder": "security_post_main_desk_placeholder"
+    },
+    {
+      "id": "SEC-02",
+      "section_id": "S10",
+      "position": { "x": 7990, "y": 560 },
+      "coverage_radius": 210,
+      "state": "hostile",
+      "asset_placeholder": "security_post_secondary_console_placeholder"
+    }
+  ],
+  "interactive_objects": [
+    {
+      "id": "INT-L7-01",
+      "section_id": "S3",
+      "type": "personal_locker",
+      "position": { "x": 2860, "y": 590 },
+      "interaction_radius": 70,
+      "action": "trigger_checkpoint_CP1_sequence",
+      "asset_placeholder": "developer_locker_unit_placeholder"
+    },
+    {
+      "id": "INT-L7-02",
+      "section_id": "S5",
+      "type": "network_case",
+      "position": { "x": 5000, "y": 610 },
+      "interaction_radius": 70,
+      "action": "trigger_checkpoint_CP2_sequence",
+      "asset_placeholder": "communications_hardcase_placeholder"
+    },
+    {
+      "id": "INT-L7-03",
+      "section_id": "S8",
+      "type": "supply_cache",
+      "position": { "x": 3090, "y": 1080 },
+      "interaction_radius": 65,
+      "action": "grant_minor_heal_pack",
+      "asset_placeholder": "bathroom_supply_cabinet_placeholder"
+    },
+    {
+      "id": "INT-L7-04",
+      "section_id": "S9",
+      "type": "coffee_station",
+      "position": { "x": 3870, "y": 1040 },
+      "interaction_radius": 60,
+      "action": "grant_stamina_boost_short",
+      "asset_placeholder": "kitchenette_coffee_machine_placeholder"
+    },
+    {
+      "id": "INT-L7-05",
+      "section_id": "S11",
+      "type": "radio_terminal",
+      "position": { "x": 8720, "y": 580 },
+      "interaction_radius": 80,
+      "action": "arm_final_cinematic_trigger",
+      "asset_placeholder": "emergency_radio_console_placeholder"
+    }
+  ],
+  "cinematic_trigger": {
+    "id": "CIN-L7-FINAL-01",
+    "section_id": "S11",
+    "trigger": {
+      "type": "event_chain",
+      "conditions": [
+        "checkpoint_CP1_completed",
+        "checkpoint_CP2_completed",
+        "combat_zone_CZ5_cleared",
+        "interaction_INT-L7-05_done"
+      ]
+    },
+    "camera_focus": { "x": 8680, "y": 560, "duration_ms": 3800 },
+    "dialogue": [
+      {
+        "speaker": "companera_4to_piso",
+        "channel": "radio",
+        "line": "¡Equipo, soy Laura desde el 4° piso! Estamos rodeados en el ala norte, necesitamos rescate urgente ahora.",
+        "priority": "critical"
+      },
+      {
+        "speaker": "player",
+        "channel": "radio",
+        "line": "Recibido. Reagrupen donde puedan sostener posición. Bajamos de inmediato.",
+        "priority": "high"
+      }
+    ],
+    "post_cinematic_flags": [
+      "level7_final_cinematic_played",
+      "rescue_request_from_4th_floor_received"
+    ],
+    "next_objective": "Descender y ejecutar operación de rescate en 4° piso."
+  }
+}

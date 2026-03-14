@@ -1,0 +1,62 @@
+{
+  "levelId": "level9",
+  "cinematicId": "level9_exit_e_decision",
+  "movementLocked": true,
+  "preDialoguePauseMs": 500,
+  "objectiveUpdatePauseMs": 650,
+  "dialogueByGroup": {
+    "complete_group": [
+      {
+        "speaker": "Explorador",
+        "text": "Las persianas de las giratorias están totalmente bajas. No hay forma de abrir esto desde afuera.",
+        "durationMs": 2200
+      },
+      {
+        "speaker": "Apoyo",
+        "text": "Quedan pocos rezagados, pero no van a parar. ¿Qué hacemos ahora?",
+        "durationMs": 2000
+      },
+      {
+        "speaker": "Compañero",
+        "text": "Podemos volver al 1° subsuelo y salir por la entrada única. Es nuestra ruta conocida.",
+        "durationMs": 2300
+      },
+      {
+        "speaker": "Protagonista",
+        "text": "No. Ahí empezó todo para nosotros y está demasiado expuesto. Bajamos al estacionamiento del 3° subsuelo y buscamos un vehículo utilizable.",
+        "durationMs": 2700
+      },
+      {
+        "speaker": "Grupo",
+        "text": "Entendido. Te seguimos al 3° subsuelo.",
+        "durationMs": 1800
+      }
+    ],
+    "reduced_group": [
+      {
+        "speaker": "Explorador",
+        "text": "Persianas bajas en todas las giratorias... esta salida E también murió.",
+        "durationMs": 2200
+      },
+      {
+        "speaker": "Apoyo",
+        "text": "Los rezagados son pocos, pero no tenemos margen. ¿Volvemos al 1° subsuelo?",
+        "durationMs": 2300
+      },
+      {
+        "speaker": "Protagonista",
+        "text": "Negativo. Ese lugar nos quebró y volver sería un suicidio. Vamos al estacionamiento del 3° subsuelo, ahora.",
+        "durationMs": 2600
+      },
+      {
+        "speaker": "Superviviente",
+        "text": "Copiado. Cerramos búsqueda de salidas y nos movemos al 3° subsuelo.",
+        "durationMs": 2000
+      }
+    ]
+  },
+  "objectiveAfterDecision": {
+    "id": "level9_reach_b3_parking",
+    "label": "Dirigirse al estacionamiento del 3° subsuelo y asegurar un vehículo"
+  }
+}

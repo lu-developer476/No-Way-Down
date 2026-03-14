@@ -1,0 +1,100 @@
+{
+  "levelId": "level7_quinto_piso",
+  "recoveryArea": {
+    "x": 1200,
+    "y": 420,
+    "width": 2200,
+    "height": 760
+  },
+  "checkpoints": [
+    {
+      "id": "cp-enfermeria",
+      "label": "Enfermería",
+      "allowedCharacterIds": ["nora", "bruno", "ia_soporte_01"]
+    },
+    {
+      "id": "cp-oficinas",
+      "label": "Oficinas del quinto piso",
+      "allowedCharacterIds": ["bruno", "lia", "ia_soporte_02"]
+    },
+    {
+      "id": "cp-sala-descanso",
+      "label": "Sala de descanso",
+      "allowedCharacterIds": ["lia", "nora", "ia_soporte_01", "ia_soporte_02"]
+    }
+  ],
+  "recoverables": [
+    {
+      "id": "obj-nora-foto",
+      "label": "Foto familiar de Nora",
+      "ownerCharacterId": "nora",
+      "marker": {
+        "x": 560,
+        "y": 370,
+        "radius": 34
+      },
+      "checkpointId": "cp-enfermeria",
+      "interactionDurationMs": 900
+    },
+    {
+      "id": "obj-bruno-credencial",
+      "label": "Credencial de Bruno",
+      "ownerCharacterId": "bruno",
+      "marker": {
+        "x": 980,
+        "y": 410,
+        "radius": 34
+      },
+      "checkpointId": "cp-enfermeria",
+      "interactionDurationMs": 1200
+    },
+    {
+      "id": "obj-lia-tablet",
+      "label": "Tablet de Lia",
+      "ownerCharacterId": "lia",
+      "marker": {
+        "x": 1370,
+        "y": 345,
+        "radius": 38
+      },
+      "checkpointId": "cp-oficinas",
+      "interactionDurationMs": 800
+    },
+    {
+      "id": "obj-bruno-llaves",
+      "label": "Llaves maestras de Bruno",
+      "ownerCharacterId": "bruno",
+      "marker": {
+        "x": 1680,
+        "y": 420,
+        "radius": 30
+      },
+      "checkpointId": "cp-oficinas",
+      "interactionDurationMs": 1100
+    },
+    {
+      "id": "obj-nora-bolso",
+      "label": "Bolso médico de Nora",
+      "ownerCharacterId": "nora",
+      "marker": {
+        "x": 1920,
+        "y": 500,
+        "radius": 36
+      },
+      "checkpointId": "cp-sala-descanso",
+      "interactionDurationMs": 1000
+    },
+    {
+      "id": "obj-lia-audifonos",
+      "label": "Audífonos de Lia",
+      "ownerCharacterId": "lia",
+      "marker": {
+        "x": 2140,
+        "y": 460,
+        "radius": 28
+      },
+      "checkpointId": "cp-sala-descanso",
+      "interactionDurationMs": 700
+    }
+  ]
+}

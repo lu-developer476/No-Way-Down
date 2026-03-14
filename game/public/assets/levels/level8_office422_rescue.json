@@ -1,0 +1,66 @@
+{
+  "levelId": "level_08_oficina_422",
+  "rescueId": "office_422_critical_rescue",
+  "trigger": {
+    "x": 2048,
+    "y": 1888,
+    "width": 144,
+    "height": 128
+  },
+  "rescueScene": {
+    "id": "office_422_rescue_scene",
+    "movementLockDuringRescue": true,
+    "preRescueDelayMs": 220,
+    "postRescueDelayMs": 260,
+    "sequence": [
+      {
+        "id": "zombie_grapple",
+        "actor": "companera_422",
+        "text": "¡No puedo zafarme!",
+        "durationMs": 1050
+      },
+      {
+        "id": "player_intervention",
+        "actor": "protagonista",
+        "text": "¡Atrás! Te cubro.",
+        "durationMs": 980
+      },
+      {
+        "id": "containment_attempt",
+        "actor": "protagonista",
+        "text": "Respira. Necesito estabilizarte antes de salir.",
+        "durationMs": 1150
+      },
+      {
+        "id": "recover_belongings",
+        "actor": "companera_422",
+        "text": "Tomé mis cosas... puedo moverme.",
+        "durationMs": 980
+      },
+      {
+        "id": "weapon_handover",
+        "actor": "protagonista",
+        "text": "Toma este arma. Desde ahora vienes con nosotros.",
+        "durationMs": 1200
+      }
+    ]
+  },
+  "companion": {
+    "id": "ally_survivor_422",
+    "codename": "compa_422",
+    "officeCode": "422"
+  },
+  "weaponReward": {
+    "id": "smg_compacta",
+    "name": "SMG Compacta",
+    "ammo": 90
+  },
+  "groupComposition": {
+    "addMemberIds": [
+      "ally_survivor_422"
+    ],
+    "markAsRescuedIds": [
+      "ally_survivor_422"
+    ]
+  }
+}

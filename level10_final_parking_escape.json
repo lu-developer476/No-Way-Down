@@ -1,0 +1,409 @@
+{
+  "level_name": "Nivel 10 - Subsuelo 3 / Escape final hacia San Telmo",
+  "sections": [
+    {
+      "id": "sec_01_stairs_arrival",
+      "name": "Llegada al 3er subsuelo",
+      "type": "cinematic",
+      "order": 1,
+      "coordinates": { "x": 6, "y": 92, "z": -3 },
+      "description": "Cinemática de descenso por escaleras y entrada al estacionamiento.",
+      "linked_cinematic_event_id": "cine_01_arrival_b3"
+    },
+    {
+      "id": "sec_02_regroup",
+      "name": "Pausa táctica",
+      "type": "safe_pause",
+      "order": 2,
+      "coordinates": { "x": 14, "y": 88, "z": -3 },
+      "description": "Breve pausa para asimilar pérdidas y revisar armas, municiones, curaciones y heridas.",
+      "resource_actions": ["check_weapons", "check_ammo", "check_medkits", "status_injuries"]
+    },
+    {
+      "id": "sec_03_parking_exploration",
+      "name": "Exploración del estacionamiento",
+      "type": "gameplay_exploration",
+      "order": 3,
+      "coordinates": { "x": 42, "y": 64, "z": -3 },
+      "bounds": { "x1": 8, "y1": 24, "x2": 96, "y2": 106 },
+      "description": "Recorrido libre con tensión ambiental y detección de amenazas dispersas."
+    },
+    {
+      "id": "sec_04_vehicle_inspection",
+      "name": "Inspección de vehículos",
+      "type": "gameplay_interaction",
+      "order": 4,
+      "coordinates": { "x": 52, "y": 62, "z": -3 },
+      "description": "Vehículos con loot, bloqueados o meramente decorativos.",
+      "linked_interactive_vehicle_ids": [
+        "veh_van_underbite",
+        "veh_patrol_cruiser",
+        "veh_locked_suv",
+        "veh_open_4door_escape",
+        "veh_burned_hatch",
+        "veh_overturned_pickup",
+        "veh_crushed_sedan"
+      ]
+    },
+    {
+      "id": "sec_05_exit_prompt",
+      "name": "Objetivo de salida",
+      "type": "narrative_trigger",
+      "order": 5,
+      "coordinates": { "x": 92, "y": 48, "z": -3 },
+      "description": "El protagonista marca la salida y ordena buscar llaves o romper vidrio para huir.",
+      "linked_cinematic_event_id": "cine_02_exit_instruction"
+    },
+    {
+      "id": "sec_06_twin_bitten",
+      "name": "Mordida bajo la camioneta",
+      "type": "cinematic",
+      "order": 6,
+      "coordinates": { "x": 56, "y": 74, "z": -3 },
+      "description": "Una gemela es mordida por un infectado escondido bajo una camioneta.",
+      "linked_cinematic_event_id": "cine_03_twin_bitten"
+    },
+    {
+      "id": "sec_07_escape_car_found",
+      "name": "Auto utilizable encontrado",
+      "type": "cinematic",
+      "order": 7,
+      "coordinates": { "x": 74, "y": 66, "z": -3 },
+      "description": "Otra aliada encuentra un auto de 4 puertas con una puerta abierta y la llave puesta.",
+      "linked_cinematic_event_id": "cine_04_escape_car_found"
+    },
+    {
+      "id": "sec_08_main_resistance",
+      "name": "Resistencia principal",
+      "type": "timed_survival",
+      "order": 8,
+      "coordinates": { "x": 74, "y": 66, "z": -3 },
+      "description": "Defensa de 10 minutos junto al auto mientras intentan preparar la salida.",
+      "linked_timed_event_id": "survival_10min_parking"
+    },
+    {
+      "id": "sec_09_infection_progression",
+      "name": "Progresión de infección",
+      "type": "dynamic_narrative",
+      "order": 9,
+      "coordinates": { "x": 72, "y": 64, "z": -3 },
+      "description": "La gemela mordida empeora durante la defensa, afectando toma de decisiones.",
+      "linked_cinematic_event_id": "cine_05_infection_progression"
+    },
+    {
+      "id": "sec_10_sisters_death",
+      "name": "Colapso entre hermanas",
+      "type": "cinematic",
+      "order": 10,
+      "coordinates": { "x": 76, "y": 68, "z": -3 },
+      "description": "Tras la defensa, agotamiento, segunda mordida y muerte trágica entre hermanas.",
+      "linked_cinematic_event_id": "cine_06_sisters_death"
+    },
+    {
+      "id": "sec_11_drive_escape",
+      "name": "Huida en auto",
+      "type": "cinematic",
+      "order": 11,
+      "coordinates": { "x": 96, "y": 44, "z": -3 },
+      "description": "Dos personajes logran salir del estacionamiento en el vehículo utilizable.",
+      "linked_cinematic_event_id": "cine_07_two_survivors_escape"
+    },
+    {
+      "id": "sec_12_drive_to_santelmo",
+      "name": "Trayecto a San Telmo",
+      "type": "cinematic",
+      "order": 12,
+      "coordinates": { "x": 140, "y": 30, "z": 0 },
+      "description": "Cinemática de ruta urbana hacia San Telmo con tensión en aumento.",
+      "linked_cinematic_event_id": "cine_08_route_santelmo"
+    },
+    {
+      "id": "sec_13_final_ambush",
+      "name": "Emboscada a dos cuadras",
+      "type": "combat_transition",
+      "order": 13,
+      "coordinates": { "x": 188, "y": 18, "z": 0 },
+      "description": "El vehículo queda comprometido por una emboscada antes de entrar al barrio.",
+      "linked_cinematic_event_id": "cine_09_final_ambush"
+    },
+    {
+      "id": "sec_14_final_resistance",
+      "name": "Resistencia final",
+      "type": "timed_survival",
+      "order": 14,
+      "coordinates": { "x": 194, "y": 22, "z": 0 },
+      "description": "Combate final de 2 minutos para sobrevivir a la última oleada.",
+      "linked_timed_event_id": "survival_2min_street"
+    },
+    {
+      "id": "sec_15_open_ending",
+      "name": "Cierre abierto",
+      "type": "cinematic",
+      "order": 15,
+      "coordinates": { "x": 198, "y": 24, "z": 0 },
+      "description": "Cinemática final abierta con cierre del juego.",
+      "linked_cinematic_event_id": "cine_10_open_ending"
+    }
+  ],
+  "spawn_points": [
+    {
+      "id": "sp_player_entry",
+      "label": "Entrada jugador en escaleras",
+      "faction": "player",
+      "coordinates": { "x": 8, "y": 94, "z": -3 },
+      "orientation_deg": 315
+    },
+    {
+      "id": "sp_allies_regroup",
+      "label": "Aparición aliados reagrupados",
+      "faction": "ally",
+      "coordinates": { "x": 12, "y": 90, "z": -3 },
+      "orientation_deg": 0
+    },
+    {
+      "id": "sp_infected_ambience_w",
+      "label": "Infectados dispersos oeste",
+      "faction": "infected",
+      "coordinates": { "x": 26, "y": 70, "z": -3 },
+      "spawn_mode": "ambient_patrol"
+    },
+    {
+      "id": "sp_infected_under_van",
+      "label": "Infectado oculto bajo camioneta",
+      "faction": "infected",
+      "coordinates": { "x": 56, "y": 74, "z": -3 },
+      "spawn_mode": "cinematic_triggered"
+    },
+    {
+      "id": "sp_horde_main_north",
+      "label": "Oleada principal norte",
+      "faction": "infected",
+      "coordinates": { "x": 80, "y": 40, "z": -3 },
+      "spawn_mode": "wave"
+    },
+    {
+      "id": "sp_horde_main_south",
+      "label": "Oleada principal sur",
+      "faction": "infected",
+      "coordinates": { "x": 78, "y": 84, "z": -3 },
+      "spawn_mode": "wave"
+    },
+    {
+      "id": "sp_ambush_street_east",
+      "label": "Emboscada final este",
+      "faction": "infected",
+      "coordinates": { "x": 210, "y": 24, "z": 0 },
+      "spawn_mode": "wave"
+    }
+  ],
+  "interactive_vehicles": [
+    {
+      "id": "veh_van_underbite",
+      "label": "Camioneta utilitaria (mordida)",
+      "type": "van",
+      "interaction_type": "searchable",
+      "state": "semi_open",
+      "coordinates": { "x": 56, "y": 74, "z": -3 },
+      "loot_table": ["municion_9mm", "vendas"],
+      "narrative_tag": "bite_setup",
+      "is_decorative": false
+    },
+    {
+      "id": "veh_patrol_cruiser",
+      "label": "Patrullero fuera de servicio",
+      "type": "sedan",
+      "interaction_type": "searchable",
+      "state": "locked",
+      "coordinates": { "x": 44, "y": 58, "z": -3 },
+      "loot_table": ["cargador_extra", "linterna"],
+      "is_decorative": false
+    },
+    {
+      "id": "veh_locked_suv",
+      "label": "SUV cerrada",
+      "type": "suv",
+      "interaction_type": "forced_entry_optional",
+      "state": "locked",
+      "coordinates": { "x": 62, "y": 52, "z": -3 },
+      "loot_table": ["botiquin", "municion_escopeta"],
+      "is_decorative": false
+    },
+    {
+      "id": "veh_open_4door_escape",
+      "label": "Auto 4 puertas utilizable",
+      "type": "sedan",
+      "interaction_type": "escape_vehicle",
+      "state": "driver_door_open_key_in_ignition",
+      "coordinates": { "x": 74, "y": 66, "z": -3 },
+      "loot_table": ["llave_encendida", "tanque_medio"],
+      "usable_zone_radius": 9,
+      "is_decorative": false
+    },
+    {
+      "id": "veh_burned_hatch",
+      "label": "Hatchback incendiado",
+      "type": "hatchback",
+      "interaction_type": "none",
+      "state": "wreck",
+      "coordinates": { "x": 30, "y": 46, "z": -3 },
+      "is_decorative": true
+    },
+    {
+      "id": "veh_overturned_pickup",
+      "label": "Pickup volcada",
+      "type": "pickup",
+      "interaction_type": "none",
+      "state": "wreck",
+      "coordinates": { "x": 68, "y": 88, "z": -3 },
+      "is_decorative": true
+    },
+    {
+      "id": "veh_crushed_sedan",
+      "label": "Sedán aplastado por columna",
+      "type": "sedan",
+      "interaction_type": "none",
+      "state": "wreck",
+      "coordinates": { "x": 90, "y": 74, "z": -3 },
+      "is_decorative": true
+    }
+  ],
+  "combat_zones": [
+    {
+      "id": "cz_parking_main_vehicle_hold",
+      "name": "Defensa junto al auto utilizable",
+      "coordinates": { "x": 74, "y": 66, "z": -3 },
+      "shape": "circle",
+      "radius": 16,
+      "allowed_cover_points": [
+        { "x": 70, "y": 62, "z": -3 },
+        { "x": 78, "y": 62, "z": -3 },
+        { "x": 68, "y": 70, "z": -3 }
+      ],
+      "linked_timed_event_id": "survival_10min_parking"
+    },
+    {
+      "id": "cz_street_ambush_hold",
+      "name": "Resistencia final en calle",
+      "coordinates": { "x": 194, "y": 22, "z": 0 },
+      "shape": "rectangle",
+      "bounds": { "x1": 184, "y1": 12, "x2": 208, "y2": 32 },
+      "allowed_cover_points": [
+        { "x": 190, "y": 18, "z": 0 },
+        { "x": 197, "y": 25, "z": 0 }
+      ],
+      "linked_timed_event_id": "survival_2min_street"
+    }
+  ],
+  "cinematic_events": [
+    {
+      "id": "cine_01_arrival_b3",
+      "sequence_order": 1,
+      "trigger": "on_level_start",
+      "location": { "x": 6, "y": 92, "z": -3 },
+      "summary": "Descenso por escaleras y llegada al 3er subsuelo."
+    },
+    {
+      "id": "cine_02_exit_instruction",
+      "sequence_order": 5,
+      "trigger": "on_reach_exit_view",
+      "location": { "x": 92, "y": 48, "z": -3 },
+      "summary": "El protagonista ve la salida e insta a buscar llaves o romper un vidrio."
+    },
+    {
+      "id": "cine_03_twin_bitten",
+      "sequence_order": 6,
+      "trigger": "on_vehicle_inspection_veh_van_underbite",
+      "location": { "x": 56, "y": 74, "z": -3 },
+      "summary": "Una gemela es mordida por un infectado bajo la camioneta."
+    },
+    {
+      "id": "cine_04_escape_car_found",
+      "sequence_order": 7,
+      "trigger": "on_scripted_ally_discovery",
+      "location": { "x": 74, "y": 66, "z": -3 },
+      "summary": "Una aliada anuncia un auto de 4 puertas con puerta abierta y llave puesta."
+    },
+    {
+      "id": "cine_05_infection_progression",
+      "sequence_order": 9,
+      "trigger": "during_timed_event_survival_10min_parking",
+      "location": { "x": 72, "y": 64, "z": -3 },
+      "summary": "La infección de la gemela mordida avanza visiblemente durante la resistencia."
+    },
+    {
+      "id": "cine_06_sisters_death",
+      "sequence_order": 10,
+      "trigger": "on_complete_survival_10min_parking",
+      "location": { "x": 76, "y": 68, "z": -3 },
+      "summary": "Agotamiento, segunda mordida y muerte entre hermanas en una escena trágica."
+    },
+    {
+      "id": "cine_07_two_survivors_escape",
+      "sequence_order": 11,
+      "trigger": "after_cine_06_sisters_death",
+      "location": { "x": 96, "y": 44, "z": -3 },
+      "summary": "Dos personajes restantes huyen en auto."
+    },
+    {
+      "id": "cine_08_route_santelmo",
+      "sequence_order": 12,
+      "trigger": "on_start_drive_sequence",
+      "location": { "x": 140, "y": 30, "z": 0 },
+      "summary": "Cinemática de trayecto hacia San Telmo."
+    },
+    {
+      "id": "cine_09_final_ambush",
+      "sequence_order": 13,
+      "trigger": "on_reach_two_blocks_before_santelmo",
+      "location": { "x": 188, "y": 18, "z": 0 },
+      "summary": "Emboscada final a dos cuadras del barrio."
+    },
+    {
+      "id": "cine_10_open_ending",
+      "sequence_order": 15,
+      "trigger": "on_complete_survival_2min_street",
+      "location": { "x": 198, "y": 24, "z": 0 },
+      "summary": "Cinemática final abierta y cierre del juego."
+    }
+  ],
+  "timed_survival_events": [
+    {
+      "id": "survival_10min_parking",
+      "name": "Resistencia principal en estacionamiento",
+      "duration_seconds": 600,
+      "combat_zone_id": "cz_parking_main_vehicle_hold",
+      "start_trigger": "after_cine_04_escape_car_found",
+      "enemy_spawn_points": [
+        "sp_horde_main_north",
+        "sp_horde_main_south",
+        "sp_infected_ambience_w"
+      ],
+      "difficulty_curve": "rising",
+      "special_conditions": [
+        "protect_escape_vehicle",
+        "infection_progression_active"
+      ]
+    },
+    {
+      "id": "survival_2min_street",
+      "name": "Resistencia final emboscada",
+      "duration_seconds": 120,
+      "combat_zone_id": "cz_street_ambush_hold",
+      "start_trigger": "after_cine_09_final_ambush",
+      "enemy_spawn_points": ["sp_ambush_street_east"],
+      "difficulty_curve": "high_burst",
+      "special_conditions": ["low_ammo_pressure", "no_full_retreat"]
+    }
+  ],
+  "final_escape": {
+    "escape_vehicle_id": "veh_open_4door_escape",
+    "survivors": ["protagonista", "aliada_conductora"],
+    "departure_coordinates": { "x": 98, "y": 42, "z": -3 },
+    "route": [
+      { "x": 120, "y": 36, "z": -2 },
+      { "x": 140, "y": 30, "z": 0 },
+      { "x": 188, "y": 18, "z": 0 }
+    ],
+    "final_state": "open_ending"
+  }
+}

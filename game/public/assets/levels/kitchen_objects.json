@@ -1,0 +1,69 @@
+{
+  "kitchenObjects": [
+    {
+      "id": "counter-steel-01",
+      "type": "mesada_acero",
+      "position": { "x": 240, "y": 180 },
+      "size": { "width": 160, "height": 48 },
+      "collision": {
+        "enabled": true,
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true
+      },
+      "destructible": false
+    },
+    {
+      "id": "industrial-oven-01",
+      "type": "horno_industrial",
+      "position": { "x": 460, "y": 180 },
+      "size": { "width": 96, "height": 96 },
+      "collision": {
+        "enabled": true,
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true
+      },
+      "destructible": false
+    },
+    {
+      "id": "food-cart-01",
+      "type": "carro_comida",
+      "position": { "x": 620, "y": 260 },
+      "size": { "width": 110, "height": 68 },
+      "collision": {
+        "enabled": true,
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true
+      },
+      "destructible": true
+    },
+    {
+      "id": "tray-rack-01",
+      "type": "bandeja",
+      "position": { "x": 350, "y": 320 },
+      "size": { "width": 72, "height": 24 },
+      "collision": {
+        "enabled": true,
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": false
+      },
+      "destructible": true
+    },
+    {
+      "id": "cold-room-01",
+      "type": "camara_frigorifica",
+      "position": { "x": 760, "y": 170 },
+      "size": { "width": 190, "height": 160 },
+      "collision": {
+        "enabled": true,
+        "shape": "rectangle",
+        "offset": { "x": 0, "y": 0 },
+        "isBlocking": true
+      },
+      "destructible": false
+    }
+  ]
+}

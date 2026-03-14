@@ -1,0 +1,96 @@
+{
+  "levelId": "level_08_oficina_422",
+  "combatId": "office_422_rescue_wave",
+  "area": {
+    "type": "semi_closed",
+    "bounds": {
+      "x": 2120,
+      "y": 1880,
+      "width": 560,
+      "height": 340
+    }
+  },
+  "trigger": {
+    "x": 2100,
+    "y": 1880,
+    "width": 220,
+    "height": 180
+  },
+  "blockExitDuringCombat": true,
+  "exitBlockers": [
+    {
+      "id": "office_422_exit_blocker",
+      "bounds": {
+        "x": 2360,
+        "y": 1880,
+        "width": 44,
+        "height": 250
+      }
+    }
+  ],
+  "spawnPoints": [
+    {
+      "id": "inside_north",
+      "x": 2030,
+      "y": 1760,
+      "lane": "interior"
+    },
+    {
+      "id": "inside_south",
+      "x": 2038,
+      "y": 1990,
+      "lane": "interior"
+    },
+    {
+      "id": "hallway_west",
+      "x": 1888,
+      "y": 1880,
+      "lane": "hallway"
+    },
+    {
+      "id": "door_entry",
+      "x": 2178,
+      "y": 1880,
+      "lane": "door"
+    }
+  ],
+  "reducedSpace": {
+    "enabled": true,
+    "maxAliveEnemies": 4,
+    "spawnTickMs": 220
+  },
+  "waves": [
+    {
+      "id": "office_422_wave_1",
+      "label": "Irrupción inmediata",
+      "enemies": [
+        {
+          "enemyType": "zombie",
+          "count": 4,
+          "spawnPointIds": [
+            "inside_north",
+            "inside_south",
+            "door_entry"
+          ],
+          "spawnIntervalMs": 230
+        }
+      ]
+    },
+    {
+      "id": "office_422_wave_2",
+      "label": "Presión en pasillo",
+      "enemies": [
+        {
+          "enemyType": "zombie",
+          "count": 5,
+          "spawnPointIds": [
+            "hallway_west",
+            "door_entry",
+            "inside_south"
+          ],
+          "spawnIntervalMs": 260
+        }
+      ]
+    }
+  ]
+}

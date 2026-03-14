@@ -1,0 +1,36 @@
+{
+  "levelId": "level8_rescate_oficina_422",
+  "checkpoint": {
+    "id": "p4_rest_ascensores_checkpoint",
+    "label": "Zona de descanso del piso 4",
+    "area": {
+      "x": 1520,
+      "y": 680,
+      "width": 280,
+      "height": 180
+    },
+    "durationMs": 330000,
+    "restoredCheckpoint": {
+      "id": "cp_p4_ascensores",
+      "x": 1520,
+      "y": 680,
+      "floor": 4,
+      "metadata": {
+        "nearby": ["elevator_a", "elevator_b", "elevator_c", "spiral_stairs"],
+        "context": "rest_zone"
+      }
+    },
+    "objectiveDuringCountdown": "Carrera táctica: desciende hasta el piso 1 antes de que se agote el tiempo.",
+    "interactionHintOnStart": "Checkpoint restaurado. 05:30 para llegar al piso 1.",
+    "interactionHintOnExpire": "Tiempo agotado en la extracción vertical.",
+    "startsEnabled": true,
+    "canRetrigger": false,
+    "expirationBehavior": "restart_checkpoint",
+    "penalty": {
+      "healthDamage": 20,
+      "spawnExtraZombies": 4,
+      "objectiveOverride": "Reorganiza la escuadra y vuelve a intentarlo desde el checkpoint.",
+      "interactionHint": "Penalización aplicada por tiempo agotado."
+    }
+  }
+}

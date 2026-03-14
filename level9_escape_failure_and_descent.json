@@ -1,0 +1,356 @@
+{
+  "level_name": "Nivel 9 - Escape fallido y descenso al 3° subsuelo",
+  "sections": [
+    {
+      "id": "s01_piso1_pasillos_inicio",
+      "name": "Inicio en pasillos del piso 1",
+      "order": 1,
+      "floor": 1,
+      "type": "start",
+      "bounds": { "x": 160, "y": 2880, "width": 1280, "height": 544 },
+      "objective": "Reagrupar al equipo y abrir paso hacia Planta Baja",
+      "links_to": ["s02_descenso_planta_baja"]
+    },
+    {
+      "id": "s02_descenso_planta_baja",
+      "name": "Descenso a Planta Baja",
+      "order": 2,
+      "floor": "1_to_0",
+      "type": "transition",
+      "bounds": { "x": 1456, "y": 2912, "width": 352, "height": 384 },
+      "stairs": {
+        "entry_point": { "x": 1552, "y": 3104 },
+        "exit_point": { "x": 640, "y": 3648 },
+        "from_floor": 1,
+        "to_floor": 0
+      },
+      "links_to": ["s03_hall_planta_baja"]
+    },
+    {
+      "id": "s03_hall_planta_baja",
+      "name": "Hall principal y evaluación de salidas",
+      "order": 3,
+      "floor": 0,
+      "type": "narrative_hub",
+      "bounds": { "x": 352, "y": 3424, "width": 1696, "height": 960 },
+      "objective": "Intentar la salida A y luego explorar rutas B, C, D y E",
+      "links_to": [
+        "s04_salida_a_falsa_esperanza",
+        "s05_bucle_exploracion_salidas",
+        "s06_salida_e_decision"
+      ]
+    },
+    {
+      "id": "s04_salida_a_falsa_esperanza",
+      "name": "Salida A bloqueada por horda exterior",
+      "order": 4,
+      "floor": 0,
+      "type": "setpiece",
+      "bounds": { "x": 1984, "y": 3616, "width": 512, "height": 448 },
+      "objective": "Sobrevivir detección y retroceder al hall",
+      "links_to": ["s05_bucle_exploracion_salidas"]
+    },
+    {
+      "id": "s05_bucle_exploracion_salidas",
+      "name": "Búsqueda de salidas B, C y D",
+      "order": 5,
+      "floor": 0,
+      "type": "branching_routes",
+      "bounds": { "x": 64, "y": 3392, "width": 2464, "height": 1312 },
+      "objective": "Probar alternativas y sostener bajas irreversibles",
+      "links_to": ["s06_salida_e_decision"]
+    },
+    {
+      "id": "s06_salida_e_decision",
+      "name": "Salida E y decisión estratégica de descenso",
+      "order": 6,
+      "floor": 0,
+      "type": "cinematic_decision",
+      "bounds": { "x": 224, "y": 4480, "width": 576, "height": 448 },
+      "objective": "Abandonar la salida exterior y bajar por escaleras de servicio",
+      "links_to": ["s07_descenso_subsuelos"]
+    },
+    {
+      "id": "s07_descenso_subsuelos",
+      "name": "Descenso por escaleras hacia subsuelos",
+      "order": 7,
+      "floor": "0_to_-2",
+      "type": "transition",
+      "bounds": { "x": 832, "y": 4512, "width": 416, "height": 736 },
+      "stairs": {
+        "entry_point": { "x": 960, "y": 4704 },
+        "mid_point_b1": { "x": 1056, "y": 4992 },
+        "exit_point_b2": { "x": 1120, "y": 5312 },
+        "from_floor": 0,
+        "to_floor": -2
+      },
+      "links_to": ["s08_b2_cinematica_infeccion"]
+    },
+    {
+      "id": "s08_b2_cinematica_infeccion",
+      "name": "2° subsuelo: infección y suicidio",
+      "order": 8,
+      "floor": -2,
+      "type": "cinematic_loss",
+      "bounds": { "x": 960, "y": 5248, "width": 1056, "height": 576 },
+      "objective": "Contener caos tras evento irreversible y seguir avanzando",
+      "links_to": ["s09_ruta_hasta_escaleras_b3"]
+    },
+    {
+      "id": "s09_ruta_hasta_escaleras_b3",
+      "name": "Avance final a escaleras del 3° subsuelo",
+      "order": 9,
+      "floor": -2,
+      "type": "final_run",
+      "bounds": { "x": 2016, "y": 5312, "width": 1184, "height": 608 },
+      "objective": "Alcanzar acceso al 3° subsuelo bajo presión constante",
+      "links_to": ["s10_sacrificio_final"]
+    },
+    {
+      "id": "s10_sacrificio_final",
+      "name": "Sacrificio final en acceso al 3° subsuelo",
+      "order": 10,
+      "floor": "-2_to_-3",
+      "type": "final_sacrifice_gate",
+      "bounds": { "x": 3200, "y": 5376, "width": 512, "height": 448 },
+      "objective": "Activar cierre manual y permitir escape del protagonista",
+      "links_to": []
+    }
+  ],
+  "spawn_points": [
+    {
+      "id": "sp_player_start_n9",
+      "entity": "player",
+      "section_id": "s01_piso1_pasillos_inicio",
+      "x": 256,
+      "y": 3072,
+      "facing": "right"
+    },
+    {
+      "id": "sp_team_alpha",
+      "entity": "ally_squad",
+      "section_id": "s01_piso1_pasillos_inicio",
+      "x": 352,
+      "y": 3104,
+      "members": ["mara", "ibarra", "soto", "vela", "nora", "dante"],
+      "state": "combat_ready"
+    },
+    {
+      "id": "sp_horde_street_a",
+      "entity": "infected_horde",
+      "section_id": "s04_salida_a_falsa_esperanza",
+      "x": 2432,
+      "y": 3776,
+      "state": "dormant_until_cinematic"
+    }
+  ],
+  "combat_zones": [
+    {
+      "id": "cz_hall_pb_retroceso_a",
+      "section_id": "s03_hall_planta_baja",
+      "shape": "rect",
+      "x": 896,
+      "y": 3712,
+      "width": 672,
+      "height": 352,
+      "waves": 2,
+      "enemy_profile": "infected_fast_mixed",
+      "trigger": "on_cinematic_complete:cine_n9_salida_a_descubierta"
+    },
+    {
+      "id": "cz_salida_b_emboscada",
+      "section_id": "s05_bucle_exploracion_salidas",
+      "shape": "rect",
+      "x": 144,
+      "y": 3936,
+      "width": 640,
+      "height": 320,
+      "waves": 3,
+      "enemy_profile": "infected_crusher_and_swarm",
+      "trigger": "on_enter_exit_route:exit_b"
+    },
+    {
+      "id": "cz_pasillo_b2_final",
+      "section_id": "s09_ruta_hasta_escaleras_b3",
+      "shape": "rect",
+      "x": 2352,
+      "y": 5440,
+      "width": 704,
+      "height": 320,
+      "waves": 2,
+      "enemy_profile": "infected_tunnel_pursuit",
+      "trigger": "after_loss_event:loss_n9_b2_suicide"
+    }
+  ],
+  "exit_routes": [
+    {
+      "id": "exit_a",
+      "label": "Salida A - puerta principal",
+      "location": { "x": 2240, "y": 3776 },
+      "status": "falsa_salida",
+      "state_flow": ["accesible", "detectados_por_horda", "retroceso_obligatorio"],
+      "result": "no_viable"
+    },
+    {
+      "id": "exit_b",
+      "label": "Salida B - muelle lateral",
+      "location": { "x": 384, "y": 4096 },
+      "status": "emboscada_letal",
+      "state_flow": ["accesible", "contencion_fallida", "perdida_irreversible_x2", "bloqueada"],
+      "result": "no_viable"
+    },
+    {
+      "id": "exit_c",
+      "label": "Salida C - estacionamiento frontal",
+      "location": { "x": 1696, "y": 4288 },
+      "status": "colapsada",
+      "state_flow": ["accesible", "porton_atascado", "oleada_en_convergencia"],
+      "result": "no_viable"
+    },
+    {
+      "id": "exit_d",
+      "label": "Salida D - rampa de servicio",
+      "location": { "x": 2032, "y": 4448 },
+      "status": "contaminada",
+      "state_flow": ["accesible", "nube_toxica", "visibilidad_cero"],
+      "result": "no_viable"
+    },
+    {
+      "id": "exit_e",
+      "label": "Salida E - puerta técnica sur",
+      "location": { "x": 544, "y": 4672 },
+      "status": "pivot_estrategico",
+      "state_flow": ["accesible", "exterior_incontrolable", "decision_descenso_subsuelos"],
+      "result": "viable_solo_para_descenso_interno"
+    }
+  ],
+  "cinematic_events": [
+    {
+      "id": "cine_n9_intro_piso1",
+      "section_id": "s01_piso1_pasillos_inicio",
+      "trigger": "on_level_start",
+      "mode": "in_world_dialog",
+      "beats": [
+        "recuento_de_bajas_previas",
+        "objetivo_escape_exterior",
+        "orden_de_descenso_a_pb"
+      ]
+    },
+    {
+      "id": "cine_n9_salida_a_descubierta",
+      "section_id": "s04_salida_a_falsa_esperanza",
+      "trigger": "on_reach_exit:exit_a",
+      "mode": "scripted_camera",
+      "beats": [
+        "apertura_visual_de_calle",
+        "horda_exterior_detecta_al_grupo",
+        "cierre_urgente_de_puerta",
+        "retroceso_al_hall"
+      ]
+    },
+    {
+      "id": "cine_n9_decision_salida_e",
+      "section_id": "s06_salida_e_decision",
+      "trigger": "on_route_statuses_confirmed:[exit_b,exit_c,exit_d]",
+      "mode": "in_world_dialog",
+      "beats": [
+        "confirmacion_sin_salidas_exteriores",
+        "propuesta_de_descender_a_subsuelos",
+        "aprobacion_forzada_por_supervivencia"
+      ]
+    },
+    {
+      "id": "cine_n9_b2_infeccion_suicidio",
+      "section_id": "s08_b2_cinematica_infeccion",
+      "trigger": "on_enter_section",
+      "mode": "close_quarters_cinematic",
+      "beats": [
+        "mordida_durante_forcejeo",
+        "revelacion_de_infeccion_rapida",
+        "suicidio_para_evitar_transformacion",
+        "silencio_breve_y_reanudacion_del_avance"
+      ]
+    },
+    {
+      "id": "cine_n9_sacrificio_final",
+      "section_id": "s10_sacrificio_final",
+      "trigger": "on_reach_escape_gate",
+      "mode": "scripted_finale",
+      "beats": [
+        "dos_aliados_cubren_retaguardia",
+        "activacion_manual_de_compuerta",
+        "separacion_definitiva_del_protagonista"
+      ]
+    }
+  ],
+  "loss_events": [
+    {
+      "id": "loss_n9_exit_b_double",
+      "type": "irreversible_party_loss",
+      "section_id": "s05_bucle_exploracion_salidas",
+      "trigger": "during_combat_zone:cz_salida_b_emboscada",
+      "lost_characters": ["ibarra", "soto"],
+      "cause": "emboscada_en_cuello_de_botella",
+      "persistent_state_flags": ["ally_ibarra_dead", "ally_soto_dead"]
+    },
+    {
+      "id": "loss_n9_b2_suicide",
+      "type": "irreversible_party_loss",
+      "section_id": "s08_b2_cinematica_infeccion",
+      "trigger": "on_cinematic_complete:cine_n9_b2_infeccion_suicidio",
+      "lost_characters": ["vela"],
+      "cause": "infeccion_confirmada_y_suicidio",
+      "persistent_state_flags": ["ally_vela_dead"]
+    },
+    {
+      "id": "loss_n9_final_two_allies",
+      "type": "irreversible_party_loss",
+      "section_id": "s10_sacrificio_final",
+      "trigger": "on_cinematic_complete:cine_n9_sacrificio_final",
+      "lost_characters": ["mara", "nora"],
+      "cause": "sacrificio_para_asegurar_escape",
+      "persistent_state_flags": ["ally_mara_dead", "ally_nora_dead"]
+    }
+  ],
+  "timed_or_pressure_events": [
+    {
+      "id": "pressure_n9_retroceso_a",
+      "type": "pursuit_pressure",
+      "starts_on": "cinematic_event:cine_n9_salida_a_descubierta",
+      "duration_seconds": 45,
+      "fail_condition": "any_ally_downed_before_reaching:s03_hall_planta_baja",
+      "fail_result": "checkpoint_restart"
+    },
+    {
+      "id": "pressure_n9_exit_scan",
+      "type": "multi_route_scan_window",
+      "starts_on": "section_enter:s05_bucle_exploracion_salidas",
+      "duration_seconds": 360,
+      "required_checks": ["exit_b", "exit_c", "exit_d", "exit_e"],
+      "fail_condition": "timer_zero_before_exit_e_decision",
+      "fail_result": "horde_overrun"
+    },
+    {
+      "id": "pressure_n9_final_run_b2",
+      "type": "endless_horde_chase",
+      "starts_on": "loss_event:loss_n9_b2_suicide",
+      "duration_seconds": 120,
+      "target": "reach_section:s10_sacrificio_final",
+      "fail_condition": "player_captured",
+      "fail_result": "checkpoint_restart"
+    }
+  ],
+  "final_sacrifice": {
+    "id": "final_sacrifice_n9_gate_b3",
+    "section_id": "s10_sacrificio_final",
+    "trigger": "player_interact_escape_hatch",
+    "sacrificed_allies": ["mara", "nora"],
+    "survivors_after_event": ["player", "dante"],
+    "mechanical_effect": "rear_gate_manual_lock_and_path_to_b3_opened",
+    "narrative_outcome": "escape_to_b3_with_permanent_losses",
+    "transition_to_next_level": {
+      "next_level_id": "level_10_b3_depths",
+      "spawn": { "x": 3360, "y": 5792, "facing": "down" }
+    }
+  }
+}

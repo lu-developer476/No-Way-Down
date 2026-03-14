@@ -1,0 +1,29 @@
+{
+  "levelId": "level8_rescate_oficina_422",
+  "cinematicId": "level8_post_rescue_sister_message",
+  "triggerId": "rest_area_4f_spiral_stairs",
+  "movementLocked": true,
+  "lockDurationMs": 850,
+  "preDialoguePauseMs": 500,
+  "dialogue": [
+    {
+      "speaker": "aliada_rescatada_422",
+      "text": "Esperen... recibí un mensaje de mi hermana. Está en una sala del piso 1 con más compañeros.",
+      "durationMs": 2600
+    },
+    {
+      "speaker": "hermana_por_mensaje",
+      "text": "Nos encerramos con muebles, pero los infectados reanimados ya están empujando la puerta. No podremos contenerlos mucho más.",
+      "durationMs": 3000
+    },
+    {
+      "speaker": "lider_del_grupo",
+      "text": "Cambio de prioridad: descendemos al piso 1 ahora. Mantengan formación frente a los ascensores y avancen.",
+      "durationMs": 2500
+    }
+  ],
+  "objectiveAfterCinematic": {
+    "id": "reach_floor_1_sister_room",
+    "label": "Desciende al piso 1 y rescata a la hermana de la aliada"
+  }
+}

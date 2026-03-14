@@ -1,0 +1,51 @@
+{
+  "levelId": "level9_subsuelo2",
+  "cinematicId": "level9_subsuelo2_infection_break",
+  "triggerId": "subsuelo2_infection_trigger",
+  "movementLocked": true,
+  "preDialoguePauseMs": 900,
+  "victimMemberId": "mateo",
+  "victimMustHaveStatus": ["esguince", "infectado"],
+  "dialogue": [
+    {
+      "speaker": "Mateo",
+      "text": "No me miren así... ya siento cómo se mueve adentro. Con el tobillo roto no voy a poder correr cuando cambie.",
+      "durationMs": 3400
+    },
+    {
+      "speaker": "Líder",
+      "text": "Todavía podemos cargarte. Aguantá, vamos a encontrar otra salida.",
+      "durationMs": 2900
+    },
+    {
+      "speaker": "Mateo",
+      "text": "No. Si me transformo en este pasillo, los arrastro a todos conmigo. No voy a ser otro peso muerto.",
+      "durationMs": 3300
+    },
+    {
+      "speaker": "Compañera",
+      "text": "Mateo, esperá...",
+      "durationMs": 1700
+    },
+    {
+      "speaker": "Narrador",
+      "text": "Un disparo seco corta la discusión. El grupo se quiebra en silencio mientras un puñado de zombies se acerca a los restos.",
+      "durationMs": 3600
+    },
+    {
+      "speaker": "Líder",
+      "text": "Formación. No se detengan. Si nos quedamos, terminamos igual.",
+      "durationMs": 2200
+    }
+  ],
+  "objectiveAfterCinematic": {
+    "id": "survive_subsuelo2_aftermath",
+    "label": "Atravesá el 2° subsuelo antes de que los zombies rodeen al grupo"
+  },
+  "followUpEncounter": {
+    "enabled": true,
+    "type": "small-zombie-combat",
+    "encounterId": "subsuelo2_aftermath_zombies",
+    "nearbyZombieCount": 5
+  }
+}

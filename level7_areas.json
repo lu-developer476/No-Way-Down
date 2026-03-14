@@ -1,0 +1,75 @@
+{
+  "nivel": 7,
+  "areas_funcionales": [
+    {
+      "nombre": "Desarrollo",
+      "tipo": "operativa",
+      "posicion": "sector norte-centro",
+      "tamano_aproximado_m2": 320,
+      "tiene_combate": true,
+      "tiene_checkpoint": true,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    },
+    {
+      "nombre": "Servicios de Comunicaciones",
+      "tipo": "tecnica",
+      "posicion": "sector noreste",
+      "tamano_aproximado_m2": 180,
+      "tiene_combate": true,
+      "tiene_checkpoint": true,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    },
+    {
+      "nombre": "Instalación e Implementación",
+      "tipo": "logistica",
+      "posicion": "sector oeste",
+      "tamano_aproximado_m2": 260,
+      "tiene_combate": true,
+      "tiene_checkpoint": false,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    },
+    {
+      "nombre": "Equipamiento",
+      "tipo": "almacen",
+      "posicion": "sector suroeste",
+      "tamano_aproximado_m2": 210,
+      "tiene_combate": true,
+      "tiene_checkpoint": false,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    },
+    {
+      "nombre": "baños",
+      "tipo": "servicios",
+      "posicion": "sector centro-este",
+      "tamano_aproximado_m2": 65,
+      "tiene_combate": false,
+      "tiene_checkpoint": false,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    },
+    {
+      "nombre": "cocina pequeña",
+      "tipo": "servicios",
+      "posicion": "sector sur-centro",
+      "tamano_aproximado_m2": 55,
+      "tiene_combate": false,
+      "tiene_checkpoint": false,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    },
+    {
+      "nombre": "puestos de guardia",
+      "tipo": "seguridad",
+      "posicion": "perimetro norte y acceso principal",
+      "tamano_aproximado_m2": 90,
+      "tiene_combate": true,
+      "tiene_checkpoint": true,
+      "tiene_cobertura": true,
+      "contiene_objetos_interactivos": true
+    }
+  ]
+}

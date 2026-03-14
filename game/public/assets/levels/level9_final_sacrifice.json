@@ -1,0 +1,58 @@
+{
+  "levelId": "level9",
+  "eventId": "nivel9_sacrificio_final",
+  "triggerId": "stairs_to_subsuelo3_cornered",
+  "lockMovement": true,
+  "preSceneDelayMs": 450,
+  "holdTheLineDurationMs": 4200,
+  "sacrificeAllies": [
+    "bna_morocho",
+    "mejor_amigo_colorado"
+  ],
+  "requiredTraitsByAllyId": {
+    "bna_morocho": {
+      "hairColor": "negro",
+      "skinTone": "morocho",
+      "shirt": "chomba_azul_bna",
+      "requiredStatuses": [
+        "armado",
+        "consciente"
+      ]
+    },
+    "mejor_amigo_colorado": {
+      "hairColor": "colorado",
+      "nickname": "mejor_amigo",
+      "requiredStatuses": [
+        "armado",
+        "consciente"
+      ]
+    }
+  },
+  "dialogue": [
+    {
+      "speaker": "BNA Morocho",
+      "text": "¡Nos quedamos acá! Bajen YA al tercer subsuelo.",
+      "durationMs": 2200
+    },
+    {
+      "speaker": "Colorado",
+      "text": "Hermano, yo te cubro. No los dejes mirar atrás.",
+      "durationMs": 2200
+    },
+    {
+      "speaker": "Líder del grupo",
+      "text": "¡No! ...",
+      "durationMs": 1500
+    },
+    {
+      "speaker": "BNA Morocho",
+      "text": "Esto termina con ustedes vivos. Corran.",
+      "durationMs": 2200
+    }
+  ],
+  "escapeTransition": {
+    "destination": "subsuelo_3_ingreso",
+    "objectiveId": "escape_with_losses",
+    "objectiveLabel": "Escapar al 3° subsuelo y sobrevivir al costo del sacrificio"
+  }
+}

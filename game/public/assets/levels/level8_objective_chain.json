@@ -1,0 +1,80 @@
+{
+  "levelId": "level8_rescate_oficina_422",
+  "registryKey": "level8ObjectiveChainState",
+  "failChainOnObjectiveFailure": true,
+  "objectives": [
+    {
+      "id": "start_communications_services",
+      "label": "Iniciar en Servicios de Comunicaciones",
+      "description": "Comienza la misión desde el sector de Servicios de Comunicaciones.",
+      "completion": { "type": "section-entered", "targetId": "communications_services" }
+    },
+    {
+      "id": "choose_route",
+      "label": "Decidir ruta por pasillo u oficinas",
+      "completion": { "type": "route-selected", "targetId": "hallway_or_offices" }
+    },
+    {
+      "id": "reach_stairs",
+      "label": "Llegar a escaleras",
+      "completion": { "type": "stairs-reached", "targetId": "stairs_floor4_access" }
+    },
+    {
+      "id": "descend_to_floor4",
+      "label": "Bajar al 4° piso",
+      "completion": { "type": "floor-reached", "targetId": "floor_4" }
+    },
+    {
+      "id": "reach_office_422",
+      "label": "Llegar a oficina 422",
+      "completion": { "type": "section-entered", "targetId": "office_422" }
+    },
+    {
+      "id": "rescue_companion",
+      "label": "Rescatar a la compañera",
+      "completion": { "type": "rescue-completed", "targetId": "office_422_critical_rescue" }
+    },
+    {
+      "id": "survive_office_wave",
+      "label": "Sobrevivir a la oleada dentro de la oficina",
+      "completion": { "type": "combat-completed", "targetId": "office_422_rescue_wave" }
+    },
+    {
+      "id": "reach_rest_zone",
+      "label": "Dirigirse a la zona de descanso frente a 3 ascensores",
+      "completion": { "type": "section-entered", "targetId": "rest_area_4f_spiral_stairs" }
+    },
+    {
+      "id": "play_sister_message",
+      "label": "Activar cinemática del mensaje de la hermana",
+      "completion": { "type": "cinematic-played", "targetId": "level8_post_rescue_sister_message" }
+    },
+    {
+      "id": "restore_checkpoint_start_timer",
+      "label": "Restaurar checkpoint e iniciar temporizador de 5:30",
+      "completion": { "type": "timer-started", "targetId": "p4_rest_ascensores_checkpoint" },
+      "failure": { "type": "timer-expired", "targetId": "p4_rest_ascensores_checkpoint" }
+    },
+    {
+      "id": "reach_floor1",
+      "label": "Llegar al piso 1",
+      "completion": { "type": "floor-reached", "targetId": "floor_1" },
+      "failure": { "type": "timer-expired", "targetId": "p4_rest_ascensores_checkpoint" }
+    },
+    {
+      "id": "eliminate_entry_zombies",
+      "label": "Eliminar al grupo zombie que intenta ingresar",
+      "completion": { "type": "combat-completed", "targetId": "level8-floor1-final-siege" }
+    },
+    {
+      "id": "play_final_cinematic",
+      "label": "Activar cinemática final",
+      "completion": { "type": "cinematic-played", "targetId": "level8_outro_office_422" }
+    },
+    {
+      "id": "unlock_level9_transition",
+      "label": "Habilitar transición al Nivel 9",
+      "completion": { "type": "transition-enabled", "targetId": "level_9_access" }
+    }
+  ]
+}

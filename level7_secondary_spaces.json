@@ -1,0 +1,131 @@
+{
+  "nivel": 7,
+  "espacios_secundarios": [
+    {
+      "tipo": "baños",
+      "posición": {
+        "sector": "centro-este",
+        "referencia": "adyacente al pasillo principal y cerca de servicios"
+      },
+      "tamaño": {
+        "ancho_m": 6,
+        "largo_m": 10,
+        "alto_m": 3,
+        "area_aproximada_m2": 60
+      },
+      "colisión": {
+        "volumen": "rectangular con divisiones internas",
+        "bloquea_paso": true,
+        "obstáculos": ["cubículos", "lavabos", "paredes parciales"]
+      },
+      "interactuable": {
+        "valor": true,
+        "elementos": ["botiquín", "espejo rompible", "taquillas de limpieza"]
+      },
+      "posible_spawn": {
+        "valor": true,
+        "tipos": ["enemigo individual", "recurso médico menor"],
+        "probabilidad": "media"
+      },
+      "cobertura": {
+        "nivel": "media",
+        "elementos": ["marcos de puerta", "cubículos", "paredes parciales"]
+      }
+    },
+    {
+      "tipo": "cocina pequeña",
+      "posición": {
+        "sector": "sur-centro",
+        "referencia": "conectada a una esquina del corredor de oficinas"
+      },
+      "tamaño": {
+        "ancho_m": 5,
+        "largo_m": 8,
+        "alto_m": 3,
+        "area_aproximada_m2": 40
+      },
+      "colisión": {
+        "volumen": "rectangular compacto",
+        "bloquea_paso": true,
+        "obstáculos": ["barra de preparación", "nevera", "mesas altas"]
+      },
+      "interactuable": {
+        "valor": true,
+        "elementos": ["máquina expendedora", "cajones", "microondas"]
+      },
+      "posible_spawn": {
+        "valor": true,
+        "tipos": ["munición ligera", "consumible de energía"],
+        "probabilidad": "media-alta"
+      },
+      "cobertura": {
+        "nivel": "media",
+        "elementos": ["barra", "electrodomésticos", "marco de entrada"]
+      }
+    },
+    {
+      "tipo": "nichos del pasillo",
+      "posición": {
+        "sector": "tramo norte-sur del corredor principal",
+        "referencia": "recesos alternados a ambos lados del pasillo"
+      },
+      "tamaño": {
+        "ancho_m": 2,
+        "largo_m": 3,
+        "alto_m": 3,
+        "area_aproximada_m2": 6,
+        "cantidad": 6
+      },
+      "colisión": {
+        "volumen": "múltiples cavidades cortas",
+        "bloquea_paso": false,
+        "obstáculos": ["armarios técnicos", "carros de mantenimiento", "columnas"]
+      },
+      "interactuable": {
+        "valor": true,
+        "elementos": ["caja de fusibles", "panel de acceso", "contenedor de suministros"]
+      },
+      "posible_spawn": {
+        "valor": true,
+        "tipos": ["enemigo emboscado", "herramienta utilitaria"],
+        "probabilidad": "alta"
+      },
+      "cobertura": {
+        "nivel": "alta",
+        "elementos": ["hendidura del muro", "columnas", "equipamiento técnico"]
+      }
+    },
+    {
+      "tipo": "áreas de descanso menores",
+      "posición": {
+        "sector": "nodos intermedios entre bloques operativos",
+        "referencia": "pequeñas zonas abiertas fuera del eje principal"
+      },
+      "tamaño": {
+        "ancho_m": 4,
+        "largo_m": 5,
+        "alto_m": 3,
+        "area_aproximada_m2": 20,
+        "cantidad": 3
+      },
+      "colisión": {
+        "volumen": "cuadrado abierto",
+        "bloquea_paso": false,
+        "obstáculos": ["sofás", "macetas grandes", "mesas bajas"]
+      },
+      "interactuable": {
+        "valor": true,
+        "elementos": ["dispensador de agua", "taquilla", "terminal de mensajes"]
+      },
+      "posible_spawn": {
+        "valor": true,
+        "tipos": ["intel narrativa", "recurso de soporte", "npc neutral"],
+        "probabilidad": "media"
+      },
+      "cobertura": {
+        "nivel": "media-alta",
+        "elementos": ["mobiliario blando", "esquinas de paso", "separadores"]
+      }
+    }
+  ]
+}

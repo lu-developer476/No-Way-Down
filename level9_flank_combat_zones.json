@@ -1,0 +1,112 @@
+{
+  "levelId": "nivel-9",
+  "combatSystemId": "flanking-escape-cd",
+  "encounters": [
+    {
+      "id": "salida-c",
+      "label": "Salida C - Flanqueo del corredor roto",
+      "trigger": { "x": 2140, "y": 980, "width": 340, "height": 280 },
+      "maxAliveEnemies": 4,
+      "spawnTickMs": 280,
+      "spawnPoints": [
+        { "id": "c-frente", "x": 2010, "y": 860, "tags": ["front", "pressure"] },
+        { "id": "c-lateral-izq", "x": 1890, "y": 1030, "tags": ["flank", "left"] },
+        { "id": "c-lateral-der", "x": 2340, "y": 1015, "tags": ["flank", "right"] },
+        { "id": "c-retaguardia", "x": 2220, "y": 1160, "tags": ["rear", "pressure"] }
+      ],
+      "waves": [
+        {
+          "id": "c-oleada-1",
+          "label": "Primer choque",
+          "enemies": [
+            {
+              "enemyType": "zombie",
+              "count": 4,
+              "spawnPointIds": ["c-frente", "c-lateral-izq"],
+              "spawnIntervalMs": 220
+            }
+          ]
+        },
+        {
+          "id": "c-oleada-2",
+          "label": "Caos de cruce",
+          "enemies": [
+            {
+              "enemyType": "zombie",
+              "count": 6,
+              "spawnIntervalMs": 180,
+              "dynamicSpawn": {
+                "enabled": true,
+                "preferredTags": ["flank", "rear"],
+                "fallbackSpawnPointIds": ["c-lateral-izq", "c-lateral-der", "c-retaguardia"]
+              }
+            }
+          ]
+        }
+      ],
+      "repositionAfterCombat": {
+        "destination": { "x": 2480, "y": 980 },
+        "spreadRadius": 30,
+        "hint": "Reagrupen y sigan hacia la Salida D."
+      }
+    },
+    {
+      "id": "salida-d",
+      "label": "Salida D - Repliegue final",
+      "trigger": { "x": 2860, "y": 940, "width": 360, "height": 300 },
+      "maxAliveEnemies": 5,
+      "spawnTickMs": 260,
+      "spawnPoints": [
+        { "id": "d-frente", "x": 2750, "y": 790, "tags": ["front"] },
+        { "id": "d-lateral-izq", "x": 2620, "y": 980, "tags": ["flank", "left"] },
+        { "id": "d-lateral-der", "x": 3070, "y": 980, "tags": ["flank", "right"] },
+        { "id": "d-cierre", "x": 2890, "y": 1120, "tags": ["rear", "pressure"] }
+      ],
+      "waves": [
+        {
+          "id": "d-oleada-1",
+          "label": "Cierre de pinza",
+          "enemies": [
+            {
+              "enemyType": "zombie",
+              "count": 5,
+              "spawnIntervalMs": 200,
+              "dynamicSpawn": {
+                "enabled": true,
+                "preferredTags": ["flank"],
+                "fallbackSpawnPointIds": ["d-lateral-izq", "d-lateral-der", "d-cierre"]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d-oleada-2",
+          "label": "Ventana de escape",
+          "enemies": [
+            {
+              "enemyType": "zombie",
+              "count": 3,
+              "spawnPointIds": ["d-frente", "d-cierre"],
+              "spawnIntervalMs": 260
+            },
+            {
+              "enemyType": "zombie",
+              "count": 2,
+              "spawnIntervalMs": 170,
+              "dynamicSpawn": {
+                "enabled": true,
+                "preferredTags": ["rear", "flank"],
+                "fallbackSpawnPointIds": ["d-lateral-izq", "d-lateral-der", "d-cierre"]
+              }
+            }
+          ]
+        }
+      ],
+      "repositionAfterCombat": {
+        "destination": { "x": 3250, "y": 920 },
+        "spreadRadius": 34,
+        "hint": "Último repliegue completado: cruzar a la siguiente salida." 
+      }
+    }
+  ]
+}

@@ -1,0 +1,471 @@
+{
+  "level_name": "Nivel 8 - Rescate Oficina 422",
+  "metadata": {
+    "level_id": "level_08_oficina_422",
+    "follows_level": "level_07",
+    "theme": "rescate_contra_reloj",
+    "narrative_owner": "level8NarrativeConfig",
+    "phaser_compatibility": {
+      "tile_size": 32,
+      "coordinate_space": "world_px",
+      "recommended_scene": "Level8Scene",
+      "narrative_decoupled": true
+    },
+    "placeholder_assets": {
+      "tileset_main": "office_tileset_placeholder",
+      "props_office": "office_props_placeholder",
+      "zombie_wave": "zombie_variants_placeholder",
+      "survivor_ally": "ally_survivor_422_placeholder",
+      "ai_ally": "ally_ai_support_placeholder",
+      "cinematic_ui": "cinematic_dialog_ui_placeholder",
+      "elevator_hall": "elevator_hall_props_placeholder",
+      "staircase_spiral": "spiral_staircase_placeholder",
+      "final_gate": "floor1_entry_gate_placeholder"
+    }
+  },
+  "sections": [
+    {
+      "id": "s01_inicio_servicios_5f",
+      "name": "Inicio en Servicios de Comunicaciones (5° piso)",
+      "floor": 5,
+      "type": "start",
+      "bounds": {
+        "x": 128,
+        "y": 256,
+        "width": 640,
+        "height": 448
+      },
+      "objectives": [
+        "Orientarse y activar ruta de rescate a oficina 422",
+        "Retroceder por el sector del nivel 7"
+      ],
+      "links_to": [
+        "s02_reversa_sector_n7"
+      ]
+    },
+    {
+      "id": "s02_reversa_sector_n7",
+      "name": "Recorrido en reversa parcial del Nivel 7",
+      "floor": 5,
+      "type": "traversal",
+      "bounds": {
+        "x": 736,
+        "y": 224,
+        "width": 1152,
+        "height": 576
+      },
+      "reverse_path_reference": {
+        "source_level": "level_07",
+        "source_sector": "servicios_comunicaciones",
+        "traversal_mode": "partial_reverse"
+      },
+      "route_options": [
+        {
+          "id": "ruta_pasillo_principal",
+          "label": "Pasillo principal",
+          "risk": "medio",
+          "path_points": [
+            {
+              "x": 832,
+              "y": 480
+            },
+            {
+              "x": 1184,
+              "y": 480
+            },
+            {
+              "x": 1536,
+              "y": 512
+            }
+          ],
+          "notes": "Mayor visibilidad, más enemigos en línea frontal"
+        },
+        {
+          "id": "ruta_oficinas_internas",
+          "label": "Oficinas internas",
+          "risk": "alto",
+          "path_points": [
+            {
+              "x": 800,
+              "y": 352
+            },
+            {
+              "x": 1120,
+              "y": 320
+            },
+            {
+              "x": 1488,
+              "y": 416
+            }
+          ],
+          "notes": "Espacios cerrados con flanqueo cercano"
+        }
+      ],
+      "links_to": [
+        "s03_escaleras_bajada"
+      ]
+    },
+    {
+      "id": "s03_escaleras_bajada",
+      "name": "Acceso a escaleras y descenso",
+      "floor": "5_to_4",
+      "type": "transition",
+      "bounds": {
+        "x": 1888,
+        "y": 384,
+        "width": 320,
+        "height": 320
+      },
+      "stairs": {
+        "entry_point": {
+          "x": 1968,
+          "y": 544
+        },
+        "exit_point": {
+          "x": 448,
+          "y": 1824
+        },
+        "from_floor": 5,
+        "to_floor": 4
+      },
+      "links_to": [
+        "s04_pasillo_hacia_422"
+      ]
+    },
+    {
+      "id": "s04_pasillo_hacia_422",
+      "name": "Desplazamiento por 4° piso hacia oficina 422",
+      "floor": 4,
+      "type": "traversal",
+      "bounds": {
+        "x": 256,
+        "y": 1600,
+        "width": 1536,
+        "height": 576
+      },
+      "landmarks": [
+        "senalizacion_oficina_422_placeholder",
+        "extintores_pasillo_placeholder",
+        "mobiliario_colapsado_placeholder"
+      ],
+      "links_to": [
+        "s05_oficina_422_rescate"
+      ]
+    },
+    {
+      "id": "s05_oficina_422_rescate",
+      "name": "Oficina 422 (área especial de rescate)",
+      "floor": 4,
+      "type": "special_rescue",
+      "bounds": {
+        "x": 1792,
+        "y": 1664,
+        "width": 576,
+        "height": 448
+      },
+      "special_area": {
+        "room_code": "422",
+        "rescue_target": "ally_survivor_422",
+        "rescue_trigger": {
+          "x": 2048,
+          "y": 1888,
+          "radius": 64
+        },
+        "exit_door": {
+          "x": 1824,
+          "y": 1888
+        }
+      },
+      "links_to": [
+        "s06_salida_a_hall_ascensores"
+      ]
+    },
+    {
+      "id": "s06_salida_a_hall_ascensores",
+      "name": "Salida al área de descanso frente a 3 ascensores",
+      "floor": 4,
+      "type": "narrative_hub",
+      "bounds": {
+        "x": 960,
+        "y": 2304,
+        "width": 1024,
+        "height": 512
+      },
+      "landmarks": [
+        "triple_elevator_doors_placeholder",
+        "spiral_staircase_placeholder",
+        "lounge_benches_placeholder"
+      ],
+      "links_to": [
+        "s07_objetivo_descenso_piso1"
+      ]
+    },
+    {
+      "id": "s07_objetivo_descenso_piso1",
+      "name": "Ruta al piso 1 para defensa final",
+      "floor": "4_to_1",
+      "type": "final_transition",
+      "bounds": {
+        "x": 1984,
+        "y": 2368,
+        "width": 384,
+        "height": 448
+      },
+      "transition": {
+        "via": "spiral_staircase",
+        "start": {
+          "x": 2112,
+          "y": 2528
+        },
+        "target_floor_entry": {
+          "x": 736,
+          "y": 3328
+        }
+      }
+    }
+  ],
+  "spawn_points": [
+    {
+      "id": "sp_player_start",
+      "entity": "player",
+      "section_id": "s01_inicio_servicios_5f",
+      "x": 224,
+      "y": 544,
+      "facing": "right"
+    },
+    {
+      "id": "sp_ally_office_422",
+      "entity": "ally_survivor_422",
+      "section_id": "s05_oficina_422_rescate",
+      "x": 2080,
+      "y": 1888,
+      "state": "trapped"
+    },
+    {
+      "id": "sp_ai_ally_hall",
+      "entity": "ally_ai_support",
+      "section_id": "s06_salida_a_hall_ascensores",
+      "x": 1344,
+      "y": 2528,
+      "state": "awaiting_cinematic"
+    }
+  ],
+  "combat_zones": [
+    {
+      "id": "cz_reversa_5f_pasillo",
+      "section_id": "s02_reversa_sector_n7",
+      "shape": "rect",
+      "x": 960,
+      "y": 416,
+      "width": 544,
+      "height": 224,
+      "waves": 2,
+      "enemy_profile": "zombie_mixed_light",
+      "spawn_nodes": [
+        {
+          "x": 960,
+          "y": 448
+        },
+        {
+          "x": 1472,
+          "y": 576
+        }
+      ]
+    },
+    {
+      "id": "cz_reversa_5f_internas",
+      "section_id": "s02_reversa_sector_n7",
+      "shape": "rect",
+      "x": 832,
+      "y": 288,
+      "width": 704,
+      "height": 192,
+      "waves": 1,
+      "enemy_profile": "zombie_close_quarters",
+      "spawn_nodes": [
+        {
+          "x": 864,
+          "y": 320
+        },
+        {
+          "x": 1440,
+          "y": 384
+        }
+      ]
+    },
+    {
+      "id": "cz_pasillo_4f_pre422",
+      "section_id": "s04_pasillo_hacia_422",
+      "shape": "rect",
+      "x": 608,
+      "y": 1728,
+      "width": 960,
+      "height": 256,
+      "waves": 2,
+      "enemy_profile": "zombie_mixed_medium",
+      "spawn_nodes": [
+        {
+          "x": 672,
+          "y": 1856
+        },
+        {
+          "x": 1504,
+          "y": 1760
+        }
+      ]
+    },
+    {
+      "id": "cz_oficina_422_oleada_nueva",
+      "section_id": "s05_oficina_422_rescate",
+      "shape": "rect",
+      "x": 1856,
+      "y": 1728,
+      "width": 448,
+      "height": 320,
+      "waves": 3,
+      "enemy_profile": "zombie_assault_indoor",
+      "trigger": "on_rescue_confirmed",
+      "spawn_nodes": [
+        {
+          "x": 1888,
+          "y": 1760
+        },
+        {
+          "x": 2240,
+          "y": 1760
+        },
+        {
+          "x": 2048,
+          "y": 2016
+        }
+      ]
+    },
+    {
+      "id": "cz_final_floor1_gate",
+      "section_id": "s07_objetivo_descenso_piso1",
+      "shape": "rect",
+      "x": 608,
+      "y": 3200,
+      "width": 896,
+      "height": 416,
+      "waves": 2,
+      "enemy_profile": "zombie_breach_group",
+      "trigger": "on_reach_floor1",
+      "notes": "Grupo zombie intentando ingresar a sala principal"
+    }
+  ],
+  "checkpoint_events": [
+    {
+      "id": "cp_restaurado_hall_ascensores",
+      "section_id": "s06_salida_a_hall_ascensores",
+      "event_type": "restore_checkpoint",
+      "trigger": {
+        "x": 1376,
+        "y": 2496,
+        "radius": 72
+      },
+      "restored_from": "checkpoint_level7_last_valid",
+      "state_tag": "level8_checkpoint_restored",
+      "starts_timer": true,
+      "timer_ref": "te_level8_descenso_piso1"
+    }
+  ],
+  "cinematic_events": [
+    {
+      "id": "cine_intro_llamada_422",
+      "section_id": "s01_inicio_servicios_5f",
+      "trigger": "on_level_start",
+      "mode": "radio_overlay",
+      "dialogue": [
+        {
+          "speaker": "compañera_422",
+          "tone": "urgente",
+          "text": "¡Estoy en la oficina 422 del cuarto piso! Estoy rodeada, necesito extracción inmediata."
+        },
+        {
+          "speaker": "protagonista",
+          "tone": "decidido",
+          "text": "Recibido. Voy en camino. Mantén la puerta trabada el mayor tiempo posible."
+        }
+      ],
+      "on_complete": [
+        "activate_section:s02_reversa_sector_n7"
+      ]
+    },
+    {
+      "id": "cine_rescate_oficina_422",
+      "section_id": "s05_oficina_422_rescate",
+      "trigger": "on_interact_rescue_target",
+      "mode": "in_world_dialog",
+      "dialogue": [
+        {
+          "speaker": "compañera_422",
+          "tone": "agotada",
+          "text": "Pensé que no llegarías... escucho más golpes afuera."
+        },
+        {
+          "speaker": "protagonista",
+          "tone": "calmado",
+          "text": "Nos movemos juntos. Cúbrete detrás de mí cuando empiece la oleada."
+        },
+        {
+          "speaker": "sistema",
+          "tone": "alerta",
+          "text": "Múltiples contactos detectados en accesos de oficina 422."
+        }
+      ],
+      "on_complete": [
+        "start_combat_zone:cz_oficina_422_oleada_nueva"
+      ]
+    },
+    {
+      "id": "cine_hall_mensaje_hermana",
+      "section_id": "s06_salida_a_hall_ascensores",
+      "trigger": "on_enter_section",
+      "mode": "in_world_dialog",
+      "dialogue": [
+        {
+          "speaker": "aliada_ia",
+          "tone": "preocupada",
+          "text": "Me llegó un mensaje de mi hermana... está en el piso 1, barricada en una sala."
+        },
+        {
+          "speaker": "protagonista",
+          "tone": "urgente",
+          "text": "Entonces bajamos ahora. Si ese grupo entra, no tendrán salida."
+        },
+        {
+          "speaker": "sistema",
+          "tone": "objetivo_actualizado",
+          "text": "Checkpoint restaurado. Inicia cuenta regresiva para defensa en piso 1."
+        }
+      ],
+      "on_complete": [
+        "trigger_checkpoint:cp_restaurado_hall_ascensores",
+        "start_timer:te_level8_descenso_piso1",
+        "set_objective:fo_defensa_piso1"
+      ]
+    }
+  ],
+  "timed_escape": {
+    "id": "te_level8_descenso_piso1",
+    "enabled": true,
+    "starts_on_event": "cp_restaurado_hall_ascensores",
+    "duration_seconds": 330,
+    "duration_readable": "05:30",
+    "ui_label": "Tiempo para llegar al piso 1",
+    "fail_condition": "timer_reaches_zero_before_final_zone_cleared",
+    "fail_result": "mission_failed_retry_from_restored_checkpoint"
+  },
+  "final_objective": {
+    "id": "fo_defensa_piso1",
+    "title": "Descender al piso 1 y contener la irrupción",
+    "description": "Llegar al piso 1 antes de que termine el temporizador y eliminar al grupo zombie que intenta ingresar a la sala.",
+    "target_floor": 1,
+    "completion_conditions": [
+      "player_reaches_floor1_entry",
+      "combat_zone_cleared:cz_final_floor1_gate"
+    ],
+    "success_state": "level8_completed"
+  }
+}

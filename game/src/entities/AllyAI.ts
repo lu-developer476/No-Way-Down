@@ -12,8 +12,11 @@ const ALLY_CATCHUP_DISTANCE = 260;
 const ALLY_TELEPORT_DISTANCE = 620;
 const ALLY_TARGET_DETECTION_RANGE = 340;
 const ALLY_ATTACK_RANGE = 210;
+const ALLY_ATTACK_MIN_DISTANCE = 92;
 const ALLY_COMBAT_REPOSITION_DISTANCE = 130;
 const ALLY_PLAYER_BLOCK_RADIUS = 32;
+const ALLY_TARGET_MEMORY_MS = 1200;
+const ALLY_TARGET_SWITCH_BIAS = 48;
 
 export interface AllyProfile {
   id: string;
@@ -30,6 +33,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly nameTag: Phaser.GameObjects.Text;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
+  private currentTargetId?: Zombie;
+  private currentTargetLockedUntil = 0;
 
   constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile, projectileSystem: ProjectileSystem) {
     const visual = getCharacterVisualById(profile.characterId);
@@ -76,7 +81,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    const target = this.pickTarget(zombies);
+    const target = this.pickTarget(zombies, player, currentTime);
     if (target) {
       this.handleCombat(player, target, currentTime);
       return;
@@ -95,19 +100,20 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   private handleCombat(player: Player, target: Zombie, currentTime: number): void {
     const distanceToTarget = Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
+    const combatAnchor = this.getCombatAnchor(player, target);
 
-    if (distanceToTarget <= ALLY_ATTACK_RANGE) {
-      this.setVelocity(0, 0);
-      this.tryAttackTarget(target, currentTime);
-
-      const desiredX = player.x + Math.sign(this.profile.followOffsetX || 1) * ALLY_COMBAT_REPOSITION_DISTANCE;
-      if (Math.abs(this.x - desiredX) > 110) {
-        this.setVelocityX(Math.sign(desiredX - this.x) * (ALLY_FOLLOW_SPEED * 0.75));
-      }
+    if (distanceToTarget < ALLY_ATTACK_MIN_DISTANCE) {
+      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED * 0.9, ALLY_STOP_RADIUS + 10);
       return;
     }
 
-    this.moveTowards(target.x - Math.sign(target.x - player.x || 1) * 14, target.y, ALLY_ATTACK_APPROACH_SPEED, ALLY_STOP_RADIUS);
+    if (distanceToTarget <= ALLY_ATTACK_RANGE) {
+      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_FOLLOW_SPEED * 0.95, ALLY_STOP_RADIUS + 16);
+      this.tryAttackTarget(target);
+      return;
+    }
+
+    this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED, ALLY_STOP_RADIUS);
   }
 
   private moveTowards(targetX: number, targetY: number, baseSpeed: number, stopRadius: number): void {
@@ -163,7 +169,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  private tryAttackTarget(target: Zombie, currentTime: number): void {
+  private tryAttackTarget(target: Zombie): void {
     if (!target.active) {
       return;
     }
@@ -193,23 +199,55 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  private pickTarget(zombies: Zombie[]): Zombie | undefined {
+  private pickTarget(zombies: Zombie[], player: Player, currentTime: number): Zombie | undefined {
+    if (this.currentTargetId?.active) {
+      const currentDistance = Phaser.Math.Distance.Between(this.x, this.y, this.currentTargetId.x, this.currentTargetId.y);
+      if (currentDistance <= ALLY_TARGET_DETECTION_RANGE + ALLY_TARGET_SWITCH_BIAS) {
+        if (currentTime <= this.currentTargetLockedUntil) {
+          return this.currentTargetId;
+        }
+      } else {
+        this.currentTargetId = undefined;
+      }
+    }
+
     let closestZombie: Zombie | undefined;
-    let closestDistance = ALLY_TARGET_DETECTION_RANGE;
+    let bestScore = Number.POSITIVE_INFINITY;
 
     zombies.forEach((zombie) => {
       if (!zombie.active) {
         return;
       }
 
-      const distance = Phaser.Math.Distance.Between(this.x, this.y, zombie.x, zombie.y);
-      if (distance < closestDistance) {
-        closestDistance = distance;
+      const allyDistance = Phaser.Math.Distance.Between(this.x, this.y, zombie.x, zombie.y);
+      if (allyDistance > ALLY_TARGET_DETECTION_RANGE) {
+        return;
+      }
+
+      const playerDistance = Phaser.Math.Distance.Between(player.x, player.y, zombie.x, zombie.y);
+      const score = allyDistance * 0.72 + playerDistance * 0.28;
+
+      if (score < bestScore) {
+        bestScore = score;
         closestZombie = zombie;
       }
     });
 
+    if (closestZombie) {
+      this.currentTargetId = closestZombie;
+      this.currentTargetLockedUntil = currentTime + ALLY_TARGET_MEMORY_MS;
+    }
+
     return closestZombie;
+  }
+
+  private getCombatAnchor(player: Player, target: Zombie): { x: number; y: number } {
+    const lateralSign = this.profile.followOffsetX >= 0 ? 1 : -1;
+    const targetToPlayerDirection = Math.sign(player.x - target.x) || -lateralSign;
+    const desiredX = target.x + targetToPlayerDirection * ALLY_COMBAT_REPOSITION_DISTANCE + lateralSign * 26;
+    const desiredY = target.y + this.profile.followOffsetY * 0.35;
+
+    return { x: desiredX, y: desiredY };
   }
 
   preUpdate(time: number, delta: number): void {

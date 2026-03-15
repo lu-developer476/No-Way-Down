@@ -1,0 +1,65 @@
+{
+  "levelId": "level10_subsuelo3_estacionamiento",
+  "vehicles": [
+    {
+      "id": "vehiculo_chatarra_01",
+      "label": "Sedán oxidado",
+      "type": "decorative",
+      "position": { "x": 240, "y": 510 },
+      "size": { "width": 180, "height": 88 },
+      "interactable": false,
+      "containsResources": false,
+      "containsWeapon": false,
+      "containsAmmo": false,
+      "containsUsefulVehicleItem": false,
+      "locked": false,
+      "breakable": false,
+      "usableForEscape": false
+    },
+    {
+      "id": "vehiculo_suv_02",
+      "label": "SUV familiar",
+      "type": "interactive-resource",
+      "position": { "x": 640, "y": 506 },
+      "size": { "width": 196, "height": 92 },
+      "interactable": true,
+      "containsResources": true,
+      "containsWeapon": false,
+      "containsAmmo": true,
+      "containsUsefulVehicleItem": false,
+      "locked": false,
+      "breakable": false,
+      "usableForEscape": false
+    },
+    {
+      "id": "vehiculo_blindado_03",
+      "label": "Patrullero reforzado",
+      "type": "locked-breakable",
+      "position": { "x": 1060, "y": 508 },
+      "size": { "width": 210, "height": 96 },
+      "interactable": true,
+      "containsResources": true,
+      "containsWeapon": true,
+      "containsAmmo": true,
+      "containsUsefulVehicleItem": true,
+      "locked": true,
+      "breakable": true,
+      "usableForEscape": false
+    },
+    {
+      "id": "vehiculo_escape_04",
+      "label": "Cupé negro operativo",
+      "type": "escape-usable",
+      "position": { "x": 1480, "y": 504 },
+      "size": { "width": 212, "height": 94 },
+      "interactable": true,
+      "containsResources": true,
+      "containsWeapon": false,
+      "containsAmmo": false,
+      "containsUsefulVehicleItem": true,
+      "locked": false,
+      "breakable": false,
+      "usableForEscape": true
+    }
+  ]
+}

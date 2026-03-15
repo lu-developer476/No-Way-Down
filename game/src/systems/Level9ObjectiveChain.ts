@@ -1,3 +1,5 @@
+import { ObjectiveSystem } from './core/ObjectiveSystem';
+
 export type Level9ObjectiveState = 'locked' | 'active' | 'completed' | 'failed';
 
 export type Level9ObjectiveEventType =
@@ -89,6 +91,7 @@ export class Level9ObjectiveChain {
   private readonly config: Level9ObjectiveChainConfig;
   private readonly callbacks: Level9ObjectiveChainCallbacks;
   private readonly runtimeObjectives: RuntimeObjective[];
+  private readonly coreObjectiveSystem: ObjectiveSystem;
   private readonly failChainOnObjectiveFailure: boolean;
   private activeObjectiveIndex: number;
 
@@ -109,6 +112,15 @@ export class Level9ObjectiveChain {
       config: objective,
       state: index === 0 ? 'active' : 'locked'
     }));
+
+    this.coreObjectiveSystem = new ObjectiveSystem(
+      config.objectives.map((objective) => ({
+        id: objective.id,
+        label: objective.label,
+        completion: [{ type: objective.completion.type, targetId: objective.completion.targetId }],
+        failure: objective.failure ? { type: objective.failure.type, targetId: objective.failure.targetId } : undefined
+      }))
+    );
 
     this.activeObjectiveIndex = this.runtimeObjectives.findIndex((objective) => objective.state === 'active');
 
@@ -154,11 +166,17 @@ export class Level9ObjectiveChain {
     }
 
     if (activeObjective.config.failure && this.matchesRule(activeObjective.config.failure, event)) {
+      this.coreObjectiveSystem.failActiveObjective();
       this.failObjective(activeObjective, event);
       return [];
     }
 
     if (!this.matchesRule(activeObjective.config.completion, event)) {
+      return [];
+    }
+
+    const coreCompleted = this.coreObjectiveSystem.process({ type: event.type, targetId: event.targetId });
+    if (!coreCompleted) {
       return [];
     }
 

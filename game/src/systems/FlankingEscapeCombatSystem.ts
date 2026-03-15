@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Zombie } from '../entities/Zombie';
 import { ZombieSystem } from './ZombieSystem';
+import { CombatEventSystem } from './core/CombatEventSystem';
 
 export type FlankingEscapeEncounterState = 'idle' | 'active' | 'completed';
 export type FlankingEscapeZoneId = 'salida-c' | 'salida-d';
@@ -120,6 +121,7 @@ export class FlankingEscapeCombatSystem {
 
   private readonly encounterMap: Map<FlankingEscapeZoneId, RuntimeEncounter>;
   private readonly encounterOrder: RuntimeEncounter[];
+  private readonly coreCombatEvents: CombatEventSystem;
   private activeEncounter?: RuntimeEncounter;
 
   static fromJson(
@@ -148,6 +150,7 @@ export class FlankingEscapeCombatSystem {
     this.validateConfig(config);
 
     this.encounterOrder = config.encounters.map((encounterConfig) => this.createRuntimeEncounter(encounterConfig));
+    this.coreCombatEvents = new CombatEventSystem(config.encounters.map((encounter) => encounter.id));
     this.encounterMap = new Map(this.encounterOrder.map((encounter) => [encounter.config.id, encounter]));
 
     this.bindTriggerActivation();
@@ -224,6 +227,7 @@ export class FlankingEscapeCombatSystem {
 
     this.setTriggerEnabled(encounter.trigger, false);
 
+    this.coreCombatEvents.applyEvent({ type: 'zone-activated', zoneId: encounter.config.id });
     this.callbacks.onEncounterStarted?.(encounter.config);
     this.callbacks.onHintChanged?.(`Flanqueo en ${encounter.config.label}: moverse y contener la presión.`);
 
@@ -242,6 +246,7 @@ export class FlankingEscapeCombatSystem {
     encounter.pendingSpawnQueue = this.buildSpawnQueue(encounter, wave, encounter.activeWaveIndex);
     encounter.nextSpawnAt = this.scene.time.now;
 
+    this.coreCombatEvents.applyEvent({ type: 'wave-started', zoneId: encounter.config.id, waveId: wave.id });
     this.callbacks.onWaveStarted?.({
       encounterId: encounter.config.id,
       waveId: wave.id,
@@ -382,6 +387,7 @@ export class FlankingEscapeCombatSystem {
       encounter.config.repositionAfterCombat.hint ?? `Repliegue completado: avanzar hacia la siguiente salida.`
     );
 
+    this.coreCombatEvents.applyEvent({ type: 'combat-closed', zoneId: encounter.config.id });
     this.callbacks.onEncounterCompleted?.({
       encounterId: encounter.config.id,
       reposition: encounter.config.repositionAfterCombat,

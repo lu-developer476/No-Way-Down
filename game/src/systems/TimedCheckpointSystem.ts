@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { CheckpointTimerSystem } from './core/CheckpointTimerSystem';
 
 export type TimedCheckpointState = 'idle' | 'running' | 'expired' | 'completed';
 
@@ -107,6 +108,7 @@ export class TimedCheckpointSystem {
   private readonly callbacks: TimedCheckpointCallbacks;
   private readonly options: Required<TimedCheckpointSystemOptions>;
   private readonly config: TimedCheckpointSystemConfig;
+  private readonly coreCheckpointSystem = new CheckpointTimerSystem();
   private readonly zone: Phaser.GameObjects.Zone;
 
   private state: TimedCheckpointState = 'idle';
@@ -148,6 +150,7 @@ export class TimedCheckpointSystem {
     };
 
     this.validateConfig(config);
+    this.coreCheckpointSystem.defineTimer(config.checkpoint.id, config.checkpoint.durationMs);
 
     this.zone = scene.add.zone(
       config.checkpoint.area.x,
@@ -174,6 +177,7 @@ export class TimedCheckpointSystem {
 
     const remainingMs = Math.max(0, this.deadlineAt - now);
     const remainingSeconds = Math.ceil(remainingMs / 1000);
+    this.coreCheckpointSystem.updateTimer(this.config.checkpoint.id, this.scene.game.loop.delta);
 
     if (this.lastBroadcastSecond !== remainingSeconds) {
       this.lastBroadcastSecond = remainingSeconds;
@@ -238,6 +242,7 @@ export class TimedCheckpointSystem {
 
     this.state = 'running';
     this.activationCount += 1;
+    this.coreCheckpointSystem.startTimer(this.config.checkpoint.id);
     this.startedAt = now;
     this.deadlineAt = now + this.config.checkpoint.durationMs;
     this.expiredAt = undefined;
@@ -247,6 +252,13 @@ export class TimedCheckpointSystem {
     const snapshot = this.getSnapshot(now);
 
     if (this.options.syncRegistry) {
+      this.coreCheckpointSystem.activateCheckpoint({
+        id: this.config.checkpoint.restoredCheckpoint.id,
+        label: this.config.checkpoint.label,
+        restored: true,
+        position: { x: this.config.checkpoint.area.x, y: this.config.checkpoint.area.y }
+      });
+
       this.scene.registry.set(this.options.checkpointRegistryKey, {
         ...this.config.checkpoint.restoredCheckpoint,
         restoredBy: actor.name || actor.type,

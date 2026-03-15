@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Zombie } from '../entities/Zombie';
 import { ZombieSystem } from './ZombieSystem';
+import { CombatEventSystem } from './core/CombatEventSystem';
 
 export type Office422CombatAreaType = 'closed' | 'semi_closed';
 export type Office422CombatState = 'idle' | 'active' | 'completed';
@@ -95,6 +96,7 @@ export class Office422WaveCombatSystem {
   private readonly spawnPointById: Map<string, Office422SpawnPointConfig>;
   private readonly exitBlockers: Phaser.GameObjects.Rectangle[];
   private readonly aliveEnemies = new Set<Zombie>();
+  private readonly coreCombatEvents: CombatEventSystem;
 
   private triggerZone: Phaser.GameObjects.Zone;
   private state: Office422CombatState = 'idle';
@@ -129,6 +131,7 @@ export class Office422WaveCombatSystem {
     this.validateConfig(config);
 
     this.spawnPointById = new Map(config.spawnPoints.map((spawnPoint) => [spawnPoint.id, spawnPoint]));
+    this.coreCombatEvents = new CombatEventSystem([config.combatId]);
     this.triggerZone = this.createTriggerZone(config.trigger);
     this.exitBlockers = this.createExitBlockers(config.exitBlockers);
 
@@ -247,6 +250,7 @@ export class Office422WaveCombatSystem {
       this.setExitBlocked(true);
     }
 
+    this.coreCombatEvents.applyEvent({ type: 'zone-activated', zoneId: this.config.combatId });
     this.callbacks.onCombatStarted?.({ combatId: this.config.combatId, triggeredBy });
     this.startNextWave();
   }
@@ -263,6 +267,7 @@ export class Office422WaveCombatSystem {
     this.pendingSpawnQueue = this.buildWaveSpawnQueue(wave);
     this.nextSpawnAt = this.scene.time.now;
 
+    this.coreCombatEvents.applyEvent({ type: 'wave-started', zoneId: this.config.combatId, waveId: wave.id });
     this.callbacks.onWaveStarted?.({
       combatId: this.config.combatId,
       waveId: wave.id,

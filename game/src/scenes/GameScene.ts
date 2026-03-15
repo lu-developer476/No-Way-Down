@@ -23,7 +23,8 @@ import {
   LOCAL_PROGRESS_STORAGE_KEY,
   InitialRunSetup,
   loadInitialRunSetup,
-  parseCheckpoint
+  parseCheckpoint,
+  PartyHudMember
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
@@ -273,7 +274,7 @@ export class GameScene extends Phaser.Scene {
     this.createPauseMenuUI();
 
     this.cameras.main.setBackgroundColor('#0a1020');
-    this.registry.set('playerHealth', this.getTeamHealthTotal());
+    this.registry.set('partyHud', this.buildPartyHud());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
     this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M');
@@ -322,7 +323,7 @@ export class GameScene extends Phaser.Scene {
       this.allySystem?.update(leadPlayer, this.zombieSystem?.getActiveZombies() ?? [], this.time.now);
     }
 
-    this.registry.set('playerHealth', this.getTeamHealthTotal());
+    this.registry.set('partyHud', this.buildPartyHud());
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
@@ -626,7 +627,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.registry.set('playerHealth', this.getTeamHealthTotal());
+    this.registry.set('partyHud', this.buildPartyHud());
 
     if (player.isDead()) {
       this.handlePlayerDefeat();
@@ -683,8 +684,25 @@ export class GameScene extends Phaser.Scene {
     return fallback;
   }
 
-  private getTeamHealthTotal(): number {
-    return this.players.reduce((acc, player) => acc + player.getHealth(), 0);
+  private buildPartyHud(): PartyHudMember[] {
+    const setup = this.getInitialSetup();
+    const protagonistCharacterId = setup?.protagonist === 'giovanna' ? 'giovanna' : 'alan';
+
+    return this.players.map((player) => {
+      const profile = player.getProfile();
+      const runtime = player.getRuntimeConfig();
+      const role: PartyHudMember['role'] = profile.characterId === protagonistCharacterId
+        ? 'protagonist'
+        : 'ally';
+
+      return {
+        id: `player-${profile.slot}`,
+        name: runtime.name,
+        role,
+        health: player.getHealth(),
+        maxHealth: player.getMaxHealth()
+      };
+    });
   }
 
   private getAveragePlayerPosition(): Phaser.Math.Vector2 {

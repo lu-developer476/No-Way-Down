@@ -1,10 +1,16 @@
 import Phaser from 'phaser';
+import { PartyHudMember } from './sceneShared';
+
+interface PartyHudRow {
+  container: Phaser.GameObjects.Container;
+  nameText: Phaser.GameObjects.Text;
+  roleText: Phaser.GameObjects.Text;
+  hpText: Phaser.GameObjects.Text;
+  hpFill: Phaser.GameObjects.Rectangle;
+}
 
 export class UIScene extends Phaser.Scene {
-  private healthValue = 0;
-  private maxHealthValue = 100;
-  private healthFill?: Phaser.GameObjects.Rectangle;
-  private healthLabel?: Phaser.GameObjects.Text;
+  private partyRows: PartyHudRow[] = [];
   private zombieCountText?: Phaser.GameObjects.Text;
   private objectiveText?: Phaser.GameObjects.Text;
   private interactionText?: Phaser.GameObjects.Text;
@@ -25,8 +31,7 @@ export class UIScene extends Phaser.Scene {
     this.createHudFrame();
 
     this.registry.events.on('changedata-interactionHint', this.handleInteractionHintChanged, this);
-
-    this.registry.events.on('changedata-playerHealth', this.handleHealthChanged, this);
+    this.registry.events.on('changedata-partyHud', this.handlePartyHudChanged, this);
     this.registry.events.on('changedata-zombiesRemaining', this.handleZombiesChanged, this);
     this.registry.events.on('changedata-currentObjective', this.handleObjectiveChanged, this);
     this.registry.events.on('changedata-isGamePaused', this.handlePauseStateChanged, this);
@@ -35,7 +40,7 @@ export class UIScene extends Phaser.Scene {
     this.registry.events.on('changedata-gameDifficultyLabel', this.handleDifficultyChanged, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.registry.events.off('changedata-playerHealth', this.handleHealthChanged, this);
+      this.registry.events.off('changedata-partyHud', this.handlePartyHudChanged, this);
       this.registry.events.off('changedata-zombiesRemaining', this.handleZombiesChanged, this);
       this.registry.events.off('changedata-currentObjective', this.handleObjectiveChanged, this);
       this.registry.events.off('changedata-isGamePaused', this.handlePauseStateChanged, this);
@@ -49,7 +54,7 @@ export class UIScene extends Phaser.Scene {
   }
 
   private refreshFromRegistry(): void {
-    this.handleHealthChanged(this.registry, this.registry.get('playerHealth') ?? 0);
+    this.handlePartyHudChanged(this.registry, this.registry.get('partyHud') ?? []);
     this.handleZombiesChanged(this.registry, this.registry.get('zombiesRemaining') ?? 0);
     this.handleObjectiveChanged(this.registry, this.registry.get('currentObjective') ?? '');
     this.handleInteractionHintChanged(this.registry, this.registry.get('interactionHint') ?? '');
@@ -59,13 +64,28 @@ export class UIScene extends Phaser.Scene {
     this.handleDifficultyChanged(this.registry, this.registry.get('gameDifficultyLabel') ?? 'Complejo');
   }
 
-  private handleHealthChanged(_parent: Phaser.Data.DataManager, value: number): void {
-    this.healthValue = Math.max(0, Math.round(value));
-    this.maxHealthValue = Math.max(this.maxHealthValue, this.healthValue);
+  private handlePartyHudChanged(_parent: Phaser.Data.DataManager, value: PartyHudMember[]): void {
+    const members = Array.isArray(value) ? value : [];
 
-    const width = Phaser.Math.Clamp((this.healthValue / this.maxHealthValue) * 184, 0, 184);
-    this.healthFill?.setSize(width, 14);
-    this.healthLabel?.setText(`VIDA ${this.healthValue}`);
+    this.partyRows.forEach((row, index) => {
+      const member = members[index];
+      if (!member) {
+        row.container.setVisible(false);
+        return;
+      }
+
+      const hp = Phaser.Math.Clamp(Math.round(member.health), 0, Math.max(1, member.maxHealth));
+      const maxHp = Math.max(1, Math.round(member.maxHealth));
+      const hpRatio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
+      const roleLabel = member.role === 'protagonist' ? 'CONTROLADO' : 'ALIADO';
+      const barColor = member.role === 'protagonist' ? 0x38bdf8 : 0x34d399;
+
+      row.nameText.setText(member.name.toUpperCase());
+      row.roleText.setText(roleLabel).setColor(member.role === 'protagonist' ? '#7dd3fc' : '#86efac');
+      row.hpText.setText(`${hp}/${maxHp}`);
+      row.hpFill.setSize(140 * hpRatio, 8).setFillStyle(barColor, 1);
+      row.container.setVisible(true);
+    });
   }
 
   private handleZombiesChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -83,12 +103,9 @@ export class UIScene extends Phaser.Scene {
       .setVisible(Boolean(hint));
   }
 
-
   private handlePauseStateChanged(_parent: Phaser.Data.DataManager, isPaused: boolean): void {
     this.controlsHintText?.setAlpha(isPaused ? 0.4 : 0.8);
   }
-
-
 
   private handleAudioMutedChanged(_parent: Phaser.Data.DataManager, isMuted: boolean): void {
     this.audioStateText?.setText(isMuted ? 'Audio: Muted' : 'Audio: Unmuted');
@@ -113,36 +130,62 @@ export class UIScene extends Phaser.Scene {
   private createHudFrame(): void {
     const pixelFont = '"Courier New", monospace';
 
-    this.add.rectangle(168, 76, 304, 120, 0x0b1020, 0.84)
+    this.add.rectangle(188, 98, 344, 164, 0x0b1020, 0.84)
       .setStrokeStyle(3, 0x38bdf8, 0.9)
       .setScrollFactor(0);
 
-    this.add.rectangle(108, 44, 184, 14, 0x1f2937, 1)
-      .setOrigin(0, 0)
-      .setScrollFactor(0)
-      .setStrokeStyle(2, 0x94a3b8, 1);
-
-    this.healthFill = this.add.rectangle(110, 46, 180, 10, 0x22c55e, 1)
-      .setOrigin(0, 0)
-      .setScrollFactor(0);
-
-    this.healthLabel = this.add.text(24, 40, 'VIDA 0', {
+    this.add.text(24, 22, 'PARTY', {
       color: '#e2e8f0',
       fontSize: '14px',
-      fontFamily: pixelFont
+      fontFamily: pixelFont,
+      fontStyle: 'bold'
     }).setScrollFactor(0);
 
-    this.zombieCountText = this.add.text(24, 66, '', {
+    for (let i = 0; i < 4; i += 1) {
+      const y = 44 + i * 30;
+      const nameText = this.add.text(24, y, '', {
+        color: '#f8fafc',
+        fontSize: '12px',
+        fontFamily: pixelFont,
+        fontStyle: 'bold'
+      }).setScrollFactor(0);
+
+      const roleText = this.add.text(170, y, '', {
+        color: '#86efac',
+        fontSize: '10px',
+        fontFamily: pixelFont
+      }).setScrollFactor(0);
+
+      const hpBg = this.add.rectangle(24, y + 14, 140, 8, 0x1f2937, 1)
+        .setOrigin(0, 0)
+        .setScrollFactor(0)
+        .setStrokeStyle(1, 0x475569, 1);
+
+      const hpFill = this.add.rectangle(24, y + 14, 0, 8, 0x22c55e, 1)
+        .setOrigin(0, 0)
+        .setScrollFactor(0);
+
+      const hpText = this.add.text(172, y + 11, '', {
+        color: '#cbd5e1',
+        fontSize: '10px',
+        fontFamily: pixelFont
+      }).setScrollFactor(0);
+
+      const container = this.add.container(0, 0, [nameText, roleText, hpBg, hpFill, hpText]).setVisible(false);
+      this.partyRows.push({ container, nameText, roleText, hpFill, hpText });
+    }
+
+    this.zombieCountText = this.add.text(24, 166, '', {
       color: '#fca5a5',
       fontSize: '14px',
       fontFamily: pixelFont
     }).setScrollFactor(0);
 
-    this.objectiveText = this.add.text(24, 90, '', {
+    this.objectiveText = this.add.text(24, 190, '', {
       color: '#fde047',
       fontSize: '13px',
       fontFamily: pixelFont,
-      wordWrap: { width: 278 }
+      wordWrap: { width: 320 }
     }).setScrollFactor(0);
 
     this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Mover A/D · Disparar F · Pausa ESC · Audio M', {

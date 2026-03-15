@@ -7,6 +7,16 @@ export interface Checkpoint {
 }
 
 export const DEFAULT_PLAYER_ID = 'local-player';
+
+
+export interface PartyHudMember {
+  id: string;
+  name: string;
+  role: 'protagonist' | 'ally';
+  health: number;
+  maxHealth: number;
+}
+
 export const MAX_PLAYER_SEPARATION_PX = 320;
 export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 export const INITIAL_SETUP_STORAGE_KEY = 'nwd.setup.initial';

@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { PlayerConfig } from '../config/localMultiplayer';
 import { StairAnimationKeys } from '../systems/StairSystem';
+import { getCharacterVisualById } from '../config/characterVisuals';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -20,11 +21,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private invulnerableUntil = 0;
   private isDeadState = false;
   private readonly profile: PlayerConfig;
+  private readonly characterVisualId: string;
+  private readonly nameTag: Phaser.GameObjects.Text;
   private isClimbing = false;
   private climbAnimations: StairAnimationKeys = {};
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem, profile: PlayerConfig) {
-    super(scene, x, y, 'player-base-0');
+    const characterVisual = getCharacterVisualById(profile.characterId);
+    super(scene, x, y, `${characterVisual.id}-base-0`);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -35,6 +39,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.projectileSystem = projectileSystem;
     this.profile = profile;
+    this.characterVisualId = characterVisual.id;
     this.setTint(profile.color);
 
     const keyboard = scene.input.keyboard;
@@ -48,7 +53,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.downKey = keyboard.addKey(profile.controls.down);
     this.shootKey = keyboard.addKey(profile.controls.shoot);
 
-    this.play('player-idle', true);
+    this.play(`${this.characterVisualId}-idle`, true);
+
+    this.nameTag = scene.add.text(this.x, this.y - 42, profile.name, {
+      fontSize: '10px',
+      color: '#f8fafc',
+      stroke: '#0f172a',
+      strokeThickness: 3,
+      fontStyle: 'bold'
+    });
+    this.nameTag.setOrigin(0.5, 1);
+    this.nameTag.setDepth(30);
   }
 
   update(): void {
@@ -82,7 +97,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
-      this.play('player-shoot', true);
+      this.play(`${this.characterVisualId}-shoot`, true);
       this.projectileSystem.tryFire({
         originX: this.x + this.lookDirection * 24,
         originY: this.y - 6,
@@ -90,9 +105,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       });
     }
 
-    if (!this.isClimbing && (!this.anims.isPlaying || this.anims.currentAnim?.key === 'player-idle' || this.anims.currentAnim?.key === 'player-run')) {
-      this.play(isMovingHorizontally ? 'player-run' : 'player-idle', true);
+    if (!this.isClimbing && (!this.anims.isPlaying || this.anims.currentAnim?.key === `${this.characterVisualId}-idle` || this.anims.currentAnim?.key === `${this.characterVisualId}-run`)) {
+      this.play(isMovingHorizontally ? `${this.characterVisualId}-run` : `${this.characterVisualId}-idle`, true);
     }
+
+    this.updateNameTagPosition();
   }
 
 
@@ -115,16 +132,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (!isClimbing) {
-      this.play(this.climbAnimations.idle ?? 'player-idle', true);
+      this.play(this.climbAnimations.idle ?? `${this.characterVisualId}-idle`, true);
     }
   }
 
   playClimbAnimation(): void {
-    this.play(this.climbAnimations.climb ?? 'player-run', true);
+    this.play(this.climbAnimations.climb ?? `${this.characterVisualId}-run`, true);
   }
 
   playClimbIdleAnimation(): void {
-    this.play(this.climbAnimations.idle ?? 'player-idle', true);
+    this.play(this.climbAnimations.idle ?? `${this.characterVisualId}-idle`, true);
   }
 
   takeDamage(amount: number, currentTime: number): boolean {
@@ -134,7 +151,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.healthPoints = Math.max(0, this.healthPoints - amount);
     this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
-    this.play('player-hurt', true);
+    this.play(`${this.characterVisualId}-hurt`, true);
     this.setTintFill(0xf87171);
     this.scene.time.delayedCall(120, () => {
       if (this.active) {
@@ -165,5 +182,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   getProfile(): PlayerConfig {
     return this.profile;
+  }
+
+  destroy(fromScene?: boolean): void {
+    this.nameTag.destroy();
+    super.destroy(fromScene);
+  }
+
+  private updateNameTagPosition(): void {
+    this.nameTag.setPosition(this.x, this.y - 42);
+    this.nameTag.setVisible(this.active);
   }
 }

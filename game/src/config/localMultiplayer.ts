@@ -13,6 +13,7 @@ export interface PlayerControlScheme {
 export interface PlayerConfig {
   slot: PlayerSlot;
   name: string;
+  characterId: string;
   color: number;
   controls: PlayerControlScheme;
 }
@@ -20,7 +21,8 @@ export interface PlayerConfig {
 const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
   1: {
     slot: 1,
-    name: 'Player 1',
+    name: 'Alan',
+    characterId: 'alan',
     color: 0xfacc15,
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.LEFT,
@@ -32,7 +34,8 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
   },
   2: {
     slot: 2,
-    name: 'Player 2',
+    name: 'Nahir',
+    characterId: 'nahir',
     color: 0x38bdf8,
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.A,
@@ -44,7 +47,8 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
   },
   3: {
     slot: 3,
-    name: 'Player 3',
+    name: 'Damian',
+    characterId: 'damian',
     color: 0x34d399,
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.J,
@@ -56,7 +60,8 @@ const PLAYER_CONFIGS: Record<PlayerSlot, PlayerConfig> = {
   },
   4: {
     slot: 4,
-    name: 'Player 4',
+    name: 'Giovanna',
+    characterId: 'giovanna',
     color: 0xf472b6,
     controls: {
       left: Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR,

@@ -5,14 +5,16 @@ import { Zombie } from '../entities/Zombie';
 
 const INITIAL_ALLY_PROFILES: AllyProfile[] = [
   {
-    id: 'ally-alpha',
-    name: 'Ally Alpha',
+    id: 'ally-yamil',
+    name: 'Yamil',
+    characterId: 'yamil',
     followOffsetX: -70,
     tint: 0x93c5fd
   },
   {
-    id: 'ally-bravo',
-    name: 'Ally Bravo',
+    id: 'ally-hernan',
+    name: 'Hernan',
+    characterId: 'hernan',
     followOffsetX: 70,
     tint: 0xa7f3d0
   }

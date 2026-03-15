@@ -3,6 +3,7 @@ import { Player } from './Player';
 import { Zombie } from './Zombie';
 import { getCharacterVisualById } from '../config/characterVisuals';
 import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
+import { ProjectileSystem } from '../systems/ProjectileSystem';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -23,53 +24,21 @@ export interface AllyProfile {
   tint: number;
 }
 
-
-function getWeaponCooldown(weapon: string): number {
-  switch (weapon) {
-    case 'smg':
-      return 260;
-    case 'pistol':
-      return 420;
-    case 'revolver':
-      return 520;
-    case 'shotgun':
-      return 680;
-    case 'sniper_rifle':
-      return 760;
-    case 'carbine':
-      return 480;
-    default:
-      return 520;
-  }
-}
-
-function getWeaponDamage(weapon: string): number {
-  switch (weapon) {
-    case 'shotgun':
-      return 2;
-    case 'sniper_rifle':
-      return 3;
-    case 'carbine':
-      return 2;
-    default:
-      return 1;
-  }
-}
-
 export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: AllyProfile;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
   private readonly runtimeConfig: CharacterRuntimeConfig;
-  private attackReadyAt = 0;
+  private readonly projectileSystem: ProjectileSystem;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile) {
+  constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile, projectileSystem: ProjectileSystem) {
     const visual = getCharacterVisualById(profile.characterId);
     super(scene, x, y, `${visual.id}-base-0`);
 
     this.profile = profile;
     this.characterVisualId = visual.id;
     this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
+    this.projectileSystem = projectileSystem;
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -195,12 +164,24 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   }
 
   private tryAttackTarget(target: Zombie, currentTime: number): void {
-    if (currentTime < this.attackReadyAt || !target.active) {
+    if (!target.active) {
       return;
     }
 
-    target.takeDamage(getWeaponDamage(this.runtimeConfig.baseWeapon));
-    this.attackReadyAt = currentTime + getWeaponCooldown(this.runtimeConfig.baseWeapon);
+    const direction = target.x >= this.x ? 1 : -1;
+    this.setFlipX(direction < 0);
+
+    const fired = this.projectileSystem.tryFire({
+      originX: this.x + direction * 22,
+      originY: this.y - 8,
+      direction,
+      weapon: this.runtimeConfig.weaponRuntime.key,
+      shooterId: this.profile.id
+    });
+
+    if (!fired) {
+      return;
+    }
 
     this.play(`${this.characterVisualId}-shoot`, true);
     this.setTintFill(0xfef08a);

@@ -3,6 +3,7 @@ import { AllyAI, AllyProfile } from '../entities/AllyAI';
 import { Player } from '../entities/Player';
 import { Zombie } from '../entities/Zombie';
 import { AllySeedConfig } from '../config/localMultiplayer';
+import { ProjectileSystem } from './ProjectileSystem';
 
 const DEFAULT_LANE_OFFSETS_X = [-74, 74, -118, 118, -154, 154, -190, 190];
 const DEFAULT_LANE_OFFSETS_Y = [-8, -12, -8, -12, -4, -8, -4, -8];
@@ -10,9 +11,11 @@ const DEFAULT_LANE_OFFSETS_Y = [-8, -12, -8, -12, -4, -8, -4, -8];
 export class AllySystem {
   private readonly scene: Phaser.Scene;
   private readonly allies: Phaser.Physics.Arcade.Group;
+  private readonly projectileSystem: ProjectileSystem;
 
-  constructor(scene: Phaser.Scene, maxAllies = 8) {
+  constructor(scene: Phaser.Scene, projectileSystem: ProjectileSystem, maxAllies = 8) {
     this.scene = scene;
+    this.projectileSystem = projectileSystem;
     this.allies = this.scene.physics.add.group({
       classType: AllyAI,
       maxSize: maxAllies,
@@ -55,7 +58,7 @@ export class AllySystem {
   }
 
   private spawnAtPlayer(profile: AllyProfile, player: Player): AllyAI | null {
-    const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y + profile.followOffsetY, profile);
+    const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y + profile.followOffsetY, profile, this.projectileSystem);
     this.allies.add(ally);
     return ally;
   }

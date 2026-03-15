@@ -106,7 +106,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         originX: this.x + this.lookDirection * 24,
         originY: this.y - 6,
         direction: this.lookDirection,
-        weapon: this.runtimeConfig.baseWeapon,
+        weapon: this.runtimeConfig.weaponRuntime.key,
         shooterId: `player-${this.profile.slot}`
       });
 

@@ -3,7 +3,7 @@ import { getAudioManager } from '../audio/AudioManager';
 
 const DEFAULT_ZOMBIE_SPEED = 80;
 const DEFAULT_DETECTION_RANGE = 260;
-const DEFAULT_HEALTH = 3;
+export const DEFAULT_ZOMBIE_HEALTH = 3;
 
 export class Zombie extends Phaser.Physics.Arcade.Sprite {
   private healthPoints: number;
@@ -25,7 +25,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.healthPoints = options.health ?? DEFAULT_HEALTH;
+    this.healthPoints = options.health ?? DEFAULT_ZOMBIE_HEALTH;
     this.moveSpeed = options.moveSpeed ?? DEFAULT_ZOMBIE_SPEED;
     this.detectionRange = options.detectionRange ?? DEFAULT_DETECTION_RANGE;
 
@@ -71,6 +71,14 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     if (this.healthPoints <= 0) {
       this.die();
     }
+  }
+
+  resetStats(options: { health?: number } = {}): void {
+    this.healthPoints = options.health ?? DEFAULT_ZOMBIE_HEALTH;
+  }
+
+  getHealth(): number {
+    return this.healthPoints;
   }
 
   private die(): void {

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { CombatEvent, CombatEventSystem } from './core/CombatEventSystem';
 
 export type Level10FinalStreetHoldState = 'idle' | 'armed' | 'active' | 'completed' | 'failed';
 
@@ -73,6 +74,7 @@ export interface Level10FinalStreetHoldCallbacks {
   ) => void;
   onTimerTick?: (snapshot: Level10FinalStreetHoldSnapshot) => void;
   onSpawnRequested?: (request: Level10FinalStreetSpawnRequest, snapshot: Level10FinalStreetHoldSnapshot) => void;
+  onCombatEvent?: (event: CombatEvent, snapshot: Level10FinalStreetHoldSnapshot) => void;
   onHoldFailed?: (context: { defeatedSurvivorId: string }, snapshot: Level10FinalStreetHoldSnapshot) => void;
   onHoldCompleted?: (
     context: { holdId: string; finalCinematicTriggerId: string },
@@ -91,6 +93,7 @@ export interface Level10FinalStreetHoldCallbacks {
 export class Level10FinalStreetHoldSystem {
   private readonly config: Level10FinalStreetHoldConfig;
   private readonly callbacks: Level10FinalStreetHoldCallbacks;
+  private readonly coreCombatEvents: CombatEventSystem;
 
   private state: Level10FinalStreetHoldState = 'idle';
   private startedAt?: number;
@@ -98,6 +101,7 @@ export class Level10FinalStreetHoldSystem {
   private failedAt?: number;
   private elapsedMs = 0;
   private currentPhaseId?: string;
+  private startedPhaseIds = new Set<string>();
   private readonly lastSpawnByPhaseId = new Map<string, number>();
 
   static fromJson(
@@ -114,6 +118,7 @@ export class Level10FinalStreetHoldSystem {
       spawnPhases: [...config.spawnPhases].sort((a, b) => a.startAtMs - b.startAtMs)
     };
     this.callbacks = callbacks;
+    this.coreCombatEvents = new CombatEventSystem([this.config.holdId]);
   }
 
   armFromPreviousCinematic(context: { cinematicId: string; triggerId: string }): boolean {
@@ -144,8 +149,11 @@ export class Level10FinalStreetHoldSystem {
     this.elapsedMs = 0;
     this.currentPhaseId = undefined;
     this.lastSpawnByPhaseId.clear();
+    this.startedPhaseIds.clear();
 
     const snapshot = this.getSnapshot();
+    this.emitCombatEvent({ type: 'zone-activated', zoneId: this.config.holdId });
+    this.emitCombatEvent({ type: 'wave-started', zoneId: this.config.holdId, waveId: 'hold-start' });
     this.callbacks.onHoldStarted?.({
       holdId: this.config.holdId,
       previousCinematicId: this.config.previousCinematicId,
@@ -167,12 +175,23 @@ export class Level10FinalStreetHoldSystem {
     this.dispatchSpawnRequests();
 
     const snapshot = this.getSnapshot();
+    this.emitCombatEvent({
+      type: 'spawn-triggered',
+      zoneId: this.config.holdId,
+      waveId: this.currentPhaseId ?? 'hold-start',
+      metadata: {
+        elapsedMs: this.elapsedMs,
+        remainingMs: snapshot.remainingMs,
+        warningState: snapshot.warningState
+      }
+    });
     this.callbacks.onTimerTick?.(snapshot);
 
     if (this.elapsedMs >= this.config.timer.durationMs) {
       this.state = 'completed';
       this.completedAt = now;
       const completedSnapshot = this.getSnapshot();
+      this.emitCombatEvent({ type: 'zone-cleared', zoneId: this.config.holdId });
       this.callbacks.onHoldCompleted?.(
         {
           holdId: this.config.holdId,
@@ -190,6 +209,11 @@ export class Level10FinalStreetHoldSystem {
 
     this.state = 'failed';
     this.failedAt = now;
+    this.emitCombatEvent({
+      type: 'combat-closed',
+      zoneId: this.config.holdId,
+      metadata: { failed: true, defeatedSurvivorId: survivorId }
+    });
     this.callbacks.onHoldFailed?.({ defeatedSurvivorId: survivorId }, this.getSnapshot());
     return true;
   }
@@ -230,6 +254,11 @@ export class Level10FinalStreetHoldSystem {
 
     this.currentPhaseId = currentPhase.id;
 
+    if (!this.startedPhaseIds.has(currentPhase.id)) {
+      this.startedPhaseIds.add(currentPhase.id);
+      this.emitCombatEvent({ type: 'wave-started', zoneId: this.config.holdId, waveId: currentPhase.id });
+    }
+
     const lastSpawnAt = this.lastSpawnByPhaseId.get(currentPhase.id) ?? (currentPhase.startAtMs - currentPhase.spawnIntervalMs);
     const shouldSpawn = this.elapsedMs - lastSpawnAt >= currentPhase.spawnIntervalMs;
     if (!shouldSpawn) {
@@ -247,6 +276,11 @@ export class Level10FinalStreetHoldSystem {
     };
 
     this.callbacks.onSpawnRequested?.(request, this.getSnapshot());
+  }
+
+  private emitCombatEvent(event: CombatEvent): void {
+    this.coreCombatEvents.applyEvent(event);
+    this.callbacks.onCombatEvent?.(event, this.getSnapshot());
   }
 
   private pickSpawnPoint(spawnPointIds: string[]): string {

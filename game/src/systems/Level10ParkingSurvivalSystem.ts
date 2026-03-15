@@ -1,3 +1,5 @@
+import { CombatEvent, CombatEventSystem } from './core/CombatEventSystem';
+
 export type Level10ParkingSurvivalState = 'idle' | 'active' | 'completed' | 'failed';
 export type Level10ParkingPressureMode = 'waves' | 'continuous' | 'hybrid';
 
@@ -117,18 +119,22 @@ export interface Level10ParkingSurvivalCallbacks {
     payload: Level10ParkingInfectionMilestonePayload,
     snapshot: Level10ParkingSurvivalSnapshot
   ) => void;
+  onCombatEvent?: (event: CombatEvent, snapshot: Level10ParkingSurvivalSnapshot) => void;
   onCompleted?: (snapshot: Level10ParkingSurvivalSnapshot) => void;
 }
 
 export class Level10ParkingSurvivalSystem {
   private readonly config: Level10ParkingSurvivalConfig;
   private readonly callbacks: Level10ParkingSurvivalCallbacks;
+  private readonly coreCombatEvents: CombatEventSystem;
 
   private state: Level10ParkingSurvivalState = 'idle';
   private elapsedMs = 0;
   private lastWaveSpawnById = new Map<string, number>();
   private lastContinuousSpawnAt = 0;
   private spawnQueue: Level10ParkingSpawnRequest[] = [];
+  private startedWaveIds = new Set<string>();
+  private continuousPressureStarted = false;
   private triggeredNarrativeEventIds = new Set<string>();
   private triggeredInfectionMilestoneIds = new Set<string>();
 
@@ -151,6 +157,7 @@ export class Level10ParkingSurvivalSystem {
       }
     };
     this.callbacks = callbacks;
+    this.coreCombatEvents = new CombatEventSystem([this.config.survivalId]);
   }
 
   start(): void {
@@ -165,7 +172,11 @@ export class Level10ParkingSurvivalSystem {
     this.triggeredNarrativeEventIds.clear();
     this.triggeredInfectionMilestoneIds.clear();
     this.lastWaveSpawnById.clear();
+    this.startedWaveIds.clear();
+    this.continuousPressureStarted = false;
 
+    this.emitCombatEvent({ type: 'zone-activated', zoneId: this.config.survivalId, metadata: { mode: this.config.pressureMode } });
+    this.emitCombatEvent({ type: 'wave-started', zoneId: this.config.survivalId, waveId: 'survival-start' });
     this.callbacks.onStarted?.(this.getSnapshot());
     this.emitTimerTick();
   }
@@ -185,6 +196,7 @@ export class Level10ParkingSurvivalSystem {
 
     if (this.elapsedMs >= this.config.durationMs) {
       this.state = 'completed';
+      this.emitCombatEvent({ type: 'zone-cleared', zoneId: this.config.survivalId });
       this.callbacks.onCompleted?.(this.getSnapshot());
     }
   }
@@ -195,6 +207,11 @@ export class Level10ParkingSurvivalSystem {
     }
 
     this.state = 'failed';
+    this.emitCombatEvent({
+      type: 'combat-closed',
+      zoneId: this.config.survivalId,
+      metadata: { failed: true, reason: 'survival-failed' }
+    });
   }
 
   consumeSpawnQueue(maxItems = Number.POSITIVE_INFINITY): Level10ParkingSpawnRequest[] {
@@ -234,6 +251,11 @@ export class Level10ParkingSurvivalSystem {
         return;
       }
 
+      if (!this.startedWaveIds.has(wave.id)) {
+        this.startedWaveIds.add(wave.id);
+        this.emitCombatEvent({ type: 'wave-started', zoneId: this.config.survivalId, waveId: wave.id });
+      }
+
       const lastSpawnAt = this.lastWaveSpawnById.get(wave.id) ?? wave.startAtMs - wave.spawnIntervalMs;
       if (this.elapsedMs - lastSpawnAt < wave.spawnIntervalMs) {
         return;
@@ -271,6 +293,10 @@ export class Level10ParkingSurvivalSystem {
     }
 
     this.lastContinuousSpawnAt = this.elapsedMs;
+    if (!this.continuousPressureStarted) {
+      this.continuousPressureStarted = true;
+      this.emitCombatEvent({ type: 'wave-started', zoneId: this.config.survivalId, waveId: 'continuous-pressure' });
+    }
 
     const spawnPointId = this.pickSpawnPoint(pressure.spawnPointIds);
     const request: Level10ParkingSpawnRequest = {
@@ -337,6 +363,16 @@ export class Level10ParkingSurvivalSystem {
 
   private emitTimerTick(): void {
     const remainingMs = Math.max(0, this.config.durationMs - this.elapsedMs);
+    this.emitCombatEvent({
+      type: 'spawn-triggered',
+      zoneId: this.config.survivalId,
+      waveId: this.resolveProgressWaveId(),
+      metadata: {
+        elapsedMs: this.elapsedMs,
+        remainingMs,
+        warningState: remainingMs <= this.config.visibleTimer.warningThresholdMs
+      }
+    });
     this.callbacks.onTimerTick?.({
       remainingMs,
       timerLabel: this.formatTimer(remainingMs),
@@ -351,6 +387,27 @@ export class Level10ParkingSurvivalSystem {
 
     const index = Math.floor(Math.random() * spawnPointIds.length);
     return spawnPointIds[index];
+  }
+
+  private resolveProgressWaveId(): string {
+    const activeWave = this.config.waves.find(
+      (wave) => this.elapsedMs >= wave.startAtMs && this.elapsedMs <= wave.startAtMs + wave.durationMs
+    );
+
+    if (activeWave) {
+      return activeWave.id;
+    }
+
+    if (this.config.pressureMode !== 'waves' && this.continuousPressureStarted) {
+      return 'continuous-pressure';
+    }
+
+    return 'survival-start';
+  }
+
+  private emitCombatEvent(event: CombatEvent): void {
+    this.coreCombatEvents.applyEvent(event);
+    this.callbacks.onCombatEvent?.(event, this.getSnapshot());
   }
 
   private formatTimer(remainingMs: number): string {

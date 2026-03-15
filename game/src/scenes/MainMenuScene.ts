@@ -25,7 +25,7 @@ interface SetupActionOption {
 
 type SetupStep = 'protagonist' | 'difficulty' | 'party' | 'confirm';
 
-const REQUIRED_PARTY = ['Damián', 'Nahir', 'Lorena', 'Selene'] as const;
+const REQUIRED_PARTY = ['Alan Nahuel', 'Giovanna', 'Damián', 'Nahir'] as const;
 const OPTIONAL_PARTY = ['Celestino', 'Hernán', 'Yamil'] as const;
 
 export class MainMenuScene extends Phaser.Scene {

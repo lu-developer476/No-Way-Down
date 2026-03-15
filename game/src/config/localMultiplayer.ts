@@ -76,11 +76,10 @@ export function getInitialPartySeed(setup?: InitialRunSetup | null): PartySeedCo
     : 'alan';
 
   const selectedMembers = new Set<PartyCharacterId>([
-    protagonist,
+    'alan',
+    'giovanna',
     'damian',
-    'nahir',
-    'lorena',
-    'selene'
+    'nahir'
   ]);
 
   (setup?.party.optional ?? []).forEach((optionalName) => {

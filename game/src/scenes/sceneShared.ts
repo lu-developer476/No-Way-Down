@@ -9,6 +9,26 @@ export interface Checkpoint {
 export const DEFAULT_PLAYER_ID = 'local-player';
 export const MAX_PLAYER_SEPARATION_PX = 320;
 export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
+export const INITIAL_SETUP_STORAGE_KEY = 'nwd.setup.initial';
+
+export type PlayableProtagonist = 'alan-nahuel' | 'giovanna';
+export type GameDifficulty = 'complejo' | 'pesadilla';
+
+export interface InitialRunSetup {
+  protagonist: PlayableProtagonist;
+  difficulty: GameDifficulty;
+  party: {
+    required: string[];
+    optional: string[];
+  };
+  startedAt: string;
+  version: 1;
+}
+
+interface LocalProgressLike {
+  current_level?: unknown;
+  checkpoint?: unknown;
+}
 
 export function getScenePlayerId(): string {
   return import.meta.env.VITE_PLAYER_ID ?? DEFAULT_PLAYER_ID;
@@ -37,6 +57,68 @@ export function getAveragePlayerPosition(players: Player[]): Phaser.Math.Vector2
   );
 
   return new Phaser.Math.Vector2(totals.x / players.length, totals.y / players.length);
+}
+
+export function saveInitialRunSetup(setup: InitialRunSetup): void {
+  localStorage.setItem(INITIAL_SETUP_STORAGE_KEY, JSON.stringify(setup));
+}
+
+export function loadInitialRunSetup(): InitialRunSetup | null {
+  const raw = localStorage.getItem(INITIAL_SETUP_STORAGE_KEY);
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as Partial<InitialRunSetup>;
+
+    if ((parsed.version ?? 0) !== 1) {
+      return null;
+    }
+
+    const protagonist = parsed.protagonist;
+    const difficulty = parsed.difficulty;
+    const required = parsed.party?.required;
+    const optional = parsed.party?.optional;
+
+    if (
+      (protagonist !== 'alan-nahuel' && protagonist !== 'giovanna') ||
+      (difficulty !== 'complejo' && difficulty !== 'pesadilla') ||
+      !Array.isArray(required) ||
+      !Array.isArray(optional)
+    ) {
+      return null;
+    }
+
+    return {
+      protagonist,
+      difficulty,
+      party: {
+        required: required.filter((name): name is string => typeof name === 'string'),
+        optional: optional.filter((name): name is string => typeof name === 'string')
+      },
+      startedAt: typeof parsed.startedAt === 'string' ? parsed.startedAt : new Date().toISOString(),
+      version: 1
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function hasCompatibleLocalProgress(): boolean {
+  const raw = localStorage.getItem(LOCAL_PROGRESS_STORAGE_KEY);
+  if (!raw) {
+    return false;
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as LocalProgressLike;
+    const hasLevel = typeof parsed.current_level === 'string' && parsed.current_level.trim().length > 0;
+    const checkpoint = typeof parsed.checkpoint === 'string' ? parseCheckpoint(parsed.checkpoint) : undefined;
+    return hasLevel && Boolean(checkpoint);
+  } catch {
+    return false;
+  }
 }
 
 export function enforceMaxPlayerSeparation(players: Player[], maxDistance = MAX_PLAYER_SEPARATION_PX): void {

@@ -22,6 +22,7 @@ import {
   getAveragePlayerPosition,
   getScenePlayerId,
   LOCAL_PROGRESS_STORAGE_KEY,
+  loadInitialRunSetup,
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
@@ -87,6 +88,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(data: GameSceneData = {}): void {
+    const setupFromStorage = loadInitialRunSetup();
+    if (setupFromStorage && !this.registry.has('initialRunSetup')) {
+      this.registry.set('initialRunSetup', setupFromStorage);
+    }
     const levelWidth = level2Subsuelo.dimensiones.anchoTotalPx;
     const levelHeight = level2Subsuelo.dimensiones.altoTotalPx;
     const floorHeight = 64;

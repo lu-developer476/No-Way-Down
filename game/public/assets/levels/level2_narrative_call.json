@@ -39,12 +39,12 @@
       "dialogue": [
         {
           "speaker": "Radio",
-          "text": "Primer tramo asegurado. Detectamos presión vertical en laterales: prepárense para nuevas oleadas.",
+          "text": "Primer tramo asegurado. Lorena y Selene lograron llegar a su posición: se incorporan al avance.",
           "durationMs": 2300
         },
         {
           "speaker": "Alan",
-          "text": "Recibido. Seguimos empujando hasta desbloquear la salida.",
+          "text": "Recibido. Ajustamos formación con ellas y seguimos empujando hasta desbloquear la salida.",
           "durationMs": 1900
         }
       ],

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Player } from './Player';
 import { Zombie } from './Zombie';
+import { getCharacterVisualById } from '../config/characterVisuals';
 
 const ALLY_FOLLOW_SPEED = 180;
 const ALLY_STOP_RADIUS = 34;
@@ -12,18 +13,23 @@ const ALLY_ATTACK_COOLDOWN_MS = 520;
 export interface AllyProfile {
   id: string;
   name: string;
+  characterId: string;
   followOffsetX: number;
   tint: number;
 }
 
 export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: AllyProfile;
+  private readonly characterVisualId: string;
+  private readonly nameTag: Phaser.GameObjects.Text;
   private attackReadyAt = 0;
 
   constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile) {
-    super(scene, x, y, 'ally-base-0');
+    const visual = getCharacterVisualById(profile.characterId);
+    super(scene, x, y, `${visual.id}-base-0`);
 
     this.profile = profile;
+    this.characterVisualId = visual.id;
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -35,7 +41,17 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.setAlpha(0.92);
     this.setPushable(false);
 
-    this.play('ally-idle', true);
+    this.play(`${this.characterVisualId}-idle`, true);
+
+    this.nameTag = scene.add.text(this.x, this.y - 42, profile.name, {
+      fontSize: '10px',
+      color: '#99f6e4',
+      stroke: '#042f2e',
+      strokeThickness: 3,
+      fontStyle: 'bold'
+    });
+    this.nameTag.setOrigin(0.5, 1);
+    this.nameTag.setDepth(25);
   }
 
   getId(): string {
@@ -64,7 +80,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     if (Math.abs(deltaX) <= ALLY_STOP_RADIUS && Math.abs(deltaY) <= ALLY_STOP_RADIUS) {
       this.setVelocityX(0);
-      this.play('ally-idle', true);
+      this.play(`${this.characterVisualId}-idle`, true);
       return;
     }
 
@@ -73,7 +89,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const direction = Math.sign(deltaX);
 
     this.setVelocityX(direction * speed);
-    this.play('ally-run', true);
+    this.play(`${this.characterVisualId}-run`, true);
 
     if (direction < 0) {
       this.setFlipX(true);
@@ -109,7 +125,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     target.takeDamage(1);
     this.attackReadyAt = currentTime + ALLY_ATTACK_COOLDOWN_MS;
 
-    this.play('ally-shoot', true);
+    this.play(`${this.characterVisualId}-shoot`, true);
     this.setTintFill(0xfef08a);
     this.scene.time.delayedCall(90, () => {
       if (this.active) {
@@ -135,5 +151,16 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
 
     return closestZombie;
+  }
+
+  preUpdate(time: number, delta: number): void {
+    super.preUpdate(time, delta);
+    this.nameTag.setPosition(this.x, this.y - 42);
+    this.nameTag.setVisible(this.active);
+  }
+
+  destroy(fromScene?: boolean): void {
+    this.nameTag.destroy();
+    super.destroy(fromScene);
   }
 }

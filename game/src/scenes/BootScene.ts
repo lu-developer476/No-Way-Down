@@ -1,5 +1,9 @@
 import Phaser from 'phaser';
 import { visualTheme } from './visualTheme';
+import {
+  CharacterVisualProfile,
+  getCharacterVisualsByFaction
+} from '../config/characterVisuals';
 
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
@@ -13,6 +17,9 @@ interface CharacterPalette {
   pants: HexColor;
   accent: HexColor;
   eye: HexColor;
+  hair: HexColor;
+  factionBand: HexColor;
+  weapon: HexColor;
 }
 
 export class BootScene extends Phaser.Scene {
@@ -68,65 +75,57 @@ export class BootScene extends Phaser.Scene {
   }
 
   private createCharacterFrameTextures(): void {
-    this.createCharacterFrames('player-base', {
-      skin: 0xfaccaa,
-      torso: 0x2563eb,
-      pants: 0x1e293b,
-      accent: 0xfbbf24,
-      eye: 0xffffff
-    });
+    const protagonists = getCharacterVisualsByFaction('protagonist');
+    const allies = getCharacterVisualsByFaction('ally');
+    const zombies = getCharacterVisualsByFaction('zombie');
 
-    this.createCharacterFrames('zombie-base', {
-      skin: 0xa1c678,
-      torso: 0x4a6e3e,
-      pants: 0x3d2314,
-      accent: 0xb43b3b,
-      eye: 0xf7fac7
-    });
-
-    this.createCharacterFrames('ally-base', {
-      skin: 0xfad7b9,
-      torso: 0x14b8a6,
-      pants: 0x0f172a,
-      accent: 0xbae6fd,
-      eye: 0xffffff
-    });
+    protagonists.forEach((profile) => this.createCharacterFrames(profile));
+    allies.forEach((profile) => this.createCharacterFrames(profile));
+    zombies.forEach((profile) => this.createCharacterFrames(profile));
   }
 
-  private createCharacterFrames(prefix: string, palette: CharacterPalette): void {
+  private createCharacterFrames(profile: CharacterVisualProfile): void {
     for (let frame = 0; frame < CHARACTER_FRAME_COUNT; frame += 1) {
       const frameGraphics = this.add.graphics();
-      this.drawCharacterFrame(frameGraphics, frame, palette);
-      frameGraphics.generateTexture(`${prefix}-${frame}`, CHARACTER_FRAME_WIDTH, CHARACTER_FRAME_HEIGHT);
+      this.drawCharacterFrame(frameGraphics, frame, profile);
+      frameGraphics.generateTexture(`${profile.id}-base-${frame}`, CHARACTER_FRAME_WIDTH, CHARACTER_FRAME_HEIGHT);
       frameGraphics.destroy();
     }
   }
 
-  private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, palette: CharacterPalette): void {
+  private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, profile: CharacterVisualProfile): void {
+    const { palette } = profile;
     const bob = [1, 3, 5, 7].includes(frame) ? 1 : 0;
     const isRunFrame = [2, 3, 4, 5].includes(frame);
     const isShootFrame = frame === 6;
     const isHurtFrame = frame === 7;
+    const isZombie = profile.faction === 'zombie';
+    const silhouetteScale = profile.silhouette === 'broad' ? 1 : profile.silhouette === 'slim' ? -1 : 0;
+    const torsoX = 10 - silhouetteScale;
+    const torsoWidth = 12 + silhouetteScale * 2;
     const bodyY = 15 + bob;
     const legY = 27 + bob;
 
     this.fillPixelRect(graphics, 12, 6 + bob, 8, 8, palette.skin);
+    this.drawHair(graphics, profile, bob);
     this.fillPixelRect(graphics, 13, 9 + bob, 1, 1, palette.eye);
     this.fillPixelRect(graphics, 18, 9 + bob, 1, 1, palette.eye);
 
-    this.fillPixelRect(graphics, 10, bodyY, 12, 12, palette.torso);
-    this.fillPixelRect(graphics, 10, bodyY + 10, 12, 2, palette.accent);
+    this.fillPixelRect(graphics, torsoX, bodyY, torsoWidth, 12, palette.torso);
+    this.fillPixelRect(graphics, torsoX, bodyY + 8, torsoWidth, 2, palette.factionBand);
+    this.fillPixelRect(graphics, torsoX, bodyY + 10, torsoWidth, 2, palette.accent);
 
     if (isShootFrame) {
-      this.fillPixelRect(graphics, 22, bodyY + 3, 6, 3, palette.accent);
-      this.fillPixelRect(graphics, 8, bodyY + 4, 2, 7, palette.torso);
+      this.drawWeapon(graphics, profile.weaponStyle, palette.weapon, bodyY + 3, true);
+      this.fillPixelRect(graphics, torsoX - 2, bodyY + 4, 2, 7, palette.torso);
     } else if (isHurtFrame) {
-      this.fillPixelRect(graphics, 8, bodyY + 5, 2, 6, palette.accent);
-      this.fillPixelRect(graphics, 22, bodyY + 5, 2, 6, palette.accent);
-      this.fillPixelRect(graphics, 9, bodyY + 1, 14, 2, 0xdc2626);
+      this.fillPixelRect(graphics, torsoX - 2, bodyY + 5, 2, 6, palette.accent);
+      this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 5, 2, 6, palette.accent);
+      this.fillPixelRect(graphics, torsoX - 1, bodyY + 1, torsoWidth + 2, 2, isZombie ? 0x7f1d1d : 0xdc2626);
     } else {
-      this.fillPixelRect(graphics, 8, bodyY + 4, 2, 7, palette.torso);
-      this.fillPixelRect(graphics, 22, bodyY + 4, 2, 7, palette.torso);
+      this.fillPixelRect(graphics, torsoX - 2, bodyY + 4, 2, 7, palette.torso);
+      this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 4, 2, 7, palette.torso);
+      this.drawWeapon(graphics, profile.weaponStyle, palette.weapon, bodyY + 4, false);
     }
 
     if (isRunFrame) {
@@ -144,6 +143,51 @@ export class BootScene extends Phaser.Scene {
 
     this.fillPixelRect(graphics, 10, 39 + bob, 6, 2, palette.accent);
     this.fillPixelRect(graphics, 16, 39 + bob, 6, 2, palette.accent);
+
+    if (isZombie) {
+      this.fillPixelRect(graphics, 9, 21 + bob, 2, 2, 0x7f1d1d);
+      this.fillPixelRect(graphics, 20, 30 + bob, 2, 2, 0x7f1d1d);
+    }
+  }
+
+  private drawHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number): void {
+    const hairY = 3 + bob;
+
+    if (profile.hairStyle === 'afro') {
+      this.fillPixelRect(graphics, 10, hairY, 12, 5, profile.palette.hair);
+      return;
+    }
+
+    if (profile.hairStyle === 'long') {
+      this.fillPixelRect(graphics, 11, hairY, 10, 3, profile.palette.hair);
+      this.fillPixelRect(graphics, 10, hairY + 2, 2, 10, profile.palette.hair);
+      this.fillPixelRect(graphics, 20, hairY + 2, 2, 10, profile.palette.hair);
+      return;
+    }
+
+    this.fillPixelRect(graphics, 11, hairY, 10, 3, profile.palette.hair);
+  }
+
+  private drawWeapon(
+    graphics: Phaser.GameObjects.Graphics,
+    weaponStyle: CharacterVisualProfile['weaponStyle'],
+    color: HexColor,
+    y: number,
+    isAiming: boolean
+  ): void {
+    const anchorY = isAiming ? y : y + 1;
+    const length = weaponStyle === 'rifle' ? 8 : weaponStyle === 'shotgun' ? 7 : weaponStyle === 'smg' ? 6 : 5;
+    const height = weaponStyle === 'shotgun' ? 3 : 2;
+
+    this.fillPixelRect(graphics, 22, anchorY, length, height, color);
+
+    if (weaponStyle === 'revolver') {
+      this.fillPixelRect(graphics, 24, anchorY - 1, 2, 1, color);
+    }
+
+    if (weaponStyle === 'rifle' || weaponStyle === 'shotgun') {
+      this.fillPixelRect(graphics, 22, anchorY + height, 2, 1, color);
+    }
   }
 
   private fillPixelRect(
@@ -159,7 +203,11 @@ export class BootScene extends Phaser.Scene {
   }
 
   private createCharacterAnimations(): void {
-    const animationPrefixes = ['player', 'zombie', 'ally'];
+    const animationPrefixes = [
+      ...getCharacterVisualsByFaction('protagonist'),
+      ...getCharacterVisualsByFaction('ally'),
+      ...getCharacterVisualsByFaction('zombie')
+    ].map((profile) => profile.id);
 
     animationPrefixes.forEach((prefix) => {
       this.anims.create({

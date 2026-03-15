@@ -2,9 +2,10 @@ import logging
 from datetime import datetime, timezone
 
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.db import DatabaseError, IntegrityError
 from django.shortcuts import get_object_or_404
-from django.db import DatabaseError
 from rest_framework import status
+from rest_framework.exceptions import ValidationError as DRFValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -43,9 +44,15 @@ class PlayerProgressUpsertView(APIView):
         try:
             serializer.is_valid(raise_exception=True)
             serializer.save()
-        except DjangoValidationError as exc:
+        except (DRFValidationError, DjangoValidationError) as exc:
             logger.warning('Error de validación en progreso para user_id=%s: %s', user_id, exc)
             return Response({'detail': 'Datos de progreso inválidos.'}, status=status.HTTP_400_BAD_REQUEST)
+        except IntegrityError:
+            logger.exception('Error de integridad al guardar progreso para user_id=%s', user_id)
+            return Response(
+                {'detail': 'No se pudo guardar el progreso por un conflicto de datos.'},
+                status=status.HTTP_409_CONFLICT,
+            )
         except DatabaseError:
             logger.exception('Error de base de datos al guardar progreso para user_id=%s', user_id)
             return Response(

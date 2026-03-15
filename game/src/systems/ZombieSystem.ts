@@ -44,7 +44,7 @@ export class ZombieSystem {
         const zombie = zombieGameObject as Zombie;
 
         projectile.deactivate();
-        zombie.takeDamage(1);
+        zombie.takeDamage(projectile.getDamage());
       }
     );
   }

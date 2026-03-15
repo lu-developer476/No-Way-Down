@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Player } from './Player';
 import { Zombie } from './Zombie';
 import { getCharacterVisualById } from '../config/characterVisuals';
+import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -10,7 +11,6 @@ const ALLY_CATCHUP_DISTANCE = 260;
 const ALLY_TELEPORT_DISTANCE = 620;
 const ALLY_TARGET_DETECTION_RANGE = 340;
 const ALLY_ATTACK_RANGE = 210;
-const ALLY_ATTACK_COOLDOWN_MS = 520;
 const ALLY_COMBAT_REPOSITION_DISTANCE = 130;
 const ALLY_PLAYER_BLOCK_RADIUS = 32;
 
@@ -23,10 +23,44 @@ export interface AllyProfile {
   tint: number;
 }
 
+
+function getWeaponCooldown(weapon: string): number {
+  switch (weapon) {
+    case 'smg':
+      return 260;
+    case 'pistol':
+      return 420;
+    case 'revolver':
+      return 520;
+    case 'shotgun':
+      return 680;
+    case 'sniper_rifle':
+      return 760;
+    case 'carbine':
+      return 480;
+    default:
+      return 520;
+  }
+}
+
+function getWeaponDamage(weapon: string): number {
+  switch (weapon) {
+    case 'shotgun':
+      return 2;
+    case 'sniper_rifle':
+      return 3;
+    case 'carbine':
+      return 2;
+    default:
+      return 1;
+  }
+}
+
 export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: AllyProfile;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
+  private readonly runtimeConfig: CharacterRuntimeConfig;
   private attackReadyAt = 0;
 
   constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile) {
@@ -35,6 +69,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.profile = profile;
     this.characterVisualId = visual.id;
+    this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -48,7 +83,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.play(`${this.characterVisualId}-idle`, true);
 
-    this.nameTag = scene.add.text(this.x, this.y - 42, profile.name, {
+    this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
       fontSize: '10px',
       color: '#99f6e4',
       stroke: '#042f2e',
@@ -61,6 +96,10 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   getId(): string {
     return this.profile.id;
+  }
+
+  getRuntimeConfig(): CharacterRuntimeConfig {
+    return this.runtimeConfig;
   }
 
   updateAI(player: Player, zombies: Zombie[], currentTime: number): void {
@@ -160,8 +199,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    target.takeDamage(1);
-    this.attackReadyAt = currentTime + ALLY_ATTACK_COOLDOWN_MS;
+    target.takeDamage(getWeaponDamage(this.runtimeConfig.baseWeapon));
+    this.attackReadyAt = currentTime + getWeaponCooldown(this.runtimeConfig.baseWeapon);
 
     this.play(`${this.characterVisualId}-shoot`, true);
     this.setTintFill(0xfef08a);

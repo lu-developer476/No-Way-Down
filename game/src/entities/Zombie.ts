@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getAudioManager } from '../audio/AudioManager';
 
 const DEFAULT_ZOMBIE_SPEED = 80;
 const DEFAULT_DETECTION_RANGE = 260;
@@ -74,6 +75,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
   private die(): void {
     this.setVelocity(0, 0);
+    getAudioManager(this.scene).play('zombieDeath');
     this.disableBody(true, true);
   }
 }

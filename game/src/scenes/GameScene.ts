@@ -32,6 +32,7 @@ import level8IntroDialogue from '../../public/assets/levels/level8_intro_dialogu
 import level7CinematicCall from '../../public/assets/levels/level7_cinematic_call.json';
 import { CinematicSystem, CinematicLine } from '../systems/core/CinematicSystem';
 import { CinematicCallSystem, CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
+import { getAudioManager } from '../audio/AudioManager';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -73,6 +74,7 @@ export class GameScene extends Phaser.Scene {
   private pauseOverlay?: Phaser.GameObjects.Rectangle;
   private pausePanel?: Phaser.GameObjects.Container;
   private pauseMenuOptions: Array<{ label: string; action: () => void }> = [];
+  private audioToggleOptionIndex = -1;
   private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
   private cinematicSystem?: CinematicSystem;
@@ -129,6 +131,7 @@ export class GameScene extends Phaser.Scene {
 
     this.projectileSystem = new ProjectileSystem(this);
     this.cinematicSystem = new CinematicSystem(this);
+    getAudioManager(this).startAmbientLoop();
 
     this.respawnPoint = this.resolveRespawnPoint(data, {
       x: 140,
@@ -301,11 +304,12 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('playerHealth', this.getTeamHealthTotal());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
-    this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC');
+    this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M');
     this.registry.set('campaignState', this.campaignState?.getSnapshot());
     this.registry.set('partyState', this.partyState?.getSnapshot());
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('audioMuted', getAudioManager(this).isMuted());
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
@@ -327,6 +331,7 @@ export class GameScene extends Phaser.Scene {
       this.input.keyboard?.removeAllListeners();
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
+      getAudioManager(this).stopAmbientLoop();
     });
   }
 
@@ -463,6 +468,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.pause();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('audioMuted', getAudioManager(this).isMuted());
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -589,6 +595,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.pause();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('audioMuted', getAudioManager(this).isMuted());
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -741,9 +748,12 @@ export class GameScene extends Phaser.Scene {
 
     this.pauseMenuOptions = [
       { label: 'Reanudar', action: () => this.resumeGameplay() },
+      { label: 'Audio: --', action: () => this.toggleAudioMute() },
       { label: 'Reiniciar nivel', action: () => this.restartLevelFromPause() },
       { label: 'Volver al menú principal', action: () => this.returnToMainMenu() }
     ];
+    this.audioToggleOptionIndex = 1;
+    this.refreshAudioPauseOptionLabel();
 
     this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(width / 2, height / 2 - 18 + index * 52, option.label, {
       color: '#cbd5e1',
@@ -801,6 +811,11 @@ export class GameScene extends Phaser.Scene {
       }
 
       this.pauseMenuOptions[this.pauseMenuIndex]?.action();
+      getAudioManager(this).play('uiConfirm');
+    });
+
+    this.input.keyboard?.on('keydown-M', () => {
+      this.toggleAudioMute();
     });
   }
 
@@ -809,6 +824,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private pauseGameplay(): void {
+    getAudioManager(this).play('uiPause');
     this.physics.pause();
     this.pauseOverlay?.setVisible(true);
     this.pausePanel?.setVisible(true);
@@ -818,24 +834,60 @@ export class GameScene extends Phaser.Scene {
   }
 
   private resumeGameplay(): void {
+    getAudioManager(this).play('uiConfirm');
     this.pausePanel?.setVisible(false);
     this.pauseOverlay?.setVisible(false);
     this.physics.resume();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('audioMuted', getAudioManager(this).isMuted());
   }
 
   private restartLevelFromPause(): void {
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.scene.restart({ respawnPoint: this.respawnPoint, skipLoad: true });
   }
 
   private returnToMainMenu(): void {
+    getAudioManager(this).stopAmbientLoop();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.scene.stop('UIScene');
     this.scene.start('MainMenuScene');
+  }
+
+  private toggleAudioMute(): void {
+    const audioManager = getAudioManager(this);
+    const isNowMuted = audioManager.toggleMute();
+    this.refreshAudioPauseOptionLabel();
+    this.registry.set('audioMuted', isNowMuted);
+
+    if (!isNowMuted) {
+      audioManager.play('uiConfirm');
+    }
+
+    const status = isNowMuted ? 'silenciado' : 'activado';
+    this.showMissionStatus(`Audio ${status}.`);
+  }
+
+  private refreshAudioPauseOptionLabel(): void {
+    if (this.audioToggleOptionIndex < 0) {
+      return;
+    }
+
+    const muted = getAudioManager(this).isMuted();
+    const label = muted ? 'Audio: Muted' : 'Audio: Unmuted';
+    if (this.pauseMenuOptions[this.audioToggleOptionIndex]) {
+      this.pauseMenuOptions[this.audioToggleOptionIndex].label = label;
+    }
+
+    const text = this.pauseMenuTexts[this.audioToggleOptionIndex];
+    if (text) {
+      text.setText(label);
+    }
   }
 
   private updatePauseMenuSelection(): void {

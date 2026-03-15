@@ -3,6 +3,7 @@ import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { PlayerConfig } from '../config/localMultiplayer';
 import { StairAnimationKeys } from '../systems/StairSystem';
 import { getCharacterVisualById } from '../config/characterVisuals';
+import { getAudioManager } from '../audio/AudioManager';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -98,11 +99,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
       this.play(`${this.characterVisualId}-shoot`, true);
-      this.projectileSystem.tryFire({
+      const hasFired = this.projectileSystem.tryFire({
         originX: this.x + this.lookDirection * 24,
         originY: this.y - 6,
         direction: this.lookDirection
       });
+
+      if (hasFired) {
+        getAudioManager(this.scene).play('shot');
+      }
     }
 
     if (!this.isClimbing && (!this.anims.isPlaying || this.anims.currentAnim?.key === `${this.characterVisualId}-idle` || this.anims.currentAnim?.key === `${this.characterVisualId}-run`)) {
@@ -152,6 +157,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.healthPoints = Math.max(0, this.healthPoints - amount);
     this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
     this.play(`${this.characterVisualId}-hurt`, true);
+    getAudioManager(this.scene).play('playerDamage');
     this.setTintFill(0xf87171);
     this.scene.time.delayedCall(120, () => {
       if (this.active) {

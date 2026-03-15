@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getAudioManager } from '../audio/AudioManager';
 
 export type AmbientEventType =
   | 'luz_parpadeante'
@@ -189,6 +190,13 @@ export class AmbientEventsSystem {
   }
 
   private triggerDistantZombieSound(centerX: number): void {
+    const audioManager = getAudioManager(this.scene);
+    const playedWithManager = audioManager.play('ambientZombieDistant');
+
+    if (playedWithManager !== 'silent') {
+      return;
+    }
+
     if (this.scene.sound.get(this.config.zombieAmbientSoundKey) || this.scene.cache.audio.has(this.config.zombieAmbientSoundKey)) {
       this.scene.sound.play(this.config.zombieAmbientSoundKey, {
         volume: 0.22,

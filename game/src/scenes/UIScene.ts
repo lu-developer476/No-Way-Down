@@ -13,6 +13,7 @@ export class UIScene extends Phaser.Scene {
   private dialogueSpeakerText?: Phaser.GameObjects.Text;
   private dialogueBodyText?: Phaser.GameObjects.Text;
   private dialogueHintText?: Phaser.GameObjects.Text;
+  private audioStateText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
@@ -29,6 +30,7 @@ export class UIScene extends Phaser.Scene {
     this.registry.events.on('changedata-currentObjective', this.handleObjectiveChanged, this);
     this.registry.events.on('changedata-isGamePaused', this.handlePauseStateChanged, this);
     this.registry.events.on('changedata-dialogueState', this.handleDialogueStateChanged, this);
+    this.registry.events.on('changedata-audioMuted', this.handleAudioMutedChanged, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.registry.events.off('changedata-playerHealth', this.handleHealthChanged, this);
@@ -37,6 +39,7 @@ export class UIScene extends Phaser.Scene {
       this.registry.events.off('changedata-isGamePaused', this.handlePauseStateChanged, this);
       this.registry.events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
       this.registry.events.off('changedata-dialogueState', this.handleDialogueStateChanged, this);
+      this.registry.events.off('changedata-audioMuted', this.handleAudioMutedChanged, this);
     });
 
     this.refreshFromRegistry();
@@ -49,6 +52,7 @@ export class UIScene extends Phaser.Scene {
     this.handleInteractionHintChanged(this.registry, this.registry.get('interactionHint') ?? '');
     this.handlePauseStateChanged(this.registry, this.registry.get('isGamePaused') ?? false);
     this.handleDialogueStateChanged(this.registry, this.registry.get('dialogueState') ?? null);
+    this.handleAudioMutedChanged(this.registry, this.registry.get('audioMuted') ?? false);
   }
 
   private handleHealthChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -80,6 +84,11 @@ export class UIScene extends Phaser.Scene {
     this.controlsHintText?.setAlpha(isPaused ? 0.4 : 0.8);
   }
 
+
+
+  private handleAudioMutedChanged(_parent: Phaser.Data.DataManager, isMuted: boolean): void {
+    this.audioStateText?.setText(isMuted ? 'Audio: Muted' : 'Audio: Unmuted');
+  }
 
   private handleDialogueStateChanged(_parent: Phaser.Data.DataManager, value: { speaker: string; text: string; canSkip?: boolean; canAdvance?: boolean } | null): void {
     if (!value || !value.text) {
@@ -128,7 +137,7 @@ export class UIScene extends Phaser.Scene {
       wordWrap: { width: 278 }
     }).setScrollFactor(0);
 
-    this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Mover A/D · Disparar F · Pausa ESC', {
+    this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Mover A/D · Disparar F · Pausa ESC · Audio M', {
       color: '#93c5fd',
       fontSize: '12px',
       fontFamily: pixelFont,
@@ -177,5 +186,17 @@ export class UIScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setVisible(false);
+
+    this.audioStateText = this.add.text(this.scale.width - 14, 18, 'Audio: Unmuted', {
+      color: '#93c5fd',
+      fontSize: '12px',
+      fontFamily: pixelFont,
+      backgroundColor: '#0f172a',
+      padding: { x: 8, y: 3 }
+    })
+      .setOrigin(1, 0)
+      .setScrollFactor(0)
+      .setDepth(52)
+      .setAlpha(0.85);
   }
 }

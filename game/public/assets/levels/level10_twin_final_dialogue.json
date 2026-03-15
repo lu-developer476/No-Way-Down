@@ -1,0 +1,92 @@
+{
+  "levelId": "level10_subsuelo3_parking",
+  "cinematicId": "level10_twin_final_collapse",
+  "triggerId": "level10_resistance_last_wave_cleared",
+  "lockMovement": true,
+  "preSceneDelayMs": 600,
+  "twinsRemovedFromGroup": ["twin_redhead", "twin_brunette"],
+  "survivingGroupIds": ["protagonist", "ally_guard"],
+  "offscreenGunshotMarkerId": "sfx_placeholder_offscreen_final_gunshot",
+  "escapeObjective": {
+    "id": "escape_by_vehicle_now",
+    "label": "Suban al auto y escapen del estacionamiento"
+  },
+  "sequence": [
+    {
+      "type": "dialogue",
+      "speaker": "Narrador",
+      "text": "La última oleada cae. El estacionamiento queda en silencio, roto solo por respiraciones ahogadas y casquillos rodando.",
+      "durationMs": 2900,
+      "mood": "agotamiento"
+    },
+    {
+      "type": "action",
+      "actionId": "second_bite_right_forearm",
+      "description": "Un infectado rezagado se abalanza y hunde los dientes en el antebrazo derecho de la gemela ya mordida.",
+      "durationMs": 1200,
+      "payload": {
+        "victimId": "twin_brunette",
+        "limb": "right_forearm"
+      }
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Gemela pelirroja",
+      "text": "¡No, no, no! ¡No otra vez... por favor!",
+      "durationMs": 2100,
+      "mood": "shock"
+    },
+    {
+      "type": "action",
+      "actionId": "redhead_shock_breakdown",
+      "description": "La gemela pelirroja entra en shock, cae de rodillas y llora sin poder apuntar su arma.",
+      "durationMs": 1500
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Gemela castaña",
+      "text": "Mírame... ya está. No hay vuelta atrás para ninguna de las dos.",
+      "durationMs": 2500,
+      "mood": "aceptacion"
+    },
+    {
+      "type": "action",
+      "actionId": "brunette_executes_twin",
+      "description": "Entre lágrimas, la gemela castaña apunta y dispara a la cabeza de su propia hermana para evitar su transformación.",
+      "durationMs": 1100,
+      "payload": {
+        "executorId": "twin_brunette",
+        "victimId": "twin_redhead"
+      }
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Gemela castaña",
+      "text": "Escuchen... este es nuestro final. Ustedes dos todavía pueden salir. ¡Suban al auto ya!",
+      "durationMs": 2600,
+      "mood": "despedida"
+    },
+    {
+      "type": "action",
+      "actionId": "brunette_forces_escape",
+      "description": "La gemela castaña amenaza al protagonista y a la otra aliada con el arma para obligarlos a retirarse.",
+      "durationMs": 1200
+    },
+    {
+      "type": "action",
+      "actionId": "enable_vehicle_escape",
+      "description": "El motor enciende; los dos supervivientes arrancan y abandonan la zona de combate.",
+      "durationMs": 1400
+    },
+    {
+      "type": "action",
+      "actionId": "offscreen_final_gunshot_marker",
+      "description": "[SFX_PLACEHOLDER] Se escucha un disparo final fuera de escena cuando el auto se aleja.",
+      "durationMs": 900,
+      "payload": {
+        "offscreen": true,
+        "source": "narrative_marker"
+      }
+    }
+  ]
+}

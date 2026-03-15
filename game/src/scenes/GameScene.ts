@@ -304,6 +304,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(): void {
+    if (this.isPauseMenuOpen()) {
+      return;
+    }
+
     this.players.forEach((player) => {
       player.update();
     });
@@ -722,14 +726,16 @@ export class GameScene extends Phaser.Scene {
       .setDepth(40)
       .setVisible(false);
 
-    const panel = this.add.rectangle(width / 2, height / 2, 440, 284, 0x0b1220, 0.94)
+    const panel = this.add.rectangle(0, 0, 440, 284, 0x0b1220, 0.94)
+      .setScrollFactor(0)
       .setStrokeStyle(2, 0x38bdf8, 1);
 
-    const title = this.add.text(width / 2, height / 2 - 92, 'PAUSA', {
+    const title = this.add.text(0, -92, 'PAUSA', {
       color: '#f8fafc',
       fontSize: '36px',
       fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
+    }).setOrigin(0.5)
+      .setScrollFactor(0);
 
     this.pauseMenuOptions = [
       { label: 'Reanudar', action: () => this.resumeGameplay() },
@@ -740,23 +746,40 @@ export class GameScene extends Phaser.Scene {
     this.audioToggleOptionIndex = 1;
     this.refreshAudioPauseOptionLabel();
 
-    this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(width / 2, height / 2 - 18 + index * 52, option.label, {
+    this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(0, -18 + index * 52, option.label, {
       color: '#cbd5e1',
       fontSize: '27px',
       fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5));
+    }).setOrigin(0.5)
+      .setScrollFactor(0));
 
-    const hint = this.add.text(width / 2, height / 2 + 108, '↑/↓ seleccionar · ENTER confirmar · ESC reanudar', {
+    const hint = this.add.text(0, 108, '↑/↓ seleccionar · ENTER confirmar · ESC reanudar', {
       color: '#93c5fd',
       fontSize: '14px',
       fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
+    }).setOrigin(0.5)
+      .setScrollFactor(0);
 
-    this.pausePanel = this.add.container(0, 0, [panel, title, ...this.pauseMenuTexts, hint])
+    this.pausePanel = this.add.container(width / 2, height / 2, [panel, title, ...this.pauseMenuTexts, hint])
+      .setScrollFactor(0)
       .setDepth(41)
       .setVisible(false);
 
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.handlePauseOverlayResize, this);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.handlePauseOverlayResize, this);
+    });
+
     this.updatePauseMenuSelection();
+  }
+
+  private handlePauseOverlayResize(gameSize: Phaser.Structs.Size): void {
+    const width = gameSize.width;
+    const height = gameSize.height;
+    this.pauseOverlay
+      ?.setPosition(width / 2, height / 2)
+      .setSize(width, height);
+    this.pausePanel?.setPosition(width / 2, height / 2);
   }
 
   private registerPauseControls(): void {

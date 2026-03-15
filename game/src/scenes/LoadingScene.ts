@@ -11,6 +11,7 @@ const PRELOAD_FILES: Array<{ key: string; path: string }> = [
   { key: 'level7_narrative_checkpoints', path: 'assets/levels/level7_narrative_checkpoints.json' }
 ];
 
+
 export class LoadingScene extends Phaser.Scene {
   private progressFill?: Phaser.GameObjects.Rectangle;
   private progressLabel?: Phaser.GameObjects.Text;
@@ -31,6 +32,7 @@ export class LoadingScene extends Phaser.Scene {
 
       this.load.image(key, path);
     });
+
   }
 
   create(): void {

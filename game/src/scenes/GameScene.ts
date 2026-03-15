@@ -101,6 +101,7 @@ export class GameScene extends Phaser.Scene {
   private pausePanel?: Phaser.GameObjects.Container;
   private pauseMenuOptions: Array<{ label: string; action: () => void }> = [];
   private audioToggleOptionIndex = -1;
+  private audioVolumeOptionIndex = -1;
   private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
   private cleanupZonesRequired = 0;
@@ -169,7 +170,10 @@ export class GameScene extends Phaser.Scene {
     this.projectileSystem = new ProjectileSystem(this, {
       fireCooldownMultiplier: difficultyRuntime.playerFireCooldownMultiplier
     });
-    getAudioManager(this).startAmbientLoop();
+    const audioManager = getAudioManager(this);
+    audioManager.startGameplayAmbient();
+    this.registry.set('audioMuted', audioManager.isMuted());
+    this.registry.set('audioVolume', audioManager.getVolumePercent());
 
     this.respawnPoint = this.resolveRespawnPoint(data, {
       x: 140,
@@ -306,12 +310,13 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('partyHud', this.buildPartyHud());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
-    this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M');
+    this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M (volumen en pausa ←/→)');
     this.registry.set('campaignState', this.campaignState?.getSnapshot());
     this.registry.set('partyState', this.partyState?.getSnapshot());
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
     this.registry.set('gameDifficultyLabel', difficultyRuntime.label);
 
     this.setupNarrativeSystems();
@@ -339,7 +344,7 @@ export class GameScene extends Phaser.Scene {
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.setNarrativeMovementLock(false);
-      getAudioManager(this).stopAmbientLoop();
+      getAudioManager(this).stopGameplayAmbient();
     });
   }
 
@@ -534,7 +539,7 @@ export class GameScene extends Phaser.Scene {
           this.showMissionStatus(objectiveText);
         },
         onCinematicCompleted: () => {
-          this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M');
+          this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M (volumen en pausa ←/→)');
         },
         consumeAdvance: () => {
           if (!this.advanceDialogueRequested) {
@@ -705,6 +710,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -834,6 +840,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -962,11 +969,14 @@ export class GameScene extends Phaser.Scene {
     this.pauseMenuOptions = [
       { label: 'Reanudar', action: () => this.resumeGameplay() },
       { label: 'Audio: --', action: () => this.toggleAudioMute() },
+      { label: 'Volumen: --', action: () => this.adjustMasterVolume(10) },
       { label: 'Reiniciar nivel', action: () => this.restartLevelFromPause() },
       { label: 'Volver al menú principal', action: () => this.returnToMainMenu() }
     ];
     this.audioToggleOptionIndex = 1;
+    this.audioVolumeOptionIndex = 2;
     this.refreshAudioPauseOptionLabel();
+    this.refreshVolumePauseOptionLabel();
 
     this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(0, -18 + index * 52, option.label, {
       color: '#cbd5e1',
@@ -1044,6 +1054,26 @@ export class GameScene extends Phaser.Scene {
       getAudioManager(this).play('uiConfirm');
     });
 
+    this.input.keyboard?.on('keydown-LEFT', () => {
+      if (!this.isPauseMenuOpen()) {
+        return;
+      }
+
+      if (this.pauseMenuIndex === this.audioVolumeOptionIndex) {
+        this.adjustMasterVolume(-10);
+      }
+    });
+
+    this.input.keyboard?.on('keydown-RIGHT', () => {
+      if (!this.isPauseMenuOpen()) {
+        return;
+      }
+
+      if (this.pauseMenuIndex === this.audioVolumeOptionIndex) {
+        this.adjustMasterVolume(10);
+      }
+    });
+
     this.input.keyboard?.on('keydown-M', () => {
       this.toggleAudioMute();
     });
@@ -1071,20 +1101,24 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
   }
 
   private restartLevelFromPause(): void {
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
     this.scene.restart({ respawnPoint: this.respawnPoint, skipLoad: true });
   }
 
   private returnToMainMenu(): void {
-    getAudioManager(this).stopAmbientLoop();
+    const audioManager = getAudioManager(this);
+    audioManager.stopGameplayAmbient();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
-    this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('audioMuted', audioManager.isMuted());
+    this.registry.set('audioVolume', audioManager.getVolumePercent());
     this.scene.stop('UIScene');
     this.scene.start('MainMenuScene');
   }
@@ -1093,7 +1127,9 @@ export class GameScene extends Phaser.Scene {
     const audioManager = getAudioManager(this);
     const isNowMuted = audioManager.toggleMute();
     this.refreshAudioPauseOptionLabel();
+    this.refreshVolumePauseOptionLabel();
     this.registry.set('audioMuted', isNowMuted);
+    this.registry.set('audioVolume', audioManager.getVolumePercent());
 
     if (!isNowMuted) {
       audioManager.play('uiConfirm');
@@ -1101,6 +1137,19 @@ export class GameScene extends Phaser.Scene {
 
     const status = isNowMuted ? 'silenciado' : 'activado';
     this.showMissionStatus(`Audio ${status}.`);
+  }
+
+  private adjustMasterVolume(delta: number): void {
+    const audioManager = getAudioManager(this);
+    const volume = audioManager.adjustVolumePercent(delta);
+    this.refreshVolumePauseOptionLabel();
+    this.registry.set('audioVolume', volume);
+
+    if (!audioManager.isMuted() && volume > 0) {
+      audioManager.play('uiConfirm');
+    }
+
+    this.showMissionStatus(`Volumen ${volume}%.`);
   }
 
   private refreshAudioPauseOptionLabel(): void {
@@ -1115,6 +1164,23 @@ export class GameScene extends Phaser.Scene {
     }
 
     const text = this.pauseMenuTexts[this.audioToggleOptionIndex];
+    if (text) {
+      text.setText(label);
+    }
+  }
+
+  private refreshVolumePauseOptionLabel(): void {
+    if (this.audioVolumeOptionIndex < 0) {
+      return;
+    }
+
+    const volume = getAudioManager(this).getVolumePercent();
+    const label = `Volumen: ${volume}%`;
+    if (this.pauseMenuOptions[this.audioVolumeOptionIndex]) {
+      this.pauseMenuOptions[this.audioVolumeOptionIndex].label = label;
+    }
+
+    const text = this.pauseMenuTexts[this.audioVolumeOptionIndex];
     if (text) {
       text.setText(label);
     }

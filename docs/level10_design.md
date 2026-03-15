@@ -40,7 +40,7 @@ Modelo de exploración y recursos:
 
 Modelo de supervivencia en estacionamiento:
 
-- `game/public/assets/levels/level10_parking_survival.json`
+- `game/config/levels/level10/level10_parking_survival.json`
 
 ---
 
@@ -127,7 +127,7 @@ Sistema: `Level10ParkingSurvivalSystem`
 
 Archivo:
 
-- `game/public/assets/levels/level10_parking_survival.json`
+- `game/config/levels/level10/level10_parking_survival.json`
 
 ---
 
@@ -213,7 +213,7 @@ Sistema: `FinalOpenEndingCinematicSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_final_ending.json`
+- `game/config/levels/level10/level10_final_ending.json`
 
 ---
 
@@ -224,7 +224,7 @@ Archivo principal:
 - `game/public/assets/levels/level10_objective_chain.json`
 - `game/public/assets/levels/level10_narrative_chain.json`
 - `game/public/assets/levels/level10_parking_exploration.json`
-- `game/public/assets/levels/level10_parking_survival.json`
+- `game/config/levels/level10/level10_parking_survival.json`
 - `game/public/assets/levels/level10_resistance_encounters.json`
 - `game/public/assets/levels/level10_twin_bite_event.json`
 - `game/public/assets/levels/level10_infection_stages.json`
@@ -233,7 +233,7 @@ Archivo principal:
 - `game/public/assets/levels/level10_vehicle_loot.json`
 - `game/public/assets/levels/level10_drive_to_santelmo_dialogue.json`
 - `game/public/assets/levels/level10_final_street_hold.json`
-- `game/public/assets/levels/level10_final_ending.json`
+- `game/config/levels/level10/level10_final_ending.json`
 
 ### Referencia de layout/documentación
 

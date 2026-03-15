@@ -47,6 +47,7 @@ export class LevelExitSystem {
   private readonly getCompletedCleanupZones: () => number;
   private readonly onShowMessage: (message: string) => void;
   private readonly onTransitionStart?: (message: string) => void;
+  private readonly onExitUnlocked?: () => void;
 
   private readonly exitZone: Phaser.GameObjects.Zone;
   private readonly state: RuntimeState = {
@@ -60,13 +61,15 @@ export class LevelExitSystem {
     config: LevelExitSystemConfig,
     getCompletedCleanupZones: () => number,
     onShowMessage: (message: string) => void,
-    onTransitionStart?: (message: string) => void
+    onTransitionStart?: (message: string) => void,
+    onExitUnlocked?: () => void
   ) {
     this.scene = scene;
     this.players = players;
     this.getCompletedCleanupZones = getCompletedCleanupZones;
     this.onShowMessage = onShowMessage;
     this.onTransitionStart = onTransitionStart;
+    this.onExitUnlocked = onExitUnlocked;
 
     this.config = {
       requiredCleanupZones: config.requiredCleanupZones,
@@ -96,6 +99,8 @@ export class LevelExitSystem {
     if (this.canCompleteLevel()) {
       this.state.hasShownCompletedMessage = true;
       this.onShowMessage(this.config.completedMessage);
+      this.onExitUnlocked?.();
+      console.info('[LevelExitSystem] exit unlocked: cleanup requirement completed');
     }
   }
 
@@ -119,6 +124,7 @@ export class LevelExitSystem {
     this.state.hasTransitionStarted = true;
     this.onShowMessage(this.config.completedMessage);
     this.onTransitionStart?.(this.config.transitionMessage);
+    console.info('[LevelExitSystem] transition started to next scene');
 
     this.scene.time.delayedCall(this.config.transitionDelayMs, () => {
       this.scene.scene.start(this.config.transitionTarget.sceneKey, {

@@ -9,6 +9,10 @@ export class UIScene extends Phaser.Scene {
   private objectiveText?: Phaser.GameObjects.Text;
   private interactionText?: Phaser.GameObjects.Text;
   private controlsHintText?: Phaser.GameObjects.Text;
+  private dialoguePanel?: Phaser.GameObjects.Container;
+  private dialogueSpeakerText?: Phaser.GameObjects.Text;
+  private dialogueBodyText?: Phaser.GameObjects.Text;
+  private dialogueHintText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
@@ -24,6 +28,7 @@ export class UIScene extends Phaser.Scene {
     this.registry.events.on('changedata-zombiesRemaining', this.handleZombiesChanged, this);
     this.registry.events.on('changedata-currentObjective', this.handleObjectiveChanged, this);
     this.registry.events.on('changedata-isGamePaused', this.handlePauseStateChanged, this);
+    this.registry.events.on('changedata-dialogueState', this.handleDialogueStateChanged, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.registry.events.off('changedata-playerHealth', this.handleHealthChanged, this);
@@ -31,6 +36,7 @@ export class UIScene extends Phaser.Scene {
       this.registry.events.off('changedata-currentObjective', this.handleObjectiveChanged, this);
       this.registry.events.off('changedata-isGamePaused', this.handlePauseStateChanged, this);
       this.registry.events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
+      this.registry.events.off('changedata-dialogueState', this.handleDialogueStateChanged, this);
     });
 
     this.refreshFromRegistry();
@@ -42,6 +48,7 @@ export class UIScene extends Phaser.Scene {
     this.handleObjectiveChanged(this.registry, this.registry.get('currentObjective') ?? '');
     this.handleInteractionHintChanged(this.registry, this.registry.get('interactionHint') ?? '');
     this.handlePauseStateChanged(this.registry, this.registry.get('isGamePaused') ?? false);
+    this.handleDialogueStateChanged(this.registry, this.registry.get('dialogueState') ?? null);
   }
 
   private handleHealthChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -71,6 +78,19 @@ export class UIScene extends Phaser.Scene {
 
   private handlePauseStateChanged(_parent: Phaser.Data.DataManager, isPaused: boolean): void {
     this.controlsHintText?.setAlpha(isPaused ? 0.4 : 0.8);
+  }
+
+
+  private handleDialogueStateChanged(_parent: Phaser.Data.DataManager, value: { speaker: string; text: string; canSkip?: boolean; canAdvance?: boolean } | null): void {
+    if (!value || !value.text) {
+      this.dialoguePanel?.setVisible(false);
+      return;
+    }
+
+    this.dialogueSpeakerText?.setText(value.speaker || '...');
+    this.dialogueBodyText?.setText(value.text);
+    this.dialogueHintText?.setText('SPACE: avanzar · X: saltar diálogo');
+    this.dialoguePanel?.setVisible(true);
   }
 
   private createHudFrame(): void {
@@ -118,6 +138,34 @@ export class UIScene extends Phaser.Scene {
       .setOrigin(1, 1)
       .setScrollFactor(0)
       .setAlpha(0.8);
+
+    const dialogueBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 120, Math.min(this.scale.width - 32, 740), 110, 0x020617, 0.92)
+      .setStrokeStyle(2, 0x38bdf8, 0.95)
+      .setScrollFactor(0);
+
+    this.dialogueSpeakerText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 16, dialogueBg.y - 42, '', {
+      color: '#93c5fd',
+      fontSize: '14px',
+      fontFamily: pixelFont,
+      fontStyle: 'bold'
+    }).setOrigin(0, 0.5).setScrollFactor(0);
+
+    this.dialogueBodyText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 16, dialogueBg.y - 14, '', {
+      color: '#e2e8f0',
+      fontSize: '14px',
+      fontFamily: pixelFont,
+      wordWrap: { width: dialogueBg.width - 32 }
+    }).setOrigin(0, 0).setScrollFactor(0);
+
+    this.dialogueHintText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 14, dialogueBg.y + 40, '', {
+      color: '#cbd5e1',
+      fontSize: '11px',
+      fontFamily: pixelFont
+    }).setOrigin(1, 0.5).setScrollFactor(0);
+
+    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, this.dialogueSpeakerText, this.dialogueBodyText, this.dialogueHintText])
+      .setDepth(50)
+      .setVisible(false);
 
     this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 48, '', {
       color: '#bbf7d0',

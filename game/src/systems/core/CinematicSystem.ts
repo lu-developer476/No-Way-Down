@@ -36,6 +36,8 @@ export interface CinematicCallbacks {
   onEnd?: (context: { cinematicId: string }) => void;
   onMovementLock?: (locked: boolean, context: { cinematicId: string }) => void;
   onAction?: (action: CinematicAction, context: { cinematicId: string; index: number }) => void;
+  consumeAdvance?: () => boolean;
+  isSkipRequested?: () => boolean;
 }
 
 export class CinematicSystem {
@@ -53,19 +55,27 @@ export class CinematicSystem {
       callbacks.onMovementLock?.(true, context);
     }
 
-    await this.wait(config.preDelayMs ?? 0);
+    await this.wait(config.preDelayMs ?? 0, callbacks, false);
 
     for (let index = 0; index < config.steps.length; index += 1) {
       const step = config.steps[index];
       if (step.kind === 'line' && step.line) {
         presentation.showLine(step.line, { cinematicId: config.cinematicId, index });
-        await this.wait(step.line.durationMs ?? 1800);
+        await this.wait(step.line.durationMs ?? 1800, callbacks, true);
+      }
+
+      if (callbacks.isSkipRequested?.()) {
+        break;
       }
 
       if (step.kind === 'action' && step.action) {
         presentation.showAction?.(step.action, { cinematicId: config.cinematicId, index });
         callbacks.onAction?.(step.action, { cinematicId: config.cinematicId, index });
-        await this.wait(step.action.durationMs ?? 800);
+        await this.wait(step.action.durationMs ?? 800, callbacks, false);
+      }
+
+      if (callbacks.isSkipRequested?.()) {
+        break;
       }
     }
 
@@ -78,9 +88,29 @@ export class CinematicSystem {
     callbacks.onEnd?.(context);
   }
 
-  private wait(durationMs: number): Promise<void> {
+  private wait(durationMs: number, callbacks: CinematicCallbacks, allowAdvance: boolean): Promise<void> {
     return new Promise((resolve) => {
-      this.scene.time.delayedCall(Math.max(0, durationMs), () => resolve());
+      const timeoutEvent = this.scene.time.delayedCall(Math.max(0, durationMs), () => {
+        pollEvent.remove(false);
+        resolve();
+      });
+
+      const pollEvent = this.scene.time.addEvent({
+        delay: 50,
+        loop: true,
+        callback: () => {
+          const shouldSkip = callbacks.isSkipRequested?.() ?? false;
+          const shouldAdvance = allowAdvance && (callbacks.consumeAdvance?.() ?? false);
+
+          if (!shouldSkip && !shouldAdvance) {
+            return;
+          }
+
+          timeoutEvent.remove(false);
+          pollEvent.remove(false);
+          resolve();
+        }
+      });
     });
   }
 }

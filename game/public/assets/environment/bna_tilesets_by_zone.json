@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "grid": {
+    "tile_width": 32,
+    "tile_height": 32,
+    "world_unit": "px"
+  },
+  "palette": {
+    "stone_base": "#b8ab95",
+    "stone_shadow": "#8c806d",
+    "granite_red": "#7a4340",
+    "granite_dark": "#4d4d52",
+    "brass": "#b58b43",
+    "glass_cool": "#85a8bc",
+    "signal_blue": "#1f5f8e"
+  },
+  "zones": {
+    "exterior_calle_lateral": {
+      "theme": "fachada neoclasica urbana",
+      "tileset_key": "bna_ext_street_modular",
+      "logical_tiles": [
+        "adoquin_recto",
+        "adoquin_borde_cordon",
+        "rejilla_desague_long",
+        "muro_piedra_base",
+        "pilastra_exterior",
+        "columna_exterior_fuste",
+        "columna_exterior_capitel",
+        "ventanal_marco_oscuro",
+        "puerta_madera_monumental",
+        "andamio_obra_placeholder"
+      ],
+      "repeatable_patterns": [
+        "modulo_4x2_columnas",
+        "franja_peatonal_adoquin",
+        "ritmo_ventanal_3_tramos"
+      ]
+    },
+    "hall_publico": {
+      "theme": "hall marmolado gran escala",
+      "tileset_key": "bna_hall_main_modular",
+      "logical_tiles": [
+        "piso_granito_rojo",
+        "piso_granito_reflejo",
+        "borde_piso_granito_oscuro",
+        "muro_travertino_claro",
+        "zocalo_travertino_oscuro",
+        "columna_piedra_interior",
+        "cielorraso_caseton_luz",
+        "cielorraso_caseton_sombra",
+        "ventanal_alto_metal_negro",
+        "mostrador_bancario_modulo"
+      ],
+      "repeatable_patterns": [
+        "reticula_caseton_4x4",
+        "linea_mostradores_en_isla",
+        "franja_molinetes_en_embudo"
+      ]
+    },
+    "circulacion_vertical": {
+      "theme": "escalera monumental curva",
+      "tileset_key": "bna_staircase_curved_modular",
+      "logical_tiles": [
+        "escalon_marmol_frente",
+        "escalon_marmol_huella",
+        "baranda_masa_piedra",
+        "pasamanos_bronce",
+        "rellano_curvo",
+        "descanso_intermedio",
+        "muro_curvo",
+        "sombra_hueco_central"
+      ],
+      "repeatable_patterns": [
+        "espiral_tramo_corto",
+        "espiral_tramo_largo",
+        "bucle_rellano_mirror"
+      ]
+    },
+    "pisos_oficina": {
+      "theme": "administrativo tecnico institucional",
+      "tileset_key": "bna_office_floor_modular",
+      "logical_tiles": [
+        "piso_liso_beige",
+        "alfombra_pasillo_gris",
+        "muro_panel_liso",
+        "ventanal_pasillo_alto",
+        "puerta_oficina_madera_vidrio",
+        "marco_ascensor_bronce",
+        "placa_senaletica_piso",
+        "falso_plafon_lineal"
+      ],
+      "repeatable_patterns": [
+        "pasillo_doble_crujia",
+        "nodo_ascensor_4_puertas",
+        "modulo_oficina_2x3"
+      ]
+    },
+    "servicios_comedor_cocina": {
+      "theme": "servicio interno funcional",
+      "tileset_key": "bna_service_floor_modular",
+      "logical_tiles": [
+        "piso_antideslizante_claro",
+        "piso_antideslizante_humedo",
+        "pared_revestida_sanitaria",
+        "marco_puerta_cortafuego",
+        "senal_higiene_lavado_manos",
+        "franja_servicio_amarilla",
+        "cielorraso_tecnico_lineal"
+      ],
+      "repeatable_patterns": [
+        "cocina_linea_caliente",
+        "comedor_filas_mesas",
+        "pasillo_servicio_angosto"
+      ]
+    },
+    "subsuelo_estacionamiento": {
+      "theme": "infraestructura y escape",
+      "tileset_key": "bna_parking_b3_modular",
+      "logical_tiles": [
+        "hormigon_losa",
+        "hormigon_grieta_liviana",
+        "linea_estacionamiento_blanca",
+        "linea_seguridad_amarilla",
+        "flecha_circulacion",
+        "senal_salida_rampa",
+        "muro_hormigon_humedo",
+        "reja_ventilacion",
+        "puerta_tecnica_metal"
+      ],
+      "repeatable_patterns": [
+        "modulo_cochera_3x2",
+        "pasillo_vehicular_doble",
+        "nucleo_columna_hormigon"
+      ]
+    }
+  }
+}

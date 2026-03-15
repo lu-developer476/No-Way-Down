@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "layers": [
+    {
+      "id": "bg_sky_urban_canyon",
+      "parallax": 0.2,
+      "description": "Cielo visible entre fachadas altas para niveles exteriores"
+    },
+    {
+      "id": "bg_neoclassical_facade_silhouette",
+      "parallax": 0.35,
+      "description": "Ritmo de fachadas pétreas con huecos repetidos"
+    },
+    {
+      "id": "bg_hall_window_glow",
+      "parallax": 0.45,
+      "description": "Grandes ventanales con luz cálida filtrada"
+    },
+    {
+      "id": "bg_coffered_ceiling_grid",
+      "parallax": 0.55,
+      "description": "Retícula de casetones para reforzar identidad del gran hall"
+    },
+    {
+      "id": "bg_staircase_void_depth",
+      "parallax": 0.62,
+      "description": "Capas de profundidad para núcleo de escalera monumental"
+    },
+    {
+      "id": "bg_office_corridor_modules",
+      "parallax": 0.58,
+      "description": "Módulos de oficinas técnicas y pasillos administrativos"
+    },
+    {
+      "id": "bg_service_pipes_and_vents",
+      "parallax": 0.64,
+      "description": "Tuberías y extracción para cocina/comedor"
+    },
+    {
+      "id": "bg_parking_concrete_bays",
+      "parallax": 0.5,
+      "description": "Naves de estacionamiento en subsuelo con luz degradada"
+    }
+  ],
+  "layer_presets_by_zone": {
+    "exterior_calle_lateral": [
+      "bg_sky_urban_canyon",
+      "bg_neoclassical_facade_silhouette"
+    ],
+    "hall_publico": [
+      "bg_hall_window_glow",
+      "bg_coffered_ceiling_grid"
+    ],
+    "circulacion_vertical": [
+      "bg_staircase_void_depth",
+      "bg_hall_window_glow"
+    ],
+    "pisos_oficina": [
+      "bg_office_corridor_modules",
+      "bg_hall_window_glow"
+    ],
+    "servicios_comedor_cocina": [
+      "bg_service_pipes_and_vents",
+      "bg_office_corridor_modules"
+    ],
+    "subsuelo_estacionamiento": [
+      "bg_parking_concrete_bays",
+      "bg_service_pipes_and_vents"
+    ]
+  }
+}

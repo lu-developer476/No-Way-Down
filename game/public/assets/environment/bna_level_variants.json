@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "levels": [
+    {
+      "level": 1,
+      "id": "level1_exterior_acceso",
+      "zones": ["exterior_calle_lateral"],
+      "visual_mood": "evacuacion diurna con tension",
+      "density_profile": "crowd_high",
+      "reuse_from": []
+    },
+    {
+      "level": 2,
+      "id": "level2_subsuelo",
+      "zones": ["circulacion_vertical", "servicios_comedor_cocina"],
+      "visual_mood": "transicion interior con desgaste",
+      "density_profile": "service_medium",
+      "reuse_from": [6]
+    },
+    {
+      "level": 3,
+      "id": "level3_hall_planta_baja",
+      "zones": ["hall_publico", "circulacion_vertical"],
+      "visual_mood": "hall monumental ocupado",
+      "density_profile": "public_high",
+      "reuse_from": [4]
+    },
+    {
+      "level": 4,
+      "id": "level4_segundo_piso",
+      "zones": ["hall_publico", "circulacion_vertical", "pisos_oficina"],
+      "visual_mood": "marmol institucional en combate",
+      "density_profile": "combat_medium",
+      "reuse_from": [3, 7]
+    },
+    {
+      "level": 5,
+      "id": "level5_tercer_piso",
+      "zones": ["pisos_oficina", "servicios_comedor_cocina"],
+      "visual_mood": "administrativo con fuga de personal",
+      "density_profile": "office_medium",
+      "reuse_from": [6, 7, 8]
+    },
+    {
+      "level": 6,
+      "id": "level6_cuarto_piso_comedor",
+      "zones": ["servicios_comedor_cocina", "pisos_oficina"],
+      "visual_mood": "comedor tecnico bajo estres",
+      "density_profile": "service_high",
+      "reuse_from": [2, 5]
+    },
+    {
+      "level": 7,
+      "id": "level7_quinto_piso",
+      "zones": ["pisos_oficina", "hall_publico"],
+      "visual_mood": "piso ejecutivo en colapso",
+      "density_profile": "office_high",
+      "reuse_from": [4, 5, 8]
+    },
+    {
+      "level": 8,
+      "id": "level8_oficina_422",
+      "zones": ["pisos_oficina", "circulacion_vertical"],
+      "visual_mood": "rescate en oficina tecnica",
+      "density_profile": "rescue_dense",
+      "reuse_from": [5, 7]
+    },
+    {
+      "level": 9,
+      "id": "level9_escape_descent",
+      "zones": ["circulacion_vertical", "subsuelo_estacionamiento"],
+      "visual_mood": "descenso de emergencia",
+      "density_profile": "hazard_high",
+      "reuse_from": [10]
+    },
+    {
+      "level": 10,
+      "id": "level10_parking_final",
+      "zones": ["subsuelo_estacionamiento", "exterior_calle_lateral"],
+      "visual_mood": "escape final nocturno",
+      "density_profile": "finale_high",
+      "reuse_from": [1, 9]
+    }
+  ]
+}

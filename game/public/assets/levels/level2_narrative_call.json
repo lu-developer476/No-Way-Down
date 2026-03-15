@@ -1,0 +1,54 @@
+{
+  "levelId": "level2_subsuelo",
+  "cinematics": [
+    {
+      "id": "level2-cinematic-intro-briefing",
+      "trigger": {
+        "type": "narrative-checkpoint",
+        "checkpointId": "level2-checkpoint-intro-briefing"
+      },
+      "movementLocked": true,
+      "preDialoguePauseMs": 500,
+      "dialogue": [
+        {
+          "speaker": "Alan",
+          "text": "Ya confirmamos el equipo. Bajamos al subsuelo y salimos por el extremo derecho.",
+          "durationMs": 2400
+        },
+        {
+          "speaker": "Giovanna",
+          "text": "No improvisen: despejen zonas, cubran escaleras y no rompan formación.",
+          "durationMs": 2400
+        },
+        {
+          "speaker": "Radio",
+          "text": "Contexto operativo: el corredor está dividido por focos infectados. Limpien cada tramo para abrir la salida.",
+          "durationMs": 2800
+        }
+      ],
+      "objectiveAfterCall": "Objetivo narrativo: aseguren el corredor del subsuelo y avancen juntos hacia la salida."
+    },
+    {
+      "id": "level2-cinematic-first-zone-cleared",
+      "trigger": {
+        "type": "narrative-checkpoint",
+        "checkpointId": "level2-checkpoint-first-zone-cleared"
+      },
+      "movementLocked": false,
+      "preDialoguePauseMs": 250,
+      "dialogue": [
+        {
+          "speaker": "Radio",
+          "text": "Primer tramo asegurado. Detectamos presión vertical en laterales: prepárense para nuevas oleadas.",
+          "durationMs": 2300
+        },
+        {
+          "speaker": "Alan",
+          "text": "Recibido. Seguimos empujando hasta desbloquear la salida.",
+          "durationMs": 1900
+        }
+      ],
+      "objectiveAfterCall": "Objetivo actualizado: completar la limpieza total del subsuelo para habilitar la transición."
+    }
+  ]
+}

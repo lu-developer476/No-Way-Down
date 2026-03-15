@@ -7,6 +7,7 @@ const PRELOAD_FILES: Array<{ key: string; path: string }> = [
   { key: 'level2_subsuelo', path: 'assets/levels/level2_subsuelo.json' },
   { key: 'level2_stairs', path: 'assets/levels/level2_stairs.json' },
   { key: 'level2_vertical_spawns', path: 'assets/levels/level2_vertical_spawns.json' },
+  { key: 'level2_narrative_call', path: 'assets/levels/level2_narrative_call.json' },
   { key: 'level7_narrative_checkpoints', path: 'assets/levels/level7_narrative_checkpoints.json' }
 ];
 

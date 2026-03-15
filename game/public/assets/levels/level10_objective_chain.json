@@ -1,0 +1,213 @@
+{
+  "levelId": "level10_b3_estacionamiento_objetivos",
+  "registryKey": "level10ObjectiveChainState",
+  "failChainOnObjectiveFailure": true,
+  "objectives": [
+    {
+      "id": "llegar_subsuelo_3",
+      "label": "Llegar al estacionamiento del 3° subsuelo",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "zone-reached",
+            "targetId": "parking_b3_main"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cinematica_inicial",
+      "label": "Activar cinemática inicial",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "cinematic-played",
+            "targetId": "intro_b3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "explorar_estacionamiento",
+      "label": "Explorar el estacionamiento",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "parking-explored",
+            "targetId": "parking_b3_full_scan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "inspeccionar_y_recolectar",
+      "label": "Inspeccionar vehículos y reunir recursos",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "vehicle-inspected",
+            "targetId": "parking_vehicle_batch"
+          },
+          {
+            "type": "resources-collected",
+            "targetId": "parking_escape_kit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "detectar_salida",
+      "label": "Detectar salida del estacionamiento",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "parking-exit-detected",
+            "targetId": "parking_exit_ramp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evento_mordida_camioneta",
+      "label": "Activar evento de mordida bajo camioneta",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "bite-event-triggered",
+            "targetId": "twin_bite_under_truck"
+          }
+        ]
+      }
+    },
+    {
+      "id": "localizar_auto_utilizable",
+      "label": "Localizar auto utilizable",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "usable-vehicle-located",
+            "targetId": "sedan_escape_vehicle"
+          }
+        ]
+      }
+    },
+    {
+      "id": "resistir_10_min",
+      "label": "Resistir 10 minutos junto al auto",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "timer-completed",
+            "targetId": "parking_holdout_10m",
+            "minDurationMs": 600000
+          }
+        ]
+      },
+      "failure": {
+        "mode": "any",
+        "conditions": [
+          {
+            "type": "manual-fail"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cinematica_colapso_gemelas",
+      "label": "Activar cinemática de colapso de las gemelas",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "cinematic-played",
+            "targetId": "twins_collapse"
+          }
+        ]
+      }
+    },
+    {
+      "id": "escape_con_dos_supervivientes",
+      "label": "Escapar en auto con dos sobrevivientes",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "vehicle-escaped",
+            "targetId": "sedan_escape_vehicle",
+            "minValue": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "cinematica_rumbo_santelmo",
+      "label": "Activar cinemática rumbo a San Telmo",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "cinematic-played",
+            "targetId": "drive_to_san_telmo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "emboscada_final_2_min",
+      "label": "Resistir 2 minutos en la emboscada final",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "ambush-survived",
+            "targetId": "final_street_ambush",
+            "minDurationMs": 120000
+          }
+        ]
+      },
+      "failure": {
+        "mode": "any",
+        "conditions": [
+          {
+            "type": "manual-fail"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cinematica_final",
+      "label": "Activar cinemática final",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "cinematic-played",
+            "targetId": "final_open_ending"
+          }
+        ]
+      }
+    },
+    {
+      "id": "juego_completado",
+      "label": "Marcar juego completado",
+      "completion": {
+        "mode": "all",
+        "conditions": [
+          {
+            "type": "game-flag-updated",
+            "targetId": "game_completed",
+            "boolValue": true
+          }
+        ]
+      }
+    }
+  ]
+}

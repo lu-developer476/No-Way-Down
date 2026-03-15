@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
+import { DEFAULT_ZOMBIE_HEALTH } from '../entities/Zombie';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
@@ -29,8 +30,8 @@ import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
 import { getAudioManager } from '../audio/AudioManager';
+import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
 
-const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.25;
@@ -86,6 +87,9 @@ export class GameScene extends Phaser.Scene {
     if (setupFromStorage && !this.registry.has('initialRunSetup')) {
       this.registry.set('initialRunSetup', setupFromStorage);
     }
+    const setupFromRegistry = this.registry.get('initialRunSetup') as InitialRunSetup | undefined;
+    const difficulty = setupFromRegistry?.difficulty ?? setupFromStorage?.difficulty ?? 'complejo';
+    const difficultyRuntime = getDifficultyRuntimeConfig(difficulty);
     const levelWidth = level2Subsuelo.dimensiones.anchoTotalPx;
     const levelHeight = level2Subsuelo.dimensiones.altoTotalPx;
     const floorHeight = 64;
@@ -124,7 +128,9 @@ export class GameScene extends Phaser.Scene {
       this.addTableVisual(table.x, table.y, table.width, table.height);
     });
 
-    this.projectileSystem = new ProjectileSystem(this);
+    this.projectileSystem = new ProjectileSystem(this, {
+      fireCooldownMultiplier: difficultyRuntime.playerFireCooldownMultiplier
+    });
     getAudioManager(this).startAmbientLoop();
 
     this.respawnPoint = this.resolveRespawnPoint(data, {
@@ -170,7 +176,9 @@ export class GameScene extends Phaser.Scene {
       }))
     ]);
 
-    this.zombieSystem = new ZombieSystem(this);
+    this.zombieSystem = new ZombieSystem(this, 20, {
+      defaultZombieHealth: Math.max(1, Math.round(DEFAULT_ZOMBIE_HEALTH * difficultyRuntime.zombieHealthMultiplier))
+    });
     this.allySystem = new AllySystem(this, this.projectileSystem);
 
     this.players.forEach((player) => {
@@ -192,7 +200,8 @@ export class GameScene extends Phaser.Scene {
     const zombieWaveZonesFromJson = createZombieWaveZonesFromLevelJson(level2Subsuelo, {
       triggerSize: { width: 140, height: 220 },
       blockerWidth: 30,
-      blockerPadding: 36
+      blockerPadding: 36,
+      spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier
     });
 
     this.zombieWaveZoneSystem = new ZombieWaveZone(
@@ -208,7 +217,8 @@ export class GameScene extends Phaser.Scene {
       this,
       this.zombieSystem,
       this.players,
-      verticalSpawnConfig
+      verticalSpawnConfig,
+      { spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier }
     );
 
     this.levelExitSystem = new LevelExitSystem(
@@ -263,6 +273,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
+    this.registry.set('gameDifficultyLabel', difficultyRuntime.label);
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
@@ -528,7 +539,9 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    const didTakeDamage = player.takeDamage(PLAYER_CONTACT_DAMAGE, this.time.now);
+    const difficulty = this.getInitialSetup()?.difficulty ?? 'complejo';
+    const runtime = getDifficultyRuntimeConfig(difficulty);
+    const didTakeDamage = player.takeDamage(runtime.zombieContactDamage, this.time.now);
     if (!didTakeDamage) {
       return;
     }

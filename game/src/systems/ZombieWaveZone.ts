@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { Zombie } from '../entities/Zombie';
 import { ZombieSystem } from './ZombieSystem';
+import { scaleSpawnCount } from '../config/difficultyRuntime';
 
 export interface ZombieWaveSpawnPoint {
   x: number;
@@ -70,6 +71,7 @@ export interface ZombieWaveJsonAdapterOptions {
   blockerWidth?: number;
   blockerPadding?: number;
   spawnYOffset?: number;
+  spawnPressureMultiplier?: number;
 }
 
 type WaveState = 'idle' | 'active' | 'completed';
@@ -90,7 +92,8 @@ const DEFAULT_ADAPTER_OPTIONS: Required<ZombieWaveJsonAdapterOptions> = {
   },
   blockerWidth: 30,
   blockerPadding: 32,
-  spawnYOffset: 0
+  spawnYOffset: 0,
+  spawnPressureMultiplier: 1
 };
 
 export function createZombieWaveZonesFromLevelJson(
@@ -101,8 +104,11 @@ export function createZombieWaveZonesFromLevelJson(
     triggerSize: options.triggerSize ?? DEFAULT_ADAPTER_OPTIONS.triggerSize,
     blockerWidth: options.blockerWidth ?? DEFAULT_ADAPTER_OPTIONS.blockerWidth,
     blockerPadding: options.blockerPadding ?? DEFAULT_ADAPTER_OPTIONS.blockerPadding,
-    spawnYOffset: options.spawnYOffset ?? DEFAULT_ADAPTER_OPTIONS.spawnYOffset
+    spawnYOffset: options.spawnYOffset ?? DEFAULT_ADAPTER_OPTIONS.spawnYOffset,
+    spawnPressureMultiplier: options.spawnPressureMultiplier ?? DEFAULT_ADAPTER_OPTIONS.spawnPressureMultiplier
   };
+
+  const spawnPressureMultiplier = mergedOptions.spawnPressureMultiplier;
 
   return levelJson.zonasLimpiezaZombies.map((zone) => {
     const levelWidth = levelJson.dimensiones.anchoTotalPx;
@@ -169,7 +175,7 @@ export function createZombieWaveZonesFromLevelJson(
       wave: {
         leftSpawnPoints: safeLeftSpawns,
         rightSpawnPoints: safeRightSpawns,
-        zombiesPerSide: Math.max(1, Math.ceil(zone.zombiesIniciales / 2))
+        zombiesPerSide: scaleSpawnCount(Math.max(1, Math.ceil(zone.zombiesIniciales / 2)), spawnPressureMultiplier)
       }
     };
   });

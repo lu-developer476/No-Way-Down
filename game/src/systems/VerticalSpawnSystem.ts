@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Zombie } from '../entities/Zombie';
 import { Player } from '../entities/Player';
 import { ZombieSystem } from './ZombieSystem';
+import { scaleSpawnCooldownMs, scaleSpawnCount } from '../config/difficultyRuntime';
 
 export type VerticalSpawnDirection = 'stairs_up' | 'stairs_down' | 'door_left' | 'door_right';
 
@@ -88,14 +89,15 @@ export class VerticalSpawnSystem {
     zombieSystem: ZombieSystem,
     players: Player[],
     jsonConfig: VerticalSpawnJsonConfig,
-    options?: { defaultMinPlayerDistance?: number }
+    options?: { defaultMinPlayerDistance?: number; spawnPressureMultiplier?: number }
   ): VerticalSpawnSystem {
+    const spawnPressureMultiplier = options?.spawnPressureMultiplier ?? 1;
     const sanitizedPoints: VerticalSpawnPointConfig[] = jsonConfig.verticalZombieSpawns.points.map((point) => ({
       id: point.id,
       position: point.position,
       directions: sanitizeDirections(point.directions),
-      cooldownMs: point.cooldownMs,
-      maxActive: point.maxActive,
+      cooldownMs: scaleSpawnCooldownMs(point.cooldownMs, spawnPressureMultiplier),
+      maxActive: scaleSpawnCount(point.maxActive, spawnPressureMultiplier),
       minPlayerDistance: point.minPlayerDistance
     }));
 

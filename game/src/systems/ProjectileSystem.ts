@@ -16,6 +16,7 @@ export class ProjectileSystem {
   private readonly scene: Phaser.Scene;
   private readonly projectiles: Phaser.Physics.Arcade.Group;
   private readonly nextFireTimeByShooter = new Map<string, number>();
+  private readonly fireCooldownMultiplier: number;
 
   constructor(
     scene: Phaser.Scene,
@@ -23,9 +24,11 @@ export class ProjectileSystem {
       fireCooldownMs?: number;
       projectileSpeed?: number;
       maxProjectiles?: number;
+      fireCooldownMultiplier?: number;
     } = {}
   ) {
     this.scene = scene;
+    this.fireCooldownMultiplier = Math.max(0.5, options.fireCooldownMultiplier ?? 1);
 
     this.projectiles = this.scene.physics.add.group({
       classType: Projectile,
@@ -68,7 +71,7 @@ export class ProjectileSystem {
       }
     );
 
-    this.nextFireTimeByShooter.set(shooterId, now + weaponRuntime.fireCooldownMs);
+    this.nextFireTimeByShooter.set(shooterId, now + weaponRuntime.fireCooldownMs * this.fireCooldownMultiplier);
     return true;
   }
 

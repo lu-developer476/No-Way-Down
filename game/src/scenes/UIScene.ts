@@ -14,6 +14,7 @@ export class UIScene extends Phaser.Scene {
   private dialogueBodyText?: Phaser.GameObjects.Text;
   private dialogueHintText?: Phaser.GameObjects.Text;
   private audioStateText?: Phaser.GameObjects.Text;
+  private difficultyText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
@@ -31,6 +32,7 @@ export class UIScene extends Phaser.Scene {
     this.registry.events.on('changedata-isGamePaused', this.handlePauseStateChanged, this);
     this.registry.events.on('changedata-dialogueState', this.handleDialogueStateChanged, this);
     this.registry.events.on('changedata-audioMuted', this.handleAudioMutedChanged, this);
+    this.registry.events.on('changedata-gameDifficultyLabel', this.handleDifficultyChanged, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.registry.events.off('changedata-playerHealth', this.handleHealthChanged, this);
@@ -40,6 +42,7 @@ export class UIScene extends Phaser.Scene {
       this.registry.events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
       this.registry.events.off('changedata-dialogueState', this.handleDialogueStateChanged, this);
       this.registry.events.off('changedata-audioMuted', this.handleAudioMutedChanged, this);
+      this.registry.events.off('changedata-gameDifficultyLabel', this.handleDifficultyChanged, this);
     });
 
     this.refreshFromRegistry();
@@ -53,6 +56,7 @@ export class UIScene extends Phaser.Scene {
     this.handlePauseStateChanged(this.registry, this.registry.get('isGamePaused') ?? false);
     this.handleDialogueStateChanged(this.registry, this.registry.get('dialogueState') ?? null);
     this.handleAudioMutedChanged(this.registry, this.registry.get('audioMuted') ?? false);
+    this.handleDifficultyChanged(this.registry, this.registry.get('gameDifficultyLabel') ?? 'Complejo');
   }
 
   private handleHealthChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -88,6 +92,10 @@ export class UIScene extends Phaser.Scene {
 
   private handleAudioMutedChanged(_parent: Phaser.Data.DataManager, isMuted: boolean): void {
     this.audioStateText?.setText(isMuted ? 'Audio: Muted' : 'Audio: Unmuted');
+  }
+
+  private handleDifficultyChanged(_parent: Phaser.Data.DataManager, value: string): void {
+    this.difficultyText?.setText(`Dificultad: ${value || 'Complejo'}`);
   }
 
   private handleDialogueStateChanged(_parent: Phaser.Data.DataManager, value: { speaker: string; text: string; canSkip?: boolean; canAdvance?: boolean } | null): void {
@@ -189,6 +197,18 @@ export class UIScene extends Phaser.Scene {
 
     this.audioStateText = this.add.text(this.scale.width - 14, 18, 'Audio: Unmuted', {
       color: '#93c5fd',
+      fontSize: '12px',
+      fontFamily: pixelFont,
+      backgroundColor: '#0f172a',
+      padding: { x: 8, y: 3 }
+    })
+      .setOrigin(1, 0)
+      .setScrollFactor(0)
+      .setDepth(52)
+      .setAlpha(0.85);
+
+    this.difficultyText = this.add.text(this.scale.width - 14, 42, 'Dificultad: Complejo', {
+      color: '#fca5a5',
       fontSize: '12px',
       fontFamily: pixelFont,
       backgroundColor: '#0f172a',

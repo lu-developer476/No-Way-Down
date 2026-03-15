@@ -4,26 +4,46 @@
     "points": [
       {
         "id": "VS-ST-01",
-        "position": { "x": 760, "y": 530 },
-        "directions": ["stairs_down", "door_right"],
+        "position": {
+          "x": 760,
+          "y": 530
+        },
+        "directions": [
+          "stairs_down",
+          "door_right"
+        ],
         "cooldownMs": 4200,
         "maxActive": 2
       },
       {
         "id": "VS-ST-02",
-        "position": { "x": 1300, "y": 510 },
-        "directions": ["stairs_up", "stairs_down"],
+        "position": {
+          "x": 1300,
+          "y": 510
+        },
+        "directions": [
+          "stairs_up",
+          "stairs_down",
+          "door_left"
+        ],
         "cooldownMs": 3600,
         "maxActive": 3,
         "minPlayerDistance": 310
       },
       {
         "id": "VS-DR-03",
-        "position": { "x": 1920, "y": 590 },
-        "directions": ["door_left", "door_right"],
+        "position": {
+          "x": 1920,
+          "y": 590
+        },
+        "directions": [
+          "door_left",
+          "door_right"
+        ],
         "cooldownMs": 5000,
         "maxActive": 1
       }
-    ]
+    ],
+    "maxPlayerDistance": 1250
   }
 }

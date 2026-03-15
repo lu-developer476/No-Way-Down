@@ -222,6 +222,12 @@ export class ZombieWaveZone {
     return this.zones.filter((zone) => zone.state === 'completed').length;
   }
 
+  getCompletedZoneIds(): string[] {
+    return this.zones
+      .filter((zone) => zone.state === 'completed')
+      .map((zone) => zone.config.id);
+  }
+
   areAllZonesCompleted(): boolean {
     return this.getTotalZonesCount() > 0 && this.getCompletedZonesCount() === this.getTotalZonesCount();
   }

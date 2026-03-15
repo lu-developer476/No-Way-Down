@@ -16,11 +16,13 @@ export interface VerticalSpawnPointConfig {
   cooldownMs: number;
   maxActive: number;
   minPlayerDistance?: number;
+  maxPlayerDistance?: number;
 }
 
 export interface VerticalSpawnJsonConfig {
   verticalZombieSpawns: {
     minPlayerDistance?: number;
+    maxPlayerDistance?: number;
     points: Array<{
       id: string;
       position: {
@@ -31,6 +33,7 @@ export interface VerticalSpawnJsonConfig {
       cooldownMs: number;
       maxActive: number;
       minPlayerDistance?: number;
+      maxPlayerDistance?: number;
     }>;
   };
 }
@@ -39,9 +42,11 @@ interface VerticalSpawnRuntime {
   config: VerticalSpawnPointConfig;
   nextSpawnAt: number;
   activeZombies: Set<Zombie>;
+  enabled: boolean;
 }
 
 const DEFAULT_MIN_PLAYER_DISTANCE = 220;
+const DEFAULT_MAX_PLAYER_DISTANCE = 1350;
 
 const ALLOWED_DIRECTIONS: ReadonlySet<VerticalSpawnDirection> = new Set([
   'stairs_up',
@@ -64,6 +69,7 @@ export class VerticalSpawnSystem {
   private readonly players: Player[];
   private readonly runtimes: VerticalSpawnRuntime[];
   private readonly defaultMinPlayerDistance: number;
+  private readonly defaultMaxPlayerDistance: number;
   private enabled = true;
 
   constructor(
@@ -71,16 +77,18 @@ export class VerticalSpawnSystem {
     zombieSystem: ZombieSystem,
     players: Player[],
     points: VerticalSpawnPointConfig[],
-    options?: { defaultMinPlayerDistance?: number }
+    options?: { defaultMinPlayerDistance?: number; defaultMaxPlayerDistance?: number }
   ) {
     this.scene = scene;
     this.zombieSystem = zombieSystem;
     this.players = players;
     this.defaultMinPlayerDistance = options?.defaultMinPlayerDistance ?? DEFAULT_MIN_PLAYER_DISTANCE;
+    this.defaultMaxPlayerDistance = options?.defaultMaxPlayerDistance ?? DEFAULT_MAX_PLAYER_DISTANCE;
     this.runtimes = points.map((config) => ({
       config,
       nextSpawnAt: 0,
-      activeZombies: new Set<Zombie>()
+      activeZombies: new Set<Zombie>(),
+      enabled: true
     }));
   }
 
@@ -89,7 +97,11 @@ export class VerticalSpawnSystem {
     zombieSystem: ZombieSystem,
     players: Player[],
     jsonConfig: VerticalSpawnJsonConfig,
-    options?: { defaultMinPlayerDistance?: number; spawnPressureMultiplier?: number }
+    options?: {
+      defaultMinPlayerDistance?: number;
+      defaultMaxPlayerDistance?: number;
+      spawnPressureMultiplier?: number;
+    }
   ): VerticalSpawnSystem {
     const spawnPressureMultiplier = options?.spawnPressureMultiplier ?? 1;
     const sanitizedPoints: VerticalSpawnPointConfig[] = jsonConfig.verticalZombieSpawns.points.map((point) => ({
@@ -98,11 +110,13 @@ export class VerticalSpawnSystem {
       directions: sanitizeDirections(point.directions),
       cooldownMs: scaleSpawnCooldownMs(point.cooldownMs, spawnPressureMultiplier),
       maxActive: scaleSpawnCount(point.maxActive, spawnPressureMultiplier),
-      minPlayerDistance: point.minPlayerDistance
+      minPlayerDistance: point.minPlayerDistance,
+      maxPlayerDistance: point.maxPlayerDistance
     }));
 
     return new VerticalSpawnSystem(scene, zombieSystem, players, sanitizedPoints, {
-      defaultMinPlayerDistance: jsonConfig.verticalZombieSpawns.minPlayerDistance ?? options?.defaultMinPlayerDistance
+      defaultMinPlayerDistance: jsonConfig.verticalZombieSpawns.minPlayerDistance ?? options?.defaultMinPlayerDistance,
+      defaultMaxPlayerDistance: jsonConfig.verticalZombieSpawns.maxPlayerDistance ?? options?.defaultMaxPlayerDistance
     });
   }
 
@@ -113,6 +127,9 @@ export class VerticalSpawnSystem {
 
     this.runtimes.forEach((runtime) => {
       this.cleanupInactive(runtime);
+      if (!runtime.enabled) {
+        return;
+      }
 
       if (runtime.activeZombies.size >= runtime.config.maxActive) {
         return;
@@ -123,22 +140,36 @@ export class VerticalSpawnSystem {
       }
 
       const minDistance = runtime.config.minPlayerDistance ?? this.defaultMinPlayerDistance;
-      if (!this.isFarEnoughFromPlayers(runtime.config.position.x, runtime.config.position.y, minDistance)) {
+      const maxDistance = runtime.config.maxPlayerDistance ?? this.defaultMaxPlayerDistance;
+      if (!this.isSpawnPointEligible(runtime.config.position.x, runtime.config.position.y, minDistance, maxDistance)) {
         runtime.nextSpawnAt = currentTime + 250;
         return;
       }
 
-      const zombie = this.zombieSystem.spawn(runtime.config.position.x, runtime.config.position.y);
+      const direction = Phaser.Utils.Array.GetRandom(runtime.config.directions);
+      const spawnPosition = this.resolveSpawnPosition(runtime.config.position.x, runtime.config.position.y, direction);
+      const zombie = this.zombieSystem.spawn(spawnPosition.x, spawnPosition.y);
       if (!zombie) {
         runtime.nextSpawnAt = currentTime + runtime.config.cooldownMs;
         return;
       }
 
-      const direction = Phaser.Utils.Array.GetRandom(runtime.config.directions);
       this.applySpawnDirectionImpulse(zombie, direction);
       runtime.activeZombies.add(zombie);
       runtime.nextSpawnAt = currentTime + runtime.config.cooldownMs;
+
+      console.info(`[VerticalSpawnSystem] point ${runtime.config.id} spawned zombie from ${direction}`);
     });
+  }
+
+  setPointEnabled(pointId: string, enabled: boolean, reason = 'sin-detalle'): void {
+    const runtime = this.runtimes.find((candidate) => candidate.config.id === pointId);
+    if (!runtime || runtime.enabled === enabled) {
+      return;
+    }
+
+    runtime.enabled = enabled;
+    console.info(`[VerticalSpawnSystem] point ${pointId} ${enabled ? 'enabled' : 'disabled'} (${reason})`);
   }
 
   setEnabled(enabled: boolean, reason = 'sin-detalle'): void {
@@ -162,14 +193,39 @@ export class VerticalSpawnSystem {
     });
   }
 
-  private isFarEnoughFromPlayers(x: number, y: number, minDistance: number): boolean {
+  private isSpawnPointEligible(x: number, y: number, minDistance: number, maxDistance: number): boolean {
     const minDistanceSquared = minDistance * minDistance;
+    const maxDistanceSquared = maxDistance * maxDistance;
+    let hasNearbyPlayer = false;
 
-    return this.players.every((player) => {
+    const allPlayersOutsideMinDistance = this.players.every((player) => {
       const dx = player.x - x;
       const dy = player.y - y;
-      return dx * dx + dy * dy >= minDistanceSquared;
+      const squaredDistance = dx * dx + dy * dy;
+
+      if (squaredDistance <= maxDistanceSquared) {
+        hasNearbyPlayer = true;
+      }
+
+      return squaredDistance >= minDistanceSquared;
     });
+
+    return allPlayersOutsideMinDistance && hasNearbyPlayer;
+  }
+
+  private resolveSpawnPosition(x: number, y: number, direction: VerticalSpawnDirection): { x: number; y: number } {
+    switch (direction) {
+      case 'stairs_up':
+        return { x: x - 24, y: y - 110 };
+      case 'stairs_down':
+        return { x: x + 24, y: y + 90 };
+      case 'door_left':
+        return { x: x - 96, y: y + 40 };
+      case 'door_right':
+        return { x: x + 96, y: y + 40 };
+      default:
+        return { x, y };
+    }
   }
 
   private applySpawnDirectionImpulse(zombie: Zombie, direction: VerticalSpawnDirection): void {

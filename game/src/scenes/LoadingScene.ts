@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { visualTheme } from './visualTheme';
 
 const PRELOAD_FILES: Array<{ key: string; path: string }> = [
+  { key: 'menu_background', path: 'images/NWD-menu.png' },
+  { key: 'characters_panel', path: 'images/NWD-characters.png' },
   { key: 'level2_subsuelo', path: 'assets/levels/level2_subsuelo.json' },
   { key: 'level2_stairs', path: 'assets/levels/level2_stairs.json' },
   { key: 'level2_vertical_spawns', path: 'assets/levels/level2_vertical_spawns.json' },
@@ -21,7 +23,12 @@ export class LoadingScene extends Phaser.Scene {
     this.bindLoaderEvents();
 
     PRELOAD_FILES.forEach(({ key, path }) => {
-      this.load.json(key, path);
+      if (path.endsWith('.json')) {
+        this.load.json(key, path);
+        return;
+      }
+
+      this.load.image(key, path);
     });
   }
 

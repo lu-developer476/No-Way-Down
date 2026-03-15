@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "manifest_id": "bna_environment_unified_pack",
+  "description": "Paquete lógico de ambientación inspirado en arquitectura institucional de Casa Central BNA, optimizado para legibilidad arcade.",
+  "sources": {
+    "tilesets": "assets/environment/bna_tilesets_by_zone.json",
+    "props": "assets/environment/bna_props_by_zone.json",
+    "background_layers": "assets/environment/bna_background_layers.json",
+    "interactive_objects": "assets/environment/bna_interactive_objects.json",
+    "level_variants": "assets/environment/bna_level_variants.json"
+  },
+  "coherence_rules": [
+    "Mantener paleta pétrea cálida + acentos de bronce + señalización azul en todos los niveles.",
+    "Priorizar formas grandes repetibles (columnas, ventanales, mostradores) para lectura a distancia.",
+    "Usar degradación progresiva de limpieza: hall limpio -> oficinas tensas -> subsuelo deteriorado.",
+    "Aplicar objetos interactivos en puntos de embudo para reforzar ritmo arcade."
+  ]
+}

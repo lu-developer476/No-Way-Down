@@ -12,6 +12,7 @@ import {
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
+import { registerEnvironmentProfile } from '../config/environmentProfiles';
 
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.2;
@@ -40,6 +41,7 @@ export class UpperFloorScene extends Phaser.Scene {
     const floorHeight = 64;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
+    registerEnvironmentProfile(this, 'level4_segundo_piso');
     this.cameras.main
       .setBounds(0, 0, levelWidth, levelHeight)
       .setZoom(ARCADE_CAMERA_ZOOM)

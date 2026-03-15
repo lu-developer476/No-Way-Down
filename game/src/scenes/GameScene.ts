@@ -26,6 +26,7 @@ import {
 import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
+import { registerEnvironmentProfile } from '../config/environmentProfiles';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -77,6 +78,8 @@ export class GameScene extends Phaser.Scene {
     const tableTopY = levelHeight - 146;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
+    registerEnvironmentProfile(this, 'level2_subsuelo');
+
     this.cameras.main
       .setBounds(0, 0, levelWidth, levelHeight)
       .setZoom(ARCADE_CAMERA_ZOOM)

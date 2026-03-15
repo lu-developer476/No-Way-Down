@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "prop_categories": {
+    "columnas": [
+      "columna_exterior_granito_alta",
+      "columna_interior_travertino",
+      "media_columna_mural"
+    ],
+    "pisos": [
+      "mosaico_adoquin_exterior",
+      "granito_hall_reflectivo",
+      "baldosa_oficina_neutra",
+      "hormigon_estacionamiento"
+    ],
+    "mostradores": [
+      "mostrador_bna_lineal",
+      "isla_atencion_baja",
+      "mostrador_seguridad_control"
+    ],
+    "ventanales": [
+      "ventanal_doble_altura_exterior",
+      "ventanal_hall_marco_negro",
+      "ventana_oficina_vertical"
+    ],
+    "escaleras": [
+      "escalera_curva_monumental",
+      "escalera_servicio_recta",
+      "escalera_emergencia_metalica"
+    ],
+    "pasillos": [
+      "pasillo_institucional_ancho",
+      "pasillo_tecnico_estrecho",
+      "galeria_con_balastra"
+    ],
+    "molinetes": [
+      "molinete_brazos_vidrio",
+      "molinete_barrera_retractil",
+      "lector_acceso_led"
+    ],
+    "ascensores": [
+      "ascensor_bronce_doble_hoja",
+      "ascensor_servicio_metalico",
+      "panel_llamado_institucional"
+    ],
+    "senaletica": [
+      "placa_planta_baja_brass",
+      "senal_salida_flecha_azul",
+      "senal_area_restringida",
+      "senal_estacionamiento_sector"
+    ],
+    "cocinas": [
+      "linea_hornos_industrial",
+      "mesada_acero_modular",
+      "campana_extractora",
+      "rack_utensilios"
+    ],
+    "comedores": [
+      "mesa_institucional_rectangular",
+      "banco_corrido",
+      "dispensador_agua",
+      "tablon_menu"
+    ],
+    "oficinas_tecnicas": [
+      "rack_servidor_placeholder",
+      "tablero_electrico_tecnico",
+      "escritorio_operaciones",
+      "pizarra_turnos"
+    ],
+    "estacionamiento": [
+      "auto_estatico_danado_placeholder",
+      "camioneta_siniestrada_placeholder",
+      "barrera_peaje_interna",
+      "cono_reflectivo",
+      "gabinete_incendio"
+    ]
+  },
+  "zone_prop_sets": {
+    "exterior_calle_lateral": [
+      "columna_exterior_granito_alta",
+      "ventanal_doble_altura_exterior",
+      "senal_salida_flecha_azul",
+      "mosaico_adoquin_exterior"
+    ],
+    "hall_publico": [
+      "columna_interior_travertino",
+      "mostrador_bna_lineal",
+      "molinete_brazos_vidrio",
+      "placa_planta_baja_brass",
+      "ventanal_hall_marco_negro"
+    ],
+    "circulacion_vertical": [
+      "escalera_curva_monumental",
+      "media_columna_mural",
+      "senal_area_restringida"
+    ],
+    "pisos_oficina": [
+      "ascensor_bronce_doble_hoja",
+      "panel_llamado_institucional",
+      "escritorio_operaciones",
+      "ventana_oficina_vertical",
+      "placa_planta_baja_brass"
+    ],
+    "servicios_comedor_cocina": [
+      "linea_hornos_industrial",
+      "mesada_acero_modular",
+      "mesa_institucional_rectangular",
+      "banco_corrido",
+      "tablon_menu"
+    ],
+    "subsuelo_estacionamiento": [
+      "auto_estatico_danado_placeholder",
+      "camioneta_siniestrada_placeholder",
+      "senal_estacionamiento_sector",
+      "gabinete_incendio"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "interactive_objects": [
+    {
+      "id": "turnstile_lane_control",
+      "category": "molinetes",
+      "states": ["locked", "scan_required", "open"],
+      "gameplay_tags": ["funnel", "access_gate", "defense_checkpoint"],
+      "reusable_levels": [3, 4, 7]
+    },
+    {
+      "id": "elevator_call_terminal",
+      "category": "ascensores",
+      "states": ["inactive", "called", "arrived"],
+      "gameplay_tags": ["objective_switch", "wave_timer_anchor"],
+      "reusable_levels": [3, 5, 6, 7, 8]
+    },
+    {
+      "id": "counter_shutter_panel",
+      "category": "mostradores",
+      "states": ["closed", "half_open", "open"],
+      "gameplay_tags": ["line_of_sight_control", "npc_service_point"],
+      "reusable_levels": [3, 4, 8]
+    },
+    {
+      "id": "stair_access_door",
+      "category": "escaleras",
+      "states": ["sealed", "unsealed"],
+      "gameplay_tags": ["progression_lock", "choke_point"],
+      "reusable_levels": [2, 4, 5, 6, 8, 9]
+    },
+    {
+      "id": "kitchen_gas_valve",
+      "category": "cocinas",
+      "states": ["open", "closed", "venting"],
+      "gameplay_tags": ["hazard_control", "temporary_area_denial"],
+      "reusable_levels": [6]
+    },
+    {
+      "id": "cafeteria_pa_console",
+      "category": "comedores",
+      "states": ["idle", "broadcasting", "cooldown"],
+      "gameplay_tags": ["lure", "noise_event"],
+      "reusable_levels": [5, 6]
+    },
+    {
+      "id": "technical_office_breaker",
+      "category": "oficinas_tecnicas",
+      "states": ["off", "on", "overload"],
+      "gameplay_tags": ["power_routing", "lighting_change"],
+      "reusable_levels": [7, 8, 9]
+    },
+    {
+      "id": "parking_rolling_shutter",
+      "category": "estacionamiento",
+      "states": ["locked", "raising", "open"],
+      "gameplay_tags": ["escape_gate", "final_hold_trigger"],
+      "reusable_levels": [9, 10]
+    },
+    {
+      "id": "recycling_box_pickup",
+      "category": "senaletica",
+      "states": ["available", "looted"],
+      "gameplay_tags": ["diegetic_loot", "micro_story"],
+      "reusable_levels": [3, 6, 7]
+    }
+  ]
+}

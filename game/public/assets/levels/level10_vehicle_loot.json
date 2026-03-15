@@ -1,0 +1,118 @@
+{
+  "levelId": "level10_subsuelo3_estacionamiento",
+  "vehicles": [
+    {
+      "id": "sedan_oxidado_01",
+      "label": "Sedán oxidado",
+      "locked": false,
+      "breakable": true,
+      "allowOpen": true,
+      "allowBreak": true,
+      "lootTable": [
+        {
+          "itemId": "chatarra_metalica",
+          "label": "Chatarra metálica",
+          "category": "resource",
+          "chance": 0.9,
+          "quantity": { "min": 1, "max": 3 }
+        },
+        {
+          "itemId": "vendaje_improvisado",
+          "label": "Vendaje improvisado",
+          "category": "resource",
+          "chance": 0.4,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "suv_familiar_02",
+      "label": "SUV familiar",
+      "locked": true,
+      "breakable": true,
+      "allowOpen": true,
+      "allowBreak": true,
+      "lootTable": [
+        {
+          "itemId": "cartuchos_9mm",
+          "label": "Cartuchos 9mm",
+          "category": "ammo",
+          "chance": 0.75,
+          "quantity": { "min": 8, "max": 20 }
+        },
+        {
+          "itemId": "llave_cruz",
+          "label": "Llave cruz",
+          "category": "resource",
+          "chance": 0.6,
+          "quantity": 1
+        },
+        {
+          "itemId": "fusil_recortado",
+          "label": "Fusil recortado",
+          "category": "weapon",
+          "chance": 0.25,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "pickup_mantenimiento_03",
+      "label": "Pickup de mantenimiento",
+      "locked": false,
+      "breakable": false,
+      "allowOpen": true,
+      "allowBreak": false,
+      "lootTable": [
+        {
+          "itemId": "bateria_auxiliar",
+          "label": "Batería auxiliar",
+          "category": "vehicle-part",
+          "chance": 0.9,
+          "quantity": 1,
+          "keyForEscape": true
+        },
+        {
+          "itemId": "combustible_reserva",
+          "label": "Bidón de combustible",
+          "category": "resource",
+          "chance": 0.65,
+          "quantity": { "min": 1, "max": 2 }
+        }
+      ]
+    },
+    {
+      "id": "coupe_escape_04",
+      "label": "Cupé negro operativo",
+      "locked": true,
+      "breakable": true,
+      "allowOpen": true,
+      "allowBreak": true,
+      "lootTable": [
+        {
+          "itemId": "modulo_encendido",
+          "label": "Módulo de encendido",
+          "category": "vehicle-part",
+          "chance": 1,
+          "quantity": 1,
+          "keyForEscape": true
+        },
+        {
+          "itemId": "tarjeta_garaje",
+          "label": "Tarjeta de compuerta",
+          "category": "quest",
+          "chance": 0.8,
+          "quantity": 1,
+          "keyForEscape": true
+        },
+        {
+          "itemId": "municion_escopeta",
+          "label": "Munición de escopeta",
+          "category": "ammo",
+          "chance": 0.5,
+          "quantity": { "min": 4, "max": 12 }
+        }
+      ]
+    }
+  ]
+}

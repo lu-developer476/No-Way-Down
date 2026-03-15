@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from .models import PlayerProgress
 
-CHECKPOINT_PATTERN = re.compile(r'^\d+,\d+$')
+CHECKPOINT_PATTERN = re.compile(r'^(?:\d+,\d+|[A-Za-z0-9_-]+)$')
 
 
 class PlayerProgressSerializer(serializers.ModelSerializer):
@@ -23,5 +23,5 @@ class PlayerProgressSerializer(serializers.ModelSerializer):
 
     def validate_checkpoint(self, value: str) -> str:
         if not CHECKPOINT_PATTERN.match(value):
-            raise serializers.ValidationError('checkpoint debe tener formato "x,y".')
+            raise serializers.ValidationError('checkpoint debe tener formato "x,y" o identificador simple (ej: cp_comedor_pasillo).')
         return value

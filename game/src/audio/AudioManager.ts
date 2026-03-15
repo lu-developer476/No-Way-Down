@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 const AUDIO_MANAGER_REGISTRY_KEY = '__audioManager';
 const AUDIO_MUTED_STORAGE_KEY = 'no-way-down-audio-muted';
+const AUDIO_VOLUME_STORAGE_KEY = 'no-way-down-audio-volume';
 
 const AUDIO_KEYS = {
   shot: 'sfx-shot',
@@ -9,7 +10,8 @@ const AUDIO_KEYS = {
   zombieDeath: 'sfx-zombie-death',
   uiConfirm: 'ui-confirm',
   uiPause: 'ui-pause',
-  ambientLoop: 'ambient-loop',
+  menuMusic: 'music-menu',
+  gameplayAmbient: 'ambient-gameplay',
   ambientZombieDistant: 'ambient-zombie-distant'
 } as const;
 
@@ -49,7 +51,7 @@ export class AudioManager {
 
   constructor(game: Phaser.Game) {
     this.game = game;
-    this.loadPersistedMute();
+    this.loadPersistedSettings();
   }
 
   play(event: ManagedSoundEvent): PlaybackResult {
@@ -57,7 +59,7 @@ export class AudioManager {
       return 'muted';
     }
 
-    const scene = this.getActiveScene();
+    const scene = this.getPlaybackScene();
     if (!scene) {
       return 'silent';
     }
@@ -75,26 +77,142 @@ export class AudioManager {
     return this.playToneFallback(scene, TONE_PRESETS[event]);
   }
 
-  startAmbientLoop(): void {
+  playMenuMusic(): void {
+    this.playMusicTrack('menuMusic', 0.22);
+    this.stopGameplayAmbient();
+  }
+
+  stopMenuMusic(): void {
+    this.stopMusicTrack('menuMusic');
+  }
+
+  startGameplayAmbient(): void {
+    this.stopMenuMusic();
+    this.playMusicTrack('gameplayAmbient', 0.18);
+
+    if (!this.isMuted()) {
+      this.startAmbientFallbackLoop();
+    }
+  }
+
+  stopGameplayAmbient(): void {
+    this.stopMusicTrack('gameplayAmbient');
+    this.stopAmbientFallbackLoop();
+  }
+
+  toggleMute(): boolean {
+    return this.setMuted(!this.isMuted());
+  }
+
+  setMuted(muted: boolean): boolean {
+    this.game.sound.mute = muted;
+    this.game.registry.set('audioMuted', muted);
+
+    try {
+      localStorage.setItem(AUDIO_MUTED_STORAGE_KEY, muted ? '1' : '0');
+    } catch {
+      // Ignore storage errors in restricted environments.
+    }
+
+    if (muted) {
+      this.stopAmbientFallbackLoop();
+    } else if (this.isGameSceneActive()) {
+      this.startGameplayAmbient();
+    }
+
+    return muted;
+  }
+
+  setVolumePercent(percent: number): number {
+    const clamped = Phaser.Math.Clamp(Math.round(percent), 0, 100);
+    this.game.sound.volume = clamped / 100;
+    this.game.registry.set('audioVolume', clamped);
+
+    try {
+      localStorage.setItem(AUDIO_VOLUME_STORAGE_KEY, String(clamped));
+    } catch {
+      // Ignore storage errors in restricted environments.
+    }
+
+    if (clamped === 0 && !this.isMuted()) {
+      this.stopAmbientFallbackLoop();
+    } else if (!this.isMuted() && this.isGameSceneActive()) {
+      this.startGameplayAmbient();
+    }
+
+    return clamped;
+  }
+
+  adjustVolumePercent(delta: number): number {
+    return this.setVolumePercent(this.getVolumePercent() + delta);
+  }
+
+  isMuted(): boolean {
+    return Boolean(this.game.sound.mute);
+  }
+
+  getVolumePercent(): number {
+    const volume = Number.isFinite(this.game.sound.volume) ? this.game.sound.volume : 1;
+    return Phaser.Math.Clamp(Math.round(volume * 100), 0, 100);
+  }
+
+  private loadPersistedSettings(): void {
+    let persistedMuted = false;
+    let persistedVolume = 100;
+
+    try {
+      persistedMuted = localStorage.getItem(AUDIO_MUTED_STORAGE_KEY) === '1';
+      const rawVolume = Number(localStorage.getItem(AUDIO_VOLUME_STORAGE_KEY));
+      if (Number.isFinite(rawVolume)) {
+        persistedVolume = Phaser.Math.Clamp(Math.round(rawVolume), 0, 100);
+      }
+    } catch {
+      persistedMuted = false;
+      persistedVolume = 100;
+    }
+
+    this.game.sound.mute = persistedMuted;
+    this.game.sound.volume = persistedVolume / 100;
+    this.game.registry.set('audioMuted', persistedMuted);
+    this.game.registry.set('audioVolume', persistedVolume);
+  }
+
+  private playMusicTrack(track: 'menuMusic' | 'gameplayAmbient', volume: number): void {
     if (this.isMuted()) {
-      this.stopAmbientLoop();
       return;
     }
 
-    const scene = this.getActiveScene();
+    const scene = this.getPlaybackScene();
     if (!scene) {
       return;
     }
 
-    if (this.hasAudioAsset(scene, AUDIO_KEYS.ambientLoop)) {
-      const existing = scene.sound.get(AUDIO_KEYS.ambientLoop);
-      if (!existing || !existing.isPlaying) {
-        scene.sound.play(AUDIO_KEYS.ambientLoop, {
-          loop: true,
-          volume: 0.18
-        });
-      }
-      this.stopAmbientLoop();
+    const key = AUDIO_KEYS[track];
+    if (!this.hasAudioAsset(scene, key)) {
+      this.warnMissingAssetOnce(key, `Track "${track}" sin asset. Se omite reproducción.`);
+      return;
+    }
+
+    const existing = scene.sound.get(key);
+    if (existing && existing.isPlaying) {
+      return;
+    }
+
+    scene.sound.play(key, { loop: true, volume });
+  }
+
+  private stopMusicTrack(track: 'menuMusic' | 'gameplayAmbient'): void {
+    const scene = this.getPlaybackScene();
+    if (!scene) {
+      return;
+    }
+
+    scene.sound.stopByKey(AUDIO_KEYS[track]);
+  }
+
+  private startAmbientFallbackLoop(): void {
+    if (this.isMuted() || this.getVolumePercent() === 0 || this.hasNativeGameplayAmbient()) {
+      this.stopAmbientFallbackLoop();
       return;
     }
 
@@ -102,13 +220,18 @@ export class AudioManager {
       return;
     }
 
-    const context = this.getAudioContext(scene);
-    if (!context) {
-      this.warnMissingAssetOnce(AUDIO_KEYS.ambientLoop, 'Sin AudioContext: loop ambiente en modo silencioso.');
+    const scene = this.getPlaybackScene();
+    if (!scene) {
       return;
     }
 
-    this.warnMissingAssetOnce(AUDIO_KEYS.ambientLoop, 'Loop ambiente con fallback sintético.');
+    const context = this.getAudioContext(scene);
+    if (!context) {
+      this.warnMissingAssetOnce(AUDIO_KEYS.gameplayAmbient, 'Sin AudioContext: ambiente fallback en silencio.');
+      return;
+    }
+
+    this.warnMissingAssetOnce(AUDIO_KEYS.gameplayAmbient, 'Ambiente gameplay con fallback sintético.');
 
     const oscillator = context.createOscillator();
     const gain = context.createGain();
@@ -127,12 +250,7 @@ export class AudioManager {
     this.isAmbientRunning = true;
   }
 
-  stopAmbientLoop(): void {
-    const scene = this.getActiveScene();
-    if (scene) {
-      scene.sound.stopByKey(AUDIO_KEYS.ambientLoop);
-    }
-
+  private stopAmbientFallbackLoop(): void {
     if (!this.isAmbientRunning) {
       return;
     }
@@ -151,44 +269,14 @@ export class AudioManager {
     this.isAmbientRunning = false;
   }
 
-  toggleMute(): boolean {
-    return this.setMuted(!this.isMuted());
+  private hasNativeGameplayAmbient(): boolean {
+    const scene = this.getPlaybackScene();
+    return Boolean(scene && this.hasAudioAsset(scene, AUDIO_KEYS.gameplayAmbient));
   }
 
-  setMuted(muted: boolean): boolean {
-    this.game.sound.mute = muted;
-    this.game.registry.set('audioMuted', muted);
-
-    try {
-      localStorage.setItem(AUDIO_MUTED_STORAGE_KEY, muted ? '1' : '0');
-    } catch {
-      // Ignore storage errors in restricted environments.
-    }
-
-    if (muted) {
-      this.stopAmbientLoop();
-    } else {
-      this.startAmbientLoop();
-    }
-
-    return muted;
-  }
-
-  isMuted(): boolean {
-    return Boolean(this.game.sound.mute);
-  }
-
-  private loadPersistedMute(): void {
-    let persistedMuted = false;
-
-    try {
-      persistedMuted = localStorage.getItem(AUDIO_MUTED_STORAGE_KEY) === '1';
-    } catch {
-      persistedMuted = false;
-    }
-
-    this.game.sound.mute = persistedMuted;
-    this.game.registry.set('audioMuted', persistedMuted);
+  private isGameSceneActive(): boolean {
+    const scene = this.game.scene.getScene('GameScene');
+    return scene?.scene?.isActive() ?? false;
   }
 
   private getAudioContext(scene: Phaser.Scene): AudioContext | undefined {
@@ -263,7 +351,15 @@ export class AudioManager {
     }
   }
 
-  private getActiveScene(): Phaser.Scene | undefined {
+  private getPlaybackScene(): Phaser.Scene | undefined {
+    const orderedSceneKeys = ['GameScene', 'MainMenuScene', 'UIScene'];
+    for (const key of orderedSceneKeys) {
+      const scene = this.game.scene.getScene(key);
+      if (scene?.scene?.isActive()) {
+        return scene;
+      }
+    }
+
     return this.game.scene.getScenes(true)[0];
   }
 

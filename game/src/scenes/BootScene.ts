@@ -4,6 +4,7 @@ import {
   CharacterVisualProfile,
   getCharacterVisualsByFaction
 } from '../config/characterVisuals';
+import { getAudioManager } from '../audio/AudioManager';
 
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
@@ -17,6 +18,10 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
+    const audioManager = getAudioManager(this);
+    this.registry.set('audioMuted', audioManager.isMuted());
+    this.registry.set('audioVolume', audioManager.getVolumePercent());
+
     this.createCharacterFrameTextures();
 
     const graphics = this.add.graphics();

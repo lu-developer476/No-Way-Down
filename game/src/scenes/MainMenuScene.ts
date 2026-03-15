@@ -6,6 +6,7 @@ import {
   PlayableProtagonist,
   saveInitialRunSetup
 } from './sceneShared';
+import { getAudioManager } from '../audio/AudioManager';
 
 interface MenuOption {
   label: string;
@@ -40,12 +41,18 @@ export class MainMenuScene extends Phaser.Scene {
   private setupActionOptions: SetupActionOption[] = [];
   private setupOptionTexts: Phaser.GameObjects.Text[] = [];
   private setupSelectedIndex = 0;
+  private volumeOptionIndex = -1;
 
   constructor() {
     super('MainMenuScene');
   }
 
   create(): void {
+    const audioManager = getAudioManager(this);
+    this.registry.set('audioMuted', audioManager.isMuted());
+    this.registry.set('audioVolume', audioManager.getVolumePercent());
+    audioManager.playMenuMusic();
+
     this.buildBackground();
     this.buildTitle();
     this.buildMenuOptions();
@@ -101,6 +108,12 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     this.menuOptions.push({
+      label: 'Volumen: --',
+      action: () => this.adjustMasterVolume(10)
+    });
+    this.volumeOptionIndex = this.menuOptions.length - 1;
+
+    this.menuOptions.push({
       label: 'Controles',
       action: () => this.toggleControlsPanel(true)
     });
@@ -116,6 +129,8 @@ export class MainMenuScene extends Phaser.Scene {
       fontSize: '14px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5);
+
+    this.refreshVolumeOptionLabel();
   }
 
   private buildControlsPanel(): void {
@@ -239,6 +254,27 @@ export class MainMenuScene extends Phaser.Scene {
       }
 
       this.menuOptions[this.selectedIndex]?.action();
+      getAudioManager(this).play('uiConfirm');
+    });
+
+    this.input.keyboard?.on('keydown-LEFT', () => {
+      if (this.controlsPanel?.visible || this.setupPanel?.visible) {
+        return;
+      }
+
+      if (this.selectedIndex === this.volumeOptionIndex) {
+        this.adjustMasterVolume(-10);
+      }
+    });
+
+    this.input.keyboard?.on('keydown-RIGHT', () => {
+      if (this.controlsPanel?.visible || this.setupPanel?.visible) {
+        return;
+      }
+
+      if (this.selectedIndex === this.volumeOptionIndex) {
+        this.adjustMasterVolume(10);
+      }
     });
 
     this.input.keyboard?.on('keydown-ESC', () => {
@@ -260,6 +296,7 @@ export class MainMenuScene extends Phaser.Scene {
         })
         .on('pointerdown', () => {
           this.menuOptions[index]?.action();
+          getAudioManager(this).play('uiConfirm');
         });
     });
 
@@ -274,6 +311,28 @@ export class MainMenuScene extends Phaser.Scene {
       text.setColor(isSelected ? '#fde047' : '#cbd5e1');
       text.setScale(isSelected ? 1.05 : 1);
     });
+  }
+
+  private adjustMasterVolume(delta: number): void {
+    const audioManager = getAudioManager(this);
+    const volume = audioManager.adjustVolumePercent(delta);
+    this.registry.set('audioVolume', volume);
+    this.refreshVolumeOptionLabel();
+
+    if (!audioManager.isMuted() && volume > 0) {
+      audioManager.play('uiConfirm');
+    }
+  }
+
+  private refreshVolumeOptionLabel(): void {
+    if (this.volumeOptionIndex < 0 || !this.menuOptions[this.volumeOptionIndex]) {
+      return;
+    }
+
+    const volume = getAudioManager(this).getVolumePercent();
+    const label = `Volumen: ${volume}%`;
+    this.menuOptions[this.volumeOptionIndex].label = label;
+    this.optionTexts[this.volumeOptionIndex]?.setText(label);
   }
 
   private refreshSetupSelection(): void {
@@ -448,6 +507,7 @@ export class MainMenuScene extends Phaser.Scene {
     saveInitialRunSetup(setup);
     this.registry.remove('checkpoint');
     this.registry.set('initialRunSetup', setup);
+    getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
     this.scene.start('GameScene', { skipLoad: true });
   }
@@ -457,6 +517,7 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private continueRun(): void {
+    getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
     this.scene.start('GameScene');
   }

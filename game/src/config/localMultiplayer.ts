@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { InitialRunSetup } from '../scenes/sceneShared';
+import { getCharacterRuntimeConfig } from './characterRuntime';
 
 export type PlayerSlot = 1 | 2 | 3 | 4;
 export type PlayableCharacterId = 'alan' | 'giovanna' | 'nahir' | 'damian';
@@ -41,16 +42,16 @@ const CONTROLS_P1: PlayerControlScheme = {
   shoot: Phaser.Input.Keyboard.KeyCodes.F
 };
 
-const PARTY_MEMBER_DATA: Record<PartyCharacterId, { name: string; tint: number }> = {
-  alan: { name: 'Alan', tint: 0xfacc15 },
-  giovanna: { name: 'Giovanna', tint: 0xf472b6 },
-  nahir: { name: 'Nahir', tint: 0x38bdf8 },
-  damian: { name: 'Damián', tint: 0x34d399 },
-  lorena: { name: 'Lorena', tint: 0xfb7185 },
-  selene: { name: 'Selene', tint: 0xc084fc },
-  celestino: { name: 'Celestino', tint: 0xfde047 },
-  hernan: { name: 'Hernán', tint: 0xa7f3d0 },
-  yamil: { name: 'Yamil', tint: 0x93c5fd }
+const PARTY_MEMBER_TINT: Record<PartyCharacterId, number> = {
+  alan: 0xfacc15,
+  giovanna: 0xf472b6,
+  nahir: 0x38bdf8,
+  damian: 0x34d399,
+  lorena: 0xfb7185,
+  selene: 0xc084fc,
+  celestino: 0xfde047,
+  hernan: 0xa7f3d0,
+  yamil: 0x93c5fd
 };
 
 const OPTIONAL_SETUP_TO_CHARACTER: Record<string, Extract<PartyCharacterId, 'celestino' | 'hernan' | 'yamil'>> = {
@@ -60,12 +61,12 @@ const OPTIONAL_SETUP_TO_CHARACTER: Record<string, Extract<PartyCharacterId, 'cel
 };
 
 function createMainPlayerConfig(characterId: Extract<PartyCharacterId, 'alan' | 'giovanna'>): PlayerConfig {
-  const profile = PARTY_MEMBER_DATA[characterId];
+  const runtime = getCharacterRuntimeConfig(characterId);
   return {
     slot: 1,
-    name: profile.name,
+    name: runtime.name,
     characterId,
-    color: profile.tint,
+    color: PARTY_MEMBER_TINT[characterId],
     controls: CONTROLS_P1
   };
 }
@@ -95,9 +96,9 @@ export function getInitialPartySeed(setup?: InitialRunSetup | null): PartySeedCo
     .filter((characterId) => characterId !== protagonist)
     .map((characterId) => ({
       id: `ally-${characterId}`,
-      name: PARTY_MEMBER_DATA[characterId].name,
+      name: getCharacterRuntimeConfig(characterId).name,
       characterId,
-      tint: PARTY_MEMBER_DATA[characterId].tint
+      tint: PARTY_MEMBER_TINT[characterId]
     }));
 
   return {

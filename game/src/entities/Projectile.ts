@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 export class Projectile extends Phaser.Physics.Arcade.Image {
   private speed = 0;
   private direction = 1;
+  private damage = 1;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'bullet-placeholder');
@@ -16,12 +17,17 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
     body.setAllowGravity(false);
   }
 
-  launch(x: number, y: number, direction: number, speed: number): void {
+  launch(x: number, y: number, direction: number, speed: number, damage = 1): void {
     this.speed = speed;
     this.direction = direction;
+    this.damage = damage;
 
     this.enableBody(true, x, y, true, true);
     this.setVelocityX(this.direction * this.speed);
+  }
+
+  getDamage(): number {
+    return this.damage;
   }
 
   deactivate(): void {

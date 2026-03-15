@@ -1,21 +1,64 @@
 import Phaser from 'phaser';
 import { Projectile } from '../entities/Projectile';
+import { CharacterWeaponKey } from '../config/characterRuntime';
 
 export interface FireConfig {
   originX: number;
   originY: number;
   direction: number;
+  weapon?: CharacterWeaponKey;
+  shooterId?: string;
 }
 
-const DEFAULT_PROJECTILE_SPEED = 520;
-const DEFAULT_FIRE_COOLDOWN_MS = 220;
+interface WeaponCombatProfile {
+  fireCooldownMs: number;
+  projectileSpeed: number;
+  damage: number;
+}
+
+const DEFAULT_WEAPON_PROFILE: WeaponCombatProfile = {
+  fireCooldownMs: 220,
+  projectileSpeed: 520,
+  damage: 1
+};
+
+const WEAPON_COMBAT_PROFILE_BY_KEY: Record<string, WeaponCombatProfile> = {
+  pistol: {
+    fireCooldownMs: 220,
+    projectileSpeed: 520,
+    damage: 1
+  },
+  revolver: {
+    fireCooldownMs: 340,
+    projectileSpeed: 560,
+    damage: 2
+  },
+  smg: {
+    fireCooldownMs: 140,
+    projectileSpeed: 500,
+    damage: 1
+  },
+  shotgun: {
+    fireCooldownMs: 560,
+    projectileSpeed: 460,
+    damage: 3
+  },
+  carbine: {
+    fireCooldownMs: 260,
+    projectileSpeed: 620,
+    damage: 2
+  },
+  sniper_rifle: {
+    fireCooldownMs: 680,
+    projectileSpeed: 720,
+    damage: 4
+  }
+};
 
 export class ProjectileSystem {
   private readonly scene: Phaser.Scene;
   private readonly projectiles: Phaser.Physics.Arcade.Group;
-  private readonly fireCooldownMs: number;
-  private readonly projectileSpeed: number;
-  private nextFireTime = 0;
+  private readonly nextFireTimeByShooter = new Map<string, number>();
 
   constructor(
     scene: Phaser.Scene,
@@ -26,19 +69,29 @@ export class ProjectileSystem {
     } = {}
   ) {
     this.scene = scene;
-    this.fireCooldownMs = options.fireCooldownMs ?? DEFAULT_FIRE_COOLDOWN_MS;
-    this.projectileSpeed = options.projectileSpeed ?? DEFAULT_PROJECTILE_SPEED;
 
     this.projectiles = this.scene.physics.add.group({
       classType: Projectile,
       maxSize: options.maxProjectiles ?? 30,
       runChildUpdate: false
     });
+
+    if (options.fireCooldownMs || options.projectileSpeed) {
+      WEAPON_COMBAT_PROFILE_BY_KEY.pistol = {
+        fireCooldownMs: options.fireCooldownMs ?? WEAPON_COMBAT_PROFILE_BY_KEY.pistol.fireCooldownMs,
+        projectileSpeed: options.projectileSpeed ?? WEAPON_COMBAT_PROFILE_BY_KEY.pistol.projectileSpeed,
+        damage: WEAPON_COMBAT_PROFILE_BY_KEY.pistol.damage
+      };
+    }
   }
 
   tryFire(config: FireConfig): boolean {
     const now = this.scene.time.now;
-    if (now < this.nextFireTime) {
+    const weaponProfile = this.getWeaponProfile(config.weapon);
+    const shooterId = config.shooterId ?? 'shared';
+    const nextFireTime = this.nextFireTimeByShooter.get(shooterId) ?? 0;
+
+    if (now < nextFireTime) {
       return false;
     }
 
@@ -47,8 +100,14 @@ export class ProjectileSystem {
       return false;
     }
 
-    projectile.launch(config.originX, config.originY, config.direction, this.projectileSpeed);
-    this.nextFireTime = now + this.fireCooldownMs;
+    projectile.launch(
+      config.originX,
+      config.originY,
+      config.direction,
+      weaponProfile.projectileSpeed,
+      weaponProfile.damage
+    );
+    this.nextFireTimeByShooter.set(shooterId, now + weaponProfile.fireCooldownMs);
 
     return true;
   }
@@ -69,5 +128,13 @@ export class ProjectileSystem {
 
       return true;
     });
+  }
+
+  private getWeaponProfile(weapon?: string): WeaponCombatProfile {
+    if (!weapon) {
+      return DEFAULT_WEAPON_PROFILE;
+    }
+
+    return WEAPON_COMBAT_PROFILE_BY_KEY[weapon] ?? DEFAULT_WEAPON_PROFILE;
   }
 }

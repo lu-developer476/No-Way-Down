@@ -4,10 +4,10 @@ import { PlayerConfig } from '../config/localMultiplayer';
 import { StairAnimationKeys } from '../systems/StairSystem';
 import { getCharacterVisualById } from '../config/characterVisuals';
 import { getAudioManager } from '../audio/AudioManager';
+import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
-const DEFAULT_MAX_HEALTH = 100;
 const DAMAGE_INVULNERABILITY_MS = 900;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
@@ -18,7 +18,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly shootKey: Phaser.Input.Keyboard.Key;
   private lookDirection: 1 | -1 = 1;
   private projectileSystem: ProjectileSystem;
-  private healthPoints = DEFAULT_MAX_HEALTH;
+  private readonly runtimeConfig: CharacterRuntimeConfig;
+  private healthPoints = 0;
   private invulnerableUntil = 0;
   private isDeadState = false;
   private readonly profile: PlayerConfig;
@@ -41,6 +42,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.projectileSystem = projectileSystem;
     this.profile = profile;
     this.characterVisualId = characterVisual.id;
+    this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
+    this.healthPoints = this.runtimeConfig.maxHealth;
     this.setTint(profile.color);
 
     const keyboard = scene.input.keyboard;
@@ -56,7 +59,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.play(`${this.characterVisualId}-idle`, true);
 
-    this.nameTag = scene.add.text(this.x, this.y - 42, profile.name, {
+    this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
       fontSize: '10px',
       color: '#f8fafc',
       stroke: '#0f172a',
@@ -102,7 +105,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       const hasFired = this.projectileSystem.tryFire({
         originX: this.x + this.lookDirection * 24,
         originY: this.y - 6,
-        direction: this.lookDirection
+        direction: this.lookDirection,
+        weapon: this.runtimeConfig.baseWeapon,
+        shooterId: `player-${this.profile.slot}`
       });
 
       if (hasFired) {
@@ -184,6 +189,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   getHealth(): number {
     return this.healthPoints;
+  }
+
+  getMaxHealth(): number {
+    return this.runtimeConfig.maxHealth;
+  }
+
+  getRuntimeConfig(): CharacterRuntimeConfig {
+    return this.runtimeConfig;
   }
 
   getProfile(): PlayerConfig {

@@ -8,12 +8,10 @@ import { AllySystem } from '../systems/AllySystem';
 import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
 import { LevelExitSystem } from '../systems/LevelExitSystem';
 import { VerticalSpawnSystem } from '../systems/VerticalSpawnSystem';
-import { NarrativeCheckpointSystem } from '../systems/NarrativeCheckpointSystem';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
 import level4StairSegments from '../../public/assets/levels/level4_stair_segments.json';
 import verticalSpawnConfig from '../../public/assets/levels/level2_vertical_spawns.json';
-import level7NarrativeCheckpoints from '../../public/assets/levels/level7_narrative_checkpoints.json';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
@@ -29,8 +27,6 @@ import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
-import level7CinematicCall from '../../public/assets/levels/level7_cinematic_call.json';
-import { CinematicCallSystem, CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
 import { getAudioManager } from '../audio/AudioManager';
 
 const PLAYER_CONTACT_DAMAGE = 10;
@@ -60,7 +56,6 @@ export class GameScene extends Phaser.Scene {
   private zombieWaveZoneSystem?: ZombieWaveZone;
   private levelExitSystem?: LevelExitSystem;
   private verticalSpawnSystem?: VerticalSpawnSystem;
-  private narrativeCheckpointSystem?: NarrativeCheckpointSystem;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -76,12 +71,9 @@ export class GameScene extends Phaser.Scene {
   private audioToggleOptionIndex = -1;
   private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
-  private cinematicCallSystem?: CinematicCallSystem;
-  private cinematicMovementLocked = false;
-  private isNarrativePlaying = false;
-  private sectionCinematicTriggered = false;
-  private advanceDialogueRequested = false;
-  private skipDialogueRequested = false;
+  private cleanupZonesRequired = 0;
+  private exitUnlocked = false;
+  private spawnsShutDown = false;
 
   constructor() {
     super('GameScene');
@@ -173,8 +165,9 @@ export class GameScene extends Phaser.Scene {
     this.allySystem.createEnvironmentColliders(environment);
     this.allySystem.createZombieOverlap(this.zombieSystem.getGroup());
 
-    [500, 910, 1330, 1720, 2040].forEach((spawnX) => {
-      this.zombieSystem?.spawn(spawnX, levelHeight - 140);
+    const initialSegmentSpawns = level2Subsuelo.segmentos[0]?.spawnPointsPosibles ?? [];
+    initialSegmentSpawns.forEach((spawnPoint) => {
+      this.zombieSystem?.spawn(spawnPoint.x, spawnPoint.y);
     });
 
     const zombieWaveZonesFromJson = createZombieWaveZonesFromLevelJson(level2Subsuelo, {
@@ -189,6 +182,7 @@ export class GameScene extends Phaser.Scene {
       this.players,
       zombieWaveZonesFromJson
     );
+    this.cleanupZonesRequired = this.zombieWaveZoneSystem.getTotalZonesCount();
 
     // Ejemplo de integración: spawn vertical configurable por JSON (escaleras/puertas laterales).
     this.verticalSpawnSystem = VerticalSpawnSystem.fromJson(
@@ -219,68 +213,8 @@ export class GameScene extends Phaser.Scene {
       },
       () => this.zombieWaveZoneSystem?.getCompletedZonesCount() ?? 0,
       (message) => this.showMissionStatus(message),
-      (transitionMessage) => this.triggerLevelExitTransition(transitionMessage)
-    );
-
-    // Ejemplo de integración para Nivel 7: checkpoints narrativos configurados por JSON.
-    // GameScene sólo conecta callbacks; la lógica de estado queda en NarrativeCheckpointSystem.
-    this.cinematicCallSystem = CinematicCallSystem.fromJson(
-      this,
-      level7CinematicCall as CinematicCallSystemConfig,
-      {
-        showDialogueLine: (line) => {
-          this.registry.set('dialogueState', { speaker: line.speaker, text: line.text, canAdvance: true, canSkip: true });
-        },
-        clearDialogue: () => {
-          this.registry.set('dialogueState', null);
-        }
-      },
-      {
-        onCinematicStarted: () => {
-          this.isNarrativePlaying = true;
-          this.showMissionStatus('Comunicación entrante...');
-        },
-        onCinematicCompleted: () => {
-          this.isNarrativePlaying = false;
-        },
-        onMovementLockChanged: (locked) => {
-          this.cinematicMovementLocked = locked;
-        },
-        onObjectiveUpdated: (objectiveText) => {
-          this.registry.set('currentObjective', objectiveText);
-          this.showMissionStatus('Objetivo narrativo actualizado.');
-        },
-        consumeAdvance: () => this.consumeDialogueAdvance(),
-        isSkipRequested: () => this.isDialogueSkipRequested()
-      }
-    );
-
-    this.narrativeCheckpointSystem = NarrativeCheckpointSystem.fromJson(
-      this,
-      this.players,
-      level7NarrativeCheckpoints,
-      {
-        isCombatPending: () => (this.zombieSystem?.getActiveCount() ?? 0) > 0,
-        onCheckpointActivated: ({ checkpoint }) => {
-          this.showMissionStatus(`Checkpoint activado: ${checkpoint.label}`);
-        },
-        onCombatResolutionRequired: ({ checkpoint }) => {
-          this.registry.set('interactionHint', `Resuelve el combate en ${checkpoint.label} para continuar.`);
-        },
-        onRecoveryRequested: ({ checkpoint }) => new Promise<void>((resolve) => {
-          this.showMissionStatus(`Recuperando pertenencias en ${checkpoint.label}...`);
-          this.time.delayedCall(1000, () => resolve());
-        }),
-        onRecoveryCompleted: ({ checkpoint }) => {
-          this.showMissionStatus(`Pertenencias recuperadas en ${checkpoint.label}.`);
-        },
-        onObjectiveUpdated: (objectiveText) => {
-          this.registry.set('currentObjective', objectiveText);
-        }
-      },
-      {
-        stateRegistryKey: 'level7NarrativeCheckpoints'
-      }
+      (transitionMessage) => this.triggerLevelExitTransition(transitionMessage),
+      () => this.handleExitUnlocked()
     );
 
     const leadPlayer = this.players[0];
@@ -316,7 +250,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.registerPauseControls();
-    this.registerDialogueControls();
     this.registerApiControls();
 
     if (!data.skipLoad) {
@@ -333,11 +266,6 @@ export class GameScene extends Phaser.Scene {
 
   update(): void {
     this.players.forEach((player) => {
-      if (this.cinematicMovementLocked) {
-        player.setVelocity(0, 0);
-        return;
-      }
-
       player.update();
     });
     this.enforcePlayerSeparation();
@@ -358,7 +286,6 @@ export class GameScene extends Phaser.Scene {
     this.zombieWaveZoneSystem?.update();
     this.verticalSpawnSystem?.update(this.time.now);
     this.levelExitSystem?.update();
-    this.narrativeCheckpointSystem?.update();
 
     this.updateMissionProgress(zombiesRemaining);
 
@@ -372,10 +299,13 @@ export class GameScene extends Phaser.Scene {
   private setupMissionSystem(): void {
     const objectives: MissionObjective[] = [
       {
-        id: 'clear-dining-room',
-        description: 'Elimina todos los zombies del comedor',
-        completedDescription: 'Comedor asegurado. La escalera está activa.',
-        isCompleted: (context) => context.zombiesRemaining === 0
+        id: 'clear-sublevel-corridor',
+        description: `Despeja las ${this.cleanupZonesRequired} zonas del pasillo del subsuelo`,
+        completedDescription: 'Pasillo despejado. Salida habilitada al siguiente tramo.',
+        isCompleted: (context) => {
+          const allCleanupZonesCompleted = (this.zombieWaveZoneSystem?.getCompletedZonesCount() ?? 0) >= this.cleanupZonesRequired;
+          return allCleanupZonesCompleted && context.zombiesRemaining === 0;
+        }
       }
     ];
 
@@ -391,14 +321,34 @@ export class GameScene extends Phaser.Scene {
 
     if (completedObjective) {
       this.registry.set('currentObjective', completedObjective.completedDescription);
-      this.showMissionStatus('Misión completada: escuadrón despejado');
-      if (!this.sectionCinematicTriggered) {
-        this.sectionCinematicTriggered = true;
-        void this.cinematicCallSystem?.triggerByCheckpoint('level7-checkpoint-communications-recovery');
-      }
+      this.showMissionStatus('Misión completada: subsuelo despejado. Busca la salida.');
+      this.shutdownSpawnSystems('mission-completed');
+      console.info('[GameScene] objective completed: clear-sublevel-corridor');
     } else {
       this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
     }
+  }
+
+  private handleExitUnlocked(): void {
+    if (this.exitUnlocked) {
+      return;
+    }
+
+    this.exitUnlocked = true;
+    this.shutdownSpawnSystems('exit-unlocked');
+    this.registry.set('interactionHint', 'Salida habilitada: avanza al extremo derecho para continuar.');
+    console.info('[GameScene] exit unlocked and progression clarified for current slice');
+  }
+
+  private shutdownSpawnSystems(reason: string): void {
+    if (this.spawnsShutDown) {
+      return;
+    }
+
+    this.spawnsShutDown = true;
+    this.verticalSpawnSystem?.setEnabled(false, reason);
+    this.zombieWaveZoneSystem?.setEnabled(false, reason);
+    console.info(`[GameScene] spawn systems disabled (${reason})`);
   }
 
   private createMissionStatusUI(): void {
@@ -656,32 +606,6 @@ export class GameScene extends Phaser.Scene {
     enforceMaxPlayerSeparation(this.players);
   }
 
-
-  private registerDialogueControls(): void {
-    this.input.keyboard?.on('keydown-SPACE', () => {
-      this.advanceDialogueRequested = true;
-    });
-
-    this.input.keyboard?.on('keydown-X', () => {
-      this.skipDialogueRequested = true;
-    });
-  }
-
-  private consumeDialogueAdvance(): boolean {
-    const shouldAdvance = this.advanceDialogueRequested;
-    this.advanceDialogueRequested = false;
-    return shouldAdvance;
-  }
-
-  private isDialogueSkipRequested(): boolean {
-    if (!this.skipDialogueRequested) {
-      return false;
-    }
-
-    this.skipDialogueRequested = false;
-    return true;
-  }
-
   private createPauseMenuUI(): void {
     const { width, height } = this.scale;
 
@@ -729,7 +653,7 @@ export class GameScene extends Phaser.Scene {
 
   private registerPauseControls(): void {
     this.input.keyboard?.on('keydown-ESC', () => {
-      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.isNarrativePlaying) {
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
         return;
       }
 

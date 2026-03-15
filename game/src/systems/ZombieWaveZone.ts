@@ -180,6 +180,7 @@ export class ZombieWaveZone {
   private readonly zombieSystem: ZombieSystem;
   private readonly players: Player[];
   private readonly zones: RuntimeZone[];
+  private enabled = true;
 
   constructor(scene: Phaser.Scene, zombieSystem: ZombieSystem, players: Player[], configs: ZombieWaveZoneConfig[]) {
     this.scene = scene;
@@ -191,6 +192,10 @@ export class ZombieWaveZone {
   }
 
   update(): void {
+    if (!this.enabled) {
+      return;
+    }
+
     this.zones.forEach((zone) => {
       if (zone.state !== 'active') {
         return;
@@ -213,6 +218,15 @@ export class ZombieWaveZone {
 
   areAllZonesCompleted(): boolean {
     return this.getTotalZonesCount() > 0 && this.getCompletedZonesCount() === this.getTotalZonesCount();
+  }
+
+  setEnabled(enabled: boolean, reason = 'sin-detalle'): void {
+    if (this.enabled === enabled) {
+      return;
+    }
+
+    this.enabled = enabled;
+    console.info(`[ZombieWaveZone] ${enabled ? 'enabled' : 'disabled'} (${reason})`);
   }
 
   private createRuntimeZone(config: ZombieWaveZoneConfig): RuntimeZone {
@@ -263,7 +277,7 @@ export class ZombieWaveZone {
   }
 
   private activateZone(zone: RuntimeZone): void {
-    if (zone.state !== 'idle') {
+    if (!this.enabled || zone.state !== 'idle') {
       return;
     }
 
@@ -274,6 +288,8 @@ export class ZombieWaveZone {
     const triggerBody = zone.trigger.body as Phaser.Physics.Arcade.StaticBody;
     triggerBody.enable = false;
     zone.spawnedZombies = this.spawnWave(zone.config);
+
+    console.info(`[ZombieWaveZone] zone activated: ${zone.config.id}`);
 
     this.scene.registry.set('interactionHint', `Zona ${zone.config.id} activa: elimina a todos los zombies`);
   }
@@ -305,6 +321,7 @@ export class ZombieWaveZone {
     zone.state = 'completed';
     this.setBlockerEnabled(zone.leftBlocker, false);
     this.setBlockerEnabled(zone.rightBlocker, false);
+    console.info(`[ZombieWaveZone] zone completed: ${zone.config.id}`);
     this.scene.registry.set('interactionHint', 'Zona despejada. Avance desbloqueado.');
   }
 

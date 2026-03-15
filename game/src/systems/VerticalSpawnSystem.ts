@@ -63,6 +63,7 @@ export class VerticalSpawnSystem {
   private readonly players: Player[];
   private readonly runtimes: VerticalSpawnRuntime[];
   private readonly defaultMinPlayerDistance: number;
+  private enabled = true;
 
   constructor(
     scene: Phaser.Scene,
@@ -104,6 +105,10 @@ export class VerticalSpawnSystem {
   }
 
   update(currentTime: number): void {
+    if (!this.enabled) {
+      return;
+    }
+
     this.runtimes.forEach((runtime) => {
       this.cleanupInactive(runtime);
 
@@ -132,6 +137,19 @@ export class VerticalSpawnSystem {
       runtime.activeZombies.add(zombie);
       runtime.nextSpawnAt = currentTime + runtime.config.cooldownMs;
     });
+  }
+
+  setEnabled(enabled: boolean, reason = 'sin-detalle'): void {
+    if (this.enabled === enabled) {
+      return;
+    }
+
+    this.enabled = enabled;
+    console.info(`[VerticalSpawnSystem] ${enabled ? 'enabled' : 'disabled'} (${reason})`);
+  }
+
+  isEnabled(): boolean {
+    return this.enabled;
   }
 
   private cleanupInactive(runtime: VerticalSpawnRuntime): void {

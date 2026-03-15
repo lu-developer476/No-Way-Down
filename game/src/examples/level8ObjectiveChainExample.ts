@@ -38,7 +38,7 @@ import objectiveChainJson from '../../public/assets/levels/level8_objective_chai
 import rescueJson from '../../public/assets/levels/level8_office422_rescue.json';
 import waveCombatJson from '../../public/assets/levels/level8_office422_wave_combat.json';
 import sisterMessageJson from '../../public/assets/levels/level8_sister_message_dialogue.json';
-import timedCheckpointJson from '../../../level8_timed_checkpoint.json';
+import timedCheckpointJson from '../../config/levels/level8/level8_timed_checkpoint.json';
 import descentRouteJson from '../../public/assets/levels/level8_descent_route.json';
 import finalSiegeJson from '../../public/assets/levels/level8_final_siege.json';
 import outroJson from '../../public/assets/levels/level8_outro_dialogue.json';

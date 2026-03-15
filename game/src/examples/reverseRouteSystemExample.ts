@@ -1,5 +1,5 @@
 import level7Layout from '../../public/assets/levels/level7_quinto_piso.json';
-import level8Rescue from '../../../level8_rescate_oficina_422.json';
+import level8Rescue from '../../config/levels/level8/level8_rescate_oficina_422.json';
 import { ReverseRouteConfig, ReverseRouteSystem } from '../systems/ReverseRouteSystem';
 
 const reverseRouteConfig: ReverseRouteConfig = {

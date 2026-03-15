@@ -36,9 +36,9 @@ El comportamiento de planta baja se divide en dos capas:
    - Cada salida publica outcomes de combate, narrativa y estado de ruta (`route_state`).
 
 2. **Rutas y triggers diegéticos de salida:**
-   - `level9_exit_routes.json` define para A-E estados iniciales, outcomes de inspección/activación y triggers (`zone_enter`, `interaction`, `activation`, etc.).
+   - `game/config/levels/level9/level9_exit_routes.json` define para A-E estados iniciales, outcomes de inspección/activación y triggers (`zone_enter`, `interaction`, `activation`, etc.).
 
-Adicionalmente, el combate táctico de flanqueo para C/D se configura en `level9_flank_combat_zones.json` y se integra mediante `FlankingEscapeCombatSystem` (encuentros `salida-c` y `salida-d`).
+Adicionalmente, el combate táctico de flanqueo para C/D se configura en `game/config/levels/level9/level9_flank_combat_zones.json` y se integra mediante `FlankingEscapeCombatSystem` (encuentros `salida-c` y `salida-d`).
 
 ---
 
@@ -117,9 +117,9 @@ En la integración de ejemplo, al finalizar secuencia:
 - `game/public/assets/levels/level9_narrative_chain.json`
 
 ### JSON de soporte fuera de `assets/levels`
-- `level9_exit_routes.json`
-- `level9_flank_combat_zones.json`
-- `level9_escape_failure_and_descent.json`
+- `game/config/levels/level9/level9_exit_routes.json`
+- `game/config/levels/level9/level9_flank_combat_zones.json`
+- `game/config/levels/level9/level9_escape_failure_and_descent.json`
 
 ---
 

@@ -81,9 +81,9 @@ Cada checkpoint define:
   - Configuración para `BelongingsRecoverySystem` (área, checkpoints, recuperables y reglas por actor).
 
 ### JSONs auxiliares en raíz del repo (referencia de diseño)
-- `level7_areas.json`
-- `level7_secondary_spaces.json`
-- `level7_security_posts.json`
+- `game/config/levels/level7/level7_areas.json`
+- `game/config/levels/level7/level7_secondary_spaces.json`
+- `game/config/levels/level7/level7_security_posts.json`
 
 Estos tres no están conectados directamente en los ejemplos/sistemas TS revisados; sirven como insumo documental/prototipo de datos.
 

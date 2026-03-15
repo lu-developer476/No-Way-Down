@@ -48,7 +48,7 @@ import exitBLossJson from '../../public/assets/levels/level9_exitB_loss_event.js
 import exitEDecisionJson from '../../public/assets/levels/level9_exitE_decision_dialogue.json';
 import subsuelo2Json from '../../public/assets/levels/level9_subsuelo2_infection_dialogue.json';
 import finalSacrificeJson from '../../public/assets/levels/level9_final_sacrifice.json';
-import flankCombatJson from '../../../level9_flank_combat_zones.json';
+import flankCombatJson from '../../config/levels/level9/level9_flank_combat_zones.json';
 
 export interface Level9ObjectiveChainRuntime {
   objectiveChain: Level9ObjectiveChain;

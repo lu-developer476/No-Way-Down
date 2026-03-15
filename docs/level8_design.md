@@ -94,7 +94,7 @@ Esto debe mantenerse coherente con los identificadores de secciones/rutas emitid
 ---
 
 ## 5) Checkpoint con temporizador
-El checkpoint temporizado está parametrizado en `level8_timed_checkpoint.json` y ejecutado por `TimedCheckpointSystem`.
+El checkpoint temporizado está parametrizado en `game/config/levels/level8/level8_timed_checkpoint.json` y ejecutado por `TimedCheckpointSystem`.
 
 ### Comportamiento clave configurado
 - ID checkpoint: `p4_rest_ascensores_checkpoint`.
@@ -140,7 +140,7 @@ El objective chain utiliza `combat-completed: level8-floor1-final-siege`, por lo
 - `game/public/assets/levels/level8_office422_rescue.json`
 - `game/public/assets/levels/level8_office422_wave_combat.json`
 - `game/public/assets/levels/level8_sister_message_dialogue.json`
-- `level8_timed_checkpoint.json`
+- `game/config/levels/level8/level8_timed_checkpoint.json`
 - `game/public/assets/levels/level8_descent_route.json`
 - `game/public/assets/levels/level8_final_siege.json`
 - `game/public/assets/levels/level8_outro_dialogue.json`

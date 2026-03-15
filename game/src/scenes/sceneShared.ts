@@ -8,6 +8,7 @@ export interface Checkpoint {
 
 export const DEFAULT_PLAYER_ID = 'local-player';
 export const MAX_PLAYER_SEPARATION_PX = 320;
+export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 
 export function getScenePlayerId(): string {
   return import.meta.env.VITE_PLAYER_ID ?? DEFAULT_PLAYER_ID;

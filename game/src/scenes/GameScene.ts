@@ -21,6 +21,7 @@ import {
   enforceMaxPlayerSeparation,
   getAveragePlayerPosition,
   getScenePlayerId,
+  LOCAL_PROGRESS_STORAGE_KEY,
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
@@ -32,7 +33,6 @@ const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.25;
-const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 
 interface PlatformConfig {
   x: number;
@@ -66,6 +66,11 @@ export class GameScene extends Phaser.Scene {
   private hasTriggeredTransition = false;
   private hasPlayerBeenDefeated = false;
   private respawnPoint?: Checkpoint;
+  private pauseOverlay?: Phaser.GameObjects.Rectangle;
+  private pausePanel?: Phaser.GameObjects.Container;
+  private pauseMenuOptions: Array<{ label: string; action: () => void }> = [];
+  private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
+  private pauseMenuIndex = 0;
 
   constructor() {
     super('GameScene');
@@ -246,24 +251,32 @@ export class GameScene extends Phaser.Scene {
     // const level4Stairs = new StairSegmentSystem(this, level4StairSegments);
 
     this.createMissionStatusUI();
+    this.createPauseMenuUI();
 
     this.cameras.main.setBackgroundColor('#0a1020');
     this.registry.set('playerHealth', this.getTeamHealthTotal());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
-    this.registry.set('interactionHint', '');
+    this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC');
     this.registry.set('campaignState', this.campaignState?.getSnapshot());
     this.registry.set('partyState', this.partyState?.getSnapshot());
+    this.registry.set('isGamePaused', false);
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
     }
 
+    this.registerPauseControls();
     this.registerApiControls();
 
     if (!data.skipLoad) {
       void this.loadProgressFromApi();
     }
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.input.keyboard?.removeAllListeners();
+      this.registry.set('isGamePaused', false);
+    });
   }
 
   update(): void {
@@ -386,6 +399,7 @@ export class GameScene extends Phaser.Scene {
 
     this.hasTriggeredTransition = true;
     this.physics.pause();
+    this.registry.set('isGamePaused', false);
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -507,9 +521,11 @@ export class GameScene extends Phaser.Scene {
         markIrreversibleEvent: `defeat-${fallenId}`
       });
       this.registry.set('partyState', this.partyState?.getSnapshot());
+    this.registry.set('isGamePaused', false);
       this.registry.set('campaignState', this.campaignState?.getSnapshot());
     }
     this.physics.pause();
+    this.registry.set('isGamePaused', false);
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -572,6 +588,128 @@ export class GameScene extends Phaser.Scene {
 
   private enforcePlayerSeparation(): void {
     enforceMaxPlayerSeparation(this.players);
+  }
+
+
+  private createPauseMenuUI(): void {
+    const { width, height } = this.scale;
+
+    this.pauseOverlay = this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 0.7)
+      .setScrollFactor(0)
+      .setDepth(40)
+      .setVisible(false);
+
+    const panel = this.add.rectangle(width / 2, height / 2, 440, 284, 0x0b1220, 0.94)
+      .setStrokeStyle(2, 0x38bdf8, 1);
+
+    const title = this.add.text(width / 2, height / 2 - 92, 'PAUSA', {
+      color: '#f8fafc',
+      fontSize: '36px',
+      fontFamily: '"Courier New", monospace'
+    }).setOrigin(0.5);
+
+    this.pauseMenuOptions = [
+      { label: 'Reanudar', action: () => this.resumeGameplay() },
+      { label: 'Reiniciar nivel', action: () => this.restartLevelFromPause() },
+      { label: 'Volver al menú principal', action: () => this.returnToMainMenu() }
+    ];
+
+    this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(width / 2, height / 2 - 18 + index * 52, option.label, {
+      color: '#cbd5e1',
+      fontSize: '27px',
+      fontFamily: '"Courier New", monospace'
+    }).setOrigin(0.5));
+
+    const hint = this.add.text(width / 2, height / 2 + 108, '↑/↓ seleccionar · ENTER confirmar · ESC reanudar', {
+      color: '#93c5fd',
+      fontSize: '14px',
+      fontFamily: '"Courier New", monospace'
+    }).setOrigin(0.5);
+
+    this.pausePanel = this.add.container(0, 0, [panel, title, ...this.pauseMenuTexts, hint])
+      .setDepth(41)
+      .setVisible(false);
+
+    this.updatePauseMenuSelection();
+  }
+
+  private registerPauseControls(): void {
+    this.input.keyboard?.on('keydown-ESC', () => {
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
+        return;
+      }
+
+      if (this.physics.world.isPaused) {
+        this.resumeGameplay();
+      } else {
+        this.pauseGameplay();
+      }
+    });
+
+    this.input.keyboard?.on('keydown-UP', () => {
+      if (!this.isPauseMenuOpen()) {
+        return;
+      }
+
+      this.pauseMenuIndex = Phaser.Math.Wrap(this.pauseMenuIndex - 1, 0, this.pauseMenuOptions.length);
+      this.updatePauseMenuSelection();
+    });
+
+    this.input.keyboard?.on('keydown-DOWN', () => {
+      if (!this.isPauseMenuOpen()) {
+        return;
+      }
+
+      this.pauseMenuIndex = Phaser.Math.Wrap(this.pauseMenuIndex + 1, 0, this.pauseMenuOptions.length);
+      this.updatePauseMenuSelection();
+    });
+
+    this.input.keyboard?.on('keydown-ENTER', () => {
+      if (!this.isPauseMenuOpen()) {
+        return;
+      }
+
+      this.pauseMenuOptions[this.pauseMenuIndex]?.action();
+    });
+  }
+
+  private isPauseMenuOpen(): boolean {
+    return this.pausePanel?.visible ?? false;
+  }
+
+  private pauseGameplay(): void {
+    this.physics.pause();
+    this.pauseOverlay?.setVisible(true);
+    this.pausePanel?.setVisible(true);
+    this.pauseMenuIndex = 0;
+    this.updatePauseMenuSelection();
+    this.registry.set('isGamePaused', true);
+  }
+
+  private resumeGameplay(): void {
+    this.pausePanel?.setVisible(false);
+    this.pauseOverlay?.setVisible(false);
+    this.physics.resume();
+    this.registry.set('isGamePaused', false);
+  }
+
+  private restartLevelFromPause(): void {
+    this.registry.set('isGamePaused', false);
+    this.scene.restart({ respawnPoint: this.respawnPoint, skipLoad: true });
+  }
+
+  private returnToMainMenu(): void {
+    this.registry.set('isGamePaused', false);
+    this.scene.stop('UIScene');
+    this.scene.start('MainMenuScene');
+  }
+
+  private updatePauseMenuSelection(): void {
+    this.pauseMenuTexts.forEach((text, index) => {
+      const selected = this.pauseMenuIndex === index;
+      text.setColor(selected ? '#fde047' : '#cbd5e1');
+      text.setScale(selected ? 1.03 : 1);
+    });
   }
 
   private registerApiControls(): void {

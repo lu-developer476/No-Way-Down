@@ -8,6 +8,7 @@ export class UIScene extends Phaser.Scene {
   private zombieCountText?: Phaser.GameObjects.Text;
   private objectiveText?: Phaser.GameObjects.Text;
   private interactionText?: Phaser.GameObjects.Text;
+  private controlsHintText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
@@ -22,11 +23,13 @@ export class UIScene extends Phaser.Scene {
     this.registry.events.on('changedata-playerHealth', this.handleHealthChanged, this);
     this.registry.events.on('changedata-zombiesRemaining', this.handleZombiesChanged, this);
     this.registry.events.on('changedata-currentObjective', this.handleObjectiveChanged, this);
+    this.registry.events.on('changedata-isGamePaused', this.handlePauseStateChanged, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.registry.events.off('changedata-playerHealth', this.handleHealthChanged, this);
       this.registry.events.off('changedata-zombiesRemaining', this.handleZombiesChanged, this);
       this.registry.events.off('changedata-currentObjective', this.handleObjectiveChanged, this);
+      this.registry.events.off('changedata-isGamePaused', this.handlePauseStateChanged, this);
       this.registry.events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
     });
 
@@ -38,6 +41,7 @@ export class UIScene extends Phaser.Scene {
     this.handleZombiesChanged(this.registry, this.registry.get('zombiesRemaining') ?? 0);
     this.handleObjectiveChanged(this.registry, this.registry.get('currentObjective') ?? '');
     this.handleInteractionHintChanged(this.registry, this.registry.get('interactionHint') ?? '');
+    this.handlePauseStateChanged(this.registry, this.registry.get('isGamePaused') ?? false);
   }
 
   private handleHealthChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -62,6 +66,11 @@ export class UIScene extends Phaser.Scene {
     this.interactionText
       ?.setText(hint || '')
       .setVisible(Boolean(hint));
+  }
+
+
+  private handlePauseStateChanged(_parent: Phaser.Data.DataManager, isPaused: boolean): void {
+    this.controlsHintText?.setAlpha(isPaused ? 0.4 : 0.8);
   }
 
   private createHudFrame(): void {
@@ -99,7 +108,18 @@ export class UIScene extends Phaser.Scene {
       wordWrap: { width: 278 }
     }).setScrollFactor(0);
 
-    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 28, '', {
+    this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Mover A/D · Disparar F · Pausa ESC', {
+      color: '#93c5fd',
+      fontSize: '12px',
+      fontFamily: pixelFont,
+      backgroundColor: '#0f172a',
+      padding: { x: 8, y: 4 }
+    })
+      .setOrigin(1, 1)
+      .setScrollFactor(0)
+      .setAlpha(0.8);
+
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 48, '', {
       color: '#bbf7d0',
       fontSize: '13px',
       fontFamily: pixelFont,

@@ -1,0 +1,58 @@
+{
+  "levelId": "level10_subsuelo3_parking",
+  "cinematicId": "level10_final_open_ending",
+  "triggerId": "level10_last_combat_cleared",
+  "lockMovement": true,
+  "preSequenceDelayMs": 1200,
+  "sequence": [
+    {
+      "type": "action",
+      "actionId": "survivors_enter_vehicle",
+      "description": "Los dos protagonistas suben al auto sin mirarse.",
+      "durationMs": 1500
+    },
+    {
+      "type": "silence",
+      "description": "Silencio sostenido. Solo respiración agitada y dedos temblando sobre el volante.",
+      "cameraFocus": "hands",
+      "durationMs": 3200
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Protagonista 1",
+      "text": "...",
+      "mood": "contained",
+      "durationMs": 1400
+    },
+    {
+      "type": "action",
+      "actionId": "engine_ignition",
+      "description": "El motor enciende después de un intento fallido; nadie festeja.",
+      "durationMs": 1500
+    },
+    {
+      "type": "silence",
+      "description": "Cruzan la avenida vacía. No saben quién sigue vivo al otro lado.",
+      "cameraFocus": "windshield",
+      "durationMs": 2800
+    },
+    {
+      "type": "action",
+      "actionId": "vehicle_departure",
+      "description": "El auto avanza hacia un destino incierto mientras la ciudad queda atrás.",
+      "durationMs": 2000
+    }
+  ],
+  "campaignState": {
+    "campaignId": "no_way_down",
+    "chapterId": "level10_subsuelo3_parking",
+    "status": "completed",
+    "endingType": "open",
+    "summary": "Escaparon, pero no hay garantías: el costo humano y la incertidumbre persisten."
+  },
+  "continuationHook": {
+    "id": "search_for_family_signal",
+    "label": "Rastros de radio desde la zona sur",
+    "uncertainty": "No está claro si son familiares, sobrevivientes desconocidos o una trampa."
+  }
+}

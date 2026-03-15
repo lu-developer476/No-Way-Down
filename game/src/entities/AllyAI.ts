@@ -176,7 +176,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       originY: this.y - 8,
       direction,
       weapon: this.runtimeConfig.weaponRuntime.key,
-      shooterId: this.profile.id
+      shooterId: this.profile.id,
+      shooterCharacterId: this.runtimeConfig.characterId
     });
 
     if (!fired) {

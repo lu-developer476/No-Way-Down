@@ -9,6 +9,7 @@ export interface FireConfig {
   direction: number;
   weapon?: CharacterWeaponKey;
   shooterId?: string;
+  shooterCharacterId?: string;
 }
 
 export class ProjectileSystem {
@@ -59,7 +60,12 @@ export class ProjectileSystem {
       config.direction,
       weaponRuntime.projectileSpeed,
       weaponRuntime.damage,
-      weaponRuntime.maxRange
+      weaponRuntime.maxRange,
+      {
+        weaponKey: weaponRuntime.key,
+        shooterId,
+        shooterCharacterId: config.shooterCharacterId ?? 'alan'
+      }
     );
 
     this.nextFireTimeByShooter.set(shooterId, now + weaponRuntime.fireCooldownMs);

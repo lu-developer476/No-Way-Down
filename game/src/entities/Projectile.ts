@@ -4,6 +4,9 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
   private speed = 0;
   private direction = 1;
   private damage = 1;
+  private weaponKey = 'pistol';
+  private shooterId = 'shared';
+  private shooterCharacterId = 'alan';
   private maxRange = 0;
   private spawnX = 0;
   private spawnY = 0;
@@ -20,10 +23,25 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
     body.setAllowGravity(false);
   }
 
-  launch(x: number, y: number, direction: number, speed: number, damage: number, maxRange: number): void {
+  launch(
+    x: number,
+    y: number,
+    direction: number,
+    speed: number,
+    damage: number,
+    maxRange: number,
+    metadata: {
+      weaponKey: string;
+      shooterId: string;
+      shooterCharacterId: string;
+    }
+  ): void {
     this.speed = speed;
     this.direction = direction;
     this.damage = damage;
+    this.weaponKey = metadata.weaponKey;
+    this.shooterId = metadata.shooterId;
+    this.shooterCharacterId = metadata.shooterCharacterId;
     this.maxRange = Math.max(0, maxRange);
     this.spawnX = x;
     this.spawnY = y;
@@ -35,6 +53,18 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
 
   getDamage(): number {
     return this.damage;
+  }
+
+  getWeaponKey(): string {
+    return this.weaponKey;
+  }
+
+  getShooterId(): string {
+    return this.shooterId;
+  }
+
+  getShooterCharacterId(): string {
+    return this.shooterCharacterId;
   }
 
   deactivate(): void {

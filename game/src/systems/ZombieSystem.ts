@@ -1,14 +1,38 @@
 import Phaser from 'phaser';
-import { Zombie } from '../entities/Zombie';
+import { DEFAULT_ZOMBIE_HEALTH, Zombie } from '../entities/Zombie';
 import { Projectile } from '../entities/Projectile';
 import { Player } from '../entities/Player';
+import { getCharacterRuntimeConfig } from '../config/characterRuntime';
+
+const WEAPON_HEADSHOT_CHANCE_BY_KEY: Record<string, number> = {
+  pistol: 0.1,
+  revolver: 0.18,
+  smg: 0.08,
+  shotgun: 0.16,
+  carbine: 0.24,
+  sniper_rifle: 0.4
+};
+
+const CHARACTER_HEADSHOT_BONUS_BY_ID: Record<string, number> = {
+  alan: 0,
+  giovanna: 0.04,
+  yamil: 0.02,
+  hernan: -0.01,
+  lorena: 0.01,
+  celestino: -0.02,
+  selene: 0.05,
+  nahir: 0.03,
+  damian: -0.01
+};
 
 export class ZombieSystem {
   private readonly scene: Phaser.Scene;
   private readonly zombies: Phaser.Physics.Arcade.Group;
+  private readonly defaultZombieHealth: number;
 
-  constructor(scene: Phaser.Scene, maxZombies = 20) {
+  constructor(scene: Phaser.Scene, maxZombies = 20, options: { defaultZombieHealth?: number } = {}) {
     this.scene = scene;
+    this.defaultZombieHealth = options.defaultZombieHealth ?? DEFAULT_ZOMBIE_HEALTH;
 
     this.zombies = this.scene.physics.add.group({
       classType: Zombie,
@@ -17,12 +41,13 @@ export class ZombieSystem {
     });
   }
 
-  spawn(x: number, y: number): Zombie | null {
+  spawn(x: number, y: number, options: { health?: number } = {}): Zombie | null {
     const zombie = this.zombies.get(x, y, 'zombie-base-0') as Zombie | null;
     if (!zombie) {
       return null;
     }
 
+    zombie.resetStats({ health: options.health ?? this.defaultZombieHealth });
     zombie.enableBody(true, x, y, true, true);
     zombie.setActive(true);
     zombie.setVisible(true);
@@ -43,10 +68,31 @@ export class ZombieSystem {
         const projectile = projectileGameObject as Projectile;
         const zombie = zombieGameObject as Zombie;
 
+        if (!projectile.active || !zombie.active) {
+          return;
+        }
+
+        const zombieHealthBeforeImpact = zombie.getHealth();
+        const isHeadshot = this.rollHeadshot(projectile);
+        const damage = isHeadshot ? zombieHealthBeforeImpact : projectile.getDamage();
+
         projectile.deactivate();
-        zombie.takeDamage(projectile.getDamage());
+        zombie.takeDamage(damage);
+
+        console.debug(
+          `[ZombieSystem] impact shooter=${projectile.getShooterId()} char=${projectile.getShooterCharacterId()} weapon=${projectile.getWeaponKey()} headshot=${isHeadshot} damage=${damage} hpBefore=${zombieHealthBeforeImpact} hpAfter=${Math.max(0, zombie.getHealth())}`
+        );
       }
     );
+  }
+
+  private rollHeadshot(projectile: Projectile): boolean {
+    const weaponChance = WEAPON_HEADSHOT_CHANCE_BY_KEY[projectile.getWeaponKey()] ?? 0.1;
+    const shooterBonus = CHARACTER_HEADSHOT_BONUS_BY_ID[projectile.getShooterCharacterId()] ?? 0;
+    const shooterConfig = getCharacterRuntimeConfig(projectile.getShooterCharacterId());
+    const weaponPrecisionBonus = Phaser.Math.Clamp((shooterConfig.weaponRuntime.projectileSpeed - 520) / 2000, -0.03, 0.07);
+    const chance = Phaser.Math.Clamp(weaponChance + shooterBonus + weaponPrecisionBonus, 0.03, 0.65);
+    return Math.random() <= chance;
   }
 
   getGroup(): Phaser.Physics.Arcade.Group {

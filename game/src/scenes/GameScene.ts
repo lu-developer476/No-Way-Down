@@ -12,7 +12,7 @@ import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
 import level4StairSegments from '../../public/assets/levels/level4_stair_segments.json';
 import verticalSpawnConfig from '../../public/assets/levels/level2_vertical_spawns.json';
-import { getActivePlayerConfigs } from '../config/localMultiplayer';
+import { getActivePlayerConfigs, getInitialPartySeed } from '../config/localMultiplayer';
 import { PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
   Checkpoint,
@@ -130,7 +130,9 @@ export class GameScene extends Phaser.Scene {
       y: levelHeight - 140
     });
 
-    const activePlayerConfigs = getActivePlayerConfigs();
+    const setup = (this.registry.get('initialRunSetup') ?? loadInitialRunSetup()) ?? null;
+    const partySeed = getInitialPartySeed(setup);
+    const activePlayerConfigs = getActivePlayerConfigs(setup);
     this.players = activePlayerConfigs.map((config, index) => new Player(
       this,
       this.respawnPoint!.x + index * 42,
@@ -140,17 +142,31 @@ export class GameScene extends Phaser.Scene {
     ));
 
     this.campaignState = new CampaignState('GameScene', {
-      activeCharacters: activePlayerConfigs.map((config) => `player-${config.slot}`)
+      activeCharacters: [
+        ...activePlayerConfigs.map((config) => `player-${config.slot}`),
+        ...partySeed.allies.map((ally) => ally.id)
+      ]
     });
-    this.partyState = new PartyStateSystem(
-      activePlayerConfigs.map((config) => ({
+    this.partyState = new PartyStateSystem([
+      ...activePlayerConfigs.map((config) => ({
         id: `player-${config.slot}`,
         name: config.name,
-        controlMode: 'human',
-        status: 'active',
-        permanentlyLost: false
+        characterId: config.characterId,
+        controlMode: 'human' as const,
+        status: 'active' as const,
+        permanentlyLost: false,
+        narrative: { deathPending: false }
+      })),
+      ...partySeed.allies.map((ally) => ({
+        id: ally.id,
+        name: ally.name,
+        characterId: ally.characterId,
+        controlMode: 'ai' as const,
+        status: 'active' as const,
+        permanentlyLost: false,
+        narrative: { deathPending: false }
       }))
-    );
+    ]);
 
     this.zombieSystem = new ZombieSystem(this);
     this.allySystem = new AllySystem(this);
@@ -219,7 +235,7 @@ export class GameScene extends Phaser.Scene {
 
     const leadPlayer = this.players[0];
     if (leadPlayer) {
-      this.allySystem.spawnInitialAllies(leadPlayer);
+      this.allySystem.spawnInitialAllies(leadPlayer, partySeed.allies);
     }
 
     this.setupMissionSystem();
@@ -529,7 +545,7 @@ export class GameScene extends Phaser.Scene {
     this.hasPlayerBeenDefeated = true;
     const fallenPlayer = this.players.find((player) => player.isDead());
     if (fallenPlayer) {
-      const fallenId = getScenePlayerId();
+      const fallenId = `player-${fallenPlayer.getProfile().slot}`;
       this.partyState?.markDead(fallenId);
       this.campaignState?.applyPatch({
         markDeadCharacter: fallenId,

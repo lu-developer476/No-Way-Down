@@ -9,6 +9,7 @@ import {
   enforceMaxPlayerSeparation,
   getAveragePlayerPosition,
   getScenePlayerId,
+  loadInitialRunSetup,
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
@@ -59,8 +60,14 @@ export class UpperFloorScene extends Phaser.Scene {
 
     this.projectileSystem = new ProjectileSystem(this);
 
+    const setupFromStorage = loadInitialRunSetup();
+    if (setupFromStorage && !this.registry.has('initialRunSetup')) {
+      this.registry.set('initialRunSetup', setupFromStorage);
+    }
+
     const spawnPoint = data.respawnPoint ?? { x: 140, y: levelHeight - 130 };
-    const activePlayerConfigs = getActivePlayerConfigs();
+    const setup = (this.registry.get('initialRunSetup') ?? loadInitialRunSetup()) ?? null;
+    const activePlayerConfigs = getActivePlayerConfigs(setup);
     this.players = activePlayerConfigs.map((config, index) => new Player(
       this,
       spawnPoint.x + index * 42,

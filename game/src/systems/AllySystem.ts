@@ -2,23 +2,10 @@ import Phaser from 'phaser';
 import { AllyAI, AllyProfile } from '../entities/AllyAI';
 import { Player } from '../entities/Player';
 import { Zombie } from '../entities/Zombie';
+import { AllySeedConfig } from '../config/localMultiplayer';
 
-const INITIAL_ALLY_PROFILES: AllyProfile[] = [
-  {
-    id: 'ally-yamil',
-    name: 'Yamil',
-    characterId: 'yamil',
-    followOffsetX: -70,
-    tint: 0x93c5fd
-  },
-  {
-    id: 'ally-hernan',
-    name: 'Hernan',
-    characterId: 'hernan',
-    followOffsetX: 70,
-    tint: 0xa7f3d0
-  }
-];
+const DEFAULT_LANE_OFFSETS_X = [-74, 74, -118, 118, -154, 154, -190, 190];
+const DEFAULT_LANE_OFFSETS_Y = [-8, -12, -8, -12, -4, -8, -4, -8];
 
 export class AllySystem {
   private readonly scene: Phaser.Scene;
@@ -33,8 +20,13 @@ export class AllySystem {
     });
   }
 
-  spawnInitialAllies(player: Player): void {
-    INITIAL_ALLY_PROFILES.forEach((profile) => {
+  spawnInitialAllies(player: Player, seedAllies: AllySeedConfig[]): void {
+    seedAllies.forEach((seed, index) => {
+      const profile: AllyProfile = {
+        ...seed,
+        followOffsetX: DEFAULT_LANE_OFFSETS_X[index] ?? -72,
+        followOffsetY: DEFAULT_LANE_OFFSETS_Y[index] ?? -8
+      };
       this.spawnAtPlayer(profile, player);
     });
   }
@@ -63,7 +55,7 @@ export class AllySystem {
   }
 
   private spawnAtPlayer(profile: AllyProfile, player: Player): AllyAI | null {
-    const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y - 12, profile);
+    const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y + profile.followOffsetY, profile);
     this.allies.add(ally);
     return ally;
   }

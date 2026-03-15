@@ -3,18 +3,23 @@ import { Player } from './Player';
 import { Zombie } from './Zombie';
 import { getCharacterVisualById } from '../config/characterVisuals';
 
-const ALLY_FOLLOW_SPEED = 180;
-const ALLY_STOP_RADIUS = 34;
-const ALLY_CATCHUP_DISTANCE = 280;
-const ALLY_TELEPORT_DISTANCE = 560;
-const ALLY_ATTACK_RANGE = 220;
+const ALLY_FOLLOW_SPEED = 170;
+const ALLY_ATTACK_APPROACH_SPEED = 195;
+const ALLY_STOP_RADIUS = 24;
+const ALLY_CATCHUP_DISTANCE = 260;
+const ALLY_TELEPORT_DISTANCE = 620;
+const ALLY_TARGET_DETECTION_RANGE = 340;
+const ALLY_ATTACK_RANGE = 210;
 const ALLY_ATTACK_COOLDOWN_MS = 520;
+const ALLY_COMBAT_REPOSITION_DISTANCE = 130;
+const ALLY_PLAYER_BLOCK_RADIUS = 32;
 
 export interface AllyProfile {
   id: string;
   name: string;
   characterId: string;
   followOffsetX: number;
+  followOffsetY: number;
   tint: number;
 }
 
@@ -63,44 +68,82 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    const target = this.pickTarget(zombies);
+    if (target) {
+      this.handleCombat(player, target, currentTime);
+      return;
+    }
+
     this.followPlayer(player);
-    this.tryAttackNearestZombie(zombies, currentTime);
   }
 
   private followPlayer(player: Player): void {
     const desiredX = player.x + this.profile.followOffsetX;
-    const deltaX = desiredX - this.x;
-    const deltaY = player.y - this.y;
-    const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+    const desiredY = player.y + this.profile.followOffsetY;
 
-    if (distanceToPlayer > ALLY_TELEPORT_DISTANCE) {
-      this.recoverNearPlayer(player);
+    this.moveTowards(desiredX, desiredY, ALLY_FOLLOW_SPEED, ALLY_STOP_RADIUS);
+    this.avoidBlockingPlayer(player);
+  }
+
+  private handleCombat(player: Player, target: Zombie, currentTime: number): void {
+    const distanceToTarget = Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
+
+    if (distanceToTarget <= ALLY_ATTACK_RANGE) {
+      this.setVelocity(0, 0);
+      this.tryAttackTarget(target, currentTime);
+
+      const desiredX = player.x + Math.sign(this.profile.followOffsetX || 1) * ALLY_COMBAT_REPOSITION_DISTANCE;
+      if (Math.abs(this.x - desiredX) > 110) {
+        this.setVelocityX(Math.sign(desiredX - this.x) * (ALLY_FOLLOW_SPEED * 0.75));
+      }
       return;
     }
 
-    if (Math.abs(deltaX) <= ALLY_STOP_RADIUS && Math.abs(deltaY) <= ALLY_STOP_RADIUS) {
-      this.setVelocityX(0);
+    this.moveTowards(target.x - Math.sign(target.x - player.x || 1) * 14, target.y, ALLY_ATTACK_APPROACH_SPEED, ALLY_STOP_RADIUS);
+  }
+
+  private moveTowards(targetX: number, targetY: number, baseSpeed: number, stopRadius: number): void {
+    const dx = targetX - this.x;
+    const dy = targetY - this.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance > ALLY_TELEPORT_DISTANCE) {
+      this.recoverNearPoint(targetX, targetY);
+      return;
+    }
+
+    if (distance <= stopRadius) {
+      this.setVelocity(0, 0);
       this.play(`${this.characterVisualId}-idle`, true);
       return;
     }
 
-    const speedMultiplier = distanceToPlayer > ALLY_CATCHUP_DISTANCE ? 1.5 : 1;
-    const speed = ALLY_FOLLOW_SPEED * speedMultiplier;
-    const direction = Math.sign(deltaX);
+    const speedMultiplier = distance > ALLY_CATCHUP_DISTANCE ? 1.45 : 1;
+    const speed = baseSpeed * speedMultiplier;
+    const velocityX = (dx / distance) * speed;
+    const velocityY = (dy / distance) * speed;
 
-    this.setVelocityX(direction * speed);
+    this.setVelocity(velocityX, velocityY);
     this.play(`${this.characterVisualId}-run`, true);
 
-    if (direction < 0) {
+    if (velocityX < -1) {
       this.setFlipX(true);
-    } else if (direction > 0) {
+    } else if (velocityX > 1) {
       this.setFlipX(false);
     }
   }
 
-  private recoverNearPlayer(player: Player): void {
-    const recoverOffsetX = this.profile.followOffsetX * 0.8;
-    this.setPosition(player.x + recoverOffsetX, player.y - 12);
+  private avoidBlockingPlayer(player: Player): void {
+    const inFrontOfPlayer = (this.x - player.x) * ((player.body as Phaser.Physics.Arcade.Body | null)?.velocity.x ?? 0) > 0;
+    const closeToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y) < ALLY_PLAYER_BLOCK_RADIUS;
+
+    if (inFrontOfPlayer && closeToPlayer) {
+      this.setVelocityX(this.body && (this.body as Phaser.Physics.Arcade.Body).velocity.x >= 0 ? -120 : 120);
+    }
+  }
+
+  private recoverNearPoint(targetX: number, targetY: number): void {
+    this.setPosition(targetX - this.profile.followOffsetX * 0.35, targetY - 10);
     this.setVelocity(0, 0);
     this.setAlpha(0.45);
 
@@ -112,13 +155,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  private tryAttackNearestZombie(zombies: Zombie[], currentTime: number): void {
-    if (currentTime < this.attackReadyAt) {
-      return;
-    }
-
-    const target = this.pickTarget(zombies);
-    if (!target) {
+  private tryAttackTarget(target: Zombie, currentTime: number): void {
+    if (currentTime < this.attackReadyAt || !target.active) {
       return;
     }
 
@@ -136,7 +174,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   private pickTarget(zombies: Zombie[]): Zombie | undefined {
     let closestZombie: Zombie | undefined;
-    let closestDistance = ALLY_ATTACK_RANGE;
+    let closestDistance = ALLY_TARGET_DETECTION_RANGE;
 
     zombies.forEach((zombie) => {
       if (!zombie.active) {

@@ -1,4 +1,5 @@
 import characterCatalog from '../../assets/characters/characters.json';
+import { getWeaponRuntimeConfig, WeaponRuntimeConfig } from './weaponRuntime';
 
 export type RuntimeCharacterId =
   | 'alan'
@@ -35,6 +36,7 @@ export interface CharacterRuntimeConfig {
   aiPossible: boolean;
   maxHealth: number;
   baseWeapon: CharacterWeaponKey;
+  weaponRuntime: WeaponRuntimeConfig;
 }
 
 interface CharacterStats {
@@ -68,7 +70,8 @@ const DEFAULT_RUNTIME_CHARACTER: Omit<CharacterRuntimeConfig, 'characterId'> = {
   playable: false,
   aiPossible: true,
   maxHealth: 100,
-  baseWeapon: 'pistol'
+  baseWeapon: 'pistol',
+  weaponRuntime: getWeaponRuntimeConfig('pistol')
 };
 
 const catalogEntries = characterCatalog.characters as CharacterCatalogEntry[];
@@ -89,6 +92,8 @@ const RUNTIME_CONFIG_BY_ID = new Map<RuntimeCharacterId, CharacterRuntimeConfig>
       ];
     }
 
+    const weaponKey = entry.weapon_default ?? DEFAULT_RUNTIME_CHARACTER.baseWeapon;
+
     return [
       characterId,
       {
@@ -98,7 +103,8 @@ const RUNTIME_CONFIG_BY_ID = new Map<RuntimeCharacterId, CharacterRuntimeConfig>
         playable: entry.playable,
         aiPossible: entry.ai_possible,
         maxHealth: entry.stats?.health ?? DEFAULT_RUNTIME_CHARACTER.maxHealth,
-        baseWeapon: entry.weapon_default ?? DEFAULT_RUNTIME_CHARACTER.baseWeapon
+        baseWeapon: weaponKey,
+        weaponRuntime: getWeaponRuntimeConfig(weaponKey)
       }
     ];
   })

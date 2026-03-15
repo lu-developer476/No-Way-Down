@@ -171,7 +171,7 @@ export class GameScene extends Phaser.Scene {
     ]);
 
     this.zombieSystem = new ZombieSystem(this);
-    this.allySystem = new AllySystem(this);
+    this.allySystem = new AllySystem(this, this.projectileSystem);
 
     this.players.forEach((player) => {
       this.physics.add.collider(player, environment);
@@ -180,6 +180,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.zombieSystem.createProjectileOverlap(this.projectileSystem.getGroup());
+    this.projectileSystem.createSolidCollider(environment);
     this.allySystem.createEnvironmentColliders(environment);
     this.allySystem.createZombieOverlap(this.zombieSystem.getGroup());
 

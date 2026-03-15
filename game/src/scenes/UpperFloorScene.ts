@@ -82,6 +82,8 @@ export class UpperFloorScene extends Phaser.Scene {
       this.physics.add.collider(player, environment);
     });
 
+    this.projectileSystem.createSolidCollider(environment);
+
     this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'upper-to-dining',

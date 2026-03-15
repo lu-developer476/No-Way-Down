@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Projectile } from '../entities/Projectile';
 import { CharacterWeaponKey } from '../config/characterRuntime';
+import { applyLegacyWeaponOverrides, getWeaponRuntimeConfig, WeaponRuntimeConfig } from '../config/weaponRuntime';
 
 export interface FireConfig {
   originX: number;
@@ -9,51 +10,6 @@ export interface FireConfig {
   weapon?: CharacterWeaponKey;
   shooterId?: string;
 }
-
-interface WeaponCombatProfile {
-  fireCooldownMs: number;
-  projectileSpeed: number;
-  damage: number;
-}
-
-const DEFAULT_WEAPON_PROFILE: WeaponCombatProfile = {
-  fireCooldownMs: 220,
-  projectileSpeed: 520,
-  damage: 1
-};
-
-const WEAPON_COMBAT_PROFILE_BY_KEY: Record<string, WeaponCombatProfile> = {
-  pistol: {
-    fireCooldownMs: 220,
-    projectileSpeed: 520,
-    damage: 1
-  },
-  revolver: {
-    fireCooldownMs: 340,
-    projectileSpeed: 560,
-    damage: 2
-  },
-  smg: {
-    fireCooldownMs: 140,
-    projectileSpeed: 500,
-    damage: 1
-  },
-  shotgun: {
-    fireCooldownMs: 560,
-    projectileSpeed: 460,
-    damage: 3
-  },
-  carbine: {
-    fireCooldownMs: 260,
-    projectileSpeed: 620,
-    damage: 2
-  },
-  sniper_rifle: {
-    fireCooldownMs: 680,
-    projectileSpeed: 720,
-    damage: 4
-  }
-};
 
 export class ProjectileSystem {
   private readonly scene: Phaser.Scene;
@@ -76,18 +32,15 @@ export class ProjectileSystem {
       runChildUpdate: false
     });
 
-    if (options.fireCooldownMs || options.projectileSpeed) {
-      WEAPON_COMBAT_PROFILE_BY_KEY.pistol = {
-        fireCooldownMs: options.fireCooldownMs ?? WEAPON_COMBAT_PROFILE_BY_KEY.pistol.fireCooldownMs,
-        projectileSpeed: options.projectileSpeed ?? WEAPON_COMBAT_PROFILE_BY_KEY.pistol.projectileSpeed,
-        damage: WEAPON_COMBAT_PROFILE_BY_KEY.pistol.damage
-      };
-    }
+    applyLegacyWeaponOverrides({
+      fireCooldownMs: options.fireCooldownMs,
+      projectileSpeed: options.projectileSpeed
+    });
   }
 
   tryFire(config: FireConfig): boolean {
     const now = this.scene.time.now;
-    const weaponProfile = this.getWeaponProfile(config.weapon);
+    const weaponRuntime = this.getWeaponRuntime(config.weapon);
     const shooterId = config.shooterId ?? 'shared';
     const nextFireTime = this.nextFireTimeByShooter.get(shooterId) ?? 0;
 
@@ -104,25 +57,30 @@ export class ProjectileSystem {
       config.originX,
       config.originY,
       config.direction,
-      weaponProfile.projectileSpeed,
-      weaponProfile.damage
+      weaponRuntime.projectileSpeed,
+      weaponRuntime.damage,
+      weaponRuntime.maxRange
     );
-    this.nextFireTimeByShooter.set(shooterId, now + weaponProfile.fireCooldownMs);
 
+    this.nextFireTimeByShooter.set(shooterId, now + weaponRuntime.fireCooldownMs);
     return true;
   }
 
+  createSolidCollider(solidBodies: Phaser.Types.Physics.Arcade.ArcadeColliderType): void {
+    this.scene.physics.add.collider(this.projectiles, solidBodies, (projectileGameObject) => {
+      const projectile = projectileGameObject as Projectile;
+      projectile.deactivate();
+    });
+  }
 
   getGroup(): Phaser.Physics.Arcade.Group {
     return this.projectiles;
   }
 
   update(): void {
-    const worldBounds = this.scene.physics.world.bounds;
-
     this.projectiles.children.each((child) => {
       const projectile = child as Projectile;
-      if (projectile.active && projectile.isOutOfBounds(worldBounds)) {
+      if (projectile.active && projectile.reachedMaxRange()) {
         projectile.deactivate();
       }
 
@@ -130,11 +88,7 @@ export class ProjectileSystem {
     });
   }
 
-  private getWeaponProfile(weapon?: string): WeaponCombatProfile {
-    if (!weapon) {
-      return DEFAULT_WEAPON_PROFILE;
-    }
-
-    return WEAPON_COMBAT_PROFILE_BY_KEY[weapon] ?? DEFAULT_WEAPON_PROFILE;
+  private getWeaponRuntime(weapon?: CharacterWeaponKey): WeaponRuntimeConfig {
+    return getWeaponRuntimeConfig(weapon);
   }
 }

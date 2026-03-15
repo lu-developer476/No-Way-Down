@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "game": "No Way Down",
+    "format_version": "1.0",
+    "sprite_resolution": "96x96",
+    "animation_style": "arcade_side_scroller",
+    "timing_unit": "seconds"
+  },
+  "characters": {
+    "Alan Nahuel": {
+      "idle": { "frames": 6, "frame_duration": 0.12, "loop": true, "description": "Respiracion marcada con rifle en guardia y microajuste de mira." },
+      "walk": { "frames": 8, "frame_duration": 0.09, "loop": true, "description": "Paso tactico con arma baja lista para alzar." },
+      "run": { "frames": 10, "frame_duration": 0.07, "loop": true, "description": "Carrera pesada con leve inclinacion frontal." },
+      "shoot": { "frames": 5, "frame_duration": 0.06, "loop": false, "description": "Disparo de precision con retroceso seco de hombro." },
+      "reload": { "frames": 9, "frame_duration": 0.08, "loop": false, "description": "Recarga del rifle con chequeo rapido de cerrojo." },
+      "hurt": { "frames": 4, "frame_duration": 0.07, "loop": false, "description": "Impacto recibido con paso atras y tension de torso." },
+      "death": { "frames": 11, "frame_duration": 0.09, "loop": false, "description": "Caida dramatica con perdida gradual del arma." }
+    },
+    "Giovanna": {
+      "idle": { "frames": 6, "frame_duration": 0.11, "loop": true, "description": "Postura ligera con brazo dominante listo para desenfunde." },
+      "walk": { "frames": 8, "frame_duration": 0.085, "loop": true, "description": "Caminata elastica con movimiento de cabello largo." },
+      "run": { "frames": 10, "frame_duration": 0.065, "loop": true, "description": "Sprint agile con oscilacion pronunciada de pelo." },
+      "shoot": { "frames": 4, "frame_duration": 0.055, "loop": false, "description": "Disparo de pistola rapido con retorno inmediato." },
+      "reload": { "frames": 8, "frame_duration": 0.075, "loop": false, "description": "Cambio de cargador veloz, enfoque en fluidez arcade." },
+      "hurt": { "frames": 4, "frame_duration": 0.065, "loop": false, "description": "Retroceso corto con recuperacion rapida." },
+      "death": { "frames": 10, "frame_duration": 0.085, "loop": false, "description": "Caida lateral con animacion compacta." }
+    },
+    "Yamil": {
+      "idle": { "frames": 6, "frame_duration": 0.12, "loop": true, "description": "Guardia cerrada con subfusil en pecho." },
+      "walk": { "frames": 8, "frame_duration": 0.09, "loop": true, "description": "Paso corto de cobertura en avance." },
+      "run": { "frames": 9, "frame_duration": 0.072, "loop": true, "description": "Carrera media con arma firme al frente." },
+      "shoot": { "frames": 5, "frame_duration": 0.058, "loop": false, "description": "Rafaga corta de smg con retroceso continuo." },
+      "reload": { "frames": 8, "frame_duration": 0.082, "loop": false, "description": "Recarga tactica manteniendo mirada al frente." },
+      "hurt": { "frames": 4, "frame_duration": 0.07, "loop": false, "description": "Sacudida por impacto con perdida de equilibrio." },
+      "death": { "frames": 11, "frame_duration": 0.09, "loop": false, "description": "Desplome frontal defendiendo posicion." }
+    },
+    "Hernan": {
+      "idle": { "frames": 6, "frame_duration": 0.12, "loop": true, "description": "Vigilancia constante con peso en pierna delantera." },
+      "walk": { "frames": 8, "frame_duration": 0.09, "loop": true, "description": "Avance decidido de primera linea." },
+      "run": { "frames": 9, "frame_duration": 0.07, "loop": true, "description": "Impulso rapido para cubrir flancos." },
+      "shoot": { "frames": 5, "frame_duration": 0.06, "loop": false, "description": "Disparo controlado en rafagas de cobertura." },
+      "reload": { "frames": 8, "frame_duration": 0.08, "loop": false, "description": "Recambio de cargador con pausa minima." },
+      "hurt": { "frames": 4, "frame_duration": 0.07, "loop": false, "description": "Golpe absorbido con paso atras breve." },
+      "death": { "frames": 11, "frame_duration": 0.09, "loop": false, "description": "Caida agotada en contexto de defensa final." }
+    },
+    "Lorena": {
+      "idle": { "frames": 6, "frame_duration": 0.115, "loop": true, "description": "Respiracion tensa con revolver en mano baja." },
+      "walk": { "frames": 8, "frame_duration": 0.09, "loop": true, "description": "Movimiento cauteloso de rescate bajo fuego." },
+      "run": { "frames": 9, "frame_duration": 0.07, "loop": true, "description": "Huida rapida con torso inclinado." },
+      "shoot": { "frames": 4, "frame_duration": 0.06, "loop": false, "description": "Disparo de revolver con fogonazo intenso." },
+      "reload": { "frames": 10, "frame_duration": 0.085, "loop": false, "description": "Recarga lenta por cartuchos individuales." },
+      "hurt": { "frames": 4, "frame_duration": 0.072, "loop": false, "description": "Reaccion de dolor con perdida de compostura." },
+      "death": { "frames": 12, "frame_duration": 0.09, "loop": false, "description": "Secuencia tragica durante escape por salida B." }
+    },
+    "Celestino": {
+      "idle": { "frames": 6, "frame_duration": 0.12, "loop": true, "description": "Pose de tirador con carabina al hombro." },
+      "walk": { "frames": 8, "frame_duration": 0.092, "loop": true, "description": "Paso firme y pesado de soporte armado." },
+      "run": { "frames": 9, "frame_duration": 0.073, "loop": true, "description": "Aceleracion media preservando estabilidad de arma larga." },
+      "shoot": { "frames": 5, "frame_duration": 0.06, "loop": false, "description": "Disparo semiautomatico con doble retroceso." },
+      "reload": { "frames": 9, "frame_duration": 0.082, "loop": false, "description": "Recarga metrica con enfasis en silueta del arma." },
+      "hurt": { "frames": 4, "frame_duration": 0.07, "loop": false, "description": "Impacto lateral con contrapeso del rifle." },
+      "death": { "frames": 11, "frame_duration": 0.09, "loop": false, "description": "Caida defensiva durante intento de salida D." }
+    },
+    "Selene": {
+      "idle": { "frames": 6, "frame_duration": 0.11, "loop": true, "description": "Postura concentrada con brazo listo para tiro rapido." },
+      "walk": { "frames": 8, "frame_duration": 0.085, "loop": true, "description": "Desplazamiento agil con cabello castaño oscilando." },
+      "run": { "frames": 10, "frame_duration": 0.066, "loop": true, "description": "Carrera veloz con lectura clara de silueta gemela." },
+      "shoot": { "frames": 4, "frame_duration": 0.055, "loop": false, "description": "Disparo seco de pistola, rapido y preciso." },
+      "reload": { "frames": 8, "frame_duration": 0.075, "loop": false, "description": "Recarga fluida con transicion inmediata a guardia." },
+      "hurt": { "frames": 4, "frame_duration": 0.067, "loop": false, "description": "Reaccion brusca que anticipa su deterioro final." },
+      "death": { "frames": 12, "frame_duration": 0.09, "loop": false, "description": "Secuencia dramatica final tras el enfrentamiento con Nahir." }
+    },
+    "Nahir": {
+      "idle": { "frames": 6, "frame_duration": 0.11, "loop": true, "description": "Respiracion estable, enfoque de protagonista principal." },
+      "walk": { "frames": 8, "frame_duration": 0.084, "loop": true, "description": "Marcha ligera con pistola preparada." },
+      "run": { "frames": 10, "frame_duration": 0.064, "loop": true, "description": "Sprint run-and-gun con cabello rojo en arco." },
+      "shoot": { "frames": 4, "frame_duration": 0.054, "loop": false, "description": "Disparo rapido con buena recuperacion de pose." },
+      "reload": { "frames": 8, "frame_duration": 0.074, "loop": false, "description": "Recarga agil de alta cadencia." },
+      "hurt": { "frames": 4, "frame_duration": 0.066, "loop": false, "description": "Retroceso breve con inmediata vuelta al combate." },
+      "death": { "frames": 12, "frame_duration": 0.09, "loop": false, "description": "Caida dramatica en el cierre del combate final." }
+    },
+    "Damian": {
+      "idle": { "frames": 6, "frame_duration": 0.125, "loop": true, "description": "Postura pesada de escopeta lista a corta distancia." },
+      "walk": { "frames": 8, "frame_duration": 0.095, "loop": true, "description": "Caminata robusta con control del arma de alto retroceso." },
+      "run": { "frames": 9, "frame_duration": 0.074, "loop": true, "description": "Carrera corta y contundente con centro de masa bajo." },
+      "shoot": { "frames": 6, "frame_duration": 0.06, "loop": false, "description": "Disparo de escopeta con retroceso amplio en dos fases." },
+      "reload": { "frames": 11, "frame_duration": 0.085, "loop": false, "description": "Recarga cartucho por cartucho, ventana tactica clara." },
+      "hurt": { "frames": 4, "frame_duration": 0.072, "loop": false, "description": "Impacto absorbido con desequilibrio temporal." },
+      "death": { "frames": 12, "frame_duration": 0.092, "loop": false, "description": "Secuencia de sacrificio durante huida al subsuelo." }
+    }
+  }
+}

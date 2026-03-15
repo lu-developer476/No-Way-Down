@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "game": "No Way Down",
+    "format_version": "1.0",
+    "art_style": {
+      "render_type": "pixel_art_detailed",
+      "inspirations": ["Metal Slug", "Super Mario Bros"],
+      "sprite_resolution": "96x96",
+      "orientation": "side_scroller"
+    }
+  },
+  "characters": [
+    {
+      "name": "Alan Nahuel",
+      "age": 28,
+      "role": "main_protagonist",
+      "skin_tone": "triguena_clara",
+      "hair": "afro_tenido_blanco",
+      "facial_hair": "barba_negra_con_canas",
+      "playable": true,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": null,
+      "death_description": "sobrevive a todo el juego",
+      "weapon_default": "sniper_rifle",
+      "stats": {
+        "health": 82,
+        "speed": 66,
+        "accuracy": 95,
+        "stamina": 78,
+        "leadership": 89
+      },
+      "sprite_description": "Soldado veterano de silueta robusta, postura firme y apuntado preciso. Ropa táctica oscura con detalles de desgaste, barba con canas visibles en pocos píxeles y cabello afro blanco contrastando con sombras cálidas.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["broad_shoulders", "long_rifle_profile", "leader_stance"]
+      }
+    },
+    {
+      "name": "Giovanna",
+      "age": 21,
+      "role": "main_protagonist",
+      "skin_tone": "muy_blanca",
+      "hair": "largo_negro",
+      "facial_hair": "none",
+      "playable": true,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": null,
+      "death_description": "sobrevive a todo el juego",
+      "weapon_default": "pistol",
+      "stats": {
+        "health": 68,
+        "speed": 88,
+        "accuracy": 86,
+        "stamina": 73,
+        "leadership": 79
+      },
+      "sprite_description": "Combatiente ágil con perfil fino, cabello negro largo en movimiento durante carrera y salto. Vestimenta funcional de tonos fríos con acentos magenta para lectura rápida en combate.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["agile_profile", "long_hair_motion", "sidearm_ready"]
+      }
+    },
+    {
+      "name": "Yamil",
+      "age": 22,
+      "role": "secondary",
+      "skin_tone": "rosada_clara",
+      "hair": "corto_colorado_natural",
+      "facial_hair": "barba_colorada_corta",
+      "playable": false,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": 9,
+      "death_description": "muere defendiendo las escaleras junto a Hernan durante la huida",
+      "weapon_default": "smg",
+      "stats": {
+        "health": 74,
+        "speed": 77,
+        "accuracy": 72,
+        "stamina": 75,
+        "leadership": 64
+      },
+      "sprite_description": "Unidad de apoyo con cuerpo compacto, barba corta rojiza y animación de disparo sostenido con retroceso controlado. Tonos terrosos para integrarse al entorno urbano en ruinas.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["compact_build", "smg_stance", "guard_defender"]
+      }
+    },
+    {
+      "name": "Hernan",
+      "age": 21,
+      "role": "secondary",
+      "skin_tone": "morocha_clara",
+      "hair": "corto_negro",
+      "facial_hair": "none",
+      "playable": false,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": 9,
+      "death_description": "muere defendiendo las escaleras junto a Yamil durante la huida",
+      "weapon_default": "smg",
+      "stats": {
+        "health": 76,
+        "speed": 80,
+        "accuracy": 74,
+        "stamina": 81,
+        "leadership": 67
+      },
+      "sprite_description": "Defensor frontal con postura inclinada hacia adelante, ráfagas cortas y pasos amplios. Contraste alto en torso para mantener legibilidad al superponerse con efectos de fuego.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["forward_stance", "smg_burst", "frontline_support"]
+      }
+    },
+    {
+      "name": "Lorena",
+      "age": 25,
+      "role": "rescue_character",
+      "skin_tone": "morocha_clara",
+      "hair": "negro_semilargo",
+      "facial_hair": "none",
+      "playable": false,
+      "ai_possible": true,
+      "spawn_level": 8,
+      "death_level": 9,
+      "death_description": "muere durante el intento de escape por la salida B en planta baja",
+      "weapon_default": "revolver",
+      "stats": {
+        "health": 63,
+        "speed": 71,
+        "accuracy": 79,
+        "stamina": 65,
+        "leadership": 70
+      },
+      "sprite_description": "Personaje de rescate con animaciones tensas, revolver de alto impacto y transición rápida entre cobertura y disparo. Cabello semilargo con pocos frames de rebote para optimizar lectura.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["rescue_target", "revolver_pose", "nervous_motion"]
+      }
+    },
+    {
+      "name": "Celestino",
+      "age": 24,
+      "role": "secondary",
+      "skin_tone": "morocha_clara",
+      "hair": "corto_negro",
+      "facial_hair": "none",
+      "playable": false,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": 9,
+      "death_description": "muere durante el intento de escape por la salida D",
+      "weapon_default": "carbine",
+      "stats": {
+        "health": 79,
+        "speed": 69,
+        "accuracy": 84,
+        "stamina": 77,
+        "leadership": 72
+      },
+      "sprite_description": "Tirador medio con carabina, zancada pesada y perfil alto en hombros. El diseño prioriza lectura del arma larga y retroceso de dos tiempos estilo arcade clásico.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["rifleman", "elevated_aim", "heavy_step"]
+      }
+    },
+    {
+      "name": "Selene",
+      "age": 24,
+      "role": "secondary",
+      "skin_tone": "castana_clara",
+      "hair": "largo_castano",
+      "facial_hair": "none",
+      "playable": false,
+      "ai_possible": true,
+      "spawn_level": 6,
+      "death_level": 10,
+      "death_description": "infectada durante el combate final; dispara a su gemela Nahir y luego se suicida",
+      "weapon_default": "pistol",
+      "stats": {
+        "health": 70,
+        "speed": 83,
+        "accuracy": 88,
+        "stamina": 69,
+        "leadership": 60
+      },
+      "sprite_description": "Combatiente ligera con pistolera, pelo largo castaño y expresividad marcada en poses de daño para reforzar su arco dramático del final.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["twin_profile", "dramatic_pose", "fast_sidearm"]
+      }
+    },
+    {
+      "name": "Nahir",
+      "age": 24,
+      "role": "main_protagonist",
+      "skin_tone": "castana_clara",
+      "hair": "largo_rojo",
+      "facial_hair": "none",
+      "playable": true,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": 10,
+      "death_description": "muere tras recibir un disparo de su gemela Selene durante el enfrentamiento final",
+      "weapon_default": "pistol",
+      "stats": {
+        "health": 72,
+        "speed": 90,
+        "accuracy": 85,
+        "stamina": 74,
+        "leadership": 83
+      },
+      "sprite_description": "Protagonista ágil con cabello rojo largo y silueta reconocible incluso en baja iluminación. Animaciones rápidas de sprint y disparo en salto para estilo run-and-gun.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["heroine_profile", "red_hair_signature", "run_and_gun"]
+      }
+    },
+    {
+      "name": "Damian",
+      "age": 22,
+      "role": "optional_protagonist",
+      "skin_tone": "blanca",
+      "hair": "corto_negro",
+      "facial_hair": "none",
+      "playable": true,
+      "ai_possible": true,
+      "spawn_level": 1,
+      "death_level": 9,
+      "death_description": "se infecta durante la huida al subsuelo y se suicida para dar tiempo al grupo",
+      "weapon_default": "shotgun",
+      "stats": {
+        "health": 86,
+        "speed": 62,
+        "accuracy": 76,
+        "stamina": 82,
+        "leadership": 71
+      },
+      "sprite_description": "Especialista de corto alcance con escopeta, torso ancho y animación de retroceso pronunciada. Pasos firmes y recarga visible cartucho a cartucho para identidad jugable clara.",
+      "sprite_specs": {
+        "canvas": "96x96",
+        "pivot": "bottom_center",
+        "facing": "right",
+        "silhouette_tags": ["shotgunner", "strong_recoil", "tanky_runner"]
+      }
+    }
+  ]
+}

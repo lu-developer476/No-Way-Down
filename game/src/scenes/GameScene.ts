@@ -48,6 +48,12 @@ interface GameSceneData {
   skipLoad?: boolean;
 }
 
+interface CleanupZoneBoundary {
+  id: string;
+  minX: number;
+  maxX: number;
+}
+
 export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
@@ -77,6 +83,8 @@ export class GameScene extends Phaser.Scene {
   private exitUnlocked = false;
   private spawnsShutDown = false;
   private visitedCheckpoints = new Set<string>();
+  private readonly verticalPointsByCleanupZone = new Map<string, string[]>();
+  private readonly disabledVerticalZones = new Set<string>();
 
   constructor() {
     super('GameScene');
@@ -220,6 +228,7 @@ export class GameScene extends Phaser.Scene {
       verticalSpawnConfig,
       { spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier }
     );
+    this.mapVerticalSpawnsToCleanupZones(verticalSpawnConfig.verticalZombieSpawns.points);
 
     this.levelExitSystem = new LevelExitSystem(
       this,
@@ -314,6 +323,7 @@ export class GameScene extends Phaser.Scene {
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
     this.zombieWaveZoneSystem?.update();
+    this.syncSpawnSystemsWithCleanupProgress();
     this.verticalSpawnSystem?.update(this.time.now);
     this.levelExitSystem?.update();
 
@@ -379,6 +389,72 @@ export class GameScene extends Phaser.Scene {
     this.verticalSpawnSystem?.setEnabled(false, reason);
     this.zombieWaveZoneSystem?.setEnabled(false, reason);
     console.info(`[GameScene] spawn systems disabled (${reason})`);
+  }
+
+  private mapVerticalSpawnsToCleanupZones(points: Array<{ id: string; position: { x: number; y: number } }>): void {
+    const boundaries = this.getCleanupZoneBoundaries();
+
+    points.forEach((point) => {
+      const ownerZone = boundaries.find((zoneBoundary) => (
+        point.position.x >= zoneBoundary.minX && point.position.x <= zoneBoundary.maxX
+      ));
+
+      if (!ownerZone) {
+        return;
+      }
+
+      const zonePointIds = this.verticalPointsByCleanupZone.get(ownerZone.id) ?? [];
+      zonePointIds.push(point.id);
+      this.verticalPointsByCleanupZone.set(ownerZone.id, zonePointIds);
+    });
+
+    this.verticalPointsByCleanupZone.forEach((pointIds, zoneId) => {
+      console.info(`[GameScene] cleanup zone ${zoneId} controls vertical points: ${pointIds.join(', ')}`);
+    });
+  }
+
+  private getCleanupZoneBoundaries(): CleanupZoneBoundary[] {
+    const segmentsById = new Map(level2Subsuelo.segmentos.map((segment) => [segment.id, segment]));
+
+    return level2Subsuelo.zonasLimpiezaZombies
+      .map((zone) => {
+        const coveredSegments = zone.segmentosCubiertos.reduce<typeof level2Subsuelo.segmentos>((accumulator, segmentId) => {
+          const segment = segmentsById.get(segmentId);
+          if (segment) {
+            accumulator.push(segment);
+          }
+          return accumulator;
+        }, []);
+
+        if (coveredSegments.length === 0) {
+          return null;
+        }
+
+        return {
+          id: zone.id,
+          minX: Math.min(...coveredSegments.map((segment) => segment.posicionX.inicioPx)),
+          maxX: Math.max(...coveredSegments.map((segment) => segment.posicionX.finPx))
+        };
+      })
+      .filter((zone): zone is CleanupZoneBoundary => zone !== null);
+  }
+
+  private syncSpawnSystemsWithCleanupProgress(): void {
+    const completedZoneIds = this.zombieWaveZoneSystem?.getCompletedZoneIds() ?? [];
+
+    completedZoneIds.forEach((zoneId) => {
+      if (this.disabledVerticalZones.has(zoneId)) {
+        return;
+      }
+
+      this.disabledVerticalZones.add(zoneId);
+      const pointIds = this.verticalPointsByCleanupZone.get(zoneId) ?? [];
+      pointIds.forEach((pointId) => this.verticalSpawnSystem?.setPointEnabled(pointId, false, `cleanup-zone-completed:${zoneId}`));
+
+      if (pointIds.length > 0) {
+        console.info(`[GameScene] cleanup zone ${zoneId} completed: disabled vertical points ${pointIds.join(', ')}`);
+      }
+    });
   }
 
   private createMissionStatusUI(): void {

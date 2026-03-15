@@ -1,0 +1,111 @@
+{
+  "levelId": "level10",
+  "infectionId": "twin_bite_progression",
+  "totalDurationMs": 600000,
+  "registryKey": "level10ProgressiveInfection",
+  "autoStart": true,
+  "stages": [
+    {
+      "id": "stage_0_disimulada",
+      "label": "Disimulada",
+      "thresholdMs": 0,
+      "severity": "leve",
+      "description": "La gemela oculta el dolor y mantiene puntería casi intacta.",
+      "visualCues": ["sudor_frio", "respiracion_corta"],
+      "behaviorFlags": ["prioriza_cobertura", "responde_normal"],
+      "hudMessage": "Está herida, pero sigue en pie.",
+      "groupImpact": {
+        "aimStabilityDelta": -0.02,
+        "movementSpeedDelta": -0.01,
+        "moraleDelta": -0.01
+      },
+      "narrativeHooks": {
+        "rescueLine": "Gracias... sigo contigo.",
+        "helpLine": "No me sueltes el ritmo.",
+        "postSceneTag": "infection_early"
+      }
+    },
+    {
+      "id": "stage_1_temblores",
+      "label": "Temblores",
+      "thresholdMs": 120000,
+      "severity": "moderada",
+      "description": "Aparecen espasmos breves y reacciones tardías al fuego enemigo.",
+      "visualCues": ["temblor_mano_izquierda", "tos_seca"],
+      "behaviorFlags": ["rafagas_cortas", "demora_recarga"],
+      "hudMessage": "La mordida empeora. Su pulso ya no es estable.",
+      "groupImpact": {
+        "aimStabilityDelta": -0.07,
+        "reloadSpeedDelta": -0.05,
+        "moraleDelta": -0.03
+      },
+      "narrativeHooks": {
+        "rescueLine": "Otra vez me salvaste...",
+        "helpLine": "Necesito cubrirme dos segundos.",
+        "postSceneTag": "infection_mid"
+      }
+    },
+    {
+      "id": "stage_2_fiebre",
+      "label": "Fiebre alta",
+      "thresholdMs": 270000,
+      "severity": "grave",
+      "description": "La fiebre sube y el equipo nota descoordinación en desplazamientos cortos.",
+      "visualCues": ["rostro_palido", "paso_inestable", "vision_borrosa"],
+      "behaviorFlags": ["retrocede_mas", "prioriza_objetivos_cercanos"],
+      "hudMessage": "Su fiebre está subiendo. El grupo empieza a cubrir su flanco.",
+      "groupImpact": {
+        "aimStabilityDelta": -0.12,
+        "movementSpeedDelta": -0.08,
+        "reloadSpeedDelta": -0.1,
+        "moraleDelta": -0.06
+      },
+      "narrativeHooks": {
+        "rescueLine": "Si caigo, no te detengas...",
+        "helpLine": "Te sigo, pero marca tú el paso.",
+        "postSceneTag": "infection_high"
+      }
+    },
+    {
+      "id": "stage_3_confusion",
+      "label": "Confusión",
+      "thresholdMs": 420000,
+      "severity": "grave",
+      "description": "Tiene lagunas breves y necesita órdenes más directas para sostener la línea.",
+      "visualCues": ["mirada_perdida", "cambio_tono_voz", "micro_tropiezos"],
+      "behaviorFlags": ["requiere_ping_ayuda", "reduce_riesgo"],
+      "hudMessage": "Está desorientada. Mantén órdenes cortas y claras.",
+      "groupImpact": {
+        "aimStabilityDelta": -0.18,
+        "movementSpeedDelta": -0.12,
+        "moraleDelta": -0.1
+      },
+      "narrativeHooks": {
+        "rescueLine": "Escucho tu voz... eso ayuda.",
+        "helpLine": "Repíteme el objetivo.",
+        "postSceneTag": "infection_confused"
+      }
+    },
+    {
+      "id": "stage_4_colapso_inminente",
+      "label": "Colapso inminente",
+      "thresholdMs": 540000,
+      "severity": "critica",
+      "description": "Último esfuerzo: la gemela pelea por pura voluntad y el grupo adapta todo alrededor de ella.",
+      "visualCues": ["sangrado_herida", "respiracion_agitada", "postura_encorvada"],
+      "behaviorFlags": ["modo_supervivencia", "prioridad_escape"],
+      "hudMessage": "No aguanta mucho más. Prepárense para extracción inmediata.",
+      "groupImpact": {
+        "aimStabilityDelta": -0.25,
+        "movementSpeedDelta": -0.16,
+        "reloadSpeedDelta": -0.15,
+        "moraleDelta": -0.14
+      },
+      "narrativeHooks": {
+        "rescueLine": "Una más... solo una más.",
+        "helpLine": "Sácame de aquí cuando abras hueco.",
+        "postSceneTag": "infection_terminal"
+      }
+    }
+  ]
+}

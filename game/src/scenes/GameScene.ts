@@ -34,10 +34,31 @@ import { getAudioManager } from '../audio/AudioManager';
 import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
 import { CinematicCallSystem, type CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
 import level2NarrativeCallConfig from '../../public/assets/levels/level2_narrative_call.json';
+import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.25;
+const LATE_ALLY_JOIN_CHECKPOINT_ID = 'level2-checkpoint-first-zone-cleared';
+
+const LATE_RESCUE_ALLIES = [
+  {
+    id: 'ally-lorena',
+    name: 'Lorena',
+    characterId: 'lorena',
+    tint: 0xfb7185,
+    followOffsetX: -154,
+    followOffsetY: -8
+  },
+  {
+    id: 'ally-selene',
+    name: 'Selene',
+    characterId: 'selene',
+    tint: 0xc084fc,
+    followOffsetX: 154,
+    followOffsetY: -8
+  }
+] as const;
 
 interface PlatformConfig {
   x: number;
@@ -93,6 +114,7 @@ export class GameScene extends Phaser.Scene {
   private skipDialogueRequested = false;
   private movementLockedByNarrative = false;
   private firstCleanupNarrativeTriggered = false;
+  private lateRescueAlliesIntegrated = false;
 
   constructor() {
     super('GameScene');
@@ -570,7 +592,53 @@ export class GameScene extends Phaser.Scene {
     this.advanceDialogueRequested = false;
     this.skipDialogueRequested = false;
     await this.cinematicCallSystem.triggerByCheckpoint(checkpointId);
+    this.integrateLateRescueAllies(checkpointId);
     this.skipDialogueRequested = false;
+  }
+
+  private integrateLateRescueAllies(checkpointId: string): void {
+    if (checkpointId !== LATE_ALLY_JOIN_CHECKPOINT_ID || this.lateRescueAlliesIntegrated) {
+      return;
+    }
+
+    const leadPlayer = this.players[0];
+    if (!leadPlayer || !this.allySystem || !this.partyState || !this.campaignState) {
+      return;
+    }
+
+    const existingMembers = new Set(this.partyState.getSnapshot().map((member) => member.id));
+
+    LATE_RESCUE_ALLIES.forEach((allyConfig) => {
+      if (existingMembers.has(allyConfig.id)) {
+        return;
+      }
+
+      this.allySystem?.spawnRescuedAlly({ ...allyConfig }, leadPlayer);
+
+      this.partyState?.upsertMember({
+        id: allyConfig.id,
+        name: allyConfig.name,
+        characterId: allyConfig.characterId,
+        controlMode: 'ai',
+        status: 'active',
+        permanentlyLost: false,
+        narrative: { deathPending: false }
+      });
+
+      this.campaignState?.applyPatch({
+        addActiveCharacter: allyConfig.id,
+        markRescuedCharacter: allyConfig.id,
+        narrativeProgress: {
+          late_rescue_join_checkpoint: checkpointId
+        }
+      });
+    });
+
+    this.lateRescueAlliesIntegrated = true;
+    this.registry.set('partyState', this.partyState.getSnapshot());
+    this.registry.set('campaignState', this.campaignState.getSnapshot());
+    this.registry.set('partyHud', this.buildPartyHud());
+    this.showMissionStatus('Lorena y Selene se reunieron con el grupo. Cobertura ampliada.');
   }
 
   private createMissionStatusUI(): void {
@@ -799,7 +867,7 @@ export class GameScene extends Phaser.Scene {
     const setup = this.getInitialSetup();
     const protagonistCharacterId = setup?.protagonist === 'giovanna' ? 'giovanna' : 'alan';
 
-    return this.players.map((player) => {
+    const playerEntries = this.players.map((player) => {
       const profile = player.getProfile();
       const runtime = player.getRuntimeConfig();
       const role: PartyHudMember['role'] = profile.characterId === protagonistCharacterId
@@ -814,6 +882,31 @@ export class GameScene extends Phaser.Scene {
         maxHealth: player.getMaxHealth()
       };
     });
+
+    const playerIds = new Set(playerEntries.map((entry) => entry.id));
+    const preferredLateJoinIds = new Set<string>(LATE_RESCUE_ALLIES.map((ally) => ally.id));
+    const activePartyMembers = (this.partyState?.getSnapshot() ?? []).filter((member) => (
+      member.status === 'active' && !playerIds.has(member.id)
+    ));
+
+    const prioritizedAllies = [
+      ...activePartyMembers.filter((member) => preferredLateJoinIds.has(member.id)),
+      ...activePartyMembers.filter((member) => !preferredLateJoinIds.has(member.id))
+    ];
+
+    const allyEntries = prioritizedAllies.map((member) => {
+      const runtime = getCharacterRuntimeConfig(member.characterId ?? 'alan');
+
+      return {
+        id: member.id,
+        name: member.name,
+        role: 'ally' as const,
+        health: runtime.maxHealth,
+        maxHealth: runtime.maxHealth
+      };
+    });
+
+    return [...playerEntries, ...allyEntries].slice(0, 4);
   }
 
   private getAveragePlayerPosition(): Phaser.Math.Vector2 {

@@ -13,13 +13,14 @@ import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
 import level4StairSegments from '../../public/assets/levels/level4_stair_segments.json';
 import verticalSpawnConfig from '../../public/assets/levels/level2_vertical_spawns.json';
 import { getActivePlayerConfigs, getInitialPartySeed } from '../config/localMultiplayer';
-import { PlayerProgressPayload, progressApi } from '../services/progressApi';
+import { CampaignSnapshot, PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
   Checkpoint,
   enforceMaxPlayerSeparation,
   getAveragePlayerPosition,
   getScenePlayerId,
   LOCAL_PROGRESS_STORAGE_KEY,
+  InitialRunSetup,
   loadInitialRunSetup,
   parseCheckpoint
 } from './sceneShared';
@@ -74,6 +75,7 @@ export class GameScene extends Phaser.Scene {
   private cleanupZonesRequired = 0;
   private exitUnlocked = false;
   private spawnsShutDown = false;
+  private visitedCheckpoints = new Set<string>();
 
   constructor() {
     super('GameScene');
@@ -807,14 +809,96 @@ export class GameScene extends Phaser.Scene {
 
   private buildProgressPayload(): PlayerProgressPayload {
     const checkpoint = this.respawnPoint ?? { x: 140, y: this.scale.height - 140 };
+    const checkpointLabel = `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`;
+    this.visitedCheckpoints.add(checkpointLabel);
 
     return {
       user_id: this.getPlayerId(),
       current_level: this.scene.key,
       life: this.players.filter((player) => !player.isDead()).length,
       allies_rescued: 0,
-      checkpoint: `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`
+      checkpoint: checkpointLabel,
+      save_version: 2,
+      campaign_snapshot: this.buildCampaignSnapshot(checkpointLabel)
     };
+  }
+
+  private getInitialSetup(): InitialRunSetup | null {
+    return (this.registry.get('initialRunSetup') as InitialRunSetup | undefined) ?? loadInitialRunSetup();
+  }
+
+  private buildCampaignSnapshot(checkpoint: string): CampaignSnapshot {
+    const setup = this.getInitialSetup();
+    const campaign = this.campaignState?.getSnapshot();
+    const partyMembers = this.partyState?.getSnapshot() ?? [];
+
+    const party = {
+      active: partyMembers.filter((member) => member.status === 'active').map((member) => member.name),
+      dead: partyMembers.filter((member) => member.status === 'dead').map((member) => member.name),
+      rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
+      infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
+    };
+
+    return {
+      setup: {
+        protagonist: setup?.protagonist ?? 'unknown',
+        difficulty: setup?.difficulty ?? 'unknown',
+        initial_party: {
+          required: setup?.party.required ?? [],
+          optional: setup?.party.optional ?? []
+        }
+      },
+      party,
+      progress: {
+        level: this.scene.key,
+        checkpoint,
+        segment: this.registry.get('currentObjective') as string | undefined,
+        life: this.players.filter((player) => !player.isDead()).length,
+        allies_rescued: party.rescued.length
+      },
+      narrative: {
+        flags: campaign?.narrativeProgress ?? {},
+        irreversible_events: campaign?.irreversibleEvents ?? [],
+        seen_cinematics: campaign?.seenCinematics ?? []
+      },
+      checkpoints: {
+        last: checkpoint,
+        visited: [...this.visitedCheckpoints]
+      }
+    };
+  }
+
+  private applyLoadedSnapshot(snapshot?: CampaignSnapshot): void {
+    if (!snapshot) {
+      return;
+    }
+
+    this.registry.set('loadedCampaignSnapshot', snapshot);
+
+    if (snapshot.checkpoints?.visited) {
+      snapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));
+    }
+
+    if (snapshot.setup) {
+      const protagonist = snapshot.setup.protagonist;
+      const difficulty = snapshot.setup.difficulty;
+      const validProtagonist = protagonist === 'alan-nahuel' || protagonist === 'giovanna';
+      const validDifficulty = difficulty === 'complejo' || difficulty === 'pesadilla';
+
+      const existing = this.getInitialSetup();
+      if (!existing && validProtagonist && validDifficulty) {
+        this.registry.set('initialRunSetup', {
+          protagonist,
+          difficulty,
+          party: {
+            required: snapshot.setup.initial_party.required,
+            optional: snapshot.setup.initial_party.optional
+          },
+          startedAt: new Date().toISOString(),
+          version: 1
+        });
+      }
+    }
   }
 
   private saveProgressLocally(payload: PlayerProgressPayload): void {
@@ -857,6 +941,7 @@ export class GameScene extends Phaser.Scene {
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
       const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
+      this.applyLoadedSnapshot(progress.campaign_snapshot);
 
       if (loadedCheckpoint) {
         this.registry.set('checkpoint', loadedCheckpoint);
@@ -874,6 +959,7 @@ export class GameScene extends Phaser.Scene {
       const localProgress = this.loadLocalProgress();
       if (localProgress) {
         const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);
+        this.applyLoadedSnapshot(localProgress.campaign_snapshot);
         if (loadedCheckpoint) {
           this.registry.set('checkpoint', loadedCheckpoint);
         }

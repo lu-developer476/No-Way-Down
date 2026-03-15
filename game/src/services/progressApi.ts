@@ -4,6 +4,41 @@ export interface PlayerProgressPayload {
   life: number;
   allies_rescued: number;
   checkpoint: string;
+  save_version?: number;
+  campaign_snapshot?: CampaignSnapshot;
+}
+
+export interface CampaignSnapshot {
+  setup: {
+    protagonist: string;
+    difficulty: string;
+    initial_party: {
+      required: string[];
+      optional: string[];
+    };
+  };
+  party: {
+    active: string[];
+    dead: string[];
+    rescued: string[];
+    infected: string[];
+  };
+  progress: {
+    level: string;
+    checkpoint: string;
+    segment?: string;
+    life: number;
+    allies_rescued: number;
+  };
+  narrative: {
+    flags: Record<string, string | number | boolean>;
+    irreversible_events: string[];
+    seen_cinematics: string[];
+  };
+  checkpoints: {
+    last: string;
+    visited: string[];
+  };
 }
 
 export interface PlayerProgressResponse extends PlayerProgressPayload {

@@ -3,12 +3,13 @@ import { Player } from '../entities/Player';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { StaircaseSystem, StairTransitionTarget } from '../systems/StaircaseSystem';
 import { getActivePlayerConfigs } from '../config/localMultiplayer';
-import { PlayerProgressPayload, progressApi } from '../services/progressApi';
+import { CampaignSnapshot, PlayerProgressPayload, progressApi } from '../services/progressApi';
 import {
   Checkpoint,
   enforceMaxPlayerSeparation,
   getAveragePlayerPosition,
   getScenePlayerId,
+  InitialRunSetup,
   loadInitialRunSetup,
   parseCheckpoint
 } from './sceneShared';
@@ -31,6 +32,7 @@ export class UpperFloorScene extends Phaser.Scene {
   private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
   private hasTriggeredTransition = false;
+  private visitedCheckpoints = new Set<string>();
 
   constructor() {
     super('UpperFloorScene');
@@ -252,14 +254,73 @@ export class UpperFloorScene extends Phaser.Scene {
 
   private buildProgressPayload(): PlayerProgressPayload {
     const checkpoint = this.players[0] ? { x: this.players[0].x, y: this.players[0].y } : { x: 140, y: this.scale.height - 130 };
+    const checkpointLabel = `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`;
+    this.visitedCheckpoints.add(checkpointLabel);
 
     return {
       user_id: this.getPlayerId(),
       current_level: this.scene.key,
       life: this.players.filter((player) => !player.isDead()).length,
       allies_rescued: 0,
-      checkpoint: `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`
+      checkpoint: checkpointLabel,
+      save_version: 2,
+      campaign_snapshot: this.buildCampaignSnapshot(checkpointLabel)
     };
+  }
+
+  private getInitialSetup(): InitialRunSetup | null {
+    return (this.registry.get('initialRunSetup') as InitialRunSetup | undefined) ?? loadInitialRunSetup();
+  }
+
+  private buildCampaignSnapshot(checkpoint: string): CampaignSnapshot {
+    const setup = this.getInitialSetup();
+    const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
+
+    if (loadedSnapshot?.checkpoints?.visited) {
+      loadedSnapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));
+    }
+
+    return {
+      setup: {
+        protagonist: setup?.protagonist ?? loadedSnapshot?.setup.protagonist ?? 'unknown',
+        difficulty: setup?.difficulty ?? loadedSnapshot?.setup.difficulty ?? 'unknown',
+        initial_party: {
+          required: setup?.party.required ?? loadedSnapshot?.setup.initial_party.required ?? [],
+          optional: setup?.party.optional ?? loadedSnapshot?.setup.initial_party.optional ?? []
+        }
+      },
+      party: loadedSnapshot?.party ?? {
+        active: [],
+        dead: [],
+        rescued: [],
+        infected: []
+      },
+      progress: {
+        level: this.scene.key,
+        checkpoint,
+        segment: 'upper_floor_exploration',
+        life: this.players.filter((player) => !player.isDead()).length,
+        allies_rescued: loadedSnapshot?.party?.rescued.length ?? 0
+      },
+      narrative: loadedSnapshot?.narrative ?? {
+        flags: {},
+        irreversible_events: [],
+        seen_cinematics: []
+      },
+      checkpoints: {
+        last: checkpoint,
+        visited: [...this.visitedCheckpoints]
+      }
+    };
+  }
+
+  private applyLoadedSnapshot(snapshot?: CampaignSnapshot): void {
+    if (!snapshot) {
+      return;
+    }
+
+    this.registry.set('loadedCampaignSnapshot', snapshot);
+    snapshot.checkpoints?.visited?.forEach((value) => this.visitedCheckpoints.add(value));
   }
 
   private async saveProgressToApi(): Promise<void> {
@@ -276,6 +337,7 @@ export class UpperFloorScene extends Phaser.Scene {
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
       const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
+      this.applyLoadedSnapshot(progress.campaign_snapshot);
       this.showApiStatus('Partida cargada desde servidor.', false);
 
       if (progress.current_level !== this.scene.key) {

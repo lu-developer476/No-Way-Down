@@ -59,6 +59,12 @@ class PlayerProgressUpsertView(APIView):
                 {'detail': 'No se pudo guardar el progreso por un problema interno de datos.'},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
+        except Exception:
+            logger.exception('Error inesperado al guardar progreso para user_id=%s', user_id)
+            return Response(
+                {'detail': 'Ocurrió un error inesperado al guardar el progreso.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
         response_status = status.HTTP_200_OK if instance else status.HTTP_201_CREATED
         return Response(serializer.data, status=response_status)
@@ -76,6 +82,12 @@ class PlayerProgressDetailView(APIView):
             return Response(
                 {'detail': 'No se pudo consultar el progreso por un problema interno de datos.'},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+        except Exception:
+            logger.exception('Error inesperado al leer progreso para user_id=%s', user_id)
+            return Response(
+                {'detail': 'Ocurrió un error inesperado al consultar el progreso.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
         serializer = PlayerProgressSerializer(instance)

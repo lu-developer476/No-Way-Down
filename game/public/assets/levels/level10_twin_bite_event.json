@@ -1,0 +1,115 @@
+{
+  "levelId": "level10_b3_estacionamiento",
+  "cinematicId": "level10_twin_bite_under_truck",
+  "triggerId": "parking_lane_c_truck_approach",
+  "movementLocked": true,
+  "movementLockMs": 700,
+  "preDialoguePauseMs": 450,
+  "sequence": [
+    {
+      "type": "action",
+      "actionId": "focus_vehicle",
+      "description": "La cámara baja hacia una camioneta utilitaria con sombras debajo.",
+      "durationMs": 700
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Gemela castaña",
+      "text": "Esa camioneta todavía tiene combustible... cubran mis lados.",
+      "durationMs": 2100
+    },
+    {
+      "type": "action",
+      "actionId": "infected_emerge_under_truck",
+      "description": "Un infectado sale reptando por debajo de la camioneta y se lanza a los tobillos.",
+      "durationMs": 850
+    },
+    {
+      "type": "action",
+      "actionId": "bite_left_leg_brunette",
+      "description": "El infectado muerde la pierna izquierda de la gemela de pelo castaño.",
+      "payload": {
+        "victimId": "twin_brown_hair",
+        "infectedLimb": "left_leg"
+      },
+      "durationMs": 900
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Gemela castaña",
+      "text": "¡AAAH! ¡Me mordió, me mordió la pierna!",
+      "durationMs": 2200
+    },
+    {
+      "type": "action",
+      "actionId": "redhead_pullback",
+      "description": "La gemela pelirroja tira de su hermana por los hombros para alejarla del infectado.",
+      "durationMs": 800
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Gemela pelirroja",
+      "text": "¡Atrás! ¡No la toques! ¡Cubran esta zona!",
+      "durationMs": 1900
+    },
+    {
+      "type": "action",
+      "actionId": "attract_zombies",
+      "description": "El grito rebota por el estacionamiento y atrae zombies del exterior y de columnas ciegas.",
+      "durationMs": 900
+    },
+    {
+      "type": "action",
+      "actionId": "start_infection",
+      "description": "Se marca el inicio de infección en la gemela castaña.",
+      "payload": {
+        "victimId": "twin_brown_hair",
+        "infectedLimb": "left_leg"
+      },
+      "durationMs": 350
+    },
+    {
+      "type": "action",
+      "actionId": "blackhair_find_car",
+      "description": "La compañera de piel clara y pelo negro encuentra un auto de 4 puertas con la puerta abierta y llave puesta.",
+      "durationMs": 900
+    },
+    {
+      "type": "action",
+      "actionId": "blackhair_finish_owners",
+      "description": "Remata a los dueños del auto ya convertidos antes de que se incorporen.",
+      "durationMs": 1000
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Compañera (piel clara, pelo negro)",
+      "text": "¡Tengo un cuatro puertas listo! ¡Puerta abierta y llave puesta, vengan conmigo!",
+      "durationMs": 2400
+    },
+    {
+      "type": "action",
+      "actionId": "set_rally_point",
+      "description": "Se establece el punto de reunión junto al auto utilizable.",
+      "payload": {
+        "rallyPointId": "sedan_4door_open_ignition"
+      },
+      "durationMs": 350
+    },
+    {
+      "type": "action",
+      "actionId": "trigger_main_combat",
+      "description": "Se dispara el combate principal alrededor del auto.",
+      "durationMs": 350
+    },
+    {
+      "type": "action",
+      "actionId": "activate_defense_system",
+      "description": "Se activa el sistema de defensa y oleadas del estacionamiento.",
+      "durationMs": 350
+    }
+  ],
+  "objectiveAfterCinematic": {
+    "id": "defend_rally_car",
+    "label": "Resiste junto al auto de 4 puertas y protege a la gemela herida."
+  }
+}

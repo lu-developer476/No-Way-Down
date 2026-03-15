@@ -32,6 +32,7 @@ const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.25;
+const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 
 interface PlatformConfig {
   x: number;
@@ -71,8 +72,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(data: GameSceneData = {}): void {
-    const levelWidth = 2200;
-    const levelHeight = this.scale.height;
+    const levelWidth = level2Subsuelo.dimensiones.anchoTotalPx;
+    const levelHeight = level2Subsuelo.dimensiones.altoTotalPx;
     const floorHeight = 64;
     const floorY = levelHeight - floorHeight / 2;
     const tableTopY = levelHeight - 146;
@@ -180,9 +181,9 @@ export class GameScene extends Phaser.Scene {
       this,
       this.players,
       {
-        requiredCleanupZones: 5,
+        requiredCleanupZones: zombieWaveZonesFromJson.length,
         exitZone: {
-          x: 7920,
+          x: levelWidth - 90,
           y: levelHeight - 140,
           width: 180,
           height: 240
@@ -599,13 +600,39 @@ export class GameScene extends Phaser.Scene {
     };
   }
 
-  private async saveProgressToApi(): Promise<void> {
+  private saveProgressLocally(payload: PlayerProgressPayload): void {
+    const now = new Date().toISOString();
+    const localProgress = {
+      ...payload,
+      updated_at: now,
+      created_at: now
+    };
+    localStorage.setItem(LOCAL_PROGRESS_STORAGE_KEY, JSON.stringify(localProgress));
+  }
+
+  private loadLocalProgress(): PlayerProgressPayload | null {
+    const raw = localStorage.getItem(LOCAL_PROGRESS_STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+
     try {
-      await progressApi.saveProgress(this.buildProgressPayload());
+      return JSON.parse(raw) as PlayerProgressPayload;
+    } catch {
+      return null;
+    }
+  }
+
+  private async saveProgressToApi(): Promise<void> {
+    const payload = this.buildProgressPayload();
+    this.saveProgressLocally(payload);
+
+    try {
+      await progressApi.saveProgress(payload);
       this.showApiStatus('Progreso guardado en servidor.', false);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'No se pudo guardar progreso.';
-      this.showApiStatus(`No se pudo guardar: ${message}`, true);
+      this.showApiStatus(`Guardado local activo. ${message}`, true);
     }
   }
 
@@ -627,6 +654,18 @@ export class GameScene extends Phaser.Scene {
 
       this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
     } catch (error) {
+      const localProgress = this.loadLocalProgress();
+      if (localProgress) {
+        const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);
+        if (loadedCheckpoint) {
+          this.registry.set('checkpoint', loadedCheckpoint);
+        }
+
+        this.showApiStatus('Servidor no disponible. Partida local cargada.', true);
+        this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
+        return;
+      }
+
       const message = error instanceof Error ? error.message : 'No se pudo cargar progreso.';
       this.showApiStatus(`No se pudo cargar: ${message}`, true);
     }

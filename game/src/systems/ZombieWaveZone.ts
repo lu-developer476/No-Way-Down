@@ -55,6 +55,7 @@ interface SubsueloCleanupZone {
 
 export interface SubsueloLevelConfigJson {
   dimensiones: {
+    anchoTotalPx: number;
     altoTotalPx: number;
   };
   segmentos: SubsueloSegment[];
@@ -104,26 +105,27 @@ export function createZombieWaveZonesFromLevelJson(
   };
 
   return levelJson.zonasLimpiezaZombies.map((zone) => {
+    const levelWidth = levelJson.dimensiones.anchoTotalPx;
     const coveredSegments = levelJson.segmentos.filter((segment) => zone.segmentosCubiertos.includes(segment.id));
 
     if (coveredSegments.length === 0) {
       throw new Error(`Zombie cleanup zone "${zone.id}" has no valid covered segments in level JSON.`);
     }
 
-    const leftBoundary = Math.min(...coveredSegments.map((segment) => segment.posicionX.inicioPx));
-    const rightBoundary = Math.max(...coveredSegments.map((segment) => segment.posicionX.finPx));
+    const leftBoundary = Math.max(0, Math.min(...coveredSegments.map((segment) => segment.posicionX.inicioPx)));
+    const rightBoundary = Math.min(levelWidth, Math.max(...coveredSegments.map((segment) => segment.posicionX.finPx)));
 
     const leftSpawnPoints = zone.spawnsZombies
       .filter((spawnPoint) => spawnPoint.x <= zone.activacion.x)
       .map((spawnPoint) => ({
-        x: spawnPoint.x,
+        x: Phaser.Math.Clamp(spawnPoint.x, 0, levelWidth),
         y: spawnPoint.y + mergedOptions.spawnYOffset
       }));
 
     const rightSpawnPoints = zone.spawnsZombies
       .filter((spawnPoint) => spawnPoint.x > zone.activacion.x)
       .map((spawnPoint) => ({
-        x: spawnPoint.x,
+        x: Phaser.Math.Clamp(spawnPoint.x, 0, levelWidth),
         y: spawnPoint.y + mergedOptions.spawnYOffset
       }));
 
@@ -131,34 +133,34 @@ export function createZombieWaveZonesFromLevelJson(
     const safeLeftSpawns = leftSpawnPoints.length > 0
       ? leftSpawnPoints
       : zone.spawnsZombies.slice(0, fallbackSplitIndex).map((spawnPoint) => ({
-        x: spawnPoint.x,
+        x: Phaser.Math.Clamp(spawnPoint.x, 0, levelWidth),
         y: spawnPoint.y + mergedOptions.spawnYOffset
       }));
 
     const safeRightSpawns = rightSpawnPoints.length > 0
       ? rightSpawnPoints
       : zone.spawnsZombies.slice(fallbackSplitIndex).map((spawnPoint) => ({
-        x: spawnPoint.x,
+        x: Phaser.Math.Clamp(spawnPoint.x, 0, levelWidth),
         y: spawnPoint.y + mergedOptions.spawnYOffset
       }));
 
     return {
       id: zone.id,
       trigger: {
-        x: zone.activacion.x,
+        x: Phaser.Math.Clamp(zone.activacion.x, 0, levelWidth),
         y: zone.activacion.y,
         width: mergedOptions.triggerSize.width,
         height: mergedOptions.triggerSize.height
       },
       blockers: {
         left: {
-          x: leftBoundary - mergedOptions.blockerPadding,
+          x: Phaser.Math.Clamp(leftBoundary - mergedOptions.blockerPadding, 0, levelWidth),
           y: levelJson.dimensiones.altoTotalPx / 2,
           width: mergedOptions.blockerWidth,
           height: levelJson.dimensiones.altoTotalPx
         },
         right: {
-          x: rightBoundary + mergedOptions.blockerPadding,
+          x: Phaser.Math.Clamp(rightBoundary + mergedOptions.blockerPadding, 0, levelWidth),
           y: levelJson.dimensiones.altoTotalPx / 2,
           width: mergedOptions.blockerWidth,
           height: levelJson.dimensiones.altoTotalPx

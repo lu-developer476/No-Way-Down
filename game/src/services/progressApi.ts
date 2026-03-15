@@ -11,11 +11,7 @@ export interface PlayerProgressResponse extends PlayerProgressPayload {
   created_at: string;
 }
 
-const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
-
-if (!backendBaseUrl) {
-  throw new Error('Falta configurar VITE_BACKEND_URL para conectar con el backend.');
-}
+const backendBaseUrl = import.meta.env.VITE_BACKEND_URL?.trim() ?? '';
 
 const buildUrl = (path: string): string => `${backendBaseUrl.replace(/\/$/, '')}${path}`;
 
@@ -28,30 +24,59 @@ const parseErrorMessage = async (response: Response): Promise<string> => {
   }
 };
 
+const isBackendConfigured = (): boolean => backendBaseUrl.length > 0;
+
+const makeUnavailableError = (context: 'save' | 'load'): Error => {
+  const action = context === 'save' ? 'guardar' : 'cargar';
+  return new Error(`Servidor no disponible para ${action} progreso.`);
+};
+
 export const progressApi = {
   async saveProgress(payload: PlayerProgressPayload): Promise<PlayerProgressResponse> {
-    const response = await fetch(buildUrl('/api/progress/'), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error(await parseErrorMessage(response));
+    if (!isBackendConfigured()) {
+      throw makeUnavailableError('save');
     }
 
-    return response.json() as Promise<PlayerProgressResponse>;
+    try {
+      const response = await fetch(buildUrl('/api/progress/'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(await parseErrorMessage(response));
+      }
+
+      return response.json() as Promise<PlayerProgressResponse>;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw makeUnavailableError('save');
+    }
   },
 
   async loadProgress(userId: string): Promise<PlayerProgressResponse> {
-    const response = await fetch(buildUrl(`/api/progress/${encodeURIComponent(userId)}/`));
-
-    if (!response.ok) {
-      throw new Error(await parseErrorMessage(response));
+    if (!isBackendConfigured()) {
+      throw makeUnavailableError('load');
     }
 
-    return response.json() as Promise<PlayerProgressResponse>;
+    try {
+      const response = await fetch(buildUrl(`/api/progress/${encodeURIComponent(userId)}/`));
+
+      if (!response.ok) {
+        throw new Error(await parseErrorMessage(response));
+      }
+
+      return response.json() as Promise<PlayerProgressResponse>;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw makeUnavailableError('load');
+    }
   }
 };

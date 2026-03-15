@@ -33,6 +33,8 @@ export interface CinematicCallCallbacks {
   onCinematicCompleted?: (cinematic: CinematicCallConfig) => void;
   onMovementLockChanged?: (locked: boolean, cinematic: CinematicCallConfig) => void;
   onObjectiveUpdated?: (objectiveText: string, cinematic: CinematicCallConfig) => void;
+  consumeAdvance?: () => boolean;
+  isSkipRequested?: () => boolean;
 }
 
 interface RuntimeCinematic {
@@ -121,11 +123,15 @@ export class CinematicCallSystem {
       this.callbacks.onMovementLockChanged?.(true, config);
     }
 
-    await this.wait(config.preDialoguePauseMs);
+    await this.wait(config.preDialoguePauseMs, false);
 
     for (const line of config.dialogue) {
       this.presentation.showDialogueLine(line, config);
-      await this.wait(line.durationMs ?? DEFAULT_LINE_DURATION_MS);
+      await this.wait(line.durationMs ?? DEFAULT_LINE_DURATION_MS, true);
+
+      if (this.callbacks.isSkipRequested?.()) {
+        break;
+      }
     }
 
     this.presentation.clearDialogue(config);
@@ -139,11 +145,30 @@ export class CinematicCallSystem {
     this.callbacks.onCinematicCompleted?.(config);
   }
 
-  private wait(durationMs: number): Promise<void> {
+  private wait(durationMs: number, allowAdvance: boolean): Promise<void> {
     const normalizedDuration = Math.max(0, durationMs);
 
     return new Promise((resolve) => {
-      this.scene.time.delayedCall(normalizedDuration, () => resolve());
+      const timeoutEvent = this.scene.time.delayedCall(normalizedDuration, () => {
+        pollEvent.remove(false);
+        resolve();
+      });
+
+      const pollEvent = this.scene.time.addEvent({
+        delay: 50,
+        loop: true,
+        callback: () => {
+          const shouldSkip = this.callbacks.isSkipRequested?.() ?? false;
+          const shouldAdvance = allowAdvance && (this.callbacks.consumeAdvance?.() ?? false);
+          if (!shouldSkip && !shouldAdvance) {
+            return;
+          }
+
+          timeoutEvent.remove(false);
+          pollEvent.remove(false);
+          resolve();
+        }
+      });
     });
   }
 

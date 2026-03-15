@@ -28,6 +28,10 @@ import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
+import level8IntroDialogue from '../../public/assets/levels/level8_intro_dialogue.json';
+import level7CinematicCall from '../../public/assets/levels/level7_cinematic_call.json';
+import { CinematicSystem, CinematicLine } from '../systems/core/CinematicSystem';
+import { CinematicCallSystem, CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -71,6 +75,14 @@ export class GameScene extends Phaser.Scene {
   private pauseMenuOptions: Array<{ label: string; action: () => void }> = [];
   private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
+  private cinematicSystem?: CinematicSystem;
+  private cinematicCallSystem?: CinematicCallSystem;
+  private cinematicMovementLocked = false;
+  private isNarrativePlaying = false;
+  private introCinematicPlayed = false;
+  private sectionCinematicTriggered = false;
+  private advanceDialogueRequested = false;
+  private skipDialogueRequested = false;
 
   constructor() {
     super('GameScene');
@@ -116,6 +128,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.projectileSystem = new ProjectileSystem(this);
+    this.cinematicSystem = new CinematicSystem(this);
 
     this.respawnPoint = this.resolveRespawnPoint(data, {
       x: 140,
@@ -208,6 +221,37 @@ export class GameScene extends Phaser.Scene {
 
     // Ejemplo de integración para Nivel 7: checkpoints narrativos configurados por JSON.
     // GameScene sólo conecta callbacks; la lógica de estado queda en NarrativeCheckpointSystem.
+    this.cinematicCallSystem = CinematicCallSystem.fromJson(
+      this,
+      level7CinematicCall as CinematicCallSystemConfig,
+      {
+        showDialogueLine: (line) => {
+          this.registry.set('dialogueState', { speaker: line.speaker, text: line.text, canAdvance: true, canSkip: true });
+        },
+        clearDialogue: () => {
+          this.registry.set('dialogueState', null);
+        }
+      },
+      {
+        onCinematicStarted: () => {
+          this.isNarrativePlaying = true;
+          this.showMissionStatus('Comunicación entrante...');
+        },
+        onCinematicCompleted: () => {
+          this.isNarrativePlaying = false;
+        },
+        onMovementLockChanged: (locked) => {
+          this.cinematicMovementLocked = locked;
+        },
+        onObjectiveUpdated: (objectiveText) => {
+          this.registry.set('currentObjective', objectiveText);
+          this.showMissionStatus('Objetivo narrativo actualizado.');
+        },
+        consumeAdvance: () => this.consumeDialogueAdvance(),
+        isSkipRequested: () => this.isDialogueSkipRequested()
+      }
+    );
+
     this.narrativeCheckpointSystem = NarrativeCheckpointSystem.fromJson(
       this,
       this.players,
@@ -261,26 +305,40 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('campaignState', this.campaignState?.getSnapshot());
     this.registry.set('partyState', this.partyState?.getSnapshot());
     this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
     }
 
     this.registerPauseControls();
+    this.registerDialogueControls();
     this.registerApiControls();
 
     if (!data.skipLoad) {
       void this.loadProgressFromApi();
     }
 
+    this.time.delayedCall(300, () => {
+      void this.playIntroNarrativeCinematic();
+    });
+
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.input.keyboard?.removeAllListeners();
       this.registry.set('isGamePaused', false);
+      this.registry.set('dialogueState', null);
     });
   }
 
   update(): void {
-    this.players.forEach((player) => player.update());
+    this.players.forEach((player) => {
+      if (this.cinematicMovementLocked) {
+        player.setVelocity(0, 0);
+        return;
+      }
+
+      player.update();
+    });
     this.enforcePlayerSeparation();
     this.updateSharedCamera();
 
@@ -333,6 +391,10 @@ export class GameScene extends Phaser.Scene {
     if (completedObjective) {
       this.registry.set('currentObjective', completedObjective.completedDescription);
       this.showMissionStatus('Misión completada: escuadrón despejado');
+      if (!this.sectionCinematicTriggered) {
+        this.sectionCinematicTriggered = true;
+        void this.cinematicCallSystem?.triggerByCheckpoint('level7-checkpoint-2');
+      }
     } else {
       this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
     }
@@ -400,6 +462,7 @@ export class GameScene extends Phaser.Scene {
     this.hasTriggeredTransition = true;
     this.physics.pause();
     this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -521,11 +584,11 @@ export class GameScene extends Phaser.Scene {
         markIrreversibleEvent: `defeat-${fallenId}`
       });
       this.registry.set('partyState', this.partyState?.getSnapshot());
-    this.registry.set('isGamePaused', false);
       this.registry.set('campaignState', this.campaignState?.getSnapshot());
     }
     this.physics.pause();
     this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
@@ -591,6 +654,74 @@ export class GameScene extends Phaser.Scene {
   }
 
 
+
+
+  private async playIntroNarrativeCinematic(): Promise<void> {
+    if (this.introCinematicPlayed || this.isNarrativePlaying || !this.cinematicSystem) {
+      return;
+    }
+
+    this.introCinematicPlayed = true;
+    this.isNarrativePlaying = true;
+
+    const hasSquad = this.players.length > 1;
+    const lines = (hasSquad ? level8IntroDialogue.dialogueVariants.squad : level8IntroDialogue.dialogueVariants.solo) as CinematicLine[];
+
+    await this.cinematicSystem.play(
+      {
+        cinematicId: level8IntroDialogue.cinematicId,
+        movementLocked: true,
+        preDelayMs: level8IntroDialogue.preDialoguePauseMs,
+        steps: lines.map((line) => ({ kind: 'line', line }))
+      },
+      {
+        showLine: (line) => {
+          this.registry.set('dialogueState', { speaker: line.speaker, text: line.text, canAdvance: true, canSkip: true });
+        },
+        clear: () => {
+          this.registry.set('dialogueState', null);
+        }
+      },
+      {
+        onMovementLock: (locked) => {
+          this.cinematicMovementLocked = locked;
+        },
+        onEnd: () => {
+          this.registry.set('currentObjective', level8IntroDialogue.objectiveAfterCinematic.label);
+          this.showMissionStatus('Objetivo actualizado por briefing inicial.');
+          this.isNarrativePlaying = false;
+        },
+        consumeAdvance: () => this.consumeDialogueAdvance(),
+        isSkipRequested: () => this.isDialogueSkipRequested()
+      }
+    );
+  }
+
+  private registerDialogueControls(): void {
+    this.input.keyboard?.on('keydown-SPACE', () => {
+      this.advanceDialogueRequested = true;
+    });
+
+    this.input.keyboard?.on('keydown-X', () => {
+      this.skipDialogueRequested = true;
+    });
+  }
+
+  private consumeDialogueAdvance(): boolean {
+    const shouldAdvance = this.advanceDialogueRequested;
+    this.advanceDialogueRequested = false;
+    return shouldAdvance;
+  }
+
+  private isDialogueSkipRequested(): boolean {
+    if (!this.skipDialogueRequested) {
+      return false;
+    }
+
+    this.skipDialogueRequested = false;
+    return true;
+  }
+
   private createPauseMenuUI(): void {
     const { width, height } = this.scale;
 
@@ -635,7 +766,7 @@ export class GameScene extends Phaser.Scene {
 
   private registerPauseControls(): void {
     this.input.keyboard?.on('keydown-ESC', () => {
-      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.isNarrativePlaying) {
         return;
       }
 
@@ -691,15 +822,18 @@ export class GameScene extends Phaser.Scene {
     this.pauseOverlay?.setVisible(false);
     this.physics.resume();
     this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
   }
 
   private restartLevelFromPause(): void {
     this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
     this.scene.restart({ respawnPoint: this.respawnPoint, skipLoad: true });
   }
 
   private returnToMainMenu(): void {
     this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
     this.scene.stop('UIScene');
     this.scene.start('MainMenuScene');
   }

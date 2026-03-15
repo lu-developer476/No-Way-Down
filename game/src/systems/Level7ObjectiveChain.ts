@@ -1,3 +1,5 @@
+import { ObjectiveSystem } from './core/ObjectiveSystem';
+
 export type Level7ObjectiveState = 'locked' | 'active' | 'completed';
 
 export type Level7ObjectiveCompletionEventType =
@@ -61,6 +63,7 @@ export class Level7ObjectiveChain {
   private readonly config: Level7ObjectiveChainConfig;
   private readonly callbacks: Level7ObjectiveChainCallbacks;
   private readonly runtimeObjectives: RuntimeObjective[];
+  private readonly coreObjectiveSystem: ObjectiveSystem;
   private activeObjectiveIndex: number;
 
   static fromJson(
@@ -79,6 +82,14 @@ export class Level7ObjectiveChain {
       config: objective,
       state: index === 0 ? 'active' : 'locked'
     }));
+
+    this.coreObjectiveSystem = new ObjectiveSystem(
+      config.objectives.map((objective) => ({
+        id: objective.id,
+        label: objective.label,
+        completion: [{ type: objective.completion.type, targetId: objective.completion.targetId }]
+      }))
+    );
 
     this.activeObjectiveIndex = this.runtimeObjectives.findIndex((objective) => objective.state === 'active');
 
@@ -124,6 +135,14 @@ export class Level7ObjectiveChain {
       }
 
       if (!this.matchesCompletionRule(activeObjective.config.completion, event)) {
+        break;
+      }
+
+      const coreResolved = this.coreObjectiveSystem.process({
+        type: event.type,
+        targetId: event.targetId
+      });
+      if (!coreResolved) {
         break;
       }
 

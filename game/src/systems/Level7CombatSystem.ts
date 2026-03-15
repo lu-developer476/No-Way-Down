@@ -8,6 +8,7 @@ import {
   SpawnEnemyRequest
 } from './LevelProgressionSystem';
 import { ZombieSystem } from './ZombieSystem';
+import { CombatEventSystem } from './core/CombatEventSystem';
 
 interface Level7Bounds {
   x: number;
@@ -225,6 +226,7 @@ export class Level7CombatSystem {
   private readonly progression: LevelProgressionSystem<Zombie>;
   private readonly zoneById: Map<string, Level7CombatResolvedZone>;
   private readonly totalZones: number;
+  private readonly coreCombatEvents: CombatEventSystem;
   private readonly narrativeGateByCheckpointId = new Map<string, boolean>();
   private readonly registryProgressKey: string;
   private readonly registryNarrativeGateKey: string;
@@ -245,6 +247,7 @@ export class Level7CombatSystem {
     const progressionBuild = createLevel7CombatProgressionConfig(layoutConfig, combatConfig);
     this.zoneById = new Map(progressionBuild.resolvedZones.map((zone) => [zone.id, zone]));
     this.totalZones = progressionBuild.resolvedZones.length;
+    this.coreCombatEvents = new CombatEventSystem(progressionBuild.resolvedZones.map((zone) => zone.id));
 
     progressionBuild.resolvedZones.forEach((zone) => {
       if (!zone.narrativeGate?.blocksUntilCleared) {
@@ -273,6 +276,7 @@ export class Level7CombatSystem {
             return;
           }
 
+          this.coreCombatEvents.applyEvent({ type: 'zone-activated', zoneId });
           this.callbacks.onZoneActivated?.(zone);
         },
         onZoneCompleted: (zoneId) => {
@@ -281,6 +285,7 @@ export class Level7CombatSystem {
             return;
           }
 
+          this.coreCombatEvents.applyEvent({ type: 'zone-cleared', zoneId });
           this.callbacks.onZoneCompleted?.(zone);
           this.onZoneCompleted(zone);
           this.publishProgress();

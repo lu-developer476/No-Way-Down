@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { CheckpointTimerSystem } from './core/CheckpointTimerSystem';
 
 export interface NarrativeCheckpointBounds {
   x: number;
@@ -86,6 +87,7 @@ export class NarrativeCheckpointSystem {
   private readonly options: Required<NarrativeCheckpointSystemOptions>;
   private readonly levelId: string;
   private readonly runtimeCheckpoints = new Map<string, RuntimeCheckpoint>();
+  private readonly coreCheckpointSystem = new CheckpointTimerSystem();
 
   static fromJson(
     scene: Phaser.Scene,
@@ -205,6 +207,12 @@ export class NarrativeCheckpointSystem {
       };
 
       this.runtimeCheckpoints.set(checkpointConfig.id, runtimeCheckpoint);
+      this.coreCheckpointSystem.activateCheckpoint({
+        id: checkpointConfig.id,
+        label: checkpointConfig.label,
+        restored: runtimeCheckpoint.state === 'completed',
+        position: { x: checkpointConfig.area.x, y: checkpointConfig.area.y }
+      });
       this.bindOverlap(runtimeCheckpoint);
 
       if (checkpointConfig.startsEnabled === false) {
@@ -262,6 +270,12 @@ export class NarrativeCheckpointSystem {
     try {
       await this.callbacks.onRecoveryRequested?.(request);
       runtimeCheckpoint.completedAt = this.scene.time.now;
+      this.coreCheckpointSystem.activateCheckpoint({
+        id: runtimeCheckpoint.config.id,
+        label: runtimeCheckpoint.config.label,
+        restored: true,
+        position: { x: runtimeCheckpoint.config.area.x, y: runtimeCheckpoint.config.area.y }
+      });
       this.setState(runtimeCheckpoint, 'completed');
       this.callbacks.onRecoveryCompleted?.(request);
       this.callbacks.onObjectiveUpdated?.(runtimeCheckpoint.config.objectiveOnComplete, request);

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Zombie } from '../entities/Zombie';
 import { ZombieSystem } from './ZombieSystem';
+import { CombatEventSystem } from './core/CombatEventSystem';
 
 export type Level8FinalSiegeState = 'idle' | 'active' | 'completed';
 export type Level8SpawnMode = 'waves' | 'compact_group';
@@ -116,6 +117,7 @@ export class Level8FinalSiegeSystem {
   private readonly spawnPointById: Map<string, Level8SiegeSpawnPoint>;
   private readonly blockers: Phaser.GameObjects.Rectangle[];
   private readonly aliveEnemies = new Set<Zombie>();
+  private readonly coreCombatEvents: CombatEventSystem;
 
   private triggerZone: Phaser.GameObjects.Zone;
   private state: Level8FinalSiegeState = 'idle';
@@ -155,6 +157,7 @@ export class Level8FinalSiegeSystem {
     this.validateConfig(config);
 
     this.spawnPointById = new Map(config.spawnPoints.map((spawnPoint) => [spawnPoint.id, spawnPoint]));
+    this.coreCombatEvents = new CombatEventSystem([config.siegeId]);
     this.triggerZone = this.createZone(config.trigger);
     this.blockers = this.createBlockers(config.blockers);
 
@@ -277,6 +280,7 @@ export class Level8FinalSiegeSystem {
       this.callbacks.onHint?.(this.config.urgencyTimer.hintOnStart);
     }
 
+    this.coreCombatEvents.applyEvent({ type: 'zone-activated', zoneId: this.config.siegeId });
     this.callbacks.onSiegeStarted?.({
       siegeId: this.config.siegeId,
       spawnMode: this.config.spawnMode
@@ -298,6 +302,7 @@ export class Level8FinalSiegeSystem {
     this.queue = this.buildSpawnQueueForWave(wave);
     this.nextSpawnAtMs = this.scene.time.now;
 
+    this.coreCombatEvents.applyEvent({ type: 'wave-started', zoneId: this.config.siegeId, waveId: wave.id });
     this.callbacks.onWaveStarted?.({
       siegeId: this.config.siegeId,
       waveId: wave.id,
@@ -465,6 +470,7 @@ export class Level8FinalSiegeSystem {
       cinematicId: this.config.reunionCinematicId
     });
 
+    this.coreCombatEvents.applyEvent({ type: 'combat-closed', zoneId: this.config.siegeId });
     this.callbacks.onSiegeCompleted?.(this.getSnapshot());
   }
 

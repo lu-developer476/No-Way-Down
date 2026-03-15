@@ -1,3 +1,5 @@
+import { CombatEventSystem } from './core/CombatEventSystem';
+
 export interface Level10ResistanceEncounterConfig {
   id: string;
   label: string;
@@ -37,6 +39,7 @@ export interface Level10ResistanceCombatCallbacks {
 export class Level10ResistanceCombatSystem {
   private readonly callbacks: Level10ResistanceCombatCallbacks;
   private readonly encounters: Level10ResistanceEncounterSnapshot[];
+  private readonly coreCombatEvents: CombatEventSystem;
   private activeEncounterIndex = -1;
 
   static fromJson(
@@ -50,6 +53,7 @@ export class Level10ResistanceCombatSystem {
     this.validateConfig(config);
 
     this.callbacks = callbacks;
+    this.coreCombatEvents = new CombatEventSystem(config.encounters.map((encounter) => encounter.zoneId));
     this.encounters = config.encounters.map((encounter) => ({
       id: encounter.id,
       label: encounter.label,
@@ -76,6 +80,7 @@ export class Level10ResistanceCombatSystem {
     encounter.startedAt = now;
     encounter.remainingMs = encounter.durationMs;
 
+    this.coreCombatEvents.applyEvent({ type: 'zone-activated', zoneId: encounter.zoneId });
     this.callbacks.onEncounterStarted?.({ ...encounter });
     return true;
   }
@@ -89,6 +94,7 @@ export class Level10ResistanceCombatSystem {
     const elapsedMs = Math.max(0, now - encounter.startedAt);
     encounter.remainingMs = Math.max(0, encounter.durationMs - elapsedMs);
 
+    this.coreCombatEvents.applyEvent({ type: 'wave-started', zoneId: encounter.zoneId, waveId: encounter.id });
     this.callbacks.onEncounterTick?.({ ...encounter });
 
     if (encounter.remainingMs > 0) {
@@ -99,6 +105,7 @@ export class Level10ResistanceCombatSystem {
     encounter.completedAt = now;
     this.activeEncounterIndex = -1;
 
+    this.coreCombatEvents.applyEvent({ type: 'combat-closed', zoneId: encounter.zoneId });
     this.callbacks.onEncounterCompleted?.({ ...encounter });
 
     if (this.encounters.every((item) => item.state === 'completed')) {

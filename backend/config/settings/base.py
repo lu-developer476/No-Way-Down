@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / '.env')
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-unsafe-key')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if host.strip()]

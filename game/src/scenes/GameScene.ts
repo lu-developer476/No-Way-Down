@@ -28,9 +28,7 @@ import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
-import level8IntroDialogue from '../../public/assets/levels/level8_intro_dialogue.json';
 import level7CinematicCall from '../../public/assets/levels/level7_cinematic_call.json';
-import { CinematicSystem, CinematicLine } from '../systems/core/CinematicSystem';
 import { CinematicCallSystem, CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
 import { getAudioManager } from '../audio/AudioManager';
 
@@ -77,11 +75,9 @@ export class GameScene extends Phaser.Scene {
   private audioToggleOptionIndex = -1;
   private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
-  private cinematicSystem?: CinematicSystem;
   private cinematicCallSystem?: CinematicCallSystem;
   private cinematicMovementLocked = false;
   private isNarrativePlaying = false;
-  private introCinematicPlayed = false;
   private sectionCinematicTriggered = false;
   private advanceDialogueRequested = false;
   private skipDialogueRequested = false;
@@ -130,7 +126,6 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.projectileSystem = new ProjectileSystem(this);
-    this.cinematicSystem = new CinematicSystem(this);
     getAudioManager(this).startAmbientLoop();
 
     this.respawnPoint = this.resolveRespawnPoint(data, {
@@ -323,10 +318,6 @@ export class GameScene extends Phaser.Scene {
       void this.loadProgressFromApi();
     }
 
-    this.time.delayedCall(300, () => {
-      void this.playIntroNarrativeCinematic();
-    });
-
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.input.keyboard?.removeAllListeners();
       this.registry.set('isGamePaused', false);
@@ -398,7 +389,7 @@ export class GameScene extends Phaser.Scene {
       this.showMissionStatus('Misión completada: escuadrón despejado');
       if (!this.sectionCinematicTriggered) {
         this.sectionCinematicTriggered = true;
-        void this.cinematicCallSystem?.triggerByCheckpoint('level7-checkpoint-2');
+        void this.cinematicCallSystem?.triggerByCheckpoint('level7-checkpoint-communications-recovery');
       }
     } else {
       this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
@@ -660,49 +651,6 @@ export class GameScene extends Phaser.Scene {
     enforceMaxPlayerSeparation(this.players);
   }
 
-
-
-
-  private async playIntroNarrativeCinematic(): Promise<void> {
-    if (this.introCinematicPlayed || this.isNarrativePlaying || !this.cinematicSystem) {
-      return;
-    }
-
-    this.introCinematicPlayed = true;
-    this.isNarrativePlaying = true;
-
-    const hasSquad = this.players.length > 1;
-    const lines = (hasSquad ? level8IntroDialogue.dialogueVariants.squad : level8IntroDialogue.dialogueVariants.solo) as CinematicLine[];
-
-    await this.cinematicSystem.play(
-      {
-        cinematicId: level8IntroDialogue.cinematicId,
-        movementLocked: true,
-        preDelayMs: level8IntroDialogue.preDialoguePauseMs,
-        steps: lines.map((line) => ({ kind: 'line', line }))
-      },
-      {
-        showLine: (line) => {
-          this.registry.set('dialogueState', { speaker: line.speaker, text: line.text, canAdvance: true, canSkip: true });
-        },
-        clear: () => {
-          this.registry.set('dialogueState', null);
-        }
-      },
-      {
-        onMovementLock: (locked) => {
-          this.cinematicMovementLocked = locked;
-        },
-        onEnd: () => {
-          this.registry.set('currentObjective', level8IntroDialogue.objectiveAfterCinematic.label);
-          this.showMissionStatus('Objetivo actualizado por briefing inicial.');
-          this.isNarrativePlaying = false;
-        },
-        consumeAdvance: () => this.consumeDialogueAdvance(),
-        isSkipRequested: () => this.isDialogueSkipRequested()
-      }
-    );
-  }
 
   private registerDialogueControls(): void {
     this.input.keyboard?.on('keydown-SPACE', () => {

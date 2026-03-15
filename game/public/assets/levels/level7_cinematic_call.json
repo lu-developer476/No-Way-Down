@@ -1,11 +1,11 @@
 {
-  "levelId": "level7_comunicaciones",
+  "levelId": "level7_quinto_piso",
   "cinematics": [
     {
-      "id": "level7_checkpoint2_office_call",
+      "id": "level7-cinematic-communications-call",
       "trigger": {
         "type": "narrative-checkpoint",
-        "checkpointId": "level7-checkpoint-2"
+        "checkpointId": "level7-checkpoint-communications-recovery"
       },
       "movementLocked": true,
       "preDialoguePauseMs": 700,

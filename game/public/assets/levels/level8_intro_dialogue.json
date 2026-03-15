@@ -1,6 +1,6 @@
 {
   "levelId": "level8_rescate_oficina_422",
-  "cinematicId": "level8_intro_office_422",
+  "cinematicId": "level8-cinematic-intro-office-422",
   "movementLocked": true,
   "preDialoguePauseMs": 900,
   "dialogueVariants": {
@@ -45,7 +45,7 @@
     ]
   },
   "objectiveAfterCinematic": {
-    "id": "reach_office_422",
+    "id": "level8-objective-reach-office-422",
     "label": "Dirígete a la oficina 422"
   }
 }

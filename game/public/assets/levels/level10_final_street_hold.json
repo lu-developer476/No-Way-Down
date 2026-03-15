@@ -1,0 +1,44 @@
+{
+  "levelId": "level10",
+  "holdId": "san_telmo_final_street_hold",
+  "previousCinematicId": "drive_to_santelmo",
+  "previousCinematicTriggerId": "parking_escape_departure",
+  "finalCinematicTriggerId": "start_twin_final_collapse",
+  "objectiveId": "resistir_horda_final_2_min",
+  "objectiveLabel": "Resistan 2 minutos hasta abrir paso hacia San Telmo.",
+  "survivors": {
+    "protagonistId": "protagonist_main",
+    "allyId": "ally_black_hair"
+  },
+  "timer": {
+    "durationMs": 120000,
+    "warningThresholdMs": 30000,
+    "format": "mm:ss"
+  },
+  "spawnPhases": [
+    {
+      "id": "street_hold_phase_1",
+      "label": "Contacto inicial",
+      "startAtMs": 0,
+      "spawnIntervalMs": 6500,
+      "enemiesPerSpawn": 3,
+      "spawnPointIds": ["street_north", "street_east", "street_west"]
+    },
+    {
+      "id": "street_hold_phase_2",
+      "label": "Cierre de pinza",
+      "startAtMs": 40000,
+      "spawnIntervalMs": 5200,
+      "enemiesPerSpawn": 4,
+      "spawnPointIds": ["street_north", "street_east", "street_west", "street_rear"]
+    },
+    {
+      "id": "street_hold_phase_3",
+      "label": "Último esfuerzo",
+      "startAtMs": 85000,
+      "spawnIntervalMs": 3900,
+      "enemiesPerSpawn": 5,
+      "spawnPointIds": ["street_north", "street_east", "street_west", "street_rear"]
+    }
+  ]
+}

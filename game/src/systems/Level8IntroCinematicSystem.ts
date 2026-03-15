@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { CinematicSystem } from './core/CinematicSystem';
 
 export type Level8IntroNarrativeVariant = 'solo' | 'squad';
 
@@ -44,8 +45,6 @@ export interface Level8IntroCallbacks {
   onObjectiveUpdated?: (objective: Level8IntroObjective) => void;
 }
 
-const DEFAULT_LINE_DURATION_MS = 1900;
-
 /**
  * Cinemática narrativa de introducción del Nivel 8.
  *
@@ -60,6 +59,7 @@ export class Level8IntroCinematicSystem {
   private readonly presentation: Level8IntroPresentation;
   private readonly callbacks: Level8IntroCallbacks;
 
+  private readonly cinematicSystem: CinematicSystem;
   private activeSequence?: Promise<void>;
   private played = false;
 
@@ -82,6 +82,7 @@ export class Level8IntroCinematicSystem {
     this.config = config;
     this.presentation = presentation;
     this.callbacks = callbacks;
+    this.cinematicSystem = new CinematicSystem(scene);
 
     this.validateConfig(config);
   }
@@ -113,45 +114,41 @@ export class Level8IntroCinematicSystem {
   }
 
   private async runSequence(variant: Level8IntroNarrativeVariant): Promise<void> {
-    const cinematicContext = { cinematicId: this.config.cinematicId };
-    this.callbacks.onCinematicStarted?.({ cinematicId: this.config.cinematicId, variant });
-
-    if (this.config.movementLocked) {
-      this.callbacks.onMovementLockChanged?.(true, cinematicContext);
-    }
-
-    await this.wait(this.config.preDialoguePauseMs);
-
     const lines = this.config.dialogueVariants[variant];
-    for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
-      const line = lines[lineIndex];
-      this.presentation.showDialogueLine(line, {
-        variant,
+
+    await this.cinematicSystem.play(
+      {
         cinematicId: this.config.cinematicId,
-        lineIndex
-      });
-
-      await this.wait(line.durationMs ?? DEFAULT_LINE_DURATION_MS);
-    }
-
-    this.presentation.clearDialogue(cinematicContext);
-
-    if (this.config.movementLocked) {
-      this.callbacks.onMovementLockChanged?.(false, cinematicContext);
-    }
-
-    this.callbacks.onObjectiveUpdated?.(this.config.objectiveAfterCinematic);
-    this.callbacks.onCinematicCompleted?.({ cinematicId: this.config.cinematicId, variant });
-
-    this.played = true;
-  }
-
-  private wait(durationMs: number): Promise<void> {
-    const normalizedDuration = Math.max(0, durationMs);
-
-    return new Promise((resolve) => {
-      this.scene.time.delayedCall(normalizedDuration, () => resolve());
-    });
+        movementLocked: this.config.movementLocked,
+        preDelayMs: this.config.preDialoguePauseMs,
+        steps: lines.map((line) => ({ kind: 'line' as const, line }))
+      },
+      {
+        showLine: (line, context) => {
+          this.presentation.showDialogueLine(line, {
+            variant,
+            cinematicId: context.cinematicId,
+            lineIndex: context.index
+          });
+        },
+        clear: ({ cinematicId }) => {
+          this.presentation.clearDialogue({ cinematicId });
+        }
+      },
+      {
+        onStart: ({ cinematicId }) => {
+          this.callbacks.onCinematicStarted?.({ cinematicId, variant });
+        },
+        onEnd: ({ cinematicId }) => {
+          this.callbacks.onObjectiveUpdated?.(this.config.objectiveAfterCinematic);
+          this.callbacks.onCinematicCompleted?.({ cinematicId, variant });
+          this.played = true;
+        },
+        onMovementLock: (locked, { cinematicId }) => {
+          this.callbacks.onMovementLockChanged?.(locked, { cinematicId });
+        }
+      }
+    );
   }
 
   private validateConfig(config: Level8IntroDialogueConfig): void {

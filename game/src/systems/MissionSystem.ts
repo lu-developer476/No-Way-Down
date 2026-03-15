@@ -1,3 +1,5 @@
+import { ObjectiveSystem } from './core/ObjectiveSystem';
+
 export interface MissionContext {
   zombiesRemaining: number;
 }
@@ -11,50 +13,42 @@ export interface MissionObjective {
 
 export type ObjectiveState = 'pending' | 'active' | 'completed';
 
-interface ObjectiveProgress {
-  objective: MissionObjective;
-  state: ObjectiveState;
-}
-
 export class MissionSystem {
-  private readonly objectives: ObjectiveProgress[];
-  private activeObjectiveIndex = 0;
+  private readonly missionObjectives: MissionObjective[];
+  private readonly objectiveSystem: ObjectiveSystem;
 
   constructor(objectives: MissionObjective[]) {
     if (objectives.length === 0) {
       throw new Error('MissionSystem requires at least one objective.');
     }
 
-    this.objectives = objectives.map((objective, index) => ({
-      objective,
-      state: index === 0 ? 'active' : 'pending'
-    }));
+    this.missionObjectives = objectives;
+    this.objectiveSystem = new ObjectiveSystem(
+      objectives.map((objective) => ({
+        id: objective.id,
+        label: objective.description,
+        completion: [{ type: 'mission-condition-met', targetId: objective.id }]
+      }))
+    );
   }
 
   update(context: MissionContext): MissionObjective | null {
-    if (this.isMissionComplete()) {
+    const active = this.objectiveSystem.getActiveObjective();
+    if (!active) {
       return null;
     }
 
-    const activeProgress = this.objectives[this.activeObjectiveIndex];
-    if (!activeProgress || activeProgress.state !== 'active') {
+    const activeMissionObjective = this.missionObjectives.find((objective) => objective.id === active.id);
+    if (!activeMissionObjective || !activeMissionObjective.isCompleted(context)) {
       return null;
     }
 
-    if (!activeProgress.objective.isCompleted(context)) {
+    const completed = this.objectiveSystem.process({ type: 'mission-condition-met', targetId: active.id });
+    if (!completed || completed.status !== 'completed') {
       return null;
     }
 
-    activeProgress.state = 'completed';
-    const completedObjective = activeProgress.objective;
-    this.activeObjectiveIndex += 1;
-
-    const nextObjective = this.objectives[this.activeObjectiveIndex];
-    if (nextObjective) {
-      nextObjective.state = 'active';
-    }
-
-    return completedObjective;
+    return activeMissionObjective;
   }
 
   getActiveObjectiveText(): string {
@@ -62,10 +56,12 @@ export class MissionSystem {
       return 'Misión completada: encuentra la salida.';
     }
 
-    return this.objectives[this.activeObjectiveIndex].objective.description;
+    const active = this.objectiveSystem.getActiveObjective();
+    const activeMissionObjective = this.missionObjectives.find((objective) => objective.id === active?.id);
+    return activeMissionObjective?.description ?? this.missionObjectives[0].description;
   }
 
   isMissionComplete(): boolean {
-    return this.objectives.every((objective) => objective.state === 'completed');
+    return this.objectiveSystem.isCompleted();
   }
 }

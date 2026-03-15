@@ -24,6 +24,8 @@ import {
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
+import { CampaignState } from '../systems/core/CampaignState';
+import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 
 const PLAYER_CONTACT_DAMAGE = 10;
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -57,6 +59,8 @@ export class GameScene extends Phaser.Scene {
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
+  private campaignState?: CampaignState;
+  private partyState?: PartyStateSystem;
   private hasTriggeredTransition = false;
   private hasPlayerBeenDefeated = false;
   private respawnPoint?: Checkpoint;
@@ -117,6 +121,19 @@ export class GameScene extends Phaser.Scene {
       this.projectileSystem!,
       config
     ));
+
+    this.campaignState = new CampaignState('GameScene', {
+      activeCharacters: activePlayerConfigs.map((config) => `player-${config.slot}`)
+    });
+    this.partyState = new PartyStateSystem(
+      activePlayerConfigs.map((config) => ({
+        id: `player-${config.slot}`,
+        name: config.name,
+        controlMode: 'human',
+        status: 'active',
+        permanentlyLost: false
+      }))
+    );
 
     this.zombieSystem = new ZombieSystem(this);
     this.allySystem = new AllySystem(this);
@@ -231,6 +248,8 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
     this.registry.set('interactionHint', '');
+    this.registry.set('campaignState', this.campaignState?.getSnapshot());
+    this.registry.set('partyState', this.partyState?.getSnapshot());
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
@@ -475,6 +494,17 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.hasPlayerBeenDefeated = true;
+    const fallenPlayer = this.players.find((player) => player.isDead());
+    if (fallenPlayer) {
+      const fallenId = getScenePlayerId();
+      this.partyState?.markDead(fallenId);
+      this.campaignState?.applyPatch({
+        markDeadCharacter: fallenId,
+        markIrreversibleEvent: `defeat-${fallenId}`
+      });
+      this.registry.set('partyState', this.partyState?.getSnapshot());
+      this.registry.set('campaignState', this.campaignState?.getSnapshot());
+    }
     this.physics.pause();
 
     this.transitionOverlay?.setVisible(true);

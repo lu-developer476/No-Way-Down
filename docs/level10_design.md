@@ -36,3 +36,8 @@ El Nivel 10 se modela con sistemas desacoplados de escena para no cargar la lóg
 - `game/public/assets/levels/level10_resistance_encounters.json`
 
 Todos los assets visuales se referencian por nombre como placeholders.
+
+
+## Referencia de layout visual
+
+- `docs/level10_parking_escape_ascii_layout.md`

@@ -127,3 +127,41 @@ Se introdujo una **columna vertebral central** en `game/src/systems/core`:
 - Fase 2: crear adapters por nivel para objetivos/combate/cinemáticas y deprecar clases duplicadas.
 - Fase 3: consolidar persistencia en backend usando snapshot serializado de `CampaignState` + `PartyStateSystem`.
 - Fase 4: eliminar sistemas legacy una vez que todos los niveles consuman los adapters core.
+
+
+## Fase de alineación de contratos (runtime actual)
+
+### Convención oficial de IDs (adoptada)
+
+Para los assets narrativos activos se adopta convención **kebab-case** con prefijo de nivel y tipo:
+
+- `level<N>-checkpoint-<slug>` para checkpoints narrativos.
+- `level<N>-cinematic-<slug>` para cinemáticas.
+- `level<N>-objective-<slug>` para objetivos serializados en JSON.
+
+Esto evita colisiones y elimina mezclas de estilos (`cp7-*`, `level7-checkpoint-*`, `reach_office_422`).
+
+### Fuente de verdad por dominio (hoy)
+
+- **Objetivos de runtime jugable actual (`GameScene`)**: `game/src/scenes/GameScene.ts` (`MissionSystem` inline).
+- **Checkpoints narrativos de Nivel 7**: `game/public/assets/levels/level7_narrative_checkpoints.json`.
+- **Cinemáticas de llamada asociadas a checkpoints de Nivel 7**: `game/public/assets/levels/level7_cinematic_call.json`.
+- **Composición inicial del grupo jugable actual**: `getActivePlayerConfigs()` + mapeo a `CampaignState` / `PartyStateSystem` en `GameScene`.
+- **Persistencia de campaña en runtime actual**: `progressApi` + fallback `localStorage` para progreso básico (`current_level`, `life`, `checkpoint`).
+
+### Runtime oficialmente soportado en esta etapa
+
+Queda oficialmente soportado y alineado el loop real de `GameScene` (nivel base `level2_subsuelo`) con:
+
+- combate base,
+- objetivo principal del nivel,
+- checkpoints narrativos cargados por JSON,
+- cinemática de llamada por checkpoint,
+- estado de party/campaña publicado en `registry`,
+- persistencia básica de progreso.
+
+### Sistemas existentes aún no integrados al loop oficial
+
+Los sistemas/JSON avanzados de niveles posteriores se mantienen en el repositorio, pero **no se consideran aún fuente de verdad del runtime base** hasta su integración explícita por fase.
+
+En particular, se elimina del `GameScene` actual el uso de narrativa de Level 8 para evitar referencias cruzadas de nivel mientras se completa la integración por adapters.

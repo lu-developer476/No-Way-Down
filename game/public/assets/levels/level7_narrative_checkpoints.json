@@ -2,7 +2,7 @@
   "levelId": "level7_quinto_piso",
   "checkpoints": [
     {
-      "id": "cp7-desarrollo-recuperar-pertenencias",
+      "id": "level7-checkpoint-development-recovery",
       "label": "Área de Desarrollo",
       "area": {
         "x": 3320,
@@ -21,7 +21,7 @@
       }
     },
     {
-      "id": "cp7-comunicaciones-recuperar-pertenencias",
+      "id": "level7-checkpoint-communications-recovery",
       "label": "Servicios de Comunicaciones",
       "area": {
         "x": 6280,

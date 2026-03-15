@@ -11,17 +11,6 @@ const CHARACTER_FRAME_COUNT = 8;
 
 type HexColor = number;
 
-interface CharacterPalette {
-  skin: HexColor;
-  torso: HexColor;
-  pants: HexColor;
-  accent: HexColor;
-  eye: HexColor;
-  hair: HexColor;
-  factionBand: HexColor;
-  weapon: HexColor;
-}
-
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('BootScene');
@@ -108,15 +97,18 @@ export class BootScene extends Phaser.Scene {
 
     this.fillPixelRect(graphics, 12, 6 + bob, 8, 8, palette.skin);
     this.drawHair(graphics, profile, bob);
+    this.drawFacialHair(graphics, profile, bob);
     this.fillPixelRect(graphics, 13, 9 + bob, 1, 1, palette.eye);
     this.fillPixelRect(graphics, 18, 9 + bob, 1, 1, palette.eye);
 
     this.fillPixelRect(graphics, torsoX, bodyY, torsoWidth, 12, palette.torso);
     this.fillPixelRect(graphics, torsoX, bodyY + 8, torsoWidth, 2, palette.factionBand);
     this.fillPixelRect(graphics, torsoX, bodyY + 10, torsoWidth, 2, palette.accent);
+    this.drawOutfitDetails(graphics, profile, torsoX, bodyY, torsoWidth);
+    this.drawGearDetails(graphics, profile, torsoX, bodyY, torsoWidth);
 
     if (isShootFrame) {
-      this.drawWeapon(graphics, profile.weaponStyle, palette.weapon, bodyY + 3, true);
+      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 3, true);
       this.fillPixelRect(graphics, torsoX - 2, bodyY + 4, 2, 7, palette.torso);
     } else if (isHurtFrame) {
       this.fillPixelRect(graphics, torsoX - 2, bodyY + 5, 2, 6, palette.accent);
@@ -125,7 +117,7 @@ export class BootScene extends Phaser.Scene {
     } else {
       this.fillPixelRect(graphics, torsoX - 2, bodyY + 4, 2, 7, palette.torso);
       this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 4, 2, 7, palette.torso);
-      this.drawWeapon(graphics, profile.weaponStyle, palette.weapon, bodyY + 4, false);
+      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 4, false);
     }
 
     if (isRunFrame) {
@@ -168,25 +160,105 @@ export class BootScene extends Phaser.Scene {
     this.fillPixelRect(graphics, 11, hairY, 10, 3, profile.palette.hair);
   }
 
+  private drawFacialHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number): void {
+    if (profile.facialHair === 'beard') {
+      this.fillPixelRect(graphics, 12, 12 + bob, 8, 2, 0x3f3f46);
+      this.fillPixelRect(graphics, 13, 14 + bob, 6, 1, 0x52525b);
+      return;
+    }
+
+    if (profile.facialHair === 'stubble') {
+      this.fillPixelRect(graphics, 13, 13 + bob, 6, 1, 0x57534e);
+    }
+  }
+
+  private drawOutfitDetails(
+    graphics: Phaser.GameObjects.Graphics,
+    profile: CharacterVisualProfile,
+    torsoX: number,
+    bodyY: number,
+    torsoWidth: number
+  ): void {
+    if (profile.outfitStyle === 'shirt_tie') {
+      this.fillPixelRect(graphics, torsoX + 4, bodyY + 2, 2, 7, 0x111827);
+      this.fillPixelRect(graphics, torsoX, bodyY, torsoWidth, 2, 0xe5e7eb);
+      return;
+    }
+
+    if (profile.outfitStyle === 'dress') {
+      this.fillPixelRect(graphics, torsoX - 1, bodyY + 9, torsoWidth + 2, 3, profile.palette.torso);
+      this.fillPixelRect(graphics, torsoX + 1, bodyY + 1, torsoWidth - 2, 2, 0xf8fafc);
+      return;
+    }
+
+    if (profile.outfitStyle === 'uniform') {
+      this.fillPixelRect(graphics, torsoX + 1, bodyY + 2, torsoWidth - 2, 2, 0x1f2937);
+      this.fillPixelRect(graphics, torsoX + torsoWidth - 3, bodyY + 3, 2, 2, profile.palette.accent);
+      return;
+    }
+
+    if (profile.outfitStyle === 'tactical') {
+      this.fillPixelRect(graphics, torsoX + 1, bodyY + 1, torsoWidth - 2, 7, 0x1f2937);
+      this.fillPixelRect(graphics, torsoX + 2, bodyY + 3, 2, 3, profile.palette.accent);
+      this.fillPixelRect(graphics, torsoX + torsoWidth - 4, bodyY + 3, 2, 3, profile.palette.accent);
+      return;
+    }
+
+    if (profile.outfitStyle === 'jacket') {
+      this.fillPixelRect(graphics, torsoX + 1, bodyY + 2, 2, 9, 0x111827);
+      this.fillPixelRect(graphics, torsoX + torsoWidth - 3, bodyY + 2, 2, 9, 0x111827);
+      this.fillPixelRect(graphics, torsoX + 3, bodyY + 2, torsoWidth - 6, 1, profile.palette.accent);
+    }
+  }
+
+  private drawGearDetails(
+    graphics: Phaser.GameObjects.Graphics,
+    profile: CharacterVisualProfile,
+    torsoX: number,
+    bodyY: number,
+    torsoWidth: number
+  ): void {
+    if (profile.hasShoulderPads) {
+      this.fillPixelRect(graphics, torsoX - 1, bodyY, 3, 2, 0x111827);
+      this.fillPixelRect(graphics, torsoX + torsoWidth - 2, bodyY, 3, 2, 0x111827);
+    }
+
+    if (profile.hasBackpack) {
+      this.fillPixelRect(graphics, torsoX + torsoWidth + 1, bodyY + 2, 3, 9, 0x374151);
+      this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 4, 1, 6, 0x9ca3af);
+    }
+  }
+
   private drawWeapon(
     graphics: Phaser.GameObjects.Graphics,
-    weaponStyle: CharacterVisualProfile['weaponStyle'],
+    profile: CharacterVisualProfile,
     color: HexColor,
     y: number,
     isAiming: boolean
   ): void {
     const anchorY = isAiming ? y : y + 1;
+    const weaponStyle = profile.weaponStyle;
+    const anchorX = profile.weaponCarry === 'shoulder' ? 20 : 22;
     const length = weaponStyle === 'rifle' ? 8 : weaponStyle === 'shotgun' ? 7 : weaponStyle === 'smg' ? 6 : 5;
     const height = weaponStyle === 'shotgun' ? 3 : 2;
 
-    this.fillPixelRect(graphics, 22, anchorY, length, height, color);
+    this.fillPixelRect(graphics, anchorX, anchorY, length, height, color);
 
     if (weaponStyle === 'revolver') {
-      this.fillPixelRect(graphics, 24, anchorY - 1, 2, 1, color);
+      this.fillPixelRect(graphics, anchorX + 2, anchorY - 1, 2, 1, color);
     }
 
     if (weaponStyle === 'rifle' || weaponStyle === 'shotgun') {
-      this.fillPixelRect(graphics, 22, anchorY + height, 2, 1, color);
+      this.fillPixelRect(graphics, anchorX, anchorY + height, 2, 1, color);
+      this.fillPixelRect(graphics, anchorX + length - 1, anchorY - 1, 1, height + 2, 0x111827);
+    }
+
+    if (weaponStyle === 'smg') {
+      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 2, 2, 0x111827);
+    }
+
+    if (weaponStyle === 'pistol' || weaponStyle === 'revolver') {
+      this.fillPixelRect(graphics, anchorX + 1, anchorY + 2, 1, 2, 0x111827);
     }
   }
 

@@ -5,6 +5,8 @@ export type CharacterFaction = 'protagonist' | 'ally' | 'zombie';
 export type CharacterSilhouette = 'slim' | 'standard' | 'broad';
 export type CharacterHairStyle = 'short' | 'long' | 'afro';
 export type CharacterWeaponStyle = 'pistol' | 'revolver' | 'smg' | 'shotgun' | 'rifle';
+export type CharacterOutfitStyle = 'shirt_tie' | 'jacket' | 'tactical' | 'dress' | 'uniform';
+export type CharacterFacialHair = 'none' | 'beard' | 'stubble';
 
 export interface CharacterPalette {
   skin: number;
@@ -25,6 +27,11 @@ export interface CharacterVisualProfile {
   silhouette: CharacterSilhouette;
   hairStyle: CharacterHairStyle;
   weaponStyle: CharacterWeaponStyle;
+  outfitStyle: CharacterOutfitStyle;
+  facialHair: CharacterFacialHair;
+  hasBackpack: boolean;
+  hasShoulderPads: boolean;
+  weaponCarry: 'sidearm' | 'shoulder';
   palette: CharacterPalette;
 }
 
@@ -77,6 +84,11 @@ interface CharacterVisualOverride {
   id: string;
   shortName: string;
   silhouette: CharacterSilhouette;
+  outfitStyle: CharacterOutfitStyle;
+  facialHair: CharacterFacialHair;
+  hasBackpack: boolean;
+  hasShoulderPads: boolean;
+  weaponCarry: 'sidearm' | 'shoulder';
   palette: {
     torso: string;
     pants: string;
@@ -93,54 +105,99 @@ const CHARACTER_VISUAL_OVERRIDES: Record<string, CharacterVisualOverride> = {
     id: 'alan',
     shortName: 'Alan',
     silhouette: 'broad',
+    outfitStyle: 'tactical',
+    facialHair: 'beard',
+    hasBackpack: true,
+    hasShoulderPads: true,
+    weaponCarry: 'shoulder',
     palette: { torso: '#334155', pants: '#0f172a', accent: '#f59e0b', hair: '#e5e7eb', skin: '#d6a27f' }
   },
   Giovanna: {
     id: 'giovanna',
     shortName: 'Giov',
     silhouette: 'slim',
+    outfitStyle: 'jacket',
+    facialHair: 'none',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'sidearm',
     palette: { torso: '#334155', pants: '#1e293b', accent: '#d946ef', hair: '#111827', skin: '#f8e6d8' }
   },
   Nahir: {
     id: 'nahir',
     shortName: 'Nahir',
     silhouette: 'slim',
+    outfitStyle: 'dress',
+    facialHair: 'none',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'sidearm',
     palette: { torso: '#1d4ed8', pants: '#1e293b', accent: '#f472b6', hair: '#dc2626', skin: '#d9b092' }
   },
   Damian: {
     id: 'damian',
     shortName: 'Damian',
     silhouette: 'broad',
+    outfitStyle: 'shirt_tie',
+    facialHair: 'none',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'shoulder',
     palette: { torso: '#7c2d12', pants: '#292524', accent: '#f59e0b', hair: '#111827', skin: '#edd8c7' }
   },
   Yamil: {
     id: 'yamil',
     shortName: 'Yamil',
     silhouette: 'standard',
+    outfitStyle: 'jacket',
+    facialHair: 'stubble',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'sidearm',
     palette: { torso: '#57534e', pants: '#292524', accent: '#fb923c', hair: '#b45309', skin: '#f5d0b5' }
   },
   Hernan: {
     id: 'hernan',
     shortName: 'Hernan',
     silhouette: 'standard',
+    outfitStyle: 'uniform',
+    facialHair: 'none',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'sidearm',
     palette: { torso: '#1f2937', pants: '#0f172a', accent: '#22c55e', hair: '#111827', skin: '#d8a785' }
   },
   Celestino: {
     id: 'celestino',
     shortName: 'Celes',
     silhouette: 'broad',
+    outfitStyle: 'uniform',
+    facialHair: 'none',
+    hasBackpack: true,
+    hasShoulderPads: true,
+    weaponCarry: 'shoulder',
     palette: { torso: '#14532d', pants: '#1f2937', accent: '#fde047', hair: '#111827', skin: '#cb9776' }
   },
   Lorena: {
     id: 'lorena',
     shortName: 'Lore',
     silhouette: 'slim',
+    outfitStyle: 'jacket',
+    facialHair: 'none',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'sidearm',
     palette: { torso: '#7f1d1d', pants: '#1f2937', accent: '#fca5a5', hair: '#111827', skin: '#d2a080' }
   },
   Selene: {
     id: 'selene',
     shortName: 'Sele',
     silhouette: 'slim',
+    outfitStyle: 'dress',
+    facialHair: 'none',
+    hasBackpack: false,
+    hasShoulderPads: false,
+    weaponCarry: 'sidearm',
     palette: { torso: '#6d28d9', pants: '#1e293b', accent: '#f9a8d4', hair: '#7c2d12', skin: '#d8b18f' }
   }
 };
@@ -153,6 +210,11 @@ const DEFAULT_ZOMBIE_PROFILE: CharacterVisualProfile = {
   silhouette: 'standard',
   hairStyle: 'short',
   weaponStyle: 'pistol',
+  outfitStyle: 'tactical',
+  facialHair: 'none',
+  hasBackpack: false,
+  hasShoulderPads: false,
+  weaponCarry: 'sidearm',
   palette: {
     skin: 0x93b773,
     torso: 0x3f5a34,
@@ -189,6 +251,11 @@ const CHARACTER_VISUALS: CharacterVisualProfile[] = Object.entries(CHARACTER_VIS
       silhouette: override.silhouette,
       hairStyle,
       weaponStyle,
+      outfitStyle: override.outfitStyle,
+      facialHair: override.facialHair,
+      hasBackpack: override.hasBackpack,
+      hasShoulderPads: override.hasShoulderPads,
+      weaponCarry: override.weaponCarry,
       palette: {
         skin: toHex(override.palette.skin),
         torso: toHex(override.palette.torso),

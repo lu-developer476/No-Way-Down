@@ -1,0 +1,50 @@
+{
+  "levelId": "level10_subsuelo3_parking",
+  "cinematicId": "level10_parking_intro",
+  "triggerId": "level10_intro_stairs_arrival",
+  "movementLocked": true,
+  "movementLockMs": 850,
+  "preDialoguePauseMs": 450,
+  "dialogue": [
+    {
+      "speaker": "Narrador",
+      "text": "El grupo baja el último tramo y llega al 3° subsuelo. Algunas luminarias aún titilan y los autos abandonados dibujan sombras largas entre columnas.",
+      "durationMs": 3200,
+      "mood": "sobrio"
+    },
+    {
+      "speaker": "Sofía",
+      "text": "No está tan destruido como arriba... si queda energía acá, quizás todavía podamos abrir una salida.",
+      "durationMs": 2700,
+      "mood": "tension"
+    },
+    {
+      "speaker": "Bruno",
+      "text": "No me saco de la cabeza a los que se quedaron. Bajamos, sí... pero cada piso nos cobró a alguien.",
+      "durationMs": 2900,
+      "mood": "duelo"
+    },
+    {
+      "speaker": "Líder",
+      "text": "Un minuto. Revisen mochilas, armas, munición y heridas. Nadie avanza sin saber con qué cuenta.",
+      "durationMs": 3000,
+      "mood": "sobrio"
+    },
+    {
+      "speaker": "Narrador",
+      "text": "Entre respiraciones cortadas, el grupo recompone su inventario: lo justo para seguir, no para fallar.",
+      "durationMs": 2600,
+      "mood": "sobrio"
+    },
+    {
+      "speaker": "Líder",
+      "text": "¿Listos para continuar? Mantengan formación y síganme. Nos movemos ya.",
+      "durationMs": 2300,
+      "mood": "determinacion"
+    }
+  ],
+  "objectiveAfterCinematic": {
+    "id": "secure_parking_route",
+    "label": "Explorá el estacionamiento del 3° subsuelo y asegurá una ruta de escape"
+  }
+}

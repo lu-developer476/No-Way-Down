@@ -32,6 +32,8 @@ import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
 import { getAudioManager } from '../audio/AudioManager';
 import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
+import { CinematicCallSystem, type CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
+import level2NarrativeCallConfig from '../../public/assets/levels/level2_narrative_call.json';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -86,6 +88,11 @@ export class GameScene extends Phaser.Scene {
   private visitedCheckpoints = new Set<string>();
   private readonly verticalPointsByCleanupZone = new Map<string, string[]>();
   private readonly disabledVerticalZones = new Set<string>();
+  private cinematicCallSystem?: CinematicCallSystem;
+  private advanceDialogueRequested = false;
+  private skipDialogueRequested = false;
+  private movementLockedByNarrative = false;
+  private firstCleanupNarrativeTriggered = false;
 
   constructor() {
     super('GameScene');
@@ -285,12 +292,21 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.registry.set('gameDifficultyLabel', difficultyRuntime.label);
 
+    this.setupNarrativeSystems();
+
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
     }
 
     this.registerPauseControls();
     this.registerApiControls();
+    this.registerNarrativeControls();
+
+    if (this.shouldTriggerIntroCinematic(data)) {
+      this.time.delayedCall(280, () => {
+        void this.triggerNarrativeCheckpoint('level2-checkpoint-intro-briefing');
+      });
+    }
 
     if (!data.skipLoad) {
       void this.loadProgressFromApi();
@@ -300,12 +316,13 @@ export class GameScene extends Phaser.Scene {
       this.input.keyboard?.removeAllListeners();
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
+      this.setNarrativeMovementLock(false);
       getAudioManager(this).stopAmbientLoop();
     });
   }
 
   update(): void {
-    if (this.isPauseMenuOpen()) {
+    if (this.isPauseMenuOpen() || this.movementLockedByNarrative) {
       return;
     }
 
@@ -459,7 +476,101 @@ export class GameScene extends Phaser.Scene {
       if (pointIds.length > 0) {
         console.info(`[GameScene] cleanup zone ${zoneId} completed: disabled vertical points ${pointIds.join(', ')}`);
       }
+
+      if (!this.firstCleanupNarrativeTriggered) {
+        this.firstCleanupNarrativeTriggered = true;
+        void this.triggerNarrativeCheckpoint('level2-checkpoint-first-zone-cleared');
+      }
     });
+  }
+
+  private setupNarrativeSystems(): void {
+    this.cinematicCallSystem = CinematicCallSystem.fromJson(
+      this,
+      level2NarrativeCallConfig as CinematicCallSystemConfig,
+      {
+        showDialogueLine: (line) => {
+          this.registry.set('dialogueState', {
+            speaker: line.speaker,
+            text: line.text,
+            canSkip: true,
+            canAdvance: true
+          });
+        },
+        clearDialogue: () => {
+          this.registry.set('dialogueState', null);
+        }
+      },
+      {
+        onCinematicStarted: () => {
+          this.registry.set('interactionHint', 'Cinemática activa · SPACE avanza · X salta');
+        },
+        onMovementLockChanged: (locked) => {
+          this.setNarrativeMovementLock(locked);
+        },
+        onObjectiveUpdated: (objectiveText) => {
+          this.showMissionStatus(objectiveText);
+        },
+        onCinematicCompleted: () => {
+          this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M');
+        },
+        consumeAdvance: () => {
+          if (!this.advanceDialogueRequested) {
+            return false;
+          }
+
+          this.advanceDialogueRequested = false;
+          return true;
+        },
+        isSkipRequested: () => this.skipDialogueRequested
+      }
+    );
+  }
+
+  private registerNarrativeControls(): void {
+    this.input.keyboard?.on('keydown-SPACE', () => {
+      this.advanceDialogueRequested = true;
+    });
+
+    this.input.keyboard?.on('keydown-X', () => {
+      this.skipDialogueRequested = true;
+    });
+  }
+
+  private setNarrativeMovementLock(locked: boolean): void {
+    if (this.movementLockedByNarrative === locked) {
+      return;
+    }
+
+    this.movementLockedByNarrative = locked;
+    this.registry.set('isGamePaused', locked);
+
+    if (locked) {
+      this.physics.world.pause();
+      this.players.forEach((player) => player.setVelocity(0, 0));
+      return;
+    }
+
+    if (!this.hasPlayerBeenDefeated && !this.hasTriggeredTransition) {
+      this.physics.world.resume();
+    }
+  }
+
+  private shouldTriggerIntroCinematic(data: GameSceneData): boolean {
+    const fromNewGameFlow = data.skipLoad === true;
+    const hasStoredCheckpoint = Boolean(this.registry.get('checkpoint'));
+    return fromNewGameFlow || !hasStoredCheckpoint;
+  }
+
+  private async triggerNarrativeCheckpoint(checkpointId: string): Promise<void> {
+    if (!this.cinematicCallSystem || this.cinematicCallSystem.isPlaying()) {
+      return;
+    }
+
+    this.advanceDialogueRequested = false;
+    this.skipDialogueRequested = false;
+    await this.cinematicCallSystem.triggerByCheckpoint(checkpointId);
+    this.skipDialogueRequested = false;
   }
 
   private createMissionStatusUI(): void {

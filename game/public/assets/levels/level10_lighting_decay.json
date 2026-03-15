@@ -1,0 +1,126 @@
+{
+  "levelId": "level10_parking_escape",
+  "progression": {
+    "startX": 120,
+    "endX": 2780
+  },
+  "minimumActiveLights": 2,
+  "lights": [
+    { "id": "bay_a1", "baseIntensity": 0.95, "critical": true },
+    { "id": "bay_a2", "baseIntensity": 0.88 },
+    { "id": "bay_b1", "baseIntensity": 0.9 },
+    { "id": "bay_b2", "baseIntensity": 0.86 },
+    { "id": "bay_c1", "baseIntensity": 0.82 },
+    { "id": "bay_c2", "baseIntensity": 0.8, "critical": true },
+    { "id": "bay_d1", "baseIntensity": 0.78 },
+    { "id": "bay_d2", "baseIntensity": 0.76 }
+  ],
+  "stages": [
+    {
+      "id": "entrada_estable",
+      "progress": 0,
+      "targetActiveLights": 8,
+      "flickerChance": 0.08,
+      "offChance": 0.12,
+      "dimmedIntensity": 0.35,
+      "environmentalEvents": [
+        {
+          "id": "ev_hum_estatico",
+          "type": "radio-static",
+          "hint": "Un zumbido eléctrico acompaña el avance.",
+          "intensity": 0.25,
+          "nonBlocking": true
+        }
+      ]
+    },
+    {
+      "id": "tension_media",
+      "progress": 0.3,
+      "targetActiveLights": 5,
+      "flickerChance": 0.2,
+      "offChance": 0.35,
+      "dimmedIntensity": 0.26,
+      "environmentalEvents": [
+        {
+          "id": "ev_alarma_intermitente",
+          "type": "vehicle-alarm",
+          "hint": "Una alarma de auto se dispara y se corta abruptamente.",
+          "intensity": 0.42,
+          "nonBlocking": true
+        }
+      ]
+    },
+    {
+      "id": "zona_decaida",
+      "progress": 0.58,
+      "targetActiveLights": 3,
+      "flickerChance": 0.34,
+      "offChance": 0.58,
+      "dimmedIntensity": 0.18,
+      "environmentalEvents": [
+        {
+          "id": "ev_impacto_remoto",
+          "type": "distant-impact",
+          "hint": "Un golpe metálico retumba en niveles inferiores.",
+          "intensity": 0.65,
+          "nonBlocking": true
+        }
+      ]
+    },
+    {
+      "id": "salida_critica",
+      "progress": 0.84,
+      "targetActiveLights": 2,
+      "flickerChance": 0.5,
+      "offChance": 0.7,
+      "dimmedIntensity": 0.12,
+      "environmentalEvents": [
+        {
+          "id": "ev_rafaga_final",
+          "type": "wind-gust",
+          "hint": "Una ráfaga arrastra polvo y papeles hacia la rampa.",
+          "intensity": 0.75,
+          "nonBlocking": true
+        }
+      ]
+    }
+  ],
+  "spatialEvents": [
+    {
+      "id": "sp_columna_quebrada",
+      "triggerX": 760,
+      "event": {
+        "id": "ev_columna_quebrada",
+        "type": "metal-creak",
+        "hint": "Cruje una columna cercana al bloque B.",
+        "intensity": 0.38,
+        "nonBlocking": true
+      },
+      "once": true
+    },
+    {
+      "id": "sp_puerta_azota",
+      "triggerX": 1630,
+      "event": {
+        "id": "ev_puerta_azota",
+        "type": "distant-impact",
+        "hint": "Una puerta contra incendios se azota al fondo.",
+        "intensity": 0.52,
+        "nonBlocking": true
+      },
+      "once": true
+    },
+    {
+      "id": "sp_alarma_reactivada",
+      "triggerX": 2330,
+      "event": {
+        "id": "ev_alarma_reactivada",
+        "type": "vehicle-alarm",
+        "hint": "Un sedán reenciende su alarma y vuelve al silencio.",
+        "intensity": 0.7,
+        "nonBlocking": true
+      },
+      "once": true
+    }
+  ]
+}

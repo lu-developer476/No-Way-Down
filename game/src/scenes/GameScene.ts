@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
+import { AllyAI } from '../entities/AllyAI';
 import { DEFAULT_ZOMBIE_HEALTH } from '../entities/Zombie';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { ZombieSystem } from '../systems/ZombieSystem';
@@ -78,6 +79,12 @@ interface CleanupZoneBoundary {
   maxX: number;
 }
 
+interface AllyWorldHealthBar {
+  container: Phaser.GameObjects.Container;
+  fill: Phaser.GameObjects.Rectangle;
+  nameText: Phaser.GameObjects.Text;
+}
+
 type PauseMenuState = 'root' | 'options';
 
 export class GameScene extends Phaser.Scene {
@@ -120,6 +127,7 @@ export class GameScene extends Phaser.Scene {
   private movementLockedByNarrative = false;
   private firstCleanupNarrativeTriggered = false;
   private lateRescueAlliesIntegrated = false;
+  private readonly allyHealthBars = new Map<string, AllyWorldHealthBar>();
 
   constructor() {
     super('GameScene');
@@ -312,6 +320,7 @@ export class GameScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#0a1020');
     this.registry.set('partyHud', this.buildPartyHud());
+    this.refreshAllyWorldHealthBars();
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
     this.registry.set('interactionHint', '');
@@ -348,6 +357,7 @@ export class GameScene extends Phaser.Scene {
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.setNarrativeMovementLock(false);
+      this.clearAllyWorldHealthBars();
       getAudioManager(this).stopGameplayAmbient();
     });
   }
@@ -372,6 +382,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.registry.set('partyHud', this.buildPartyHud());
+    this.refreshAllyWorldHealthBars();
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
@@ -387,6 +398,64 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.projectileSystem?.update();
+  }
+
+  private refreshAllyWorldHealthBars(): void {
+    const allies = this.allySystem?.getActiveAllies() ?? [];
+    const activeIds = new Set(allies.map((ally) => ally.getId()));
+
+    this.allyHealthBars.forEach((bar, allyId) => {
+      if (!activeIds.has(allyId)) {
+        bar.container.destroy(true);
+        this.allyHealthBars.delete(allyId);
+      }
+    });
+
+    allies.forEach((ally) => {
+      let bar = this.allyHealthBars.get(ally.getId());
+      if (!bar) {
+        bar = this.createAllyWorldHealthBar(ally);
+        this.allyHealthBars.set(ally.getId(), bar);
+      }
+
+      const maxHealth = Math.max(1, ally.getMaxHealth());
+      const health = Phaser.Math.Clamp(Math.round(ally.getHealth()), 0, maxHealth);
+      const ratio = Phaser.Math.Clamp(health / maxHealth, 0, 1);
+      bar.fill.width = 34 * ratio;
+      bar.nameText.setText(ally.getRuntimeConfig().name.toUpperCase());
+      bar.container.setPosition(ally.x, ally.y - 48);
+      bar.container.setVisible(ally.active);
+    });
+  }
+
+  private createAllyWorldHealthBar(ally: AllyAI): AllyWorldHealthBar {
+    const nameText = this.add.text(0, -14, ally.getRuntimeConfig().name.toUpperCase(), {
+      color: '#99f6e4',
+      fontSize: '9px',
+      fontFamily: '"Courier New", monospace',
+      stroke: '#042f2e',
+      strokeThickness: 2,
+      fontStyle: 'bold'
+    }).setOrigin(0.5, 1);
+
+    const bg = this.add.rectangle(0, 0, 34, 4, 0x111827, 0.95)
+      .setOrigin(0.5, 0)
+      .setStrokeStyle(1, 0x334155, 0.9);
+
+    const fill = this.add.rectangle(-17, 0, 34, 4, 0x34d399, 1)
+      .setOrigin(0, 0);
+
+    const container = this.add.container(ally.x, ally.y - 48, [nameText, bg, fill])
+      .setDepth(27);
+
+    return { container, fill, nameText };
+  }
+
+  private clearAllyWorldHealthBars(): void {
+    this.allyHealthBars.forEach((bar) => {
+      bar.container.destroy(true);
+    });
+    this.allyHealthBars.clear();
   }
 
   private setupMissionSystem(): void {
@@ -647,6 +716,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('partyState', this.partyState.getSnapshot());
     this.registry.set('campaignState', this.campaignState.getSnapshot());
     this.registry.set('partyHud', this.buildPartyHud());
+    this.refreshAllyWorldHealthBars();
     this.showMissionStatus('Lorena y Selene se reunieron con el grupo. Cobertura ampliada.');
   }
 
@@ -817,6 +887,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.registry.set('partyHud', this.buildPartyHud());
+    this.refreshAllyWorldHealthBars();
 
     if (player.isDead()) {
       this.handlePlayerDefeat();
@@ -905,15 +976,19 @@ export class GameScene extends Phaser.Scene {
       ...activePartyMembers.filter((member) => !preferredLateJoinIds.has(member.id))
     ];
 
+    const allyHealthById = new Map((this.allySystem?.getActiveAllies() ?? [])
+      .map((ally) => [ally.getId(), { health: ally.getHealth(), maxHealth: ally.getMaxHealth() }]));
+
     const allyEntries = prioritizedAllies.map((member) => {
       const runtime = getCharacterRuntimeConfig(member.characterId ?? 'alan');
+      const healthSnapshot = allyHealthById.get(member.id);
 
       return {
         id: member.id,
         name: member.name,
         role: 'ally' as const,
-        health: runtime.maxHealth,
-        maxHealth: runtime.maxHealth
+        health: healthSnapshot?.health ?? runtime.maxHealth,
+        maxHealth: healthSnapshot?.maxHealth ?? runtime.maxHealth
       };
     });
 

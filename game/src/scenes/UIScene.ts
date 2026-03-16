@@ -1,26 +1,23 @@
 import Phaser from 'phaser';
 import { PartyHudMember } from './sceneShared';
 
-interface PartyHudRow {
+interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
+  titleText: Phaser.GameObjects.Text;
   nameText: Phaser.GameObjects.Text;
-  roleText: Phaser.GameObjects.Text;
   hpText: Phaser.GameObjects.Text;
   hpFill: Phaser.GameObjects.Rectangle;
 }
 
 export class UIScene extends Phaser.Scene {
-  private partyRows: PartyHudRow[] = [];
+  private protagonistHud?: ProtagonistHud;
   private zombieCountText?: Phaser.GameObjects.Text;
   private objectiveText?: Phaser.GameObjects.Text;
   private interactionText?: Phaser.GameObjects.Text;
-  private controlsHintText?: Phaser.GameObjects.Text;
   private dialoguePanel?: Phaser.GameObjects.Container;
   private dialogueSpeakerText?: Phaser.GameObjects.Text;
   private dialogueBodyText?: Phaser.GameObjects.Text;
   private dialogueHintText?: Phaser.GameObjects.Text;
-  private audioStateText?: Phaser.GameObjects.Text;
-  private difficultyText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
@@ -36,9 +33,6 @@ export class UIScene extends Phaser.Scene {
     this.registry.events.on('changedata-currentObjective', this.handleObjectiveChanged, this);
     this.registry.events.on('changedata-isGamePaused', this.handlePauseStateChanged, this);
     this.registry.events.on('changedata-dialogueState', this.handleDialogueStateChanged, this);
-    this.registry.events.on('changedata-audioMuted', this.handleAudioMutedChanged, this);
-    this.registry.events.on('changedata-audioVolume', this.handleAudioVolumeChanged, this);
-    this.registry.events.on('changedata-gameDifficultyLabel', this.handleDifficultyChanged, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.registry.events.off('changedata-partyHud', this.handlePartyHudChanged, this);
@@ -47,9 +41,6 @@ export class UIScene extends Phaser.Scene {
       this.registry.events.off('changedata-isGamePaused', this.handlePauseStateChanged, this);
       this.registry.events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
       this.registry.events.off('changedata-dialogueState', this.handleDialogueStateChanged, this);
-      this.registry.events.off('changedata-audioMuted', this.handleAudioMutedChanged, this);
-      this.registry.events.off('changedata-audioVolume', this.handleAudioVolumeChanged, this);
-      this.registry.events.off('changedata-gameDifficultyLabel', this.handleDifficultyChanged, this);
     });
 
     this.refreshFromRegistry();
@@ -62,33 +53,26 @@ export class UIScene extends Phaser.Scene {
     this.handleInteractionHintChanged(this.registry, this.registry.get('interactionHint') ?? '');
     this.handlePauseStateChanged(this.registry, this.registry.get('isGamePaused') ?? false);
     this.handleDialogueStateChanged(this.registry, this.registry.get('dialogueState') ?? null);
-    this.handleAudioMutedChanged(this.registry, this.registry.get('audioMuted') ?? false);
-    this.handleAudioVolumeChanged(this.registry, this.registry.get('audioVolume') ?? 100);
-    this.handleDifficultyChanged(this.registry, this.registry.get('gameDifficultyLabel') ?? 'Complejo');
   }
 
   private handlePartyHudChanged(_parent: Phaser.Data.DataManager, value: PartyHudMember[]): void {
     const members = Array.isArray(value) ? value : [];
 
-    this.partyRows.forEach((row, index) => {
-      const member = members[index];
-      if (!member) {
-        row.container.setVisible(false);
-        return;
-      }
+    const protagonist = members.find((member) => member.role === 'protagonist') ?? members[0];
+    if (!protagonist || !this.protagonistHud) {
+      this.protagonistHud?.container.setVisible(false);
+      return;
+    }
 
-      const hp = Phaser.Math.Clamp(Math.round(member.health), 0, Math.max(1, member.maxHealth));
-      const maxHp = Math.max(1, Math.round(member.maxHealth));
-      const hpRatio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
-      const roleLabel = member.role === 'protagonist' ? 'CONTROLADO' : 'ALIADO';
-      const barColor = member.role === 'protagonist' ? 0x38bdf8 : 0x34d399;
+    const hp = Phaser.Math.Clamp(Math.round(protagonist.health), 0, Math.max(1, protagonist.maxHealth));
+    const maxHp = Math.max(1, Math.round(protagonist.maxHealth));
+    const hpRatio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
 
-      row.nameText.setText(member.name.toUpperCase());
-      row.roleText.setText(roleLabel).setColor(member.role === 'protagonist' ? '#7dd3fc' : '#86efac');
-      row.hpText.setText(`${hp}/${maxHp}`);
-      row.hpFill.setSize(140 * hpRatio, 8).setFillStyle(barColor, 1);
-      row.container.setVisible(true);
-    });
+    this.protagonistHud.titleText.setText('GRUPO');
+    this.protagonistHud.nameText.setText(protagonist.name.toUpperCase());
+    this.protagonistHud.hpText.setText(`${hp}/${maxHp}`);
+    this.protagonistHud.hpFill.setSize(112 * hpRatio, 7);
+    this.protagonistHud.container.setVisible(true);
   }
 
   private handleZombiesChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -107,22 +91,7 @@ export class UIScene extends Phaser.Scene {
   }
 
   private handlePauseStateChanged(_parent: Phaser.Data.DataManager, isPaused: boolean): void {
-    this.controlsHintText?.setAlpha(isPaused ? 0.4 : 0.8);
-  }
-
-  private handleAudioMutedChanged(_parent: Phaser.Data.DataManager, isMuted: boolean): void {
-    const volume = this.registry.get('audioVolume') ?? 100;
-    this.audioStateText?.setText(isMuted ? `Sonido: silenciado (${volume}%)` : `Sonido: ${volume}%`);
-  }
-
-  private handleAudioVolumeChanged(_parent: Phaser.Data.DataManager, volume: number): void {
-    const muted = this.registry.get('audioMuted') ?? false;
-    const clampedVolume = Phaser.Math.Clamp(Math.round(Number(volume) || 0), 0, 100);
-    this.audioStateText?.setText(muted ? `Sonido: silenciado (${clampedVolume}%)` : `Sonido: ${clampedVolume}%`);
-  }
-
-  private handleDifficultyChanged(_parent: Phaser.Data.DataManager, value: string): void {
-    this.difficultyText?.setText(`Dificultad: ${value || 'Complejo'}`);
+    this.protagonistHud?.container.setAlpha(isPaused ? 0.65 : 1);
   }
 
   private handleDialogueStateChanged(_parent: Phaser.Data.DataManager, value: { speaker: string; text: string; canSkip?: boolean; canAdvance?: boolean } | null): void {
@@ -140,74 +109,67 @@ export class UIScene extends Phaser.Scene {
   private createHudFrame(): void {
     const pixelFont = '"Courier New", monospace';
 
-    this.add.rectangle(188, 98, 344, 164, 0x0b1020, 0.84)
-      .setStrokeStyle(3, 0x38bdf8, 0.9)
+    const protagonistBg = this.add.rectangle(16, 16, 158, 52, 0x020617, 0.72)
+      .setOrigin(0, 0)
+      .setStrokeStyle(1, 0x38bdf8, 0.65)
       .setScrollFactor(0);
 
-    this.add.text(24, 22, 'PARTY', {
-      color: '#e2e8f0',
-      fontSize: '14px',
+    const titleText = this.add.text(24, 20, 'GRUPO', {
+      color: '#7dd3fc',
+      fontSize: '10px',
       fontFamily: pixelFont,
       fontStyle: 'bold'
     }).setScrollFactor(0);
 
-    for (let i = 0; i < 4; i += 1) {
-      const y = 44 + i * 30;
-      const nameText = this.add.text(24, y, '', {
-        color: '#f8fafc',
-        fontSize: '12px',
-        fontFamily: pixelFont,
-        fontStyle: 'bold'
-      }).setScrollFactor(0);
+    const nameText = this.add.text(24, 32, '', {
+      color: '#f8fafc',
+      fontSize: '11px',
+      fontFamily: pixelFont,
+      fontStyle: 'bold'
+    }).setScrollFactor(0);
 
-      const roleText = this.add.text(170, y, '', {
-        color: '#86efac',
-        fontSize: '10px',
-        fontFamily: pixelFont
-      }).setScrollFactor(0);
+    const hpBg = this.add.rectangle(24, 48, 112, 7, 0x1f2937, 1)
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setStrokeStyle(1, 0x334155, 1);
 
-      const hpBg = this.add.rectangle(24, y + 14, 140, 8, 0x1f2937, 1)
-        .setOrigin(0, 0)
-        .setScrollFactor(0)
-        .setStrokeStyle(1, 0x475569, 1);
+    const hpFill = this.add.rectangle(24, 48, 0, 7, 0x38bdf8, 1)
+      .setOrigin(0, 0)
+      .setScrollFactor(0);
 
-      const hpFill = this.add.rectangle(24, y + 14, 0, 8, 0x22c55e, 1)
-        .setOrigin(0, 0)
-        .setScrollFactor(0);
+    const hpText = this.add.text(140, 44, '', {
+      color: '#cbd5e1',
+      fontSize: '10px',
+      fontFamily: pixelFont
+    }).setOrigin(1, 0).setScrollFactor(0);
 
-      const hpText = this.add.text(172, y + 11, '', {
-        color: '#cbd5e1',
-        fontSize: '10px',
-        fontFamily: pixelFont
-      }).setScrollFactor(0);
+    this.protagonistHud = {
+      container: this.add.container(0, 0, [protagonistBg, titleText, nameText, hpBg, hpFill, hpText]).setVisible(false),
+      titleText,
+      nameText,
+      hpFill,
+      hpText
+    };
 
-      const container = this.add.container(0, 0, [nameText, roleText, hpBg, hpFill, hpText]).setVisible(false);
-      this.partyRows.push({ container, nameText, roleText, hpFill, hpText });
-    }
-
-    this.zombieCountText = this.add.text(24, 166, '', {
+    this.zombieCountText = this.add.text(18, 74, '', {
       color: '#fca5a5',
-      fontSize: '14px',
+      fontSize: '12px',
       fontFamily: pixelFont
     }).setScrollFactor(0);
 
-    this.objectiveText = this.add.text(24, 190, '', {
+    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 18, '', {
       color: '#fde047',
       fontSize: '13px',
       fontFamily: pixelFont,
-      wordWrap: { width: 320 }
-    }).setScrollFactor(0);
-
-    this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Flechas mover · Espacio saltar · S disparar · R recargar · E interactuar · Enter avanzar · P pausa · ESC salir', {
-      color: '#93c5fd',
-      fontSize: '12px',
-      fontFamily: pixelFont,
       backgroundColor: '#0f172a',
-      padding: { x: 8, y: 4 }
+      padding: { x: 10, y: 4 },
+      wordWrap: { width: Math.min(this.scale.width - 44, 700) },
+      align: 'center'
     })
-      .setOrigin(1, 1)
+      .setOrigin(0.5, 1)
       .setScrollFactor(0)
-      .setAlpha(0.8);
+      .setDepth(9)
+      .setAlpha(0.96);
 
     const dialogueBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 120, Math.min(this.scale.width - 32, 740), 110, 0x020617, 0.92)
       .setStrokeStyle(2, 0x38bdf8, 0.95)
@@ -247,29 +209,5 @@ export class UIScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setVisible(false);
-
-    this.audioStateText = this.add.text(this.scale.width - 14, 18, 'Sonido: 100%', {
-      color: '#93c5fd',
-      fontSize: '12px',
-      fontFamily: pixelFont,
-      backgroundColor: '#0f172a',
-      padding: { x: 8, y: 3 }
-    })
-      .setOrigin(1, 0)
-      .setScrollFactor(0)
-      .setDepth(52)
-      .setAlpha(0.85);
-
-    this.difficultyText = this.add.text(this.scale.width - 14, 42, 'Dificultad: Complejo', {
-      color: '#fca5a5',
-      fontSize: '12px',
-      fontFamily: pixelFont,
-      backgroundColor: '#0f172a',
-      padding: { x: 8, y: 3 }
-    })
-      .setOrigin(1, 0)
-      .setScrollFactor(0)
-      .setDepth(52)
-      .setAlpha(0.85);
   }
 }

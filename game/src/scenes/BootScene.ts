@@ -61,6 +61,87 @@ export class BootScene extends Phaser.Scene {
     graphics.fillRect(12, 0, 8, 48);
     graphics.generateTexture('stair-placeholder', 32, 48);
 
+    graphics.clear();
+    graphics.fillStyle(0x8c806d, 1);
+    graphics.fillRect(0, 0, 36, 96);
+    graphics.fillStyle(0xb8ab95, 1);
+    graphics.fillRect(4, 8, 28, 84);
+    graphics.fillStyle(0x6b7280, 1);
+    graphics.fillRect(0, 0, 36, 10);
+    graphics.fillRect(0, 86, 36, 10);
+    graphics.generateTexture('prop-stone-column', 36, 96);
+
+    graphics.clear();
+    graphics.fillStyle(0x6b3f2a, 1);
+    graphics.fillRect(0, 0, 128, 56);
+    graphics.fillStyle(0xb58b43, 1);
+    graphics.fillRect(0, 0, 128, 8);
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRect(8, 14, 32, 20);
+    graphics.fillRect(48, 14, 32, 20);
+    graphics.fillRect(88, 14, 32, 20);
+    graphics.generateTexture('prop-bank-counter', 128, 56);
+
+    // "Cubículo grillado" del runtime: representa control de acceso (molinete/reja), no una caja gris genérica.
+    graphics.clear();
+    graphics.fillStyle(0x374151, 1);
+    graphics.fillRect(0, 0, 72, 82);
+    graphics.fillStyle(0x9ca3af, 1);
+    for (let x = 8; x <= 64; x += 8) {
+      graphics.fillRect(x, 8, 2, 66);
+    }
+    graphics.fillStyle(0x1f2937, 1);
+    graphics.fillRect(0, 0, 72, 8);
+    graphics.fillRect(0, 74, 72, 8);
+    graphics.fillStyle(0xef4444, 1);
+    graphics.fillRect(6, 4, 8, 4);
+    graphics.generateTexture('prop-turnstile-grille', 72, 82);
+
+    graphics.clear();
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRect(0, 0, 50, 90);
+    graphics.fillStyle(0x86efac, 1);
+    graphics.fillRect(8, 10, 34, 24);
+    graphics.fillStyle(0x1f2937, 1);
+    graphics.fillRect(10, 44, 30, 34);
+    graphics.generateTexture('prop-atm', 50, 90);
+
+    graphics.clear();
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillRect(0, 0, 96, 28);
+    graphics.fillStyle(0x94a3b8, 1);
+    graphics.fillRect(8, 4, 80, 8);
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRect(8, 22, 10, 10);
+    graphics.fillRect(78, 22, 10, 10);
+    graphics.generateTexture('prop-bench', 96, 32);
+
+    graphics.clear();
+    graphics.fillStyle(0x16a34a, 1);
+    graphics.fillRect(0, 0, 34, 42);
+    graphics.fillStyle(0x0f172a, 1);
+    graphics.fillRect(4, 6, 26, 30);
+    graphics.generateTexture('prop-recycling-box', 34, 42);
+
+    graphics.clear();
+    graphics.fillStyle(0x1e293b, 1);
+    graphics.fillRect(0, 0, 40, 78);
+    graphics.fillStyle(0x60a5fa, 1);
+    graphics.fillRect(5, 8, 30, 20);
+    graphics.fillStyle(0x94a3b8, 1);
+    graphics.fillRect(18, 28, 4, 44);
+    graphics.generateTexture('prop-info-screen', 40, 78);
+
+    graphics.clear();
+    graphics.fillStyle(0x64748b, 1);
+    graphics.fillRect(0, 0, 58, 36);
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRect(8, 4, 42, 14);
+    graphics.fillStyle(0x9ca3af, 1);
+    graphics.fillRect(4, 30, 10, 6);
+    graphics.fillRect(44, 30, 10, 6);
+    graphics.generateTexture('prop-utility-cart', 58, 36);
+
     graphics.destroy();
 
     this.createCharacterAnimations();

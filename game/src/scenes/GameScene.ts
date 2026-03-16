@@ -35,6 +35,8 @@ import { getAudioManager } from '../audio/AudioManager';
 import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
 import { CinematicCallSystem, type CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
 import level2NarrativeCallConfig from '../../public/assets/levels/level2_narrative_call.json';
+import corridorObjectsConfig from '../../public/assets/levels/corridor_objects.json';
+import { addEnvironmentProp } from './environmentLayout';
 import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
@@ -241,7 +243,7 @@ export class GameScene extends Phaser.Scene {
       .setZoom(ARCADE_CAMERA_ZOOM)
       .setRoundPixels(true);
 
-    this.drawDiningHallBackground(levelWidth, levelHeight, floorHeight);
+    this.drawSubsueloBackground(levelWidth, levelHeight, floorHeight);
 
     const environment = this.physics.add.staticGroup();
 
@@ -252,18 +254,7 @@ export class GameScene extends Phaser.Scene {
       height: floorHeight
     });
 
-    const tablePlatforms: PlatformConfig[] = [
-      { x: 350, y: tableTopY, width: 220, height: 26 },
-      { x: 760, y: tableTopY - 12, width: 240, height: 26 },
-      { x: 1180, y: tableTopY + 8, width: 210, height: 26 },
-      { x: 1600, y: tableTopY - 6, width: 250, height: 26 },
-      { x: 1960, y: tableTopY + 12, width: 180, height: 26 }
-    ];
-
-    tablePlatforms.forEach((table) => {
-      this.createPlatform(environment, table);
-      this.addTableVisual(table.x, table.y, table.width, table.height);
-    });
+    this.placeSubsueloProps(environment, tableTopY);
 
     this.projectileSystem = new ProjectileSystem(this, {
       fireCooldownMultiplier: difficultyRuntime.playerFireCooldownMultiplier
@@ -931,7 +922,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private drawDiningHallBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
+  private drawSubsueloBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
     const { palette } = visualTheme;
 
     const base = this.add.graphics();
@@ -975,6 +966,68 @@ export class GameScene extends Phaser.Scene {
       this.add.rectangle(x, 34, 64, 9, palette.lamp, 0.3).setDepth(3);
       this.add.rectangle(x, 42, 42, 4, palette.lamp, 0.2).setDepth(3);
     }
+  }
+
+
+  private placeSubsueloProps(environment: Phaser.Physics.Arcade.StaticGroup, tableTopY: number): void {
+    const scalePxPerMeter = level2Subsuelo.unidades.escalaPxPorMetro;
+    const defaultTopY = tableTopY + 12;
+
+    corridorObjectsConfig.objetos.forEach((objeto) => {
+      const widthPx = Math.max(24, Math.round(objeto.tamaño_aproximado.ancho_m * scalePxPerMeter));
+      const heightPx = Math.max(24, Math.round(objeto.tamaño_aproximado.alto_m * scalePxPerMeter));
+      const centerX = objeto.posición.x;
+      const centerY = objeto.posición.y;
+
+      if (objeto.bloquea_movimiento) {
+        this.createPlatform(environment, {
+          x: centerX,
+          y: centerY,
+          width: Math.max(28, Math.round(widthPx * 0.9)),
+          height: Math.max(16, Math.round(Math.min(32, heightPx * 0.28)))
+        });
+      }
+
+      this.renderSubsueloProp(objeto.tipo, centerX, centerY, widthPx, heightPx, defaultTopY);
+    });
+  }
+
+  private renderSubsueloProp(
+    tipo: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    fallbackTopY: number
+  ): void {
+    const lowerY = Math.max(y, fallbackTopY);
+
+    if (tipo.includes('columna')) {
+      addEnvironmentProp(this, { kind: 'stone-column', x, y: lowerY - 38, depth: 6, scale: Phaser.Math.Clamp(height / 96, 0.8, 1.4) });
+      return;
+    }
+
+    if (tipo.includes('cajero')) {
+      addEnvironmentProp(this, { kind: 'atm', x, y: lowerY - 44, depth: 6, scale: Phaser.Math.Clamp(width / 50, 0.9, 1.4) });
+      return;
+    }
+
+    if (tipo.includes('banco')) {
+      addEnvironmentProp(this, { kind: 'bench', x, y: lowerY - 8, depth: 6, scale: Phaser.Math.Clamp(width / 96, 0.8, 1.5) });
+      return;
+    }
+
+    if (tipo.includes('pantalla')) {
+      addEnvironmentProp(this, { kind: 'info-screen', x, y: lowerY - 36, depth: 6, scale: Phaser.Math.Clamp(height / 78, 0.8, 1.3) });
+      return;
+    }
+
+    if (tipo.includes('reciclaje') || tipo.includes('solidaria')) {
+      addEnvironmentProp(this, { kind: 'recycling-box', x, y: lowerY - 18, depth: 6, scale: Phaser.Math.Clamp(width / 34, 0.85, 1.4) });
+      return;
+    }
+
+    addEnvironmentProp(this, { kind: 'cart', x, y: lowerY - 12, depth: 6, scale: 1 });
   }
 
   private addTableVisual(x: number, y: number, width: number, height: number): void {

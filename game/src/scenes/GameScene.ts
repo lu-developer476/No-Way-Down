@@ -47,6 +47,8 @@ import { InteractableSystem } from '../systems/core/InteractableSystem';
 import { TriggerSystem } from '../systems/TriggerSystem';
 import { CinematicSystem } from '../systems/core/CinematicSystem';
 import { DialogueSystem } from '../systems/core/DialogueSystem';
+import { LevelRestartManager } from '../systems/core/LevelRestartManager';
+import { CheckpointSystem } from '../systems/core/CheckpointSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -133,6 +135,8 @@ export class GameScene extends Phaser.Scene {
   private triggerSystem?: TriggerSystem;
   private levelCinematicSystem?: CinematicSystem;
   private dialogueSystem?: DialogueSystem;
+  private checkpointSystem?: CheckpointSystem;
+  private levelRestartManager?: LevelRestartManager;
   private interactKey?: Phaser.Input.Keyboard.Key;
   private interactionHintOwnedByInteractables = false;
   private advanceDialogueRequested = false;
@@ -286,6 +290,9 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('audioMuted', audioManager.isMuted());
     this.registry.set('audioVolume', audioManager.getVolumePercent());
 
+    const checkpointSystem = new CheckpointSystem(this);
+    this.checkpointSystem = checkpointSystem;
+
     this.respawnPoint = this.resolveRespawnPoint(data, levelConfig.layout.default_spawn ?? {
       x: 140,
       y: levelHeight - 140
@@ -357,6 +364,15 @@ export class GameScene extends Phaser.Scene {
     this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
     this.objectiveSystem = levelManager.instantiateObjectives('level_2_subsuelo');
     this.interactableSystem = levelManager.instantiateInteractables('level_2_subsuelo');
+    this.levelRestartManager = levelManager.instantiateRestartManager(this, {
+      checkpointSystem,
+      resetEnemies: () => this.resetEnemiesForRestart(),
+      resetObjectives: () => this.objectiveSystem?.reset(),
+      resetInteractables: () => this.interactableSystem?.reset(),
+      beforeRestart: () => {
+        this.hasPlayerBeenDefeated = true;
+      }
+    });
     this.dialogueSystem = new DialogueSystem({
       show: (line) => {
         this.registry.set('dialogueState', {
@@ -496,6 +512,8 @@ export class GameScene extends Phaser.Scene {
       this.triggerSystem = undefined;
       this.levelCinematicSystem = undefined;
       this.dialogueSystem = undefined;
+      this.levelRestartManager = undefined;
+      this.checkpointSystem = undefined;
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.registry.set('interactionHint', '');
@@ -1216,7 +1234,10 @@ export class GameScene extends Phaser.Scene {
       .setVisible(true);
 
     this.time.delayedCall(PLAYER_RESPAWN_DELAY_MS, () => {
-      this.scene.restart({ respawnPoint: this.respawnPoint });
+      this.levelRestartManager?.restartLevel({
+        respawnPoint: this.respawnPoint,
+        preserveCampaignProgress: true
+      });
     });
   }
 
@@ -1225,16 +1246,16 @@ export class GameScene extends Phaser.Scene {
   }
 
   private resolveRespawnPoint(data: GameSceneData, fallback: Checkpoint): Checkpoint {
-    const checkpoint = this.registry.get('checkpoint') as Checkpoint | undefined;
-    if (checkpoint?.x !== undefined && checkpoint?.y !== undefined) {
-      return checkpoint;
-    }
+    return this.checkpointSystem?.resolveRespawnPoint(data, fallback) ?? fallback;
+  }
 
-    if (data.respawnPoint?.x !== undefined && data.respawnPoint?.y !== undefined) {
-      return data.respawnPoint;
-    }
-
-    return fallback;
+  private resetEnemiesForRestart(): void {
+    const zombies = this.zombieSystem?.getActiveZombies() ?? [];
+    zombies.forEach((zombie) => {
+      zombie.disableBody(true, true);
+      zombie.setActive(false);
+      zombie.setVisible(false);
+    });
   }
 
   private buildPartyHud(): PartyHudMember[] {

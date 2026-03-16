@@ -6,6 +6,7 @@ import { ObjectiveDefinition, ObjectiveSystem } from '../core/ObjectiveSystem';
 import { InteractableDefinition, InteractableSystem } from '../core/InteractableSystem';
 import { CinematicConfig } from '../core/CinematicSystem';
 import { TriggerDefinition, TriggerSystem, TriggerSystemCallbacks } from '../TriggerSystem';
+import { LevelRestartManager, LevelRestartManagerDependencies } from '../core/LevelRestartManager';
 
 export interface LevelExitDefinition {
   id: string;
@@ -114,6 +115,14 @@ export class LevelManager {
 
   getCinematics(levelId: string): CinematicConfig[] {
     return this.loadLevel(levelId).cinematics;
+  }
+
+
+  instantiateRestartManager(
+    scene: Phaser.Scene,
+    dependencies: LevelRestartManagerDependencies
+  ): LevelRestartManager {
+    return new LevelRestartManager(scene, dependencies);
   }
 
   transitionToLevel(scene: Phaser.Scene, levelId: string, exitId: string): void {

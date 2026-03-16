@@ -193,8 +193,8 @@ variants.forEach((name, index) => {
 });
 
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-const outputSvgPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_zombie_damage_tilesheet.svg');
-const outputJsonPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_zombie_damage_tilesheet_coords.json');
+const outputSvgPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_zombie_damage_tilesheet.svg');
+const outputJsonPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_zombie_damage_tilesheet_coords.json');
 
 const rects = [];
 for (let y = 0; y < height; y++) {

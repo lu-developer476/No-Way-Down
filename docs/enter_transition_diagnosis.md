@@ -42,4 +42,4 @@ La definición se intenta cargar en `AssetPreloadScene` desde `assets/campaign/c
 - Por eso los JSON de campaña no se cargan, la definición del flujo queda ausente y el menú no puede avanzar a ninguna escena al confirmar.
 
 ## Nota adicional
-Las imágenes de menú sí funcionan porque existen en `public/images` (raíz), que coincide con el `publicDir` actual. Esto puede ocultar el problema hasta el momento de iniciar campaña.
+Las imágenes de menú sí funcionan porque existen en `game/public/assets/images`, que coincide con el `publicDir` actual. Esto puede ocultar el problema hasta el momento de iniciar campaña.

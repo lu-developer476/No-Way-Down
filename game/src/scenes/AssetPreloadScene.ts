@@ -3,8 +3,8 @@ import { visualTheme } from './visualTheme';
 import { CampaignFlowDefinition, SceneFlowManager } from './SceneFlowManager';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
-  { key: 'menu_background', path: 'images/NWD-menu.png', type: 'image' },
-  { key: 'characters_panel', path: 'images/NWD-characters.png', type: 'image' },
+  { key: 'menu_background', path: 'assets/images/NWD-menu.png', type: 'image' },
+  { key: 'characters_panel', path: 'assets/images/NWD-characters.png', type: 'image' },
   { key: 'campaign_flow', path: 'assets/campaign/campaign_flow.json', type: 'json' },
   { key: 'campaign_intro_dialogue', path: 'assets/dialogues/campaign_intro_dialogue.json', type: 'json' },
   { key: 'drive_to_santelmo_cinematic', path: 'assets/cinematics/drive_to_santelmo.json', type: 'json' }

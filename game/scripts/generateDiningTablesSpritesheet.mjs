@@ -187,11 +187,11 @@ const png = Buffer.concat([
 ]);
 
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-const outputPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_dining_tables_spritesheet.png');
+const outputPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_dining_tables_spritesheet.png');
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, png);
 
-const svgPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_dining_tables_spritesheet.svg');
+const svgPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_dining_tables_spritesheet.svg');
 const rows = [];
 for (let y = 0; y < height; y++) {
   for (let x = 0; x < width; x++) {
@@ -209,7 +209,7 @@ const svg = [
 ].join('\n');
 fs.writeFileSync(svgPath, svg);
 
-const coordinatesPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_dining_tables_spritesheet_coords.json');
+const coordinatesPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_dining_tables_spritesheet_coords.json');
 const coords = {
   image: 'institutional_dining_tables_spritesheet.png',
   source: 'institutional_dining_tables_spritesheet.svg',

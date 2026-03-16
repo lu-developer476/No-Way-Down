@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
-import environmentManifest from '../../public/assets/environment/bna_environment_manifest.json';
-import tilesetsByZone from '../../public/assets/environment/bna_tilesets_by_zone.json';
-import propsByZone from '../../public/assets/environment/bna_props_by_zone.json';
-import backgroundLayers from '../../public/assets/environment/bna_background_layers.json';
-import interactiveObjects from '../../public/assets/environment/bna_interactive_objects.json';
-import levelVariants from '../../public/assets/environment/bna_level_variants.json';
+import environmentManifest from '../../public/assets/images/environment/bna_environment_manifest.json';
+import tilesetsByZone from '../../public/assets/images/environment/bna_tilesets_by_zone.json';
+import propsByZone from '../../public/assets/images/environment/bna_props_by_zone.json';
+import backgroundLayers from '../../public/assets/images/environment/bna_background_layers.json';
+import interactiveObjects from '../../public/assets/images/environment/bna_interactive_objects.json';
+import levelVariants from '../../public/assets/images/environment/bna_level_variants.json';
 
 export interface EnvironmentLevelVariant {
   level: number;

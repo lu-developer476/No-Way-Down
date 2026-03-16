@@ -159,7 +159,7 @@ drawFrameAndGlass(brokenX, 'closed');
 drawBrokenGlass(brokenX);
 
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-const svgPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_tall_windows_spritesheet.svg');
+const svgPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_tall_windows_spritesheet.svg');
 const rows = [];
 for (let y = 0; y < height; y++) {
   for (let x = 0; x < width; x++) {
@@ -178,7 +178,7 @@ const svg = [
 fs.mkdirSync(path.dirname(svgPath), { recursive: true });
 fs.writeFileSync(svgPath, svg);
 
-const coordinatesPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_tall_windows_spritesheet_coords.json');
+const coordinatesPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_tall_windows_spritesheet_coords.json');
 const coords = {
   image: null,
   source: 'institutional_tall_windows_spritesheet.svg',

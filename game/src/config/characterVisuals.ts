@@ -1,5 +1,5 @@
-import characterCatalog from '../../assets/characters/characters.json';
-import animationCatalog from '../../assets/characters/animations.json';
+import characterCatalog from '../../public/assets/images/characters/characters.json';
+import animationCatalog from '../../public/assets/images/characters/animations.json';
 
 export type CharacterFaction = 'protagonist' | 'ally' | 'zombie';
 export type CharacterSilhouette = 'slim' | 'standard' | 'broad';

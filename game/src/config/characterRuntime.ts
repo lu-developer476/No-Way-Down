@@ -1,4 +1,4 @@
-import characterCatalog from '../../assets/characters/characters.json';
+import characterCatalog from '../../public/assets/images/characters/characters.json';
 import { resolveWeaponKey } from './weaponCatalog';
 import { getWeaponRuntimeConfig, WeaponRuntimeConfig } from './weaponRuntime';
 

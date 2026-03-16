@@ -34,23 +34,7 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     const dialoguePath = data.flowNode?.dialoguePath;
-    const dialogue = (dialoguePath ? this.cache.json.get(dialoguePath) : undefined) as { lines: DialogueLine[] } | undefined;
-    const lines = dialogue?.lines ?? [];
-    const { width, height } = this.scale;
-
-    this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a, 1);
-    this.add.text(width / 2, 64, 'DIÁLOGO', { color: '#e2e8f0', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
-
-    const content = lines.map((line) => `${line.speaker}: ${line.text}`).join('\n\n') || 'Sin diálogo cargado';
-    this.add.text(width / 2, height / 2, content, {
-      color: '#cbd5e1',
-      fontFamily: 'monospace',
-      fontSize: '18px',
-      align: 'center',
-      wordWrap: { width: width - 120 }
-    }).setOrigin(0.5);
-
-    this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+    this.renderDialogue(dialoguePath);
 
     this.flowManager = new SceneFlowManager(this);
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
@@ -67,10 +51,56 @@ export class DialogueScene extends Phaser.Scene {
       console.error('[DialogueScene] Keyboard input no está disponible.');
     }
 
-    this.input.on('pointerdown', () => {
+    this.input.once('pointerdown', () => {
       console.log('[DialogueScene] Click detectado.');
       this.advanceToNextNode('click');
     });
+  }
+
+  private renderDialogue(dialoguePath?: string): void {
+    const { width, height } = this.scale;
+    const cacheKey = this.toFlowAssetCacheKey(dialoguePath);
+    const renderFromCache = () => {
+      const dialogue = (cacheKey ? this.cache.json.get(cacheKey) : undefined) as { lines: DialogueLine[] } | undefined;
+      const lines = dialogue?.lines ?? [];
+
+      this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a, 1);
+      this.add.text(width / 2, 64, 'DIÁLOGO', { color: '#e2e8f0', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
+
+      const content = lines.map((line) => `${line.speaker}: ${line.text}`).join('\n\n') || 'Sin diálogo cargado';
+      this.add.text(width / 2, height / 2, content, {
+        color: '#cbd5e1',
+        fontFamily: 'monospace',
+        fontSize: '18px',
+        align: 'center',
+        wordWrap: { width: width - 120 }
+      }).setOrigin(0.5);
+
+      this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+    };
+
+    if (!dialoguePath || !cacheKey) {
+      renderFromCache();
+      return;
+    }
+
+    if (this.cache.json.exists(cacheKey)) {
+      renderFromCache();
+      return;
+    }
+
+    this.load.json(cacheKey, dialoguePath);
+    this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
+    this.load.once('loaderror', () => renderFromCache());
+    this.load.start();
+  }
+
+  private toFlowAssetCacheKey(path?: string): string | undefined {
+    if (!path) {
+      return undefined;
+    }
+
+    return `campaign_asset::${path}`;
   }
 
   update(): void {

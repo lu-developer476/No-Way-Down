@@ -81,6 +81,7 @@ export class LevelScene extends GameScene {
       this.missionRuntimeSystem = new MissionRuntimeSystem(this);
 
       this.campaignSystem.configureFlowNode(flowNode);
+      this.campaignSystem.instantiate(flowNode.systems?.campaign ?? []);
       this.spawnSystem.instantiate(flowNode.systems?.spawn ?? []);
       this.combatSystem.instantiate(flowNode.systems?.combat ?? []);
       this.environmentSystem.instantiate(flowNode.systems?.environment ?? []);

@@ -33,20 +33,7 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     const cinematicPath = data.flowNode?.cinematicPath;
-    const cinematic = (cinematicPath ? this.cache.json.get(cinematicPath) : undefined) as { beats: CinematicBeat[] } | undefined;
-    const beats = cinematic?.beats ?? [];
-    const { width, height } = this.scale;
-
-    this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
-    this.add.text(width / 2, 64, 'CINEMÁTICA', { color: '#f8fafc', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
-    this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n') || 'Sin cinemática cargada', {
-      color: '#cbd5e1',
-      fontFamily: 'monospace',
-      fontSize: '18px',
-      align: 'center',
-      wordWrap: { width: width - 120 }
-    }).setOrigin(0.5);
-    this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+    this.renderCinematic(cinematicPath);
 
     this.flowManager = new SceneFlowManager(this);
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
@@ -63,10 +50,53 @@ export class CinematicScene extends Phaser.Scene {
       console.error('[CinematicScene] Keyboard input no está disponible.');
     }
 
-    this.input.on('pointerdown', () => {
+    this.input.once('pointerdown', () => {
       console.log('[CinematicScene] Click detectado.');
       this.advanceToNextNode('click');
     });
+  }
+
+  private renderCinematic(cinematicPath?: string): void {
+    const { width, height } = this.scale;
+    const cacheKey = this.toFlowAssetCacheKey(cinematicPath);
+    const renderFromCache = () => {
+      const cinematic = (cacheKey ? this.cache.json.get(cacheKey) : undefined) as { beats: CinematicBeat[] } | undefined;
+      const beats = cinematic?.beats ?? [];
+
+      this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
+      this.add.text(width / 2, 64, 'CINEMÁTICA', { color: '#f8fafc', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
+      this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n') || 'Sin cinemática cargada', {
+        color: '#cbd5e1',
+        fontFamily: 'monospace',
+        fontSize: '18px',
+        align: 'center',
+        wordWrap: { width: width - 120 }
+      }).setOrigin(0.5);
+      this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+    };
+
+    if (!cinematicPath || !cacheKey) {
+      renderFromCache();
+      return;
+    }
+
+    if (this.cache.json.exists(cacheKey)) {
+      renderFromCache();
+      return;
+    }
+
+    this.load.json(cacheKey, cinematicPath);
+    this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
+    this.load.once('loaderror', () => renderFromCache());
+    this.load.start();
+  }
+
+  private toFlowAssetCacheKey(path?: string): string | undefined {
+    if (!path) {
+      return undefined;
+    }
+
+    return `campaign_asset::${path}`;
   }
 
   update(): void {

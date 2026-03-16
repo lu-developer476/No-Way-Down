@@ -9,6 +9,11 @@ export interface WeaponRuntimeConfig {
   penetration: number;
   fireCooldownMs: number;
   maxRange: number;
+  meleeHitboxDurationMs: number;
+  meleeHitboxHeight: number;
+  meleeContactDamage: number;
+  defenseMitigationRatio: number;
+  defenseFrontalOnly: boolean;
 }
 
 let legacyPistolOverrides: {
@@ -29,7 +34,12 @@ export function getWeaponRuntimeConfig(weaponKey?: string): WeaponRuntimeConfig 
     cadenceMs,
     penetration: weapon.key === 'sniper_rifle' || weapon.key === 'carbine' ? 1 : 0,
     fireCooldownMs: cadenceMs,
-    maxRange: weapon.maxRange
+    maxRange: weapon.maxRange,
+    meleeHitboxDurationMs: weapon.isMelee ? Math.max(90, Math.round(weapon.fireRateMs * 0.42)) : 0,
+    meleeHitboxHeight: weapon.isMelee ? (weapon.key === 'knife' ? 44 : weapon.key === 'tray_shield' ? 52 : 58) : 0,
+    meleeContactDamage: weapon.isMelee ? weapon.damage : 0,
+    defenseMitigationRatio: weapon.isDefensive ? 0.45 : 0,
+    defenseFrontalOnly: weapon.isDefensive
   };
 }
 

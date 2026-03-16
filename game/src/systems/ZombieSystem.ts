@@ -3,6 +3,7 @@ import { DEFAULT_ZOMBIE_HEALTH, Zombie } from '../entities/Zombie';
 import { Projectile } from '../entities/Projectile';
 import { Player } from '../entities/Player';
 import { getWeaponRuntimeConfig } from '../config/weaponRuntime';
+import { getAudioManager } from '../audio/AudioManager';
 
 const CHARACTER_HEADSHOT_BONUS_BY_ID: Record<string, number> = {
   alan: 0,
@@ -20,6 +21,8 @@ export class ZombieSystem {
   private readonly scene: Phaser.Scene;
   private readonly zombies: Phaser.Physics.Arcade.Group;
   private readonly defaultZombieHealth: number;
+
+  private nextZombieGroanAt = 0;
 
   constructor(scene: Phaser.Scene, maxZombies = 20, options: { defaultZombieHealth?: number } = {}) {
     this.scene = scene;
@@ -133,13 +136,15 @@ export class ZombieSystem {
   }
 
   update(targetX: number): void {
-    this.zombies.children.each((child) => {
-      const zombie = child as Zombie;
-      if (zombie.active) {
-        zombie.update(targetX);
-      }
-
-      return true;
+    const activeZombies = this.getActiveZombies();
+    activeZombies.forEach((zombie) => {
+      zombie.update(targetX);
     });
+
+    const groanSource = activeZombies[0];
+    if (groanSource && this.scene.time.now >= this.nextZombieGroanAt) {
+      getAudioManager(this.scene).play('zombieGroan', { x: groanSource.x, y: groanSource.y, volume: 0.15 });
+      this.nextZombieGroanAt = this.scene.time.now + Phaser.Math.Between(2000, 5000);
+    }
   }
 }

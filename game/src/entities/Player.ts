@@ -195,7 +195,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.healthPoints = Math.max(0, this.healthPoints - appliedDamage);
     this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
     this.play(`${this.characterVisualId}-hurt`, true);
-    getAudioManager(this.scene).play('playerDamage');
+    getAudioManager(this.scene).play('playerDamage', { x: this.x, y: this.y });
     this.setTintFill(0xf87171);
     this.scene.time.delayedCall(120, () => {
       if (this.active) {
@@ -376,7 +376,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.ammoRuntime.consumeForShot(activeWeapon.key);
     this.play(`${this.characterVisualId}-shoot`, true);
-    getAudioManager(this.scene).play('shot');
     return true;
   }
 
@@ -394,6 +393,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.isReloading = true;
     this.reloadingWeaponKey = activeWeapon;
     this.reloadEndsAt = this.scene.time.now + Math.max(0, weaponCatalog.reloadTimeMs);
+    getAudioManager(this.scene).play('reload', { x: this.x, y: this.y, volume: 0.2 });
     return true;
   }
 

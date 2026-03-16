@@ -32,6 +32,8 @@ const OPTIONAL_PARTY = ['Celestino', 'Hernán', 'Yamil'] as const;
 export class MainMenuScene extends Phaser.Scene {
   private menuOptions: MenuOption[] = [];
   private optionTexts: Phaser.GameObjects.Text[] = [];
+  private optionBackgrounds: Phaser.GameObjects.Rectangle[] = [];
+  private menuBar?: Phaser.GameObjects.Rectangle;
   private selectedIndex = 0;
   private controlsPanel?: Phaser.GameObjects.Container;
   private setupPanel?: Phaser.GameObjects.Container;
@@ -54,7 +56,6 @@ export class MainMenuScene extends Phaser.Scene {
     audioManager.playMenuMusic();
 
     this.buildBackground();
-    this.buildTitle();
     this.buildMenuOptions();
     this.buildControlsPanel();
     this.buildSetupPanel();
@@ -76,23 +77,9 @@ export class MainMenuScene extends Phaser.Scene {
     this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a, 1);
   }
 
-  private buildTitle(): void {
-    const { width } = this.scale;
-
-    this.add.text(width / 2, 90, 'NO WAY DOWN', {
-      color: '#f8fafc',
-      fontSize: '54px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
-
-    this.add.text(width / 2, 136, 'Escape cooperativo · supervivencia vertical', {
-      color: '#cbd5e1',
-      fontSize: '18px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
-  }
-
   private buildMenuOptions(): void {
+    const { width, height } = this.scale;
+
     this.menuOptions = [
       {
         label: 'Nueva partida',
@@ -118,13 +105,22 @@ export class MainMenuScene extends Phaser.Scene {
       action: () => this.toggleControlsPanel(true)
     });
 
-    this.optionTexts = this.menuOptions.map((option, index) => this.add.text(this.scale.width / 2, 250 + index * 58, option.label, {
-      color: '#cbd5e1',
-      fontSize: '34px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5));
+    this.menuBar = this.add.rectangle(width / 2, height - 84, width - 56, 62, 0x020617, 0.62)
+      .setStrokeStyle(1, 0x0ea5e9, 0.34);
 
-    this.add.text(this.scale.width / 2, this.scale.height - 30, '↑/↓ seleccionar · ENTER confirmar', {
+    this.optionTexts = this.menuOptions.map((option) => this.add.text(0, 0, option.label, {
+      color: '#cbd5e1',
+      fontSize: '22px',
+      fontFamily: '"Courier New", monospace'
+    }).setOrigin(0.5).setDepth(4));
+
+    this.optionBackgrounds = this.menuOptions.map(() => this.add.rectangle(0, 0, 0, 42, 0x020617, 0.7)
+      .setStrokeStyle(1, 0x334155, 0.85)
+      .setDepth(3));
+
+    this.layoutMenuOptions();
+
+    this.add.text(width / 2, height - 30, '←/→ o ↑/↓ seleccionar · ENTER confirmar', {
       color: '#94a3b8',
       fontSize: '14px',
       fontFamily: '"Courier New", monospace'
@@ -175,7 +171,7 @@ export class MainMenuScene extends Phaser.Scene {
     const panel = this.add.rectangle(width / 2, height / 2, 760, 420, 0x020617, 0.95)
       .setStrokeStyle(2, 0x38bdf8, 1);
 
-    const title = this.add.text(width / 2, height / 2 - 176, 'NUEVA PARTIDA · SETUP INICIAL', {
+    const title = this.add.text(width / 2, height / 2 - 176, 'Nueva partida', {
       color: '#f8fafc',
       fontSize: '28px',
       fontFamily: '"Courier New", monospace'
@@ -258,23 +254,31 @@ export class MainMenuScene extends Phaser.Scene {
     });
 
     this.input.keyboard?.on('keydown-LEFT', () => {
-      if (this.controlsPanel?.visible || this.setupPanel?.visible) {
+      if (this.controlsPanel?.visible) {
         return;
       }
 
-      if (this.selectedIndex === this.volumeOptionIndex) {
-        this.adjustMasterVolume(-10);
+      if (this.setupPanel?.visible) {
+        return;
       }
+
+      this.selectedIndex = Phaser.Math.Wrap(this.selectedIndex - 1, 0, this.menuOptions.length);
+      this.refreshMenuSelection();
+
     });
 
     this.input.keyboard?.on('keydown-RIGHT', () => {
-      if (this.controlsPanel?.visible || this.setupPanel?.visible) {
+      if (this.controlsPanel?.visible) {
         return;
       }
 
-      if (this.selectedIndex === this.volumeOptionIndex) {
-        this.adjustMasterVolume(10);
+      if (this.setupPanel?.visible) {
+        return;
       }
+
+      this.selectedIndex = Phaser.Math.Wrap(this.selectedIndex + 1, 0, this.menuOptions.length);
+      this.refreshMenuSelection();
+
     });
 
     this.input.keyboard?.on('keydown-ESC', () => {
@@ -309,7 +313,42 @@ export class MainMenuScene extends Phaser.Scene {
     this.optionTexts.forEach((text, index) => {
       const isSelected = this.selectedIndex === index;
       text.setColor(isSelected ? '#fde047' : '#cbd5e1');
-      text.setScale(isSelected ? 1.05 : 1);
+      text.setScale(isSelected ? 1.04 : 1);
+      this.optionBackgrounds[index]
+        ?.setFillStyle(isSelected ? 0x1e293b : 0x020617, isSelected ? 0.9 : 0.7)
+        .setStrokeStyle(1, isSelected ? 0xfde047 : 0x334155, isSelected ? 0.92 : 0.85);
+    });
+  }
+
+  private layoutMenuOptions(): void {
+    const { width, height } = this.scale;
+    const menuY = height - 84;
+    const minGap = 16;
+    const itemPaddingX = 20;
+    const maxLayoutWidth = width - 88;
+
+    let fontSize = 22;
+    this.optionTexts.forEach((text) => text.setFontSize(fontSize));
+
+    let itemWidths = this.optionTexts.map((text) => Math.ceil(text.width) + itemPaddingX * 2);
+    let totalWidth = itemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) + minGap * (itemWidths.length - 1);
+
+    if (totalWidth > maxLayoutWidth) {
+      fontSize = 20;
+      this.optionTexts.forEach((text) => text.setFontSize(fontSize));
+      itemWidths = this.optionTexts.map((text) => Math.ceil(text.width) + itemPaddingX * 2);
+      totalWidth = itemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) + minGap * (itemWidths.length - 1);
+    }
+
+    this.menuBar?.setPosition(width / 2, menuY).setSize(Math.min(width - 56, totalWidth + 44), 62);
+
+    let currentX = width / 2 - totalWidth / 2;
+    this.optionTexts.forEach((text, index) => {
+      const itemWidth = itemWidths[index] ?? 0;
+      const centerX = currentX + itemWidth / 2;
+      this.optionBackgrounds[index]?.setPosition(centerX, menuY).setSize(itemWidth, 42);
+      text.setPosition(centerX, menuY);
+      currentX += itemWidth + minGap;
     });
   }
 
@@ -333,6 +372,7 @@ export class MainMenuScene extends Phaser.Scene {
     const label = `Volumen: ${volume}%`;
     this.menuOptions[this.volumeOptionIndex].label = label;
     this.optionTexts[this.volumeOptionIndex]?.setText(label);
+    this.layoutMenuOptions();
   }
 
   private refreshSetupSelection(): void {
@@ -373,8 +413,8 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     if (this.setupStep === 'protagonist') {
-      subtitle.setText('Elegí protagonista jugable');
-      this.setupHintText?.setText('ENTER confirmar · ESC cancelar setup');
+      subtitle.setText('Elegir protagonista');
+      this.setupHintText?.setText('Confirmar: ENTER | Cancelar: ESC');
       this.setupActionOptions = [
         {
           label: this.withCheck(this.setupState.protagonist === 'alan-nahuel', 'Alan Nahuel'),
@@ -398,8 +438,8 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     if (this.setupStep === 'difficulty') {
-      subtitle.setText('Seleccioná dificultad');
-      this.setupHintText?.setText('ENTER confirmar · ESC volver al menú principal');
+      subtitle.setText('Dificultad');
+      this.setupHintText?.setText('Confirmar: ENTER | Cancelar: ESC');
       this.setupActionOptions = [
         {
           label: this.withCheck(this.setupState.difficulty === 'complejo', 'Complejo'),
@@ -423,8 +463,8 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     if (this.setupStep === 'party') {
-      subtitle.setText('Grupo inicial: obligatorios + opcionales');
-      this.setupHintText?.setText(`Obligatorios: ${REQUIRED_PARTY.join(', ')}\nENTER alterna opcionales · opción "Continuar" para confirmar grupo.`);
+      subtitle.setText('Personajes adicionales');
+      this.setupHintText?.setText('Confirmar: ENTER | Cancelar: ESC');
       this.setupActionOptions = [
         ...OPTIONAL_PARTY.map((name) => ({
           label: this.withCheck(this.setupState.optionalParty.has(name), name),
@@ -438,7 +478,7 @@ export class MainMenuScene extends Phaser.Scene {
           }
         })),
         {
-          label: 'Continuar con esta composición',
+          label: 'Finalizar',
           action: () => {
             this.setupStep = 'confirm';
             this.setupSelectedIndex = 0;
@@ -449,15 +489,15 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     if (this.setupStep === 'confirm') {
-      subtitle.setText('Confirmar nueva partida');
-      this.setupHintText?.setText(this.getSetupSummaryText());
+      subtitle.setText('Confirmar partida');
+      this.setupHintText?.setText('Confirmar: ENTER | Cancelar: ESC');
       this.setupActionOptions = [
         {
           label: 'Confirmar y comenzar',
           action: () => this.confirmSetupAndStart()
         },
         {
-          label: 'Editar selección de grupo',
+          label: 'Editar grupo',
           action: () => {
             this.setupStep = 'party';
             this.setupSelectedIndex = 0;
@@ -472,20 +512,6 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     this.refreshSetupSelection();
-  }
-
-  private getSetupSummaryText(): string {
-    const protagonistLabel = this.setupState.protagonist === 'giovanna' ? 'Giovanna' : 'Alan Nahuel';
-    const difficultyLabel = this.setupState.difficulty === 'pesadilla' ? 'Pesadilla' : 'Complejo';
-    const optionalParty = OPTIONAL_PARTY.filter((name) => this.setupState.optionalParty.has(name));
-    const optionalText = optionalParty.length > 0 ? optionalParty.join(', ') : 'Ninguno';
-
-    return [
-      `Protagonista: ${protagonistLabel}`,
-      `Dificultad: ${difficultyLabel}`,
-      `Fijos: ${REQUIRED_PARTY.join(', ')}`,
-      `Opcionales: ${optionalText}`
-    ].join('\n');
   }
 
   private confirmSetupAndStart(): void {

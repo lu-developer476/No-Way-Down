@@ -48,7 +48,7 @@ export class SceneFlowManager {
     }
 
     const cached = this.scene.cache.json.get(CAMPAIGN_FLOW_CACHE_KEY) as CampaignFlowDefinition | undefined;
-    if (!cached || !Array.isArray(cached.nodes) || cached.nodes.length === 0) {
+    if (!this.isValidDefinition(cached, { checkSceneAvailability: false, source: 'cache' })) {
       return undefined;
     }
 
@@ -58,35 +58,20 @@ export class SceneFlowManager {
 
   validateCampaignFlow(): boolean {
     if (!this.scene.cache.json.exists(CAMPAIGN_FLOW_CACHE_KEY)) {
-      console.error('campaign_flow.json no existe en cache');
+      console.error('[SceneFlowManager] campaign_flow.json no existe en cache');
       return false;
     }
 
     const definition = this.scene.cache.json.get(CAMPAIGN_FLOW_CACHE_KEY) as CampaignFlowDefinition;
-
-    if (!definition || !Array.isArray(definition.nodes) || definition.nodes.length === 0) {
-      console.error('campaign_flow.json no contiene nodos válidos');
-      return false;
-    }
-
-    const availableScenes = this.scene.scene.manager.keys as Record<string, Phaser.Scene | undefined>;
-
-    for (const node of definition.nodes) {
-      if (!VALID_SCENE_KEYS.includes(node.sceneKey)) {
-        console.error(`Nodo ${node.id} tiene sceneKey inválido: ${node.sceneKey}`);
-        return false;
-      }
-
-      if (!availableScenes[node.sceneKey]) {
-        console.error(`La escena ${node.sceneKey} no existe en Phaser`);
-        return false;
-      }
-    }
-
-    return true;
+    return this.isValidDefinition(definition, { checkSceneAvailability: true, source: 'campaign_flow.json' });
   }
 
   loadDefinition(definition: CampaignFlowDefinition): void {
+    if (!this.isValidDefinition(definition, { checkSceneAvailability: false, source: 'loadDefinition' })) {
+      console.error('[SceneFlowManager] No se cargó la definición por ser vacía o inválida.');
+      return;
+    }
+
     this.scene.registry.set(FLOW_REGISTRY_KEY, definition);
     this.scene.registry.set(FLOW_CURSOR_KEY, 0);
   }
@@ -100,21 +85,41 @@ export class SceneFlowManager {
   advance(): CampaignFlowNode | undefined {
     const definition = this.ensureDefinitionLoadedFromCache();
     if (!definition) {
+      console.error('[SceneFlowManager] No se pudo avanzar: no hay definición de flujo cargada.');
       return undefined;
     }
 
-    const nextCursor = this.getCursor() + 1;
-    if (nextCursor >= definition.nodes.length) {
+    const currentCursor = this.getCursor();
+    const nextCursor = currentCursor + 1;
+    const currentNode = definition.nodes[currentCursor];
+    const nextNode = definition.nodes[nextCursor];
+
+    console.info('[SceneFlowManager] advance()', {
+      currentCursor,
+      nextCursor,
+      currentNode,
+      nextNode
+    });
+
+    if (!nextNode) {
+      console.error('[SceneFlowManager] No hay siguiente nodo para advance().', {
+        currentCursor,
+        nextCursor,
+        currentNode,
+        totalNodes: definition.nodes.length,
+        flowId: definition.flowId
+      });
       return undefined;
     }
 
     this.scene.registry.set(FLOW_CURSOR_KEY, nextCursor);
-    return definition.nodes[nextCursor];
+    return nextNode;
   }
 
   advanceFromNodeId(nodeId?: string): CampaignFlowNode | undefined {
     const definition = this.ensureDefinitionLoadedFromCache();
     if (!definition) {
+      console.error('[SceneFlowManager] No se pudo avanzar desde nodeId: no hay definición de flujo cargada.');
       return undefined;
     }
 
@@ -128,13 +133,31 @@ export class SceneFlowManager {
       return this.advance();
     }
 
-    const nextIndex = currentIndex + 1;
-    if (nextIndex >= definition.nodes.length) {
+    const nextCursor = currentIndex + 1;
+    const currentNode = definition.nodes[currentIndex];
+    const nextNode = definition.nodes[nextCursor];
+
+    console.info('[SceneFlowManager] advanceFromNodeId()', {
+      currentCursor: currentIndex,
+      nextCursor,
+      currentNode,
+      nextNode
+    });
+
+    if (!nextNode) {
+      console.error('[SceneFlowManager] No hay siguiente nodo para advanceFromNodeId().', {
+        requestedNodeId: nodeId,
+        currentCursor: currentIndex,
+        nextCursor,
+        currentNode,
+        totalNodes: definition.nodes.length,
+        flowId: definition.flowId
+      });
       return undefined;
     }
 
-    this.scene.registry.set(FLOW_CURSOR_KEY, nextIndex);
-    return definition.nodes[nextIndex];
+    this.scene.registry.set(FLOW_CURSOR_KEY, nextCursor);
+    return nextNode;
   }
 
   peekNextFromNodeId(nodeId?: string): CampaignFlowNode | undefined {
@@ -170,6 +193,28 @@ export class SceneFlowManager {
   }
 
   transitionToNode(node: CampaignFlowNode): void {
+    if (!node || typeof node !== 'object') {
+      console.error('[SceneFlowManager] transitionToNode() recibió un nodo inválido.', { node });
+      return;
+    }
+
+    if (!VALID_SCENE_KEYS.includes(node.sceneKey)) {
+      console.error('[SceneFlowManager] transitionToNode() recibió sceneKey inválido.', {
+        nodeId: node.id,
+        sceneKey: node.sceneKey
+      });
+      return;
+    }
+
+    const availableScenes = this.scene.scene.manager.keys as Record<string, Phaser.Scene | undefined>;
+    if (!availableScenes[node.sceneKey]) {
+      console.error('[SceneFlowManager] transitionToNode() no puede iniciar una escena inexistente.', {
+        nodeId: node.id,
+        sceneKey: node.sceneKey
+      });
+      return;
+    }
+
     this.scene.scene.start(node.sceneKey, { flowNode: node });
   }
 
@@ -179,5 +224,61 @@ export class SceneFlowManager {
 
   private readCursor(): number {
     return (this.scene.registry.get(FLOW_CURSOR_KEY) as number | undefined) ?? 0;
+  }
+
+  private isValidDefinition(
+    definition: CampaignFlowDefinition | undefined,
+    options: { checkSceneAvailability: boolean; source: string }
+  ): definition is CampaignFlowDefinition {
+    if (!definition) {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): valor inexistente.`);
+      return false;
+    }
+
+    if (typeof definition.flowId !== 'string' || definition.flowId.trim() === '') {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): flowId vacío o inválido.`);
+      return false;
+    }
+
+    if (!Array.isArray(definition.nodes) || definition.nodes.length === 0) {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): no contiene nodos válidos.`);
+      return false;
+    }
+
+    const availableScenes = options.checkSceneAvailability
+      ? (this.scene.scene.manager.keys as Record<string, Phaser.Scene | undefined>)
+      : undefined;
+
+    for (let index = 0; index < definition.nodes.length; index += 1) {
+      const node = definition.nodes[index];
+
+      if (!node || typeof node !== 'object') {
+        console.error(`[SceneFlowManager] Nodo inválido (${options.source}) en índice ${index}: nodo inexistente o no objeto.`);
+        return false;
+      }
+
+      if (typeof node.id !== 'string' || node.id.trim() === '') {
+        console.error(`[SceneFlowManager] Nodo inválido (${options.source}) en índice ${index}: id vacío o inválido.`);
+        return false;
+      }
+
+      if (!VALID_SCENE_KEYS.includes(node.sceneKey)) {
+        console.error(`[SceneFlowManager] Nodo inválido (${options.source}) en índice ${index}: sceneKey inválido.`, {
+          nodeId: node.id,
+          sceneKey: node.sceneKey
+        });
+        return false;
+      }
+
+      if (availableScenes && !availableScenes[node.sceneKey]) {
+        console.error(`[SceneFlowManager] Nodo inválido (${options.source}) en índice ${index}: la escena no existe en Phaser.`, {
+          nodeId: node.id,
+          sceneKey: node.sceneKey
+        });
+        return false;
+      }
+    }
+
+    return true;
   }
 }

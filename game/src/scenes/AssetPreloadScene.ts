@@ -63,15 +63,13 @@ export class AssetPreloadScene extends Phaser.Scene {
 
   create(): void {
     const manager = new SceneFlowManager(this);
-    const definition = this.cache.json.get('campaign_flow') as CampaignFlowDefinition;
-
-    if (!definition || !Array.isArray(definition.nodes) || definition.nodes.length === 0) {
-      console.error('campaign_flow.json no cargó correctamente');
+    if (!manager.validateCampaignFlow()) {
+      console.error('campaign_flow.json no pasó la validación');
 
       this.add.text(
         this.scale.width / 2,
         this.scale.height / 2,
-        'Error: campaign_flow.json no cargó',
+        'Error: campaign_flow.json inválido',
         {
           fontSize: '18px',
           color: '#ff6666'
@@ -80,6 +78,8 @@ export class AssetPreloadScene extends Phaser.Scene {
 
       return;
     }
+
+    const definition = this.cache.json.get('campaign_flow') as CampaignFlowDefinition;
 
     manager.loadDefinition(definition);
     this.scene.start('MainMenuScene');

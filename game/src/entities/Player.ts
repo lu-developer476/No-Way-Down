@@ -38,6 +38,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly nameTag: Phaser.GameObjects.Text;
   private isClimbing = false;
   private climbAnimations: StairAnimationKeys = {};
+  private attackRequestedThisFrame = false;
+  private isDefensiveStateActive = false;
+  private defenseMitigationRatio = 0;
+  private defenseFrontalOnly = true;
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem, profile: PlayerConfig) {
     const characterVisual = getCharacterVisualById(profile.characterId);
@@ -129,7 +133,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.startReloadActiveWeapon();
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
+    this.attackRequestedThisFrame = Phaser.Input.Keyboard.JustDown(this.shootKey);
+    if (this.attackRequestedThisFrame) {
       this.tryShootActiveWeapon();
     }
 
@@ -180,12 +185,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.play(this.climbAnimations.idle ?? `${this.characterVisualId}-idle`, true);
   }
 
-  takeDamage(amount: number, currentTime: number): boolean {
+  takeDamage(amount: number, currentTime: number, context?: { sourceX?: number }): boolean {
     if (amount <= 0 || !this.active || this.isDeadState || !this.canTakeDamage(currentTime)) {
       return false;
     }
 
-    this.healthPoints = Math.max(0, this.healthPoints - amount);
+    const appliedDamage = this.getDefendedDamage(amount, context);
+
+    this.healthPoints = Math.max(0, this.healthPoints - appliedDamage);
     this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
     this.play(`${this.characterVisualId}-hurt`, true);
     getAudioManager(this.scene).play('playerDamage');
@@ -203,6 +210,38 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     return true;
+  }
+
+  getCombatActorId(): string {
+    return `player-${this.profile.slot}`;
+  }
+
+  getLookDirection(): 1 | -1 {
+    return this.lookDirection;
+  }
+
+  getActiveWeaponRuntime() {
+    return this.runtimeConfig.weaponRuntimeBySlot[this.activeWeaponSlot] ?? this.runtimeConfig.weaponRuntimeBySlot.primary ?? this.runtimeConfig.weaponRuntime;
+  }
+
+  consumeAttackRequest(): boolean {
+    const requested = this.attackRequestedThisFrame;
+    this.attackRequestedThisFrame = false;
+    return requested;
+  }
+
+  isAttackHeld(): boolean {
+    return this.shootKey.isDown;
+  }
+
+  setDefensiveState(active: boolean, config: { mitigationRatio: number; frontalOnly: boolean }): void {
+    this.isDefensiveStateActive = active;
+    this.defenseMitigationRatio = Phaser.Math.Clamp(config.mitigationRatio, 0, 0.9);
+    this.defenseFrontalOnly = config.frontalOnly;
+  }
+
+  playCombatAttackAnimation(): void {
+    this.play(`${this.characterVisualId}-shoot`, true);
   }
 
   canTakeDamage(currentTime: number): boolean {
@@ -283,10 +322,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
 
-  private getActiveWeaponRuntime() {
-    return this.runtimeConfig.weaponRuntimeBySlot[this.activeWeaponSlot] ?? this.runtimeConfig.weaponRuntimeBySlot.primary ?? this.runtimeConfig.weaponRuntime;
-  }
-
   private tryShootActiveWeapon(): boolean {
     if (this.isReloading) {
       return false;
@@ -362,5 +397,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   private updateNameTagPosition(): void {
     this.nameTag.setPosition(this.x, this.y - 42);
+  }
+
+  private getDefendedDamage(baseDamage: number, context?: { sourceX?: number }): number {
+    if (!this.isDefensiveStateActive) {
+      return baseDamage;
+    }
+
+    if (this.defenseFrontalOnly && context?.sourceX !== undefined) {
+      const attackDirection = Math.sign(context.sourceX - this.x) || this.lookDirection;
+      const isFrontalAttack = attackDirection === this.lookDirection;
+      if (!isFrontalAttack) {
+        return baseDamage;
+      }
+    }
+
+    return Math.max(1, Math.round(baseDamage * (1 - this.defenseMitigationRatio)));
   }
 }

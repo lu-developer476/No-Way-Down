@@ -39,6 +39,7 @@ import corridorObjectsConfig from '../../public/assets/levels/corridor_objects.j
 import { addEnvironmentProp } from './environmentLayout';
 import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { controlManager } from '../input/ControlManager';
+import { CombatActionSystem } from '../systems/CombatActionSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -95,6 +96,7 @@ type PauseMenuState = 'root' | 'options';
 export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
+  private combatActionSystem?: CombatActionSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
   private stairSegmentSystem?: StairSegmentSystem;
@@ -260,6 +262,7 @@ export class GameScene extends Phaser.Scene {
     this.projectileSystem = new ProjectileSystem(this, {
       fireCooldownMultiplier: difficultyRuntime.playerFireCooldownMultiplier
     });
+    this.combatActionSystem = new CombatActionSystem(this);
     const audioManager = getAudioManager(this);
     audioManager.startGameplayAmbient();
     this.registry.set('audioMuted', audioManager.isMuted());
@@ -311,7 +314,7 @@ export class GameScene extends Phaser.Scene {
     this.zombieSystem = new ZombieSystem(this, 20, {
       defaultZombieHealth: Math.max(1, Math.round(DEFAULT_ZOMBIE_HEALTH * difficultyRuntime.zombieHealthMultiplier))
     });
-    this.allySystem = new AllySystem(this, this.projectileSystem);
+    this.allySystem = new AllySystem(this, this.projectileSystem, this.combatActionSystem);
 
     this.players.forEach((player) => {
       this.physics.add.collider(player, environment);
@@ -488,6 +491,12 @@ export class GameScene extends Phaser.Scene {
     if (leadPlayer) {
       this.allySystem?.update(leadPlayer, this.zombieSystem?.getActiveZombies() ?? [], this.time.now);
     }
+
+    const activeZombies = this.zombieSystem?.getActiveZombies() ?? [];
+    this.players.forEach((player) => {
+      this.combatActionSystem?.tryStartPlayerMeleeAction(player);
+    });
+    this.combatActionSystem?.update(this.players, this.allySystem?.getActiveAllies() ?? [], activeZombies);
 
     this.registry.set('partyHud', this.buildPartyHud());
     this.refreshAllyWorldHealthBars();
@@ -1053,7 +1062,7 @@ export class GameScene extends Phaser.Scene {
 
     const difficulty = this.getInitialSetup()?.difficulty ?? 'complejo';
     const runtime = getDifficultyRuntimeConfig(difficulty);
-    const didTakeDamage = player.takeDamage(runtime.zombieContactDamage, this.time.now);
+    const didTakeDamage = player.takeDamage(runtime.zombieContactDamage, this.time.now, { sourceX: this.getClosestZombieXToPlayer(player) });
     if (!didTakeDamage) {
       return;
     }
@@ -1064,6 +1073,22 @@ export class GameScene extends Phaser.Scene {
     if (player.isDead()) {
       this.handlePlayerDefeat();
     }
+  }
+
+  private getClosestZombieXToPlayer(player: Player): number | undefined {
+    const zombies = this.zombieSystem?.getActiveZombies() ?? [];
+    let closestX: number | undefined;
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    zombies.forEach((zombie) => {
+      const distance = Phaser.Math.Distance.Between(player.x, player.y, zombie.x, zombie.y);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        closestX = zombie.x;
+      }
+    });
+
+    return closestX;
   }
 
   private handlePlayerDefeat(): void {

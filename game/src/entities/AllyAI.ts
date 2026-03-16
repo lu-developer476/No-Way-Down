@@ -7,6 +7,7 @@ import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
+import { CombatActionSystem } from '../systems/CombatActionSystem';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -37,6 +38,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private isNameTagVisible = true;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
+  private readonly combatActionSystem: CombatActionSystem;
   private activeWeaponSlot: CharacterWeaponSlot;
   private readonly ammoRuntime: WeaponAmmoRuntime;
   private isReloading = false;
@@ -47,7 +49,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private currentTargetId?: Zombie;
   private currentTargetLockedUntil = 0;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile, projectileSystem: ProjectileSystem) {
+  constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile, projectileSystem: ProjectileSystem, combatActionSystem: CombatActionSystem) {
     const visual = getCharacterVisualById(profile.characterId);
     super(scene, x, y, `${visual.id}-base-0`);
 
@@ -57,6 +59,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.ammoRuntime = new WeaponAmmoRuntime(this.runtimeConfig.loadout);
     this.projectileSystem = projectileSystem;
+    this.combatActionSystem = combatActionSystem;
     this.maxHealth = this.runtimeConfig.maxHealth;
     this.currentHealth = this.maxHealth;
 
@@ -246,8 +249,26 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   }
 
 
-  private getActiveWeaponRuntime() {
+  getActiveWeaponRuntime() {
     return this.runtimeConfig.weaponRuntimeBySlot[this.activeWeaponSlot] ?? this.runtimeConfig.weaponRuntimeBySlot.primary ?? this.runtimeConfig.weaponRuntime;
+  }
+
+  getCombatActorId(): string {
+    return this.profile.id;
+  }
+
+  setCombatDirection(direction: 1 | -1): void {
+    this.setFlipX(direction < 0);
+  }
+
+  playCombatAttackAnimation(): void {
+    this.play(`${this.characterVisualId}-shoot`, true);
+    this.setTintFill(0xfef08a);
+    this.scene.time.delayedCall(90, () => {
+      if (this.active) {
+        this.setTint(this.profile.tint);
+      }
+    });
   }
 
   private tryAttackTarget(target: Zombie): void {
@@ -264,6 +285,12 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(direction < 0);
 
     const activeWeapon = this.getActiveWeaponRuntime();
+    const weaponCatalog = getWeaponCatalogEntry(activeWeapon.key);
+    if (weaponCatalog.isMelee) {
+      this.combatActionSystem.tryStartAllyMeleeAction(this, target);
+      return;
+    }
+
     const ammoSnapshot = this.ammoRuntime.getSnapshotForWeapon(activeWeapon.key);
     if (!this.ammoRuntime.canFire(activeWeapon.key)) {
       this.startReloadActiveWeapon(activeWeapon.key);
@@ -290,14 +317,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.ammoRuntime.consumeForShot(activeWeapon.key);
-
-    this.play(`${this.characterVisualId}-shoot`, true);
-    this.setTintFill(0xfef08a);
-    this.scene.time.delayedCall(90, () => {
-      if (this.active) {
-        this.setTint(this.profile.tint);
-      }
-    });
+    this.playCombatAttackAnimation();
   }
 
   private startReloadActiveWeapon(weaponKey: string): boolean {

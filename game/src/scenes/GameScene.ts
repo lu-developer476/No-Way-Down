@@ -86,6 +86,9 @@ interface PlatformConfig {
 interface GameSceneData {
   respawnPoint?: Checkpoint;
   skipLoad?: boolean;
+  flowNodeId?: string;
+  campaignLevelConfigPath?: string;
+  campaignLevelConfig?: unknown;
 }
 
 interface AllyWorldHealthBar {
@@ -246,6 +249,8 @@ export class GameScene extends Phaser.Scene {
   create(data: GameSceneData = {}): void {
     this.resetRuntimeStateForRestart();
 
+    const selectedLevelId = this.resolveLevelIdFromCampaignConfig(data);
+
     const setupFromStorage = loadInitialRunSetup();
     if (setupFromStorage && !this.registry.has('initialRunSetup')) {
       this.registry.set('initialRunSetup', setupFromStorage);
@@ -253,7 +258,7 @@ export class GameScene extends Phaser.Scene {
     const setupFromRegistry = this.registry.get('initialRunSetup') as InitialRunSetup | undefined;
     const difficulty = setupFromRegistry?.difficulty ?? setupFromStorage?.difficulty ?? 'complejo';
     const difficultyRuntime = getDifficultyRuntimeConfig(difficulty);
-    const levelConfig = levelManager.loadLevel('level_2_subsuelo');
+    const levelConfig = levelManager.loadLevel(selectedLevelId);
     const levelWidth = levelConfig.layout.width;
     const levelHeight = levelConfig.layout.height;
     const floorHeight = levelConfig.layout.floor_height ?? 64;
@@ -357,13 +362,13 @@ export class GameScene extends Phaser.Scene {
       this.zombieSystem?.spawn(spawnPoint.x, spawnPoint.y);
     });
 
-    this.spawnManager = levelManager.instantiateSpawns('level_2_subsuelo', this, this.zombieSystem, this.players, {
+    this.spawnManager = levelManager.instantiateSpawns(selectedLevelId, this, this.zombieSystem, this.players, {
       spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier,
       getEnemyLimit: () => this.zombieSystem?.getGroup().maxSize ?? Number.MAX_SAFE_INTEGER
     });
     this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
-    this.objectiveSystem = levelManager.instantiateObjectives('level_2_subsuelo');
-    this.interactableSystem = levelManager.instantiateInteractables('level_2_subsuelo');
+    this.objectiveSystem = levelManager.instantiateObjectives(selectedLevelId);
+    this.interactableSystem = levelManager.instantiateInteractables(selectedLevelId);
     this.levelRestartManager = levelManager.instantiateRestartManager(this, {
       checkpointSystem,
       resetEnemies: () => this.resetEnemiesForRestart(),
@@ -391,7 +396,7 @@ export class GameScene extends Phaser.Scene {
     });
     this.levelCinematicSystem = new CinematicSystem(
       this,
-      levelManager.getCinematics('level_2_subsuelo'),
+      levelManager.getCinematics(selectedLevelId),
       this.dialogueSystem,
       {
         onGameplayPauseChanged: (paused) => this.setNarrativeMovementLock(paused),
@@ -410,7 +415,7 @@ export class GameScene extends Phaser.Scene {
       }
     );
     this.triggerSystem = levelManager.instantiateTriggers(
-      'level_2_subsuelo',
+      selectedLevelId,
       this,
       this.players as unknown as Phaser.Types.Physics.Arcade.GameObjectWithBody[],
       {
@@ -522,6 +527,50 @@ export class GameScene extends Phaser.Scene {
       this.clearAllyWorldHealthBars();
       getAudioManager(this).stopGameplayAmbient();
     });
+  }
+
+  private resolveLevelIdFromCampaignConfig(data: GameSceneData): string {
+    const defaultLevelId = 'level_2_subsuelo';
+    const flowNodeLabel = data.flowNodeId ?? 'unknown-flow-node';
+
+    if (data.campaignLevelConfigPath) {
+      console.log(`[LevelScene] flowNode.id recibido: ${flowNodeLabel}`);
+      console.log(`[LevelScene] levelConfigPath solicitado: ${data.campaignLevelConfigPath}`);
+    }
+
+    if (!data.campaignLevelConfig) {
+      if (data.campaignLevelConfigPath) {
+        console.warn(`[LevelScene] fallback activado: no se recibió config cargada para ${data.campaignLevelConfigPath}. Se usará ${defaultLevelId}.`);
+      }
+      this.registry.remove('activeCampaignLevelConfig');
+      this.registry.remove('activeCampaignLevelConfigPath');
+      return defaultLevelId;
+    }
+
+    this.registry.set('activeCampaignLevelConfig', data.campaignLevelConfig);
+    this.registry.set('activeCampaignLevelConfigPath', data.campaignLevelConfigPath ?? null);
+
+    const configAsRecord = data.campaignLevelConfig as Record<string, unknown>;
+    const candidateLevelId = [
+      configAsRecord.runtimeLevelId,
+      configAsRecord.runtime_level_id,
+      configAsRecord.level_id,
+      configAsRecord.levelId
+    ].find((candidate): candidate is string => typeof candidate === 'string' && candidate.length > 0);
+
+    if (!candidateLevelId) {
+      console.warn(`[LevelScene] fallback activado: ${data.campaignLevelConfigPath ?? 'sin-path'} no define runtime level id. Se usará ${defaultLevelId}.`);
+      return defaultLevelId;
+    }
+
+    try {
+      levelManager.loadLevel(candidateLevelId);
+      console.log(`[LevelScene] carga de nivel exitosa. runtime level id: ${candidateLevelId}.`);
+      return candidateLevelId;
+    } catch {
+      console.warn(`[LevelScene] fallback activado: runtime level id desconocido (${candidateLevelId}). Se usará ${defaultLevelId}.`);
+      return defaultLevelId;
+    }
   }
 
   private resetRuntimeStateForRestart(): void {

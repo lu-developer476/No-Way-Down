@@ -274,7 +274,9 @@ export class MainMenuScene extends Phaser.Scene {
       this.refreshMenuSelection();
     });
 
-    this.input.keyboard?.on(controlManager.getPhaserEventName('next_level'), () => {
+    this.input.keyboard?.on('keydown-ENTER', () => {
+      console.log('ENTER detectado en menú principal');
+
       if (this.controlsPanel?.visible) {
         this.toggleControlsPanel(false);
         return;

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Character, CharacterStats } from './Character';
+import { NameTag } from '../ui/NameTag';
 
 export interface ShotPayload {
   readonly ownerId: string;
@@ -13,6 +14,7 @@ export interface ShotPayload {
 
 export class Survivor extends Character {
   private readonly weaponDirection: Phaser.Math.Vector2;
+  private readonly nameTag: NameTag;
   private nextShotAt: number;
 
   constructor(
@@ -27,6 +29,7 @@ export class Survivor extends Character {
     super(scene, id, x, y, texture, frame, stats);
 
     this.weaponDirection = new Phaser.Math.Vector2(1, 0);
+    this.nameTag = new NameTag(scene, this);
     this.nextShotAt = 0;
 
     const body = this.body as Phaser.Physics.Arcade.Body | null;
@@ -81,5 +84,10 @@ export class Survivor extends Character {
 
   getShotCooldownRemaining(currentTime: number): number {
     return Math.max(0, this.nextShotAt - currentTime);
+  }
+
+  override destroy(fromScene?: boolean): void {
+    this.nameTag.destroy();
+    super.destroy(fromScene);
   }
 }

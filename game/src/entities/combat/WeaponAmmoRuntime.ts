@@ -102,4 +102,26 @@ export class WeaponAmmoRuntime {
       ammoReserve: this.ammoReserveByType.get(weapon.ammoType) ?? 0
     };
   }
+
+  addReserveByAmmoType(ammoType: string, amount: number): number {
+    const normalizedAmount = Math.max(0, Math.floor(amount));
+    if (!ammoType || normalizedAmount <= 0) {
+      return 0;
+    }
+
+    const current = this.ammoReserveByType.get(ammoType) ?? 0;
+    this.ammoReserveByType.set(ammoType, current + normalizedAmount);
+    return normalizedAmount;
+  }
+
+  hasWeaponUsingAmmoType(ammoType: string): boolean {
+    for (const weaponKey of this.ammoCurrentByWeapon.keys()) {
+      const weapon = getWeaponCatalogEntry(weaponKey);
+      if (weapon.usesAmmo && weapon.ammoType === ammoType) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

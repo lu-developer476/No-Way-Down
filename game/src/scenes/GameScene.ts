@@ -36,10 +36,12 @@ import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
 import { CinematicCallSystem, type CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
 import level2NarrativeCallConfig from '../../public/assets/levels/level2_narrative_call.json';
 import corridorObjectsConfig from '../../public/assets/levels/corridor_objects.json';
+import level2PickupConfig from '../../public/assets/levels/level2_pickups.json';
 import { addEnvironmentProp } from './environmentLayout';
 import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { controlManager } from '../input/ControlManager';
 import { CombatActionSystem } from '../systems/CombatActionSystem';
+import { PickupSystem } from '../systems/PickupSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -97,6 +99,7 @@ export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
   private combatActionSystem?: CombatActionSystem;
+  private pickupSystem?: PickupSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
   private stairSegmentSystem?: StairSegmentSystem;
@@ -387,6 +390,8 @@ export class GameScene extends Phaser.Scene {
       this.allySystem.spawnInitialAllies(leadPlayer, partySeed.allies);
     }
 
+    this.pickupSystem = PickupSystem.fromJSON(this, level2PickupConfig);
+
     this.setupMissionSystem();
     this.stairSegmentSystem = StairSegmentSystem.fromLegacyStairAreas(this, stairConfigLevel2);
     stairConfigLevel2.stairs.forEach((stair) => {
@@ -439,6 +444,8 @@ export class GameScene extends Phaser.Scene {
       this.unregisterNarrativeControls();
       this.levelExitSystem?.destroy();
       this.levelExitSystem = undefined;
+      this.pickupSystem?.destroy();
+      this.pickupSystem = undefined;
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.registry.set('interactionHint', '');
@@ -493,6 +500,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     const activeZombies = this.zombieSystem?.getActiveZombies() ?? [];
+    const pickupConsumers = [...this.players, ...(this.allySystem?.getActiveAllies() ?? [])];
+    this.pickupSystem?.update(this.players, pickupConsumers);
+
     this.players.forEach((player) => {
       this.combatActionSystem?.tryStartPlayerMeleeAction(player);
     });

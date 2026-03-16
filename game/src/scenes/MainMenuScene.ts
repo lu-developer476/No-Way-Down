@@ -610,9 +610,12 @@ export class MainMenuScene extends Phaser.Scene {
     this.scene.stop('UIScene');
     const flowManager = new SceneFlowManager(this);
     const firstNode = flowManager.startFromBeginning();
-    if (firstNode) {
-      flowManager.transitionToNode(firstNode);
+    if (!firstNode) {
+      console.error('No se encontró el primer nodo de campaña.');
+      return;
     }
+
+    flowManager.transitionToNode(firstNode);
   }
 
   private withCheck(checked: boolean, label: string): string {

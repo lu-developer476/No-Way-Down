@@ -15,8 +15,10 @@ import {
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
 import level3HallLayout from '../../public/assets/levels/level3_hall_planta_baja.json';
+import level3PickupConfig from '../../public/assets/levels/level3_pickups.json';
 import { addEnvironmentProp } from './environmentLayout';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
+import { PickupSystem } from '../systems/PickupSystem';
 
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.2;
@@ -30,6 +32,7 @@ export class UpperFloorScene extends Phaser.Scene {
   private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
   private staircaseSystem?: StaircaseSystem;
+  private pickupSystem?: PickupSystem;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
@@ -90,6 +93,7 @@ export class UpperFloorScene extends Phaser.Scene {
 
     this.projectileSystem.createSolidCollider(environment);
 
+    this.pickupSystem = PickupSystem.fromJSON(this, level3PickupConfig);
     this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'upper-to-dining',
@@ -112,6 +116,11 @@ export class UpperFloorScene extends Phaser.Scene {
     this.registry.set('interactionHint', '');
     this.registerApiControls();
 
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.pickupSystem?.destroy();
+      this.pickupSystem = undefined;
+    });
+
     if (!data.skipLoad) {
       void this.loadProgressFromApi();
     }
@@ -122,6 +131,7 @@ export class UpperFloorScene extends Phaser.Scene {
     this.enforcePlayerSeparation();
     this.updateSharedCamera();
     this.projectileSystem?.update();
+    this.pickupSystem?.update(this.players, this.players);
 
     if (this.hasTriggeredTransition) {
       return;

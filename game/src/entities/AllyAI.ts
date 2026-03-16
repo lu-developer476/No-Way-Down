@@ -106,6 +106,28 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     return this.maxHealth;
   }
 
+  restoreHealth(amount: number): number {
+    const normalized = Math.max(0, Math.floor(amount));
+    if (normalized <= 0 || !this.active) {
+      return 0;
+    }
+
+    const previous = this.currentHealth;
+    this.currentHealth = Math.min(this.maxHealth, this.currentHealth + normalized);
+    return this.currentHealth - previous;
+  }
+
+  addAmmoReserve(ammoType: string, amount: number): number {
+    if (!this.ammoRuntime.hasWeaponUsingAmmoType(ammoType)) {
+      return 0;
+    }
+
+    return this.ammoRuntime.addReserveByAmmoType(ammoType, amount);
+  }
+
+  canReceiveAmmoType(ammoType: string): boolean {
+    return this.ammoRuntime.hasWeaponUsingAmmoType(ammoType);
+  }
 
   getActiveWeaponSlot(): CharacterWeaponSlot {
     return this.activeWeaponSlot;

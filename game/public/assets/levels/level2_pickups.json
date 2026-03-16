@@ -1,0 +1,8 @@
+{
+  "pickups": [
+    { "id": "lvl2-food-01", "type": "food_small", "x": 520, "y": 938, "label": "Comida chica" },
+    { "id": "lvl2-medkit-01", "type": "medkit_medium", "x": 980, "y": 940, "label": "Botiquín mediano" },
+    { "id": "lvl2-ammo-01", "type": "ammo_pistol", "x": 1260, "y": 936, "label": "Munición pistola" },
+    { "id": "lvl2-ammo-02", "type": "ammo_shotgun", "x": 1620, "y": 936, "label": "Munición escopeta" }
+  ]
+}

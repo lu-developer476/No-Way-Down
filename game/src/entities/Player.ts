@@ -260,6 +260,28 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return this.runtimeConfig.maxHealth;
   }
 
+  restoreHealth(amount: number): number {
+    const normalized = Math.max(0, Math.floor(amount));
+    if (normalized <= 0 || this.isDeadState) {
+      return 0;
+    }
+
+    const previous = this.healthPoints;
+    this.healthPoints = Math.min(this.runtimeConfig.maxHealth, this.healthPoints + normalized);
+    return this.healthPoints - previous;
+  }
+
+  addAmmoReserve(ammoType: string, amount: number): number {
+    if (!this.ammoRuntime.hasWeaponUsingAmmoType(ammoType)) {
+      return 0;
+    }
+
+    return this.ammoRuntime.addReserveByAmmoType(ammoType, amount);
+  }
+
+  canReceiveAmmoType(ammoType: string): boolean {
+    return this.ammoRuntime.hasWeaponUsingAmmoType(ammoType);
+  }
 
   getActiveWeaponSlot(): CharacterWeaponSlot {
     return this.activeWeaponSlot;

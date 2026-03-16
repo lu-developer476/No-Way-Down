@@ -15,6 +15,10 @@ export interface PartyHudMember {
   role: 'protagonist' | 'ally';
   health: number;
   maxHealth: number;
+  activeSlot?: 'primary' | 'secondary';
+  activeWeapon?: string;
+  primaryWeapon?: string;
+  secondaryWeapon?: string;
 }
 
 export const MAX_PLAYER_SEPARATION_PX = 320;

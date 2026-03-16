@@ -36,6 +36,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["broad_shoulders", "long_rifle_profile", "leader_stance"]
+      },
+      "loadout": {
+        "primary_weapon": "sniper_rifle",
+        "secondary_weapon": "pistol",
+        "active_slot": "primary"
       }
     },
     {
@@ -64,6 +69,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["agile_profile", "long_hair_motion", "sidearm_ready"]
+      },
+      "loadout": {
+        "primary_weapon": "pistol",
+        "secondary_weapon": "knife",
+        "active_slot": "primary"
       }
     },
     {
@@ -92,6 +102,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["compact_build", "smg_stance", "guard_defender"]
+      },
+      "loadout": {
+        "primary_weapon": "smg",
+        "secondary_weapon": "revolver",
+        "active_slot": "primary"
       }
     },
     {
@@ -120,6 +135,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["forward_stance", "smg_burst", "frontline_support"]
+      },
+      "loadout": {
+        "primary_weapon": "smg",
+        "secondary_weapon": "machete",
+        "active_slot": "primary"
       }
     },
     {
@@ -148,6 +168,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["rescue_target", "revolver_pose", "nervous_motion"]
+      },
+      "loadout": {
+        "primary_weapon": "revolver",
+        "secondary_weapon": "tray_shield",
+        "active_slot": "primary"
       }
     },
     {
@@ -176,6 +201,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["rifleman", "elevated_aim", "heavy_step"]
+      },
+      "loadout": {
+        "primary_weapon": "carbine",
+        "secondary_weapon": "pistol",
+        "active_slot": "primary"
       }
     },
     {
@@ -204,6 +234,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["twin_profile", "dramatic_pose", "fast_sidearm"]
+      },
+      "loadout": {
+        "primary_weapon": "pistol",
+        "secondary_weapon": "knife",
+        "active_slot": "primary"
       }
     },
     {
@@ -232,6 +267,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["heroine_profile", "red_hair_signature", "run_and_gun"]
+      },
+      "loadout": {
+        "primary_weapon": "pistol",
+        "secondary_weapon": "sword",
+        "active_slot": "primary"
       }
     },
     {
@@ -260,6 +300,11 @@
         "pivot": "bottom_center",
         "facing": "right",
         "silhouette_tags": ["shotgunner", "strong_recoil", "tanky_runner"]
+      },
+      "loadout": {
+        "primary_weapon": "shotgun",
+        "secondary_weapon": "revolver",
+        "active_slot": "primary"
       }
     }
   ]

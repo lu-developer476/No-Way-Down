@@ -1128,12 +1128,18 @@ export class GameScene extends Phaser.Scene {
         ? 'protagonist'
         : 'ally';
 
+      const inventory = player.getInventoryState();
+
       return {
         id: `player-${profile.slot}`,
         name: runtime.name,
         role,
         health: player.getHealth(),
-        maxHealth: player.getMaxHealth()
+        maxHealth: player.getMaxHealth(),
+        activeSlot: inventory.activeSlot,
+        activeWeapon: inventory.activeWeapon,
+        primaryWeapon: inventory.primaryWeapon,
+        secondaryWeapon: inventory.secondaryWeapon
       };
     });
 
@@ -1149,7 +1155,14 @@ export class GameScene extends Phaser.Scene {
     ];
 
     const allyHealthById = new Map((this.allySystem?.getActiveAllies() ?? [])
-      .map((ally) => [ally.getId(), { health: ally.getHealth(), maxHealth: ally.getMaxHealth() }]));
+      .map((ally) => [
+        ally.getId(),
+        {
+          health: ally.getHealth(),
+          maxHealth: ally.getMaxHealth(),
+          inventory: ally.getInventoryState()
+        }
+      ]));
 
     const allyEntries = prioritizedAllies.map((member) => {
       const runtime = getCharacterRuntimeConfig(member.characterId ?? 'alan');
@@ -1160,7 +1173,11 @@ export class GameScene extends Phaser.Scene {
         name: member.name,
         role: 'ally' as const,
         health: healthSnapshot?.health ?? runtime.maxHealth,
-        maxHealth: healthSnapshot?.maxHealth ?? runtime.maxHealth
+        maxHealth: healthSnapshot?.maxHealth ?? runtime.maxHealth,
+        activeSlot: healthSnapshot?.inventory?.activeSlot ?? runtime.loadout.activeSlot,
+        activeWeapon: healthSnapshot?.inventory?.activeWeapon ?? runtime.weaponRuntime.key,
+        primaryWeapon: healthSnapshot?.inventory?.primaryWeapon ?? runtime.loadout.primaryWeapon,
+        secondaryWeapon: healthSnapshot?.inventory?.secondaryWeapon ?? runtime.loadout.secondaryWeapon
       };
     });
 

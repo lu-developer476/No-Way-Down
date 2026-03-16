@@ -2,8 +2,7 @@ import Phaser from 'phaser';
 import { DEFAULT_ZOMBIE_HEALTH, Zombie } from '../entities/Zombie';
 import { Projectile } from '../entities/Projectile';
 import { Player } from '../entities/Player';
-import { getCharacterRuntimeConfig } from '../config/characterRuntime';
-import { getWeaponCatalogEntry } from '../config/weaponCatalog';
+import { getWeaponRuntimeConfig } from '../config/weaponRuntime';
 
 const CHARACTER_HEADSHOT_BONUS_BY_ID: Record<string, number> = {
   alan: 0,
@@ -65,8 +64,13 @@ export class ZombieSystem {
         }
 
         const zombieHealthBeforeImpact = zombie.getHealth();
-        const isHeadshot = this.rollHeadshot(projectile);
-        const damage = isHeadshot ? zombieHealthBeforeImpact : projectile.getDamage();
+        const weaponRuntime = getWeaponRuntimeConfig(projectile.getWeaponKey());
+        const isHeadshot = this.rollHeadshot(projectile, weaponRuntime);
+        const damage = isHeadshot
+          ? weaponRuntime.zombieHeadshotInstantKill
+            ? zombieHealthBeforeImpact
+            : Math.max(projectile.getDamage(), Math.round(projectile.getDamage() * weaponRuntime.zombieHeadshotDamageMultiplier))
+          : projectile.getDamage();
 
         projectile.consumePenetrationOrDeactivate();
         zombie.takeDamage(damage);
@@ -78,12 +82,19 @@ export class ZombieSystem {
     );
   }
 
-  private rollHeadshot(projectile: Projectile): boolean {
-    const weaponChance = getWeaponCatalogEntry(projectile.getWeaponKey()).headshotChance;
+  private rollHeadshot(projectile: Projectile, weaponRuntime: ReturnType<typeof getWeaponRuntimeConfig>): boolean {
     const shooterBonus = CHARACTER_HEADSHOT_BONUS_BY_ID[projectile.getShooterCharacterId()] ?? 0;
-    const shooterConfig = getCharacterRuntimeConfig(projectile.getShooterCharacterId());
-    const weaponPrecisionBonus = Phaser.Math.Clamp((shooterConfig.weaponRuntime.projectileSpeed - 520) / 2000, -0.03, 0.07);
-    const chance = Phaser.Math.Clamp(weaponChance + shooterBonus + weaponPrecisionBonus, 0.03, 0.65);
+    const weaponPrecisionBonus = Phaser.Math.Clamp(
+      (weaponRuntime.projectileSpeed - weaponRuntime.zombieHeadshotSpeedBonusReference) /
+        weaponRuntime.zombieHeadshotSpeedBonusScale,
+      weaponRuntime.zombieHeadshotSpeedBonusMin,
+      weaponRuntime.zombieHeadshotSpeedBonusMax
+    );
+    const chance = Phaser.Math.Clamp(
+      weaponRuntime.zombieHeadshotChance + shooterBonus + weaponPrecisionBonus,
+      weaponRuntime.zombieHeadshotChanceMin,
+      weaponRuntime.zombieHeadshotChanceMax
+    );
     return Math.random() <= chance;
   }
 

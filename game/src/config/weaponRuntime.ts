@@ -14,6 +14,15 @@ export interface WeaponRuntimeConfig {
   meleeContactDamage: number;
   defenseMitigationRatio: number;
   defenseFrontalOnly: boolean;
+  zombieHeadshotChance: number;
+  zombieHeadshotInstantKill: boolean;
+  zombieHeadshotDamageMultiplier: number;
+  zombieHeadshotSpeedBonusReference: number;
+  zombieHeadshotSpeedBonusScale: number;
+  zombieHeadshotSpeedBonusMin: number;
+  zombieHeadshotSpeedBonusMax: number;
+  zombieHeadshotChanceMin: number;
+  zombieHeadshotChanceMax: number;
 }
 
 let legacyPistolOverrides: {
@@ -39,7 +48,16 @@ export function getWeaponRuntimeConfig(weaponKey?: string): WeaponRuntimeConfig 
     meleeHitboxHeight: weapon.isMelee ? (weapon.key === 'knife' ? 44 : weapon.key === 'tray_shield' ? 52 : 58) : 0,
     meleeContactDamage: weapon.isMelee ? weapon.damage : 0,
     defenseMitigationRatio: weapon.isDefensive ? 0.45 : 0,
-    defenseFrontalOnly: weapon.isDefensive
+    defenseFrontalOnly: weapon.isDefensive,
+    zombieHeadshotChance: weapon.headshotChance,
+    zombieHeadshotInstantKill: !weapon.isMelee,
+    zombieHeadshotDamageMultiplier: weapon.isMelee ? 1 : 0,
+    zombieHeadshotSpeedBonusReference: 520,
+    zombieHeadshotSpeedBonusScale: 2000,
+    zombieHeadshotSpeedBonusMin: -0.03,
+    zombieHeadshotSpeedBonusMax: 0.07,
+    zombieHeadshotChanceMin: 0.03,
+    zombieHeadshotChanceMax: 0.65
   };
 }
 

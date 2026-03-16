@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Projectile } from '../entities/Projectile';
 import { CharacterWeaponKey } from '../config/characterRuntime';
+import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { applyLegacyWeaponOverrides, getWeaponRuntimeConfig, WeaponRuntimeConfig } from '../config/weaponRuntime';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 
@@ -11,6 +12,11 @@ export interface FireConfig {
   weapon?: CharacterWeaponKey;
   shooterId?: string;
   shooterCharacterId?: string;
+  activeWeapon?: {
+    key: CharacterWeaponKey;
+    usesAmmo: boolean;
+    ammoCurrent?: number;
+  };
 }
 
 export class ProjectileSystem {
@@ -44,6 +50,10 @@ export class ProjectileSystem {
   }
 
   tryFire(config: FireConfig): boolean {
+    if (!this.canFireByRuntime(config)) {
+      return false;
+    }
+
     const now = this.scene.time.now;
     const weaponRuntime = this.getWeaponRuntime(config.weapon);
     const weaponVisual = getWeaponVisualRuntimeConfig(weaponRuntime.key);
@@ -59,13 +69,16 @@ export class ProjectileSystem {
       return false;
     }
 
+    const shotVelocity = this.getShotVelocity(config.direction, weaponRuntime.projectileSpeed, weaponRuntime.spread);
+
     projectile.launch(
       config.originX,
       config.originY,
-      config.direction,
-      weaponRuntime.projectileSpeed,
+      shotVelocity.x,
+      shotVelocity.y,
       weaponRuntime.damage,
       weaponRuntime.maxRange,
+      weaponRuntime.penetration,
       {
         weaponKey: weaponRuntime.key,
         shooterId,
@@ -104,5 +117,44 @@ export class ProjectileSystem {
 
   private getWeaponRuntime(weapon?: CharacterWeaponKey): WeaponRuntimeConfig {
     return getWeaponRuntimeConfig(weapon);
+  }
+
+  private canFireByRuntime(config: FireConfig): boolean {
+    if (!config.weapon) {
+      return false;
+    }
+
+    const catalogWeapon = getWeaponCatalogEntry(config.weapon);
+    if (catalogWeapon.key !== config.weapon) {
+      return false;
+    }
+
+    if (catalogWeapon.isMelee || catalogWeapon.isDefensive || !catalogWeapon.usesAmmo) {
+      return false;
+    }
+
+    if (config.activeWeapon?.key && config.activeWeapon.key !== catalogWeapon.key) {
+      return false;
+    }
+
+    if (config.activeWeapon?.usesAmmo === false) {
+      return false;
+    }
+
+    if ((config.activeWeapon?.ammoCurrent ?? catalogWeapon.magazineSize) <= 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private getShotVelocity(direction: number, projectileSpeed: number, spread: number): { x: number; y: number } {
+    const spreadOffset = Phaser.Math.FloatBetween(-spread, spread);
+    const baseAngle = direction < 0 ? Math.PI : 0;
+    const angle = baseAngle + spreadOffset;
+    return {
+      x: Math.cos(angle) * projectileSpeed,
+      y: Math.sin(angle) * projectileSpeed
+    };
   }
 }

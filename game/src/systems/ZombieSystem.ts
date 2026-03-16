@@ -68,7 +68,7 @@ export class ZombieSystem {
         const isHeadshot = this.rollHeadshot(projectile);
         const damage = isHeadshot ? zombieHealthBeforeImpact : projectile.getDamage();
 
-        projectile.deactivate();
+        projectile.consumePenetrationOrDeactivate();
         zombie.takeDamage(damage);
 
         console.debug(

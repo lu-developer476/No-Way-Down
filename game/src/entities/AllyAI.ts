@@ -264,6 +264,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(direction < 0);
 
     const activeWeapon = this.getActiveWeaponRuntime();
+    const ammoSnapshot = this.ammoRuntime.getSnapshotForWeapon(activeWeapon.key);
     if (!this.ammoRuntime.canFire(activeWeapon.key)) {
       this.startReloadActiveWeapon(activeWeapon.key);
       return;
@@ -276,7 +277,12 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       direction,
       weapon: activeWeapon.key,
       shooterId: this.profile.id,
-      shooterCharacterId: this.runtimeConfig.characterId
+      shooterCharacterId: this.runtimeConfig.characterId,
+      activeWeapon: {
+        key: activeWeapon.key,
+        usesAmmo: ammoSnapshot.usesAmmo,
+        ammoCurrent: ammoSnapshot.ammoCurrent
+      }
     });
 
     if (!fired) {

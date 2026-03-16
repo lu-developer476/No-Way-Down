@@ -8,6 +8,7 @@ import { CharacterRuntimeConfig, CharacterWeaponSlot, getCharacterRuntimeConfig 
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
+import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -42,10 +43,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private isDefensiveStateActive = false;
   private defenseMitigationRatio = 0;
   private defenseFrontalOnly = true;
+  private readonly spriteAnimationSystem: SpriteAnimationSystem;
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem, profile: PlayerConfig) {
     const characterVisual = getCharacterVisualById(profile.characterId);
-    super(scene, x, y, `${characterVisual.id}-base-0`);
+    super(scene, x, y, `${characterVisual.id}-sheet`, 0);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -60,8 +62,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
     this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.ammoRuntime = new WeaponAmmoRuntime(this.runtimeConfig.loadout);
+    this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
     this.healthPoints = this.runtimeConfig.maxHealth;
     this.setTint(profile.color);
+    this.spriteAnimationSystem.rememberDefaultTint(this, profile.color);
 
     const keyboard = scene.input.keyboard;
     if (!keyboard) {
@@ -77,7 +81,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.switchWeaponKey = keyboard.addKey(profile.controls.switchWeapon);
     this.interactKey = keyboard.addKey(profile.controls.interact);
 
-    this.play(`${this.characterVisualId}-idle`, true);
+    this.spriteAnimationSystem.playState(this, this.characterVisualId, 'idle');
 
     this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
       fontSize: '10px',
@@ -139,7 +143,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (!this.isClimbing && (!this.anims.isPlaying || this.anims.currentAnim?.key === `${this.characterVisualId}-idle` || this.anims.currentAnim?.key === `${this.characterVisualId}-run`)) {
-      this.play(isMovingHorizontally ? `${this.characterVisualId}-run` : `${this.characterVisualId}-idle`, true);
+      this.spriteAnimationSystem.playMovement(this, this.characterVisualId, isMovingHorizontally);
     }
 
     this.updateNameTagPosition();
@@ -194,7 +198,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.healthPoints = Math.max(0, this.healthPoints - appliedDamage);
     this.invulnerableUntil = currentTime + DAMAGE_INVULNERABILITY_MS;
-    this.play(`${this.characterVisualId}-hurt`, true);
+    this.spriteAnimationSystem.playHurt(this, this.characterVisualId);
     getAudioManager(this.scene).play('playerDamage', { x: this.x, y: this.y });
     this.setTintFill(0xf87171);
     this.scene.time.delayedCall(120, () => {
@@ -241,7 +245,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   playCombatAttackAnimation(): void {
-    this.play(`${this.characterVisualId}-shoot`, true);
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key);
+    this.spriteAnimationSystem.playShootEffect(this, this.characterVisualId, this.lookDirection, {
+      x: weaponVisual.muzzleOffsetX,
+      y: weaponVisual.muzzleOffsetY
+    });
   }
 
   canTakeDamage(currentTime: number): boolean {

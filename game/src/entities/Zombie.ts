@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { getAudioManager } from '../audio/AudioManager';
+import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 
 const DEFAULT_ZOMBIE_SPEED = 80;
 const DEFAULT_DETECTION_RANGE = 260;
@@ -9,6 +10,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
   private healthPoints: number;
   private readonly moveSpeed: number;
   private readonly detectionRange: number;
+  private readonly spriteAnimationSystem: SpriteAnimationSystem;
 
   constructor(
     scene: Phaser.Scene,
@@ -20,7 +22,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
       detectionRange?: number;
     } = {}
   ) {
-    super(scene, x, y, 'zombie-walker-base-0');
+    super(scene, x, y, 'zombie-walker-sheet', 0);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -28,12 +30,13 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.healthPoints = options.health ?? DEFAULT_ZOMBIE_HEALTH;
     this.moveSpeed = options.moveSpeed ?? DEFAULT_ZOMBIE_SPEED;
     this.detectionRange = options.detectionRange ?? DEFAULT_DETECTION_RANGE;
+    this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
 
     this.setCollideWorldBounds(true);
     this.setSize(18, 40);
     this.setOffset(7, 8);
 
-    this.play('zombie-walker-idle', true);
+    this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle');
   }
 
   update(targetX: number): void {
@@ -45,13 +48,13 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
     if (Math.abs(distanceX) > this.detectionRange) {
       this.setVelocityX(0);
-      this.play('zombie-walker-idle', true);
+      this.spriteAnimationSystem.playMovement(this, 'zombie-walker', false);
       return;
     }
 
     const direction = Math.sign(distanceX);
     this.setVelocityX(direction * this.moveSpeed);
-    this.play('zombie-walker-run', true);
+    this.spriteAnimationSystem.playMovement(this, 'zombie-walker', true);
 
     if (direction < 0) {
       this.setFlipX(true);
@@ -66,7 +69,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.healthPoints -= amount;
-    this.play('zombie-walker-hurt', true);
+    this.spriteAnimationSystem.playHurt(this, 'zombie-walker');
 
     if (this.healthPoints <= 0) {
       this.die();

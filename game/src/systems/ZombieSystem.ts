@@ -36,7 +36,7 @@ export class ZombieSystem {
   }
 
   spawn(x: number, y: number, options: { health?: number } = {}): Zombie | null {
-    const zombie = this.zombies.get(x, y, 'zombie-base-0') as Zombie | null;
+    const zombie = this.zombies.get(x, y, 'zombie-walker-sheet', 0) as Zombie | null;
     if (!zombie) {
       return null;
     }

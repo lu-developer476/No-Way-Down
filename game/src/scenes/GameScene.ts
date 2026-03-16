@@ -1061,6 +1061,21 @@ export class GameScene extends Phaser.Scene {
     base.fillRect(0, levelHeight - floorHeight - 58, levelWidth, 58);
     base.destroy();
 
+    this.add.tileSprite(levelWidth / 2, 126, levelWidth, 180, 'ground-placeholder')
+      .setDepth(0.6)
+      .setAlpha(0.1)
+      .setScrollFactor(0.3, 1);
+
+    this.add.tileSprite(levelWidth / 2, levelHeight - floorHeight - 86, levelWidth, 110, 'ground-placeholder')
+      .setDepth(1.4)
+      .setAlpha(0.16)
+      .setScrollFactor(0.65, 1);
+
+    this.add.tileSprite(levelWidth / 2, levelHeight - floorHeight - 34, levelWidth, 48, 'ground-placeholder')
+      .setDepth(2.8)
+      .setAlpha(0.24)
+      .setScrollFactor(0.9, 1);
+
     for (let x = 90; x < levelWidth; x += 210) {
       this.add.rectangle(x, 108, 80, 54, 0x111827, 0.75).setDepth(1);
       this.add.rectangle(x, 108, 72, 46, 0x7dd3fc, 0.08).setDepth(1);
@@ -1090,6 +1105,19 @@ export class GameScene extends Phaser.Scene {
     for (let x = 150; x < levelWidth; x += 260) {
       this.add.rectangle(x, 34, 64, 9, palette.lamp, 0.3).setDepth(3);
       this.add.rectangle(x, 42, 42, 4, palette.lamp, 0.2).setDepth(3);
+
+      const lampGlow = this.add.circle(x, 42, 34, palette.lamp, 0.08)
+        .setDepth(2.9)
+        .setBlendMode(Phaser.BlendModes.ADD);
+
+      this.tweens.add({
+        targets: lampGlow,
+        alpha: { from: 0.05, to: 0.14 },
+        duration: Phaser.Math.Between(900, 1400),
+        repeat: -1,
+        yoyo: true,
+        ease: 'Sine.InOut'
+      });
     }
   }
 

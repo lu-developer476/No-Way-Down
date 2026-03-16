@@ -8,6 +8,7 @@ import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { CombatActionSystem } from '../systems/CombatActionSystem';
+import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -52,16 +53,18 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly maxHealth: number;
   private currentTargetId?: Zombie;
   private currentTargetLockedUntil = 0;
+  private readonly spriteAnimationSystem: SpriteAnimationSystem;
 
   constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile, projectileSystem: ProjectileSystem, combatActionSystem: CombatActionSystem) {
     const visual = getCharacterVisualById(profile.characterId);
-    super(scene, x, y, `${visual.id}-base-0`);
+    super(scene, x, y, `${visual.id}-sheet`, 0);
 
     this.profile = profile;
     this.characterVisualId = visual.id;
     this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
     this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.ammoRuntime = new WeaponAmmoRuntime(this.runtimeConfig.loadout);
+    this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
     this.projectileSystem = projectileSystem;
     this.combatActionSystem = combatActionSystem;
     this.maxHealth = this.runtimeConfig.maxHealth;
@@ -74,10 +77,11 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.setSize(18, 40);
     this.setOffset(7, 8);
     this.setTint(profile.tint);
+    this.spriteAnimationSystem.rememberDefaultTint(this, profile.tint);
     this.setAlpha(0.92);
     this.setPushable(false);
 
-    this.play(`${this.characterVisualId}-idle`, true);
+    this.spriteAnimationSystem.playState(this, this.characterVisualId, 'idle');
 
     this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
       fontSize: '10px',
@@ -244,7 +248,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     if (distance <= stopRadius) {
       this.setVelocity(0, 0);
-      this.play(`${this.characterVisualId}-idle`, true);
+      this.spriteAnimationSystem.playMovement(this, this.characterVisualId, false);
       return;
     }
 
@@ -254,7 +258,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const velocityY = (dy / distance) * speed;
 
     this.setVelocity(velocityX, velocityY);
-    this.play(`${this.characterVisualId}-run`, true);
+    this.spriteAnimationSystem.playMovement(this, this.characterVisualId, true);
 
     if (velocityX < -1) {
       this.setFlipX(true);
@@ -299,12 +303,10 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   }
 
   playCombatAttackAnimation(): void {
-    this.play(`${this.characterVisualId}-shoot`, true);
-    this.setTintFill(0xfef08a);
-    this.scene.time.delayedCall(90, () => {
-      if (this.active) {
-        this.setTint(this.profile.tint);
-      }
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key);
+    this.spriteAnimationSystem.playShootEffect(this, this.characterVisualId, this.flipX ? -1 : 1, {
+      x: weaponVisual.muzzleOffsetX,
+      y: weaponVisual.muzzleOffsetY
     });
   }
 

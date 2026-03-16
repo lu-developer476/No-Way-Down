@@ -12,6 +12,12 @@ interface DialogueSceneData {
 }
 
 export class DialogueScene extends Phaser.Scene {
+  private enterKey?: Phaser.Input.Keyboard.Key;
+
+  private hasAdvanced = false;
+
+  private flowManager?: SceneFlowManager;
+
   constructor() {
     super('DialogueScene');
   }
@@ -36,12 +42,48 @@ export class DialogueScene extends Phaser.Scene {
 
     this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
 
-    this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
-      const manager = new SceneFlowManager(this);
-      const next = manager.advance();
-      if (next) {
-        manager.transitionToNode(next);
-      }
+    this.flowManager = new SceneFlowManager(this);
+
+    if (this.input.keyboard) {
+      this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
+    } else {
+      console.error('[DialogueScene] Keyboard input no está disponible.');
+    }
+
+    this.input.on('pointerdown', () => {
+      console.log('[DialogueScene] Click detectado.');
+      this.advanceToNextNode('click');
     });
+  }
+
+  update(): void {
+    if (!this.enterKey || this.hasAdvanced) {
+      return;
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+      console.log('[DialogueScene] ENTER detectado.');
+      this.advanceToNextNode('enter');
+    }
+  }
+
+  private advanceToNextNode(source: 'enter' | 'click'): void {
+    if (this.hasAdvanced) {
+      return;
+    }
+
+    this.hasAdvanced = true;
+    const manager = this.flowManager ?? new SceneFlowManager(this);
+
+    const next = manager.advance();
+    console.log('[DialogueScene] Nodo siguiente obtenido:', next ?? null);
+
+    if (!next) {
+      console.error('[DialogueScene] Error: no existe nodo siguiente para avanzar desde DialogueScene.');
+      return;
+    }
+
+    console.log(`[DialogueScene] Transición ejecutada por ${source}.`);
+    manager.transitionToNode(next);
   }
 }

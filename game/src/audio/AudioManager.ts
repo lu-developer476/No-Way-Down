@@ -3,25 +3,52 @@ import Phaser from 'phaser';
 const AUDIO_MANAGER_REGISTRY_KEY = '__audioManager';
 const AUDIO_MUTED_STORAGE_KEY = 'no-way-down-audio-muted';
 const AUDIO_VOLUME_STORAGE_KEY = 'no-way-down-audio-volume';
+const AUDIO_TYPE_MUTE_STORAGE_KEY = 'no-way-down-audio-type-muted';
 
 const AUDIO_KEYS = {
   shot: 'sfx-shot',
+  reload: 'sfx-reload',
+  melee: 'sfx-melee',
+  footsteps: 'sfx-footsteps',
+  zombieGroan: 'sfx-zombie-groan',
   playerDamage: 'sfx-player-damage',
   zombieDeath: 'sfx-zombie-death',
   uiConfirm: 'ui-confirm',
   uiPause: 'ui-pause',
   menuMusic: 'music-menu',
   gameplayAmbient: 'ambient-gameplay',
+  cinematicMusic: 'music-cinematic',
   ambientZombieDistant: 'ambient-zombie-distant'
 } as const;
 
 type ManagedSoundEvent =
   | 'shot'
+  | 'reload'
+  | 'melee'
+  | 'footsteps'
+  | 'zombieGroan'
   | 'playerDamage'
   | 'zombieDeath'
   | 'uiConfirm'
   | 'uiPause'
   | 'ambientZombieDistant';
+
+export type ManagedAudioType =
+  | 'gunshots'
+  | 'reload'
+  | 'melee'
+  | 'zombie'
+  | 'ambient'
+  | 'footsteps'
+  | 'cinematicMusic'
+  | 'ui';
+
+interface PlayOptions {
+  x?: number;
+  y?: number;
+  volume?: number;
+  detune?: number;
+}
 
 type PlaybackResult = 'asset' | 'tone' | 'silent' | 'muted';
 
@@ -35,6 +62,10 @@ interface ToneConfig {
 
 const TONE_PRESETS: Record<ManagedSoundEvent, ToneConfig> = {
   shot: { frequency: 210, frequencyEnd: 140, durationMs: 80, type: 'square', volume: 0.024 },
+  reload: { frequency: 320, frequencyEnd: 190, durationMs: 160, type: 'triangle', volume: 0.019 },
+  melee: { frequency: 290, frequencyEnd: 110, durationMs: 110, type: 'sawtooth', volume: 0.02 },
+  footsteps: { frequency: 180, frequencyEnd: 120, durationMs: 60, type: 'square', volume: 0.008 },
+  zombieGroan: { frequency: 88, frequencyEnd: 66, durationMs: 300, type: 'triangle', volume: 0.016 },
   playerDamage: { frequency: 180, frequencyEnd: 90, durationMs: 140, type: 'sawtooth', volume: 0.028 },
   zombieDeath: { frequency: 130, frequencyEnd: 70, durationMs: 220, type: 'triangle', volume: 0.032 },
   uiConfirm: { frequency: 660, frequencyEnd: 720, durationMs: 70, type: 'sine', volume: 0.02 },
@@ -45,6 +76,9 @@ const TONE_PRESETS: Record<ManagedSoundEvent, ToneConfig> = {
 export class AudioManager {
   private readonly game: Phaser.Game;
   private readonly missingAssetWarnings = new Set<string>();
+  private readonly poolByKey = new Map<string, Phaser.Sound.BaseSound[]>();
+  private readonly mutedTypes = new Set<ManagedAudioType>();
+  private listenerPosition = new Phaser.Math.Vector2(0, 0);
   private ambientOscillator?: OscillatorNode;
   private ambientGain?: GainNode;
   private isAmbientRunning = false;
@@ -54,8 +88,8 @@ export class AudioManager {
     this.loadPersistedSettings();
   }
 
-  play(event: ManagedSoundEvent): PlaybackResult {
-    if (this.isMuted()) {
+  play(event: ManagedSoundEvent, options: PlayOptions = {}): PlaybackResult {
+    if (this.isMuted() || this.isMutedByType(this.getTypeForEvent(event))) {
       return 'muted';
     }
 
@@ -66,11 +100,10 @@ export class AudioManager {
 
     const key = this.getKeyForEvent(event);
     if (this.hasAudioAsset(scene, key)) {
-      scene.sound.play(key, {
-        volume: event.startsWith('ui') ? 0.34 : 0.26,
-        detune: event === 'shot' ? Phaser.Math.Between(-90, 70) : 0
+      return this.playPooledSound(scene, key, {
+        volume: this.getDynamicVolume(event, options),
+        detune: options.detune ?? (event === 'shot' ? Phaser.Math.Between(-90, 70) : 0)
       });
-      return 'asset';
     }
 
     this.warnMissingAssetOnce(key, `Usando tono sintético para "${event}".`);
@@ -87,6 +120,10 @@ export class AudioManager {
   }
 
   startGameplayAmbient(): void {
+    if (this.isMutedByType('ambient')) {
+      return;
+    }
+
     this.stopMenuMusic();
     this.playMusicTrack('gameplayAmbient', 0.18);
 
@@ -98,6 +135,18 @@ export class AudioManager {
   stopGameplayAmbient(): void {
     this.stopMusicTrack('gameplayAmbient');
     this.stopAmbientFallbackLoop();
+  }
+
+  startCinematicMusic(): void {
+    if (this.isMutedByType('cinematicMusic')) {
+      return;
+    }
+
+    this.playMusicTrack('cinematicMusic', 0.25);
+  }
+
+  stopCinematicMusic(): void {
+    this.stopMusicTrack('cinematicMusic');
   }
 
   toggleMute(): boolean {
@@ -156,6 +205,31 @@ export class AudioManager {
     return Phaser.Math.Clamp(Math.round(volume * 100), 0, 100);
   }
 
+  setListenerPosition(x: number, y: number): void {
+    this.listenerPosition.set(x, y);
+  }
+
+  setTypeMuted(type: ManagedAudioType, muted: boolean): void {
+    if (muted) {
+      this.mutedTypes.add(type);
+    } else {
+      this.mutedTypes.delete(type);
+    }
+
+    if (type === 'ambient' && muted) {
+      this.stopGameplayAmbient();
+    }
+    if (type === 'cinematicMusic' && muted) {
+      this.stopCinematicMusic();
+    }
+
+    this.persistMutedTypes();
+  }
+
+  isMutedByType(type: ManagedAudioType): boolean {
+    return this.mutedTypes.has(type);
+  }
+
   private loadPersistedSettings(): void {
     let persistedMuted = false;
     let persistedVolume = 100;
@@ -175,9 +249,11 @@ export class AudioManager {
     this.game.sound.volume = persistedVolume / 100;
     this.game.registry.set('audioMuted', persistedMuted);
     this.game.registry.set('audioVolume', persistedVolume);
+
+    this.loadPersistedMutedTypes();
   }
 
-  private playMusicTrack(track: 'menuMusic' | 'gameplayAmbient', volume: number): void {
+  private playMusicTrack(track: 'menuMusic' | 'gameplayAmbient' | 'cinematicMusic', volume: number): void {
     if (this.isMuted()) {
       return;
     }
@@ -193,15 +269,15 @@ export class AudioManager {
       return;
     }
 
-    const existing = scene.sound.get(key);
-    if (existing && existing.isPlaying) {
+    const existingPool = this.poolByKey.get(key) ?? [];
+    if (existingPool.some((sound) => sound.isPlaying)) {
       return;
     }
 
-    scene.sound.play(key, { loop: true, volume });
+    this.playPooledSound(scene, key, { loop: true, volume });
   }
 
-  private stopMusicTrack(track: 'menuMusic' | 'gameplayAmbient'): void {
+  private stopMusicTrack(track: 'menuMusic' | 'gameplayAmbient' | 'cinematicMusic'): void {
     const scene = this.getPlaybackScene();
     if (!scene) {
       return;
@@ -326,6 +402,77 @@ export class AudioManager {
     return 'tone';
   }
 
+  private playPooledSound(scene: Phaser.Scene, key: string, config: Phaser.Types.Sound.SoundConfig): PlaybackResult {
+    const pool = this.poolByKey.get(key) ?? [];
+    let sound = pool.find((candidate) => !candidate.isPlaying);
+
+    if (!sound) {
+      sound = scene.sound.add(key, config);
+      pool.push(sound);
+      this.poolByKey.set(key, pool);
+    }
+
+    sound.play(config);
+    return 'asset';
+  }
+
+  private getDynamicVolume(event: ManagedSoundEvent, options: PlayOptions): number {
+    const base = options.volume ?? (event.startsWith('ui') ? 0.34 : 0.26);
+    if (options.x === undefined || options.y === undefined || event.startsWith('ui')) {
+      return base;
+    }
+
+    const distance = Phaser.Math.Distance.Between(options.x, options.y, this.listenerPosition.x, this.listenerPosition.y);
+    const attenuation = Phaser.Math.Clamp(1 - distance / 760, 0.12, 1);
+    return base * attenuation;
+  }
+
+  private getTypeForEvent(event: ManagedSoundEvent): ManagedAudioType {
+    switch (event) {
+      case 'shot':
+        return 'gunshots';
+      case 'reload':
+        return 'reload';
+      case 'melee':
+        return 'melee';
+      case 'zombieDeath':
+      case 'zombieGroan':
+      case 'playerDamage':
+        return 'zombie';
+      case 'ambientZombieDistant':
+        return 'ambient';
+      case 'footsteps':
+        return 'footsteps';
+      case 'uiConfirm':
+      case 'uiPause':
+        return 'ui';
+      default:
+        return 'ui';
+    }
+  }
+
+  private loadPersistedMutedTypes(): void {
+    try {
+      const serialized = localStorage.getItem(AUDIO_TYPE_MUTE_STORAGE_KEY);
+      if (!serialized) {
+        return;
+      }
+
+      const parsed = JSON.parse(serialized) as ManagedAudioType[];
+      parsed.forEach((type) => this.mutedTypes.add(type));
+    } catch {
+      this.mutedTypes.clear();
+    }
+  }
+
+  private persistMutedTypes(): void {
+    try {
+      localStorage.setItem(AUDIO_TYPE_MUTE_STORAGE_KEY, JSON.stringify(Array.from(this.mutedTypes)));
+    } catch {
+      // Ignore storage errors.
+    }
+  }
+
   private hasAudioAsset(scene: Phaser.Scene, key: string): boolean {
     return Boolean(scene.cache.audio.has(key) || scene.sound.get(key));
   }
@@ -334,6 +481,14 @@ export class AudioManager {
     switch (event) {
       case 'shot':
         return AUDIO_KEYS.shot;
+      case 'reload':
+        return AUDIO_KEYS.reload;
+      case 'melee':
+        return AUDIO_KEYS.melee;
+      case 'footsteps':
+        return AUDIO_KEYS.footsteps;
+      case 'zombieGroan':
+        return AUDIO_KEYS.zombieGroan;
       case 'playerDamage':
         return AUDIO_KEYS.playerDamage;
       case 'zombieDeath':

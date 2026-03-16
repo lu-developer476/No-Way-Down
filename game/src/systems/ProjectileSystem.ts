@@ -4,6 +4,7 @@ import { CharacterWeaponKey } from '../config/characterRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { applyLegacyWeaponOverrides, getWeaponRuntimeConfig, WeaponRuntimeConfig } from '../config/weaponRuntime';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
+import { getAudioManager } from '../audio/AudioManager';
 
 export interface FireConfig {
   originX: number;
@@ -90,6 +91,7 @@ export class ProjectileSystem {
     );
 
     this.nextFireTimeByShooter.set(shooterId, now + weaponRuntime.fireCooldownMs * this.fireCooldownMultiplier);
+    getAudioManager(this.scene).play('shot', { x: config.originX, y: config.originY, volume: 0.24 });
     return true;
   }
 

@@ -136,6 +136,7 @@ export class GameScene extends Phaser.Scene {
   private movementLockedByNarrative = false;
   private firstCleanupNarrativeTriggered = false;
   private lateRescueAlliesIntegrated = false;
+  private nextFootstepAt = 0;
   private readonly allyHealthBars = new Map<string, AllyWorldHealthBar>();
   private readonly onNarrativeAdvanceKey = () => {
     this.advanceDialogueRequested = true;
@@ -483,7 +484,11 @@ export class GameScene extends Phaser.Scene {
     this.enforcePlayerSeparation();
     this.updateSharedCamera();
 
-    const leadPlayerX = this.getAveragePlayerPosition().x;
+    const averagePlayerPosition = this.getAveragePlayerPosition();
+    getAudioManager(this).setListenerPosition(averagePlayerPosition.x, averagePlayerPosition.y);
+    this.playFootstepsForMovingPlayers();
+
+    const leadPlayerX = averagePlayerPosition.x;
     this.zombieSystem?.update(leadPlayerX);
 
     const leadPlayer = this.players[0];
@@ -518,6 +523,25 @@ export class GameScene extends Phaser.Scene {
     this.projectileSystem?.update();
 
     this.updateInteractables();
+  }
+
+
+  private playFootstepsForMovingPlayers(): void {
+    if (this.time.now < this.nextFootstepAt) {
+      return;
+    }
+
+    const movingPlayer = this.players.find((player) => {
+      const body = player.body as Phaser.Physics.Arcade.Body | null;
+      return Boolean(body && body.blocked.down && Math.abs(body.velocity.x) > 8);
+    });
+
+    if (!movingPlayer) {
+      return;
+    }
+
+    getAudioManager(this).play('footsteps', { x: movingPlayer.x, y: movingPlayer.y, volume: 0.09 });
+    this.nextFootstepAt = this.time.now + 230;
   }
 
   private updateInteractables(): void {
@@ -770,11 +794,15 @@ export class GameScene extends Phaser.Scene {
     this.movementLockedByNarrative = locked;
     this.registry.set('isGamePaused', locked);
 
+    const audioManager = getAudioManager(this);
     if (locked) {
+      audioManager.startCinematicMusic();
       this.physics.world.pause();
       this.players.forEach((player) => player.setVelocity(0, 0));
       return;
     }
+
+    audioManager.stopCinematicMusic();
 
     if (!this.hasPlayerBeenDefeated && !this.hasTriggeredTransition) {
       this.physics.world.resume();
@@ -1368,6 +1396,7 @@ export class GameScene extends Phaser.Scene {
   private returnToMainMenu(): void {
     const audioManager = getAudioManager(this);
     audioManager.stopGameplayAmbient();
+    audioManager.stopCinematicMusic();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', audioManager.isMuted());

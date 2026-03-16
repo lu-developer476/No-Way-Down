@@ -23,6 +23,11 @@ export class DialogueScene extends Phaser.Scene {
   }
 
   create(data: DialogueSceneData = {}): void {
+    if (data.flowNode) {
+      this.registry.set('activeCampaignNode', data.flowNode);
+      this.registry.set('flowNodeId', data.flowNode.id);
+    }
+
     const dialoguePath = data.flowNode?.dialoguePath;
     const dialogue = (dialoguePath ? this.cache.json.get(dialoguePath) : undefined) as { lines: DialogueLine[] } | undefined;
     const lines = dialogue?.lines ?? [];
@@ -75,7 +80,12 @@ export class DialogueScene extends Phaser.Scene {
     this.hasAdvanced = true;
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
-    const next = manager.advance();
+    const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    if (currentNode) {
+      console.log('[DialogueScene] activeCampaignNode detectado en registry:', currentNode.id);
+    }
+
+    const next = manager.advanceFromNodeId(currentNode?.id ?? this.registry.get('flowNodeId'));
     console.log('[DialogueScene] Nodo siguiente obtenido:', next ?? null);
 
     if (!next) {

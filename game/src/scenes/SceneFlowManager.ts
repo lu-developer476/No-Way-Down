@@ -37,6 +37,25 @@ const VALID_SCENE_KEYS: CampaignFlowNode['sceneKey'][] = [
 export class SceneFlowManager {
   constructor(private readonly scene: Phaser.Scene) {}
 
+  ensureDefinitionLoadedFromCache(): CampaignFlowDefinition | undefined {
+    const existing = this.getDefinition();
+    if (existing) {
+      return existing;
+    }
+
+    if (!this.scene.cache.json.exists(CAMPAIGN_FLOW_CACHE_KEY)) {
+      return undefined;
+    }
+
+    const cached = this.scene.cache.json.get(CAMPAIGN_FLOW_CACHE_KEY) as CampaignFlowDefinition | undefined;
+    if (!cached || !Array.isArray(cached.nodes) || cached.nodes.length === 0) {
+      return undefined;
+    }
+
+    this.loadDefinition(cached);
+    return cached;
+  }
+
   validateCampaignFlow(): boolean {
     if (!this.scene.cache.json.exists(CAMPAIGN_FLOW_CACHE_KEY)) {
       console.error('campaign_flow.json no existe en cache');
@@ -73,13 +92,13 @@ export class SceneFlowManager {
   }
 
   getCurrentNode(): CampaignFlowNode | undefined {
-    const definition = this.getDefinition();
+    const definition = this.ensureDefinitionLoadedFromCache();
     const cursor = this.getCursor();
     return definition?.nodes[cursor];
   }
 
   advance(): CampaignFlowNode | undefined {
-    const definition = this.getDefinition();
+    const definition = this.ensureDefinitionLoadedFromCache();
     if (!definition) {
       return undefined;
     }
@@ -93,8 +112,33 @@ export class SceneFlowManager {
     return definition.nodes[nextCursor];
   }
 
+  advanceFromNodeId(nodeId?: string): CampaignFlowNode | undefined {
+    const definition = this.ensureDefinitionLoadedFromCache();
+    if (!definition) {
+      return undefined;
+    }
+
+    if (!nodeId) {
+      return this.advance();
+    }
+
+    const currentIndex = definition.nodes.findIndex((node) => node.id === nodeId);
+    if (currentIndex < 0) {
+      console.warn(`[SceneFlowManager] nodeId no encontrado en flow: ${nodeId}. Se usará cursor actual.`);
+      return this.advance();
+    }
+
+    const nextIndex = currentIndex + 1;
+    if (nextIndex >= definition.nodes.length) {
+      return undefined;
+    }
+
+    this.scene.registry.set(FLOW_CURSOR_KEY, nextIndex);
+    return definition.nodes[nextIndex];
+  }
+
   startFromBeginning(): CampaignFlowNode | undefined {
-    const definition = this.getDefinition();
+    const definition = this.ensureDefinitionLoadedFromCache();
     if (!definition || definition.nodes.length === 0) {
       return undefined;
     }

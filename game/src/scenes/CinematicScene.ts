@@ -22,6 +22,11 @@ export class CinematicScene extends Phaser.Scene {
   }
 
   create(data: CinematicSceneData = {}): void {
+    if (data.flowNode) {
+      this.registry.set('activeCampaignNode', data.flowNode);
+      this.registry.set('flowNodeId', data.flowNode.id);
+    }
+
     const cinematicPath = data.flowNode?.cinematicPath;
     const cinematic = (cinematicPath ? this.cache.json.get(cinematicPath) : undefined) as { beats: CinematicBeat[] } | undefined;
     const beats = cinematic?.beats ?? [];
@@ -71,7 +76,12 @@ export class CinematicScene extends Phaser.Scene {
     this.hasAdvanced = true;
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
-    const next = manager.advance();
+    const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    if (currentNode) {
+      console.log('[CinematicScene] activeCampaignNode detectado en registry:', currentNode.id);
+    }
+
+    const next = manager.advanceFromNodeId(currentNode?.id ?? this.registry.get('flowNodeId'));
     console.log('[CinematicScene] Nodo siguiente obtenido:', next ?? null);
 
     if (!next) {

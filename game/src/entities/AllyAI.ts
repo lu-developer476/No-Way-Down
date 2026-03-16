@@ -18,6 +18,10 @@ const ALLY_TARGET_DETECTION_RANGE = 340;
 const ALLY_ATTACK_RANGE = 210;
 const ALLY_ATTACK_MIN_DISTANCE = 92;
 const ALLY_COMBAT_REPOSITION_DISTANCE = 130;
+const ALLY_MELEE_SWITCH_DISTANCE = 78;
+const ALLY_DEFENSE_SWITCH_DISTANCE = 68;
+const ALLY_SAFE_RELOAD_DISTANCE = 165;
+const ALLY_LOW_AMMO_RATIO = 0.25;
 const ALLY_PLAYER_BLOCK_RADIUS = 32;
 const ALLY_TARGET_MEMORY_MS = 1200;
 const ALLY_TARGET_SWITCH_BIAS = 48;
@@ -181,8 +185,19 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const distanceToTarget = Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
     const combatAnchor = this.getCombatAnchor(player, target);
 
+    this.completeReloadIfNeeded();
+    this.updateCombatLoadout(distanceToTarget);
+
+    const activeWeapon = this.getActiveWeaponRuntime();
+    const activeCatalog = getWeaponCatalogEntry(activeWeapon.key);
+
     if (distanceToTarget < ALLY_ATTACK_MIN_DISTANCE) {
       this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED * 0.9, ALLY_STOP_RADIUS + 10);
+      return;
+    }
+
+    if (activeCatalog.isDefensive && distanceToTarget <= ALLY_DEFENSE_SWITCH_DISTANCE) {
+      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_FOLLOW_SPEED * 0.85, ALLY_STOP_RADIUS + 14);
       return;
     }
 
@@ -276,7 +291,6 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    this.completeReloadIfNeeded();
     if (this.isReloading) {
       return;
     }
@@ -331,6 +345,12 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     return true;
   }
 
+  private cancelReload(): void {
+    this.isReloading = false;
+    this.reloadingWeaponKey = undefined;
+    this.reloadEndsAt = 0;
+  }
+
   private completeReloadIfNeeded(): void {
     if (!this.isReloading || this.scene.time.now < this.reloadEndsAt) {
       return;
@@ -343,6 +363,100 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.isReloading = false;
     this.reloadingWeaponKey = undefined;
     this.reloadEndsAt = 0;
+  }
+
+  private updateCombatLoadout(distanceToTarget: number): void {
+    const activeWeapon = this.getActiveWeaponRuntime();
+    const activeCatalog = getWeaponCatalogEntry(activeWeapon.key);
+
+    if (activeCatalog.isDefensive && distanceToTarget <= ALLY_DEFENSE_SWITCH_DISTANCE) {
+      return;
+    }
+
+    if (distanceToTarget <= ALLY_DEFENSE_SWITCH_DISTANCE) {
+      const shieldSlot = this.findWeaponSlot((weapon) => weapon.key === 'tray_shield');
+      if (shieldSlot) {
+        this.switchToSlotAndCancelReload(shieldSlot);
+        return;
+      }
+    }
+
+    if (distanceToTarget <= ALLY_MELEE_SWITCH_DISTANCE) {
+      const meleeSlot = this.findWeaponSlot((weapon) => {
+        const catalog = getWeaponCatalogEntry(weapon.key);
+        return catalog.isMelee && !catalog.isDefensive;
+      });
+      if (meleeSlot) {
+        this.switchToSlotAndCancelReload(meleeSlot);
+        return;
+      }
+    }
+
+    if (this.isReloading && distanceToTarget <= ALLY_MELEE_SWITCH_DISTANCE) {
+      const fallbackSlot = this.findWeaponSlot((weapon) => {
+        const catalog = getWeaponCatalogEntry(weapon.key);
+        if (catalog.isMelee || catalog.isDefensive) {
+          return true;
+        }
+
+        return this.ammoRuntime.canFire(weapon.key);
+      });
+      if (fallbackSlot && fallbackSlot !== this.activeWeaponSlot) {
+        this.switchToSlotAndCancelReload(fallbackSlot);
+        return;
+      }
+    }
+
+    if (!this.ammoRuntime.canFire(activeWeapon.key)) {
+      const slotWithAmmo = this.findWeaponSlot((weapon) => {
+        const catalog = getWeaponCatalogEntry(weapon.key);
+        if (catalog.isMelee || catalog.isDefensive) {
+          return true;
+        }
+
+        return this.ammoRuntime.canFire(weapon.key);
+      });
+
+      if (slotWithAmmo && slotWithAmmo !== this.activeWeaponSlot) {
+        this.switchToSlotAndCancelReload(slotWithAmmo);
+        return;
+      }
+
+      this.startReloadActiveWeapon(activeWeapon.key);
+      return;
+    }
+
+    if (!activeCatalog.usesAmmo || activeCatalog.isMelee || activeCatalog.isDefensive || distanceToTarget < ALLY_SAFE_RELOAD_DISTANCE) {
+      return;
+    }
+
+    const ammo = this.ammoRuntime.getSnapshotForWeapon(activeWeapon.key);
+    const ammoCurrent = ammo.ammoCurrent ?? 0;
+    const ammoMax = ammo.ammoMax ?? 1;
+    const ammoRatio = ammoMax > 0 ? ammoCurrent / ammoMax : 1;
+
+    if (ammoRatio <= ALLY_LOW_AMMO_RATIO) {
+      this.startReloadActiveWeapon(activeWeapon.key);
+    }
+  }
+
+  private switchToSlotAndCancelReload(slot: CharacterWeaponSlot): void {
+    if (this.switchActiveWeaponSlot(slot)) {
+      this.cancelReload();
+    }
+  }
+
+  private findWeaponSlot(predicate: (weaponRuntime: ReturnType<AllyAI['getActiveWeaponRuntime']>) => boolean): CharacterWeaponSlot | undefined {
+    const slots: CharacterWeaponSlot[] = ['primary', 'secondary'];
+
+    return slots.find((slot) => {
+      const runtime = this.runtimeConfig.weaponRuntimeBySlot[slot];
+      if (!runtime) {
+        return false;
+      }
+
+      return predicate(runtime);
+    });
   }
 
   private pickTarget(zombies: Zombie[], player: Player, currentTime: number): Zombie | undefined {

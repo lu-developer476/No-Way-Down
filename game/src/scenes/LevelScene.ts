@@ -4,6 +4,7 @@ import { CampaignSystem } from '../systems/CampaignSystem';
 import { SpawnSystem } from '../systems/SpawnSystem';
 import { CombatSystem } from '../systems/CombatSystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
+import { controlManager } from '../input/ControlManager';
 
 export class LevelScene extends GameScene {
   private campaignSystem?: CampaignSystem;
@@ -32,7 +33,7 @@ export class LevelScene extends GameScene {
     this.combatSystem.instantiate(data.flowNode.systems?.combat ?? []);
     this.environmentSystem.instantiate(data.flowNode.systems?.environment ?? []);
 
-    this.input.keyboard?.once('keydown-ENTER', () => {
+    this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
       const manager = new SceneFlowManager(this);
       const nextNode = manager.advance();
       if (nextNode) {

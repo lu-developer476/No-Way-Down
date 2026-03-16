@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { controlManager } from '../input/ControlManager';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 
 interface CampaignIntroSceneData {
@@ -24,7 +25,7 @@ export class CampaignIntroScene extends Phaser.Scene {
       fontSize: '18px'
     }).setOrigin(0.5);
 
-    this.input.keyboard?.once('keydown-ENTER', () => {
+    this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
       const manager = new SceneFlowManager(this);
       const next = manager.advance();
       if (next) {

@@ -1,0 +1,12 @@
+{
+  "move_left": "ArrowLeft",
+  "move_right": "ArrowRight",
+  "move_down": "ArrowDown",
+  "jump": "Space",
+  "shoot": "KeyS",
+  "reload": "KeyR",
+  "interact": "KeyE",
+  "next_level": "Enter",
+  "pause": "KeyP",
+  "quit": "Escape"
+}

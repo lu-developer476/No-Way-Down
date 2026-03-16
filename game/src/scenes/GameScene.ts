@@ -38,6 +38,7 @@ import level2NarrativeCallConfig from '../../public/assets/levels/level2_narrati
 import corridorObjectsConfig from '../../public/assets/levels/corridor_objects.json';
 import { addEnvironmentProp } from './environmentLayout';
 import { getCharacterRuntimeConfig } from '../config/characterRuntime';
+import { controlManager } from '../input/ControlManager';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -1257,21 +1258,21 @@ export class GameScene extends Phaser.Scene {
   }
 
   private registerPauseControls(): void {
-    this.input.keyboard?.on('keydown-P', this.onPauseToggleKey);
-    this.input.keyboard?.on('keydown-ESC', this.onPauseBackKey);
+    this.input.keyboard?.on(controlManager.getPhaserEventName('pause'), this.onPauseToggleKey);
+    this.input.keyboard?.on(controlManager.getPhaserEventName('quit'), this.onPauseBackKey);
     this.input.keyboard?.on('keydown-UP', this.onPauseUpKey);
     this.input.keyboard?.on('keydown-DOWN', this.onPauseDownKey);
-    this.input.keyboard?.on('keydown-ENTER', this.onPauseConfirmKey);
+    this.input.keyboard?.on(controlManager.getPhaserEventName('next_level'), this.onPauseConfirmKey);
     this.input.keyboard?.on('keydown-LEFT', this.onPauseLeftKey);
     this.input.keyboard?.on('keydown-RIGHT', this.onPauseRightKey);
   }
 
   private unregisterPauseControls(): void {
-    this.input.keyboard?.off('keydown-P', this.onPauseToggleKey);
-    this.input.keyboard?.off('keydown-ESC', this.onPauseBackKey);
+    this.input.keyboard?.off(controlManager.getPhaserEventName('pause'), this.onPauseToggleKey);
+    this.input.keyboard?.off(controlManager.getPhaserEventName('quit'), this.onPauseBackKey);
     this.input.keyboard?.off('keydown-UP', this.onPauseUpKey);
     this.input.keyboard?.off('keydown-DOWN', this.onPauseDownKey);
-    this.input.keyboard?.off('keydown-ENTER', this.onPauseConfirmKey);
+    this.input.keyboard?.off(controlManager.getPhaserEventName('next_level'), this.onPauseConfirmKey);
     this.input.keyboard?.off('keydown-LEFT', this.onPauseLeftKey);
     this.input.keyboard?.off('keydown-RIGHT', this.onPauseRightKey);
   }
@@ -1401,7 +1402,7 @@ export class GameScene extends Phaser.Scene {
   private openPauseOptions(): void {
     this.pauseMenuState = 'options';
     this.pauseMenuOptions = [
-      { label: 'Controles: Flechas / Espacio / S / R / E / Enter / P / ESC', action: () => undefined },
+      { label: this.getFormattedControlSummary(), action: () => undefined },
       { label: 'Sonido: --', action: () => this.toggleAudioMute() },
       { label: 'Volumen: --', action: () => this.adjustMasterVolume(10) },
       { label: 'Diálogos: SPACE avanzar · X saltar', action: () => undefined },
@@ -1414,6 +1415,19 @@ export class GameScene extends Phaser.Scene {
     this.pauseMenuIndex = 0;
     this.refreshPauseMenuTexts();
     this.pauseHintText?.setText('↑/↓ seleccionar · ←/→ ajustar volumen · ESC volver');
+  }
+
+  private getFormattedControlSummary(): string {
+    return [
+      `Controles: ${controlManager.getMovementDisplayLabel()}`,
+      `Saltar ${controlManager.getDisplayLabel('jump')}`,
+      `Disparar ${controlManager.getDisplayLabel('shoot')}`,
+      `Recargar ${controlManager.getDisplayLabel('reload')}`,
+      `Interactuar ${controlManager.getDisplayLabel('interact')}`,
+      `Siguiente nivel ${controlManager.getDisplayLabel('next_level')}`,
+      `Pausa ${controlManager.getDisplayLabel('pause')}`,
+      `Abandonar ${controlManager.getDisplayLabel('quit')}`
+    ].join(' / ');
   }
 
   private refreshPauseMenuTexts(): void {

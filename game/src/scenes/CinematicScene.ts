@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { controlManager } from '../input/ControlManager';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 
 interface CinematicBeat {
@@ -31,7 +32,7 @@ export class CinematicScene extends Phaser.Scene {
     }).setOrigin(0.5);
     this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
 
-    this.input.keyboard?.once('keydown-ENTER', () => {
+    this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
       const manager = new SceneFlowManager(this);
       const next = manager.advance();
       if (next) {

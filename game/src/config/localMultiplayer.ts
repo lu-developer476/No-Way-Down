@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { InitialRunSetup } from '../scenes/sceneShared';
 import { getCharacterRuntimeConfig } from './characterRuntime';
+import { controlManager } from '../input/ControlManager';
 
 export type PlayerSlot = 1 | 2 | 3 | 4;
 export type PlayableCharacterId = 'alan' | 'giovanna' | 'nahir' | 'damian';
@@ -37,13 +38,13 @@ export interface PartySeedConfig {
 }
 
 const CONTROLS_P1: PlayerControlScheme = {
-  left: Phaser.Input.Keyboard.KeyCodes.LEFT,
-  right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
-  down: Phaser.Input.Keyboard.KeyCodes.DOWN,
-  jump: Phaser.Input.Keyboard.KeyCodes.SPACE,
-  shoot: Phaser.Input.Keyboard.KeyCodes.S,
-  reload: Phaser.Input.Keyboard.KeyCodes.R,
-  interact: Phaser.Input.Keyboard.KeyCodes.E
+  left: controlManager.getKeyCode('move_left'),
+  right: controlManager.getKeyCode('move_right'),
+  down: controlManager.getKeyCode('move_down'),
+  jump: controlManager.getKeyCode('jump'),
+  shoot: controlManager.getKeyCode('shoot'),
+  reload: controlManager.getKeyCode('reload'),
+  interact: controlManager.getKeyCode('interact')
 };
 
 const PARTY_MEMBER_TINT: Record<PartyCharacterId, number> = {

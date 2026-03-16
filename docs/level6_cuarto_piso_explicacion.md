@@ -11,7 +11,7 @@ El nivel está definido para un flujo lineal de **6 secciones**, manteniendo un 
 6. Salida
 
 Archivo de datos del nivel:
-- `game/public/assets/levels/level6_cuarto_piso_comedor.json`
+- `assets/levels/level6_cuarto_piso_comedor.json`
 
 ## Explicación de cada sección
 

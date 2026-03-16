@@ -36,7 +36,7 @@ Referencia visual/operativa del layout:
 
 Modelo de exploración y recursos:
 
-- `game/public/assets/levels/level10_parking_exploration.json`
+- `assets/levels/level10_parking_exploration.json`
 
 Modelo de supervivencia en estacionamiento:
 
@@ -58,7 +58,7 @@ Sistema: `Level10ParkingExplorationSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_parking_exploration.json`
+- `assets/levels/level10_parking_exploration.json`
 
 ### B. Capa genérica de interacción vehicular
 
@@ -69,7 +69,7 @@ Sistema: `VehicleInteractionSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_vehicles.json`
+- `assets/levels/level10_vehicles.json`
 
 ### C. Tabla de loot por vehículo
 
@@ -79,7 +79,7 @@ Sistema: `VehicleLootSystem` (datos)
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_vehicle_loot.json`
+- `assets/levels/level10_vehicle_loot.json`
 
 ---
 
@@ -97,7 +97,7 @@ Sistema: `TwinBiteParkingCinematicSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_twin_bite_event.json`
+- `assets/levels/level10_twin_bite_event.json`
 
 ---
 
@@ -113,7 +113,7 @@ Sistema: `Level10ResistanceCombatSystem`
 
 Archivo:
 
-- `game/public/assets/levels/level10_resistance_encounters.json`
+- `assets/levels/level10_resistance_encounters.json`
 
 ### B. Supervivencia del estacionamiento (oleadas + presión continua + eventos)
 
@@ -148,7 +148,7 @@ Sistema: `ProgressiveInfectionSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_infection_stages.json`
+- `assets/levels/level10_infection_stages.json`
 
 ---
 
@@ -165,7 +165,7 @@ Sistema: `TwinFinalCollapseCinematicSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_twin_final_dialogue.json`
+- `assets/levels/level10_twin_final_dialogue.json`
 
 ---
 
@@ -179,7 +179,7 @@ Sistema: `DriveToSanTelmoCinematicSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_drive_to_santelmo_dialogue.json`
+- `assets/levels/level10_drive_to_santelmo_dialogue.json`
 
 ---
 
@@ -194,7 +194,7 @@ Sistema: `Level10FinalStreetHoldSystem`
 
 Archivo principal:
 
-- `game/public/assets/levels/level10_final_street_hold.json`
+- `assets/levels/level10_final_street_hold.json`
 
 > Nota de mantenimiento: el sistema valida `timer.durationMs === 120000`; no convertir este valor en configurable libre si se quiere conservar el cierre actual.
 
@@ -221,18 +221,18 @@ Archivo principal:
 
 ### Núcleo de Nivel 10 (runtime)
 
-- `game/public/assets/levels/level10_objective_chain.json`
-- `game/public/assets/levels/level10_narrative_chain.json`
-- `game/public/assets/levels/level10_parking_exploration.json`
+- `assets/levels/level10_objective_chain.json`
+- `assets/levels/level10_narrative_chain.json`
+- `assets/levels/level10_parking_exploration.json`
 - `game/config/levels/level10/level10_parking_survival.json`
-- `game/public/assets/levels/level10_resistance_encounters.json`
-- `game/public/assets/levels/level10_twin_bite_event.json`
-- `game/public/assets/levels/level10_infection_stages.json`
-- `game/public/assets/levels/level10_twin_final_dialogue.json`
-- `game/public/assets/levels/level10_vehicles.json`
-- `game/public/assets/levels/level10_vehicle_loot.json`
-- `game/public/assets/levels/level10_drive_to_santelmo_dialogue.json`
-- `game/public/assets/levels/level10_final_street_hold.json`
+- `assets/levels/level10_resistance_encounters.json`
+- `assets/levels/level10_twin_bite_event.json`
+- `assets/levels/level10_infection_stages.json`
+- `assets/levels/level10_twin_final_dialogue.json`
+- `assets/levels/level10_vehicles.json`
+- `assets/levels/level10_vehicle_loot.json`
+- `assets/levels/level10_drive_to_santelmo_dialogue.json`
+- `assets/levels/level10_final_street_hold.json`
 - `game/config/levels/level10/level10_final_ending.json`
 
 ### Referencia de layout/documentación

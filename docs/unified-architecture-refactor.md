@@ -144,8 +144,8 @@ Esto evita colisiones y elimina mezclas de estilos (`cp7-*`, `level7-checkpoint-
 ### Fuente de verdad por dominio (hoy)
 
 - **Objetivos de runtime jugable actual (`GameScene`)**: `game/src/scenes/GameScene.ts` (`MissionSystem` inline).
-- **Checkpoints narrativos de Nivel 7**: `game/public/assets/levels/level7_narrative_checkpoints.json`.
-- **Cinemáticas de llamada asociadas a checkpoints de Nivel 7**: `game/public/assets/levels/level7_cinematic_call.json`.
+- **Checkpoints narrativos de Nivel 7**: `assets/levels/level7_narrative_checkpoints.json`.
+- **Cinemáticas de llamada asociadas a checkpoints de Nivel 7**: `assets/levels/level7_cinematic_call.json`.
 - **Composición inicial del grupo jugable actual**: `getActivePlayerConfigs()` + mapeo a `CampaignState` / `PartyStateSystem` en `GameScene`.
 - **Persistencia de campaña en runtime actual**: `progressApi` + fallback `localStorage` para progreso básico (`current_level`, `life`, `checkpoint`).
 

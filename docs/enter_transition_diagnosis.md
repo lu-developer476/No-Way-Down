@@ -31,9 +31,9 @@ La definición se intenta cargar en `AssetPreloadScene` desde `assets/campaign/c
    - Los JSON de campaña están realmente en `game/public/assets/...`.
 
 5. Ubicación física de JSON de campaña:
-   - `game/public/assets/campaign/campaign_flow.json`
-   - `game/public/assets/dialogues/campaign_intro_dialogue.json`
-   - `game/public/assets/cinematics/drive_to_santelmo.json`
+   - `assets/campaign/campaign_flow.json`
+   - `assets/dialogues/campaign_intro_dialogue.json`
+   - `assets/cinematics/drive_to_santelmo.json`
 
 ## Causa raíz
 **Desalineación entre rutas de assets y `publicDir` de Vite**:

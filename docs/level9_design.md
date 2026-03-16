@@ -106,15 +106,15 @@ En la integración de ejemplo, al finalizar secuencia:
 
 ## 8) Archivos JSON implicados
 ### Núcleo de progresión y narrativa (assets del juego)
-- `game/public/assets/levels/level9_objective_chain.json`
-- `game/public/assets/levels/level9_exit_evaluation.json`
-- `game/public/assets/levels/level9_exitA_dialogue.json`
-- `game/public/assets/levels/level9_exitB_loss_event.json`
-- `game/public/assets/levels/level9_exitE_decision_dialogue.json`
-- `game/public/assets/levels/level9_subsuelo2_infection_dialogue.json`
-- `game/public/assets/levels/level9_descent_pressure.json`
-- `game/public/assets/levels/level9_final_sacrifice.json`
-- `game/public/assets/levels/level9_narrative_chain.json`
+- `assets/levels/level9_objective_chain.json`
+- `assets/levels/level9_exit_evaluation.json`
+- `assets/levels/level9_exitA_dialogue.json`
+- `assets/levels/level9_exitB_loss_event.json`
+- `assets/levels/level9_exitE_decision_dialogue.json`
+- `assets/levels/level9_subsuelo2_infection_dialogue.json`
+- `assets/levels/level9_descent_pressure.json`
+- `assets/levels/level9_final_sacrifice.json`
+- `assets/levels/level9_narrative_chain.json`
 
 ### JSON de soporte fuera de `assets/levels`
 - `game/config/levels/level9/level9_exit_routes.json`

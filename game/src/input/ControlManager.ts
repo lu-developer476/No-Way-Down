@@ -8,6 +8,7 @@ export type ControlAction =
   | 'jump'
   | 'shoot'
   | 'reload'
+  | 'switch_weapon'
   | 'interact'
   | 'next_level'
   | 'pause'
@@ -22,6 +23,7 @@ const DEFAULT_CONTROLS: ControlsConfig = {
   jump: 'Space',
   shoot: 'KeyS',
   reload: 'KeyR',
+  switch_weapon: 'KeyC',
   interact: 'KeyE',
   next_level: 'Enter',
   pause: 'KeyP',
@@ -38,6 +40,7 @@ const KEY_CODE_BY_EVENT_CODE: Record<string, number> = {
   Escape: Phaser.Input.Keyboard.KeyCodes.ESC,
   KeyE: Phaser.Input.Keyboard.KeyCodes.E,
   KeyP: Phaser.Input.Keyboard.KeyCodes.P,
+  KeyC: Phaser.Input.Keyboard.KeyCodes.C,
   KeyR: Phaser.Input.Keyboard.KeyCodes.R,
   KeyS: Phaser.Input.Keyboard.KeyCodes.S
 };
@@ -52,6 +55,7 @@ const DISPLAY_LABEL_BY_EVENT_CODE: Record<string, string> = {
   Escape: 'ESC',
   KeyE: 'E',
   KeyP: 'P',
+  KeyC: 'C',
   KeyR: 'R',
   KeyS: 'S'
 };
@@ -66,6 +70,7 @@ const PHASER_EVENT_KEY_BY_EVENT_CODE: Record<string, string> = {
   Escape: 'ESC',
   KeyE: 'E',
   KeyP: 'P',
+  KeyC: 'C',
   KeyR: 'R',
   KeyS: 'S'
 };

@@ -1139,7 +1139,13 @@ export class GameScene extends Phaser.Scene {
         activeSlot: inventory.activeSlot,
         activeWeapon: inventory.activeWeapon,
         primaryWeapon: inventory.primaryWeapon,
-        secondaryWeapon: inventory.secondaryWeapon
+        secondaryWeapon: inventory.secondaryWeapon,
+        usesAmmo: inventory.usesAmmo,
+        ammoType: inventory.ammoType,
+        ammoCurrent: inventory.ammoCurrent,
+        ammoMax: inventory.ammoMax,
+        ammoReserve: inventory.ammoReserve,
+        isReloading: inventory.isReloading
       };
     });
 
@@ -1177,7 +1183,13 @@ export class GameScene extends Phaser.Scene {
         activeSlot: healthSnapshot?.inventory?.activeSlot ?? runtime.loadout.activeSlot,
         activeWeapon: healthSnapshot?.inventory?.activeWeapon ?? runtime.weaponRuntime.key,
         primaryWeapon: healthSnapshot?.inventory?.primaryWeapon ?? runtime.loadout.primaryWeapon,
-        secondaryWeapon: healthSnapshot?.inventory?.secondaryWeapon ?? runtime.loadout.secondaryWeapon
+        secondaryWeapon: healthSnapshot?.inventory?.secondaryWeapon ?? runtime.loadout.secondaryWeapon,
+        usesAmmo: healthSnapshot?.inventory?.usesAmmo,
+        ammoType: healthSnapshot?.inventory?.ammoType,
+        ammoCurrent: healthSnapshot?.inventory?.ammoCurrent,
+        ammoMax: healthSnapshot?.inventory?.ammoMax,
+        ammoReserve: healthSnapshot?.inventory?.ammoReserve,
+        isReloading: healthSnapshot?.inventory?.isReloading
       };
     });
 
@@ -1442,6 +1454,7 @@ export class GameScene extends Phaser.Scene {
       `Saltar ${controlManager.getDisplayLabel('jump')}`,
       `Disparar ${controlManager.getDisplayLabel('shoot')}`,
       `Recargar ${controlManager.getDisplayLabel('reload')}`,
+      `Cambiar arma ${controlManager.getDisplayLabel('switch_weapon')}`,
       `Interactuar ${controlManager.getDisplayLabel('interact')}`,
       `Siguiente nivel ${controlManager.getDisplayLabel('next_level')}`,
       `Pausa ${controlManager.getDisplayLabel('pause')}`,

@@ -19,6 +19,12 @@ export interface PartyHudMember {
   activeWeapon?: string;
   primaryWeapon?: string;
   secondaryWeapon?: string;
+  usesAmmo?: boolean;
+  ammoType?: string;
+  ammoCurrent?: number;
+  ammoMax?: number;
+  ammoReserve?: number;
+  isReloading?: boolean;
 }
 
 export const MAX_PLAYER_SEPARATION_PX = 320;

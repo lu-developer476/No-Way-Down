@@ -5,6 +5,7 @@
   "jump": "Space",
   "shoot": "KeyS",
   "reload": "KeyR",
+  "switch_weapon": "KeyC",
   "interact": "KeyE",
   "next_level": "Enter",
   "pause": "KeyP",

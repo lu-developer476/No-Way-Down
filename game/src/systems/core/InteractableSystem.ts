@@ -168,6 +168,14 @@ export class InteractableSystem {
     return [...this.entries.values()].map((entry) => ({ ...entry.runtime }));
   }
 
+  reset(): void {
+    this.entries.forEach((entry) => {
+      entry.runtime.enabled = entry.definition.enabled ?? true;
+      entry.runtime.interactions = 0;
+      entry.runtime.lastInteractedAt = undefined;
+    });
+  }
+
   private describeType(type: InteractableType): string {
     switch (type) {
       case 'door':

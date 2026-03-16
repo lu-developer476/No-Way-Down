@@ -111,6 +111,17 @@ export class ObjectiveSystem {
     return this.runtime.every((entry) => entry.status === 'completed');
   }
 
+  reset(): void {
+    this.matched.clear();
+    this.activeIndex = 0;
+
+    this.runtime.forEach((runtime, index) => {
+      runtime.status = index === 0 ? 'active' : 'locked';
+      runtime.completedAt = undefined;
+      runtime.failedAt = undefined;
+    });
+  }
+
   private matches(condition: ObjectiveCondition, event: ObjectiveEvent): boolean {
     if (condition.type !== event.type) {
       return false;

@@ -274,14 +274,50 @@
       ],
       "dialogueSequence": [
         {
-          "speaker": "Valentina",
+          "speaker": "Alan",
           "text": "Mantengan formación. Este sector está tomado.",
-          "durationMs": 2200
+          "durationMs": 2200,
+          "id": "intro_alan_1",
+          "emotion": "calm",
+          "portrait": "alan_default",
+          "choices": [
+            {
+              "id": "push",
+              "text": "Empujar rápido",
+              "nextId": "intro_lorena_fast"
+            },
+            {
+              "id": "safe",
+              "text": "Avanzar con cautela",
+              "nextId": "intro_lorena_safe"
+            }
+          ]
         },
         {
           "speaker": "Lorena",
           "text": "Recibido. Revisando ruta al siguiente nivel.",
-          "durationMs": 2200
+          "durationMs": 2200,
+          "id": "intro_lorena_fast",
+          "emotion": "tense",
+          "portrait": "lorena_alert",
+          "nextId": "intro_valentina_close"
+        },
+        {
+          "id": "intro_lorena_safe",
+          "speaker": "Lorena",
+          "text": "Avanzo despacio. Cubran ángulos y mantengan silencio.",
+          "emotion": "calm",
+          "portrait": "lorena_default",
+          "durationMs": 2200,
+          "nextId": "intro_valentina_close"
+        },
+        {
+          "id": "intro_valentina_close",
+          "speaker": "Valentina",
+          "text": "Perfecto. Mantengan contacto visual y seguimos.",
+          "emotion": "focused",
+          "portrait": "valentina_default",
+          "durationMs": 2000
         }
       ],
       "duration": 10000,

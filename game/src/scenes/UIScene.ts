@@ -26,6 +26,7 @@ export class UIScene extends Phaser.Scene {
   private dialogueSpeakerText?: Phaser.GameObjects.Text;
   private dialogueBodyText?: Phaser.GameObjects.Text;
   private dialogueHintText?: Phaser.GameObjects.Text;
+  private dialoguePortraitText?: Phaser.GameObjects.Text;
   private controlsLegendText?: Phaser.GameObjects.Text;
 
   constructor() {
@@ -193,15 +194,21 @@ export class UIScene extends Phaser.Scene {
     this.protagonistHud?.container.setAlpha(isPaused ? 0.65 : 1);
   }
 
-  private handleDialogueStateChanged(_parent: Phaser.Data.DataManager, value: { speaker: string; text: string; canSkip?: boolean; canAdvance?: boolean } | null): void {
+  private handleDialogueStateChanged(_parent: Phaser.Data.DataManager, value: { speaker: string; text: string; emotion?: string; portrait?: string; choices?: { text: string }[]; canSkip?: boolean; canAdvance?: boolean } | null): void {
     if (!value || !value.text) {
       this.dialoguePanel?.setVisible(false);
       return;
     }
 
+    const subtitle = value.emotion ? `${value.text} (${value.emotion})` : value.text;
+    const choicesText = value.choices?.length
+      ? `\n\nOpciones:\n${value.choices.map((choice, index) => `${index + 1}. ${choice.text}`).join('\n')}`
+      : '';
+
     this.dialogueSpeakerText?.setText(value.speaker || '...');
-    this.dialogueBodyText?.setText(value.text);
-    this.dialogueHintText?.setText('SPACE: avanzar · X: saltar diálogo');
+    this.dialoguePortraitText?.setText(value.portrait ? `Retrato: ${value.portrait}` : 'Retrato: default');
+    this.dialogueBodyText?.setText(`${subtitle}${choicesText}`);
+    this.dialogueHintText?.setText('SPACE: avanzar · X: saltar diálogo · 1-3: elegir');
     this.dialoguePanel?.setVisible(true);
   }
 
@@ -303,6 +310,13 @@ export class UIScene extends Phaser.Scene {
       fontStyle: 'bold'
     }).setOrigin(0, 0.5).setScrollFactor(0);
 
+
+    this.dialoguePortraitText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 14, dialogueBg.y - 42, '', {
+      color: '#94a3b8',
+      fontSize: '10px',
+      fontFamily: pixelFont
+    }).setOrigin(1, 0.5).setScrollFactor(0);
+
     this.dialogueBodyText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 16, dialogueBg.y - 14, '', {
       color: '#e2e8f0',
       fontSize: '14px',
@@ -316,7 +330,7 @@ export class UIScene extends Phaser.Scene {
       fontFamily: pixelFont
     }).setOrigin(1, 0.5).setScrollFactor(0);
 
-    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, this.dialogueSpeakerText, this.dialogueBodyText, this.dialogueHintText])
+    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, this.dialogueSpeakerText, this.dialoguePortraitText, this.dialogueBodyText, this.dialogueHintText])
       .setDepth(50)
       .setVisible(false);
 

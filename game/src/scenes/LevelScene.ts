@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import { GameScene } from './GameScene';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 import { CampaignSystem } from '../systems/CampaignSystem';
@@ -5,6 +6,13 @@ import { SpawnSystem } from '../systems/SpawnSystem';
 import { CombatSystem } from '../systems/CombatSystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { controlManager } from '../input/ControlManager';
+import { Checkpoint } from './sceneShared';
+
+type LevelSceneCreateData = {
+  flowNode?: CampaignFlowNode;
+  skipLoad?: boolean;
+  respawnPoint?: Checkpoint;
+};
 
 export class LevelScene extends GameScene {
   private campaignSystem?: CampaignSystem;
@@ -16,29 +24,95 @@ export class LevelScene extends GameScene {
     super('LevelScene');
   }
 
-  create(data: { flowNode?: CampaignFlowNode; skipLoad?: boolean; respawnPoint?: unknown } = {}): void {
-    super.create({ skipLoad: true });
-
+  create(data: LevelSceneCreateData = {}): void {
     if (!data.flowNode) {
+      console.error('[LevelScene] No se recibió flowNode. No se puede resolver levelConfigPath.');
       return;
     }
 
-    this.campaignSystem = new CampaignSystem(this);
-    this.spawnSystem = new SpawnSystem(this);
-    this.combatSystem = new CombatSystem(this);
-    this.environmentSystem = new EnvironmentSystem(this);
+    const { flowNode } = data;
+    console.log(`[LevelScene] flowNode.id recibido: ${flowNode.id}`);
 
-    this.campaignSystem.configureFlowNode(data.flowNode);
-    this.spawnSystem.instantiate(data.flowNode.systems?.spawn ?? []);
-    this.combatSystem.instantiate(data.flowNode.systems?.combat ?? []);
-    this.environmentSystem.instantiate(data.flowNode.systems?.environment ?? []);
+    if (!flowNode.levelConfigPath) {
+      console.error(`[LevelScene] flowNode ${flowNode.id} no define levelConfigPath. Se aborta la creación del nivel.`);
+      return;
+    }
 
-    this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
-      const manager = new SceneFlowManager(this);
-      const nextNode = manager.advance();
-      if (nextNode) {
-        manager.transitionToNode(nextNode);
+    console.log(`[LevelScene] levelConfigPath a cargar: ${flowNode.levelConfigPath}`);
+
+    this.ensureCampaignLevelConfigLoaded(flowNode, (campaignLevelConfig, usedFallback) => {
+      super.create({
+        skipLoad: true,
+        respawnPoint: data.respawnPoint,
+        flowNodeId: flowNode.id,
+        campaignLevelConfigPath: flowNode.levelConfigPath,
+        campaignLevelConfig
+      });
+
+      this.campaignSystem = new CampaignSystem(this);
+      this.spawnSystem = new SpawnSystem(this);
+      this.combatSystem = new CombatSystem(this);
+      this.environmentSystem = new EnvironmentSystem(this);
+
+      this.campaignSystem.configureFlowNode(flowNode);
+      this.spawnSystem.instantiate(flowNode.systems?.spawn ?? []);
+      this.combatSystem.instantiate(flowNode.systems?.combat ?? []);
+      this.environmentSystem.instantiate(flowNode.systems?.environment ?? []);
+
+      if (usedFallback) {
+        console.warn(`[LevelScene] fallback activado para ${flowNode.id}.`);
       }
+
+      this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
+        const manager = new SceneFlowManager(this);
+        const nextNode = manager.advance();
+        if (nextNode) {
+          manager.transitionToNode(nextNode);
+        }
+      });
     });
+  }
+
+  private ensureCampaignLevelConfigLoaded(
+    flowNode: CampaignFlowNode,
+    onReady: (campaignLevelConfig: unknown, usedFallback: boolean) => void
+  ): void {
+    const configPath = flowNode.levelConfigPath;
+    if (!configPath) {
+      console.error(`[LevelScene] flowNode ${flowNode.id} no tiene levelConfigPath.`);
+      return;
+    }
+
+    const cacheKey = this.getCampaignLevelCacheKey(configPath);
+
+    if (this.cache.json.exists(cacheKey)) {
+      const config = this.cache.json.get(cacheKey);
+      console.log(`[LevelScene] carga exitosa desde cache para ${configPath}.`);
+      onReady(config, false);
+      return;
+    }
+
+    this.load.json(cacheKey, configPath);
+
+    this.load.once('filecomplete-json-' + cacheKey, () => {
+      const config = this.cache.json.get(cacheKey);
+      console.log(`[LevelScene] carga exitosa de ${configPath}.`);
+      onReady(config, false);
+    });
+
+    this.load.once('loaderror', (file: Phaser.Loader.File) => {
+      if (file.key !== cacheKey) {
+        return;
+      }
+
+      console.error(`[LevelScene] Error cargando ${configPath} para flowNode ${flowNode.id}. Se usará fallback.`);
+      onReady({}, true);
+    });
+
+    this.load.start();
+  }
+
+  private getCampaignLevelCacheKey(levelConfigPath: string): string {
+    return `campaign_level::${levelConfigPath}`;
   }
 }

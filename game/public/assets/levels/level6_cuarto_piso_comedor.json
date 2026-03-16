@@ -5,19 +5,42 @@
       "id": "S1",
       "name": "acceso por escaleras",
       "description": "Llegada desde el tercer piso a un rellano con puerta cortafuego y señalización de evacuación.",
-      "bounds": { "x": 0, "y": 0, "width": 980, "height": 760 },
-      "entry_point": { "x": 140, "y": 660 },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 980,
+        "height": 760
+      },
+      "entry_point": {
+        "x": 140,
+        "y": 660
+      },
       "path_hint": [
-        { "x": 260, "y": 620 },
-        { "x": 460, "y": 570 },
-        { "x": 780, "y": 520 }
+        {
+          "x": 260,
+          "y": 620
+        },
+        {
+          "x": 460,
+          "y": 570
+        },
+        {
+          "x": 780,
+          "y": 520
+        }
       ],
       "obstacles": [
         {
           "id": "OBS-S1-01",
           "type": "door_blocker",
-          "position": { "x": 320, "y": 600 },
-          "size": { "width": 120, "height": 40 },
+          "position": {
+            "x": 320,
+            "y": 600
+          },
+          "size": {
+            "width": 120,
+            "height": 40
+          },
           "asset_placeholder": "fire_door_frame_institutional_placeholder"
         }
       ],
@@ -25,7 +48,10 @@
         {
           "id": "INT-S1-01",
           "type": "control_panel",
-          "position": { "x": 360, "y": 540 },
+          "position": {
+            "x": 360,
+            "y": 540
+          },
           "interaction_radius": 60,
           "action": "unlock_service_corridor",
           "asset_placeholder": "service_access_panel_placeholder"
@@ -40,26 +66,55 @@
       "id": "S2",
       "name": "pasillo de servicio",
       "description": "Pasillo técnico con carros de limpieza, estanterías metálicas y accesos laterales cerrados.",
-      "bounds": { "x": 981, "y": 0, "width": 1540, "height": 760 },
-      "entry_point": { "x": 1030, "y": 530 },
+      "bounds": {
+        "x": 981,
+        "y": 0,
+        "width": 1540,
+        "height": 760
+      },
+      "entry_point": {
+        "x": 1030,
+        "y": 530
+      },
       "path_hint": [
-        { "x": 1260, "y": 520 },
-        { "x": 1620, "y": 500 },
-        { "x": 2120, "y": 500 }
+        {
+          "x": 1260,
+          "y": 520
+        },
+        {
+          "x": 1620,
+          "y": 500
+        },
+        {
+          "x": 2120,
+          "y": 500
+        }
       ],
       "obstacles": [
         {
           "id": "OBS-S2-01",
           "type": "service_cart",
-          "position": { "x": 1380, "y": 520 },
-          "size": { "width": 130, "height": 70 },
+          "position": {
+            "x": 1380,
+            "y": 520
+          },
+          "size": {
+            "width": 130,
+            "height": 70
+          },
           "asset_placeholder": "stainless_service_cart_placeholder"
         },
         {
           "id": "OBS-S2-02",
           "type": "supply_shelf",
-          "position": { "x": 1860, "y": 450 },
-          "size": { "width": 180, "height": 90 },
+          "position": {
+            "x": 1860,
+            "y": 450
+          },
+          "size": {
+            "width": 180,
+            "height": 90
+          },
           "asset_placeholder": "metal_storage_shelf_placeholder"
         }
       ],
@@ -67,7 +122,10 @@
         {
           "id": "INT-S2-01",
           "type": "alarm_switch",
-          "position": { "x": 1710, "y": 410 },
+          "position": {
+            "x": 1710,
+            "y": 410
+          },
           "interaction_radius": 55,
           "action": "disable_kitchen_alarm_loop",
           "asset_placeholder": "wall_alarm_switch_placeholder"
@@ -82,27 +140,59 @@
       "id": "S3",
       "name": "cocina industrial",
       "description": "Cocina central con hornos, mesadas de acero y líneas de calor que limitan la movilidad.",
-      "bounds": { "x": 2522, "y": 0, "width": 1730, "height": 900 },
-      "entry_point": { "x": 2590, "y": 520 },
+      "bounds": {
+        "x": 2522,
+        "y": 0,
+        "width": 1730,
+        "height": 900
+      },
+      "entry_point": {
+        "x": 2590,
+        "y": 520
+      },
       "path_hint": [
-        { "x": 2840, "y": 500 },
-        { "x": 3220, "y": 510 },
-        { "x": 3700, "y": 540 },
-        { "x": 4120, "y": 620 }
+        {
+          "x": 2840,
+          "y": 500
+        },
+        {
+          "x": 3220,
+          "y": 510
+        },
+        {
+          "x": 3700,
+          "y": 540
+        },
+        {
+          "x": 4120,
+          "y": 620
+        }
       ],
       "obstacles": [
         {
           "id": "OBS-S3-01",
           "type": "industrial_oven_line",
-          "position": { "x": 3050, "y": 430 },
-          "size": { "width": 320, "height": 120 },
+          "position": {
+            "x": 3050,
+            "y": 430
+          },
+          "size": {
+            "width": 320,
+            "height": 120
+          },
           "asset_placeholder": "kitchen_oven_bank_placeholder"
         },
         {
           "id": "OBS-S3-02",
           "type": "prep_table",
-          "position": { "x": 3520, "y": 610 },
-          "size": { "width": 280, "height": 90 },
+          "position": {
+            "x": 3520,
+            "y": 610
+          },
+          "size": {
+            "width": 280,
+            "height": 90
+          },
           "asset_placeholder": "steel_prep_table_large_placeholder"
         }
       ],
@@ -110,7 +200,10 @@
         {
           "id": "INT-S3-01",
           "type": "gas_valve",
-          "position": { "x": 3380, "y": 390 },
+          "position": {
+            "x": 3380,
+            "y": 390
+          },
           "interaction_radius": 65,
           "action": "close_main_gas_line",
           "asset_placeholder": "industrial_gas_valve_wheel_placeholder"
@@ -118,7 +211,10 @@
         {
           "id": "INT-S3-02",
           "type": "cold_room_door",
-          "position": { "x": 4040, "y": 500 },
+          "position": {
+            "x": 4040,
+            "y": 500
+          },
           "interaction_radius": 70,
           "action": "open_shortcut_to_prep_area",
           "asset_placeholder": "cold_storage_door_placeholder"
@@ -133,26 +229,55 @@
       "id": "S4",
       "name": "área de preparación de viandas",
       "description": "Zona de empaque con cintas de bandejas y mesas largas donde se forman embudos de combate.",
-      "bounds": { "x": 4253, "y": 100, "width": 1480, "height": 980 },
-      "entry_point": { "x": 4320, "y": 630 },
+      "bounds": {
+        "x": 4253,
+        "y": 100,
+        "width": 1480,
+        "height": 980
+      },
+      "entry_point": {
+        "x": 4320,
+        "y": 630
+      },
       "path_hint": [
-        { "x": 4620, "y": 650 },
-        { "x": 4980, "y": 670 },
-        { "x": 5360, "y": 650 }
+        {
+          "x": 4620,
+          "y": 650
+        },
+        {
+          "x": 4980,
+          "y": 670
+        },
+        {
+          "x": 5360,
+          "y": 650
+        }
       ],
       "obstacles": [
         {
           "id": "OBS-S4-01",
           "type": "tray_conveyor",
-          "position": { "x": 4700, "y": 560 },
-          "size": { "width": 330, "height": 80 },
+          "position": {
+            "x": 4700,
+            "y": 560
+          },
+          "size": {
+            "width": 330,
+            "height": 80
+          },
           "asset_placeholder": "meal_tray_conveyor_placeholder"
         },
         {
           "id": "OBS-S4-02",
           "type": "stacked_crates",
-          "position": { "x": 5220, "y": 600 },
-          "size": { "width": 140, "height": 100 },
+          "position": {
+            "x": 5220,
+            "y": 600
+          },
+          "size": {
+            "width": 140,
+            "height": 100
+          },
           "asset_placeholder": "food_crates_stack_placeholder"
         }
       ],
@@ -160,7 +285,10 @@
         {
           "id": "INT-S4-01",
           "type": "power_breaker",
-          "position": { "x": 4460, "y": 480 },
+          "position": {
+            "x": 4460,
+            "y": 480
+          },
           "interaction_radius": 60,
           "action": "reroute_power_to_cafeteria_exit",
           "asset_placeholder": "industrial_breaker_box_placeholder"
@@ -175,26 +303,55 @@
       "id": "S5",
       "name": "comedor de empleados",
       "description": "Comedor abierto con mesas, columnas y máquinas expendedoras, ideal para fuego cruzado.",
-      "bounds": { "x": 5734, "y": 180, "width": 1470, "height": 920 },
-      "entry_point": { "x": 5800, "y": 690 },
+      "bounds": {
+        "x": 5734,
+        "y": 180,
+        "width": 1470,
+        "height": 920
+      },
+      "entry_point": {
+        "x": 5800,
+        "y": 690
+      },
       "path_hint": [
-        { "x": 6060, "y": 700 },
-        { "x": 6400, "y": 690 },
-        { "x": 6840, "y": 660 }
+        {
+          "x": 6060,
+          "y": 700
+        },
+        {
+          "x": 6400,
+          "y": 690
+        },
+        {
+          "x": 6840,
+          "y": 660
+        }
       ],
       "obstacles": [
         {
           "id": "OBS-S5-01",
           "type": "dining_table_cluster",
-          "position": { "x": 6220, "y": 650 },
-          "size": { "width": 360, "height": 160 },
+          "position": {
+            "x": 6220,
+            "y": 650
+          },
+          "size": {
+            "width": 360,
+            "height": 160
+          },
           "asset_placeholder": "institutional_dining_tables_cluster_placeholder"
         },
         {
           "id": "OBS-S5-02",
           "type": "vending_machines",
-          "position": { "x": 6740, "y": 520 },
-          "size": { "width": 130, "height": 120 },
+          "position": {
+            "x": 6740,
+            "y": 520
+          },
+          "size": {
+            "width": 130,
+            "height": 120
+          },
           "asset_placeholder": "cafeteria_vending_machine_pair_placeholder"
         }
       ],
@@ -202,7 +359,10 @@
         {
           "id": "INT-S5-01",
           "type": "pa_system_console",
-          "position": { "x": 6020, "y": 520 },
+          "position": {
+            "x": 6020,
+            "y": 520
+          },
           "interaction_radius": 65,
           "action": "broadcast_decoy_sound",
           "asset_placeholder": "cafeteria_pa_console_placeholder"
@@ -217,15 +377,33 @@
       "id": "S6",
       "name": "salida",
       "description": "Vestíbulo de seguridad junto al montacargas que conecta con el siguiente tramo del edificio.",
-      "bounds": { "x": 7205, "y": 260, "width": 790, "height": 700 },
-      "entry_point": { "x": 7260, "y": 650 },
-      "extraction_pad": { "x": 7600, "y": 560, "radius": 110 },
+      "bounds": {
+        "x": 7205,
+        "y": 260,
+        "width": 790,
+        "height": 700
+      },
+      "entry_point": {
+        "x": 7260,
+        "y": 650
+      },
+      "extraction_pad": {
+        "x": 7600,
+        "y": 560,
+        "radius": 110
+      },
       "obstacles": [
         {
           "id": "OBS-S6-01",
           "type": "security_gate",
-          "position": { "x": 7440, "y": 580 },
-          "size": { "width": 170, "height": 90 },
+          "position": {
+            "x": 7440,
+            "y": 580
+          },
+          "size": {
+            "width": 170,
+            "height": 90
+          },
           "asset_placeholder": "reinforced_service_gate_placeholder"
         }
       ],
@@ -233,7 +411,10 @@
         {
           "id": "INT-S6-01",
           "type": "elevator_call_panel",
-          "position": { "x": 7560, "y": 500 },
+          "position": {
+            "x": 7560,
+            "y": 500
+          },
           "interaction_radius": 70,
           "action": "activate_level_exit",
           "asset_placeholder": "freight_elevator_panel_placeholder"
@@ -246,102 +427,313 @@
     }
   ],
   "spawn_points": [
-    { "id": "SP-S1-01", "section_id": "S1", "position": { "x": 780, "y": 520 }, "enemy_type": "walker", "max_active": 4 },
-    { "id": "SP-S2-01", "section_id": "S2", "position": { "x": 1460, "y": 440 }, "enemy_type": "runner", "max_active": 4 },
-    { "id": "SP-S2-02", "section_id": "S2", "position": { "x": 2140, "y": 510 }, "enemy_type": "walker", "max_active": 5 },
-    { "id": "SP-S3-01", "section_id": "S3", "position": { "x": 3120, "y": 470 }, "enemy_type": "crawler", "max_active": 4 },
-    { "id": "SP-S3-02", "section_id": "S3", "position": { "x": 3880, "y": 600 }, "enemy_type": "brute", "max_active": 1 },
-    { "id": "SP-S4-01", "section_id": "S4", "position": { "x": 4740, "y": 640 }, "enemy_type": "walker", "max_active": 5 },
-    { "id": "SP-S4-02", "section_id": "S4", "position": { "x": 5360, "y": 650 }, "enemy_type": "runner", "max_active": 4 },
-    { "id": "SP-S5-01", "section_id": "S5", "position": { "x": 6260, "y": 620 }, "enemy_type": "runner", "max_active": 5 },
-    { "id": "SP-S5-02", "section_id": "S5", "position": { "x": 6820, "y": 520 }, "enemy_type": "crawler", "max_active": 4 },
-    { "id": "SP-S6-01", "section_id": "S6", "position": { "x": 7480, "y": 560 }, "enemy_type": "walker", "max_active": 3 }
+    {
+      "id": "SP-S1-01",
+      "section_id": "S1",
+      "position": {
+        "x": 780,
+        "y": 520
+      },
+      "enemy_type": "walker",
+      "max_active": 4
+    },
+    {
+      "id": "SP-S2-01",
+      "section_id": "S2",
+      "position": {
+        "x": 1460,
+        "y": 440
+      },
+      "enemy_type": "runner",
+      "max_active": 4
+    },
+    {
+      "id": "SP-S2-02",
+      "section_id": "S2",
+      "position": {
+        "x": 2140,
+        "y": 510
+      },
+      "enemy_type": "walker",
+      "max_active": 5
+    },
+    {
+      "id": "SP-S3-01",
+      "section_id": "S3",
+      "position": {
+        "x": 3120,
+        "y": 470
+      },
+      "enemy_type": "crawler",
+      "max_active": 4
+    },
+    {
+      "id": "SP-S3-02",
+      "section_id": "S3",
+      "position": {
+        "x": 3880,
+        "y": 600
+      },
+      "enemy_type": "brute",
+      "max_active": 1
+    },
+    {
+      "id": "SP-S4-01",
+      "section_id": "S4",
+      "position": {
+        "x": 4740,
+        "y": 640
+      },
+      "enemy_type": "walker",
+      "max_active": 5
+    },
+    {
+      "id": "SP-S4-02",
+      "section_id": "S4",
+      "position": {
+        "x": 5360,
+        "y": 650
+      },
+      "enemy_type": "runner",
+      "max_active": 4
+    },
+    {
+      "id": "SP-S5-01",
+      "section_id": "S5",
+      "position": {
+        "x": 6260,
+        "y": 620
+      },
+      "enemy_type": "runner",
+      "max_active": 5
+    },
+    {
+      "id": "SP-S5-02",
+      "section_id": "S5",
+      "position": {
+        "x": 6820,
+        "y": 520
+      },
+      "enemy_type": "crawler",
+      "max_active": 4
+    },
+    {
+      "id": "SP-S6-01",
+      "section_id": "S6",
+      "position": {
+        "x": 7480,
+        "y": 560
+      },
+      "enemy_type": "walker",
+      "max_active": 3
+    }
   ],
   "combat_zones": [
     {
       "id": "CZ1",
       "name": "embudo de acceso",
       "section_id": "S1",
-      "area": { "x": 240, "y": 430, "width": 640, "height": 260 },
+      "area": {
+        "x": 240,
+        "y": 430,
+        "width": 640,
+        "height": 260
+      },
       "activation_trigger": {
         "type": "cross_line",
         "line": {
-          "from": { "x": 340, "y": 620 },
-          "to": { "x": 620, "y": 570 }
+          "from": {
+            "x": 340,
+            "y": 620
+          },
+          "to": {
+            "x": 620,
+            "y": 570
+          }
         },
         "action": "lock_stair_door_and_spawn_wave"
       },
-      "clear_condition": { "type": "eliminate_enemies", "count": 8 },
+      "clear_condition": {
+        "type": "eliminate_enemies",
+        "count": 8
+      },
       "waves": [
-        { "wave": 1, "spawns": ["SP-S1-01"], "enemies": 4 },
-        { "wave": 2, "spawns": ["SP-S1-01", "SP-S2-01"], "enemies": 4 }
+        {
+          "wave": 1,
+          "spawns": [
+            "SP-S1-01"
+          ],
+          "enemies": 4
+        },
+        {
+          "wave": 2,
+          "spawns": [
+            "SP-S1-01",
+            "SP-S2-01"
+          ],
+          "enemies": 4
+        }
       ]
     },
     {
       "id": "CZ2",
       "name": "pasillo de servicio bloqueado",
       "section_id": "S2",
-      "area": { "x": 1260, "y": 390, "width": 1080, "height": 300 },
+      "area": {
+        "x": 1260,
+        "y": 390,
+        "width": 1080,
+        "height": 300
+      },
       "activation_trigger": {
         "type": "enter_area",
-        "position": { "x": 1680, "y": 510 },
+        "position": {
+          "x": 1680,
+          "y": 510
+        },
         "radius": 130,
         "action": "start_service_corridor_ambush"
       },
-      "clear_condition": { "type": "eliminate_enemies", "count": 12 },
+      "clear_condition": {
+        "type": "eliminate_enemies",
+        "count": 12
+      },
       "waves": [
-        { "wave": 1, "spawns": ["SP-S2-01"], "enemies": 5 },
-        { "wave": 2, "spawns": ["SP-S2-01", "SP-S2-02"], "enemies": 7 }
+        {
+          "wave": 1,
+          "spawns": [
+            "SP-S2-01"
+          ],
+          "enemies": 5
+        },
+        {
+          "wave": 2,
+          "spawns": [
+            "SP-S2-01",
+            "SP-S2-02"
+          ],
+          "enemies": 7
+        }
       ]
     },
     {
       "id": "CZ3",
       "name": "fuego en cocina industrial",
       "section_id": "S3",
-      "area": { "x": 2860, "y": 360, "width": 1280, "height": 390 },
+      "area": {
+        "x": 2860,
+        "y": 360,
+        "width": 1280,
+        "height": 390
+      },
       "activation_trigger": {
         "type": "objective_progress",
         "condition": "combat_zone_CZ2_cleared",
         "action": "ignite_heatline_and_spawn_kitchen_wave"
       },
-      "clear_condition": { "type": "eliminate_enemies", "count": 14 },
+      "clear_condition": {
+        "type": "eliminate_enemies",
+        "count": 14
+      },
       "waves": [
-        { "wave": 1, "spawns": ["SP-S3-01"], "enemies": 6 },
-        { "wave": 2, "spawns": ["SP-S3-01", "SP-S3-02"], "enemies": 8 }
+        {
+          "wave": 1,
+          "spawns": [
+            "SP-S3-01"
+          ],
+          "enemies": 6
+        },
+        {
+          "wave": 2,
+          "spawns": [
+            "SP-S3-01",
+            "SP-S3-02"
+          ],
+          "enemies": 8
+        }
       ]
     },
     {
       "id": "CZ4",
       "name": "línea de viandas",
       "section_id": "S4",
-      "area": { "x": 4460, "y": 510, "width": 980, "height": 280 },
+      "area": {
+        "x": 4460,
+        "y": 510,
+        "width": 980,
+        "height": 280
+      },
       "activation_trigger": {
         "type": "enter_area",
-        "position": { "x": 4920, "y": 660 },
+        "position": {
+          "x": 4920,
+          "y": 660
+        },
         "radius": 140,
         "action": "spawn_preparation_line_counterattack"
       },
-      "clear_condition": { "type": "eliminate_enemies", "count": 13 },
+      "clear_condition": {
+        "type": "eliminate_enemies",
+        "count": 13
+      },
       "waves": [
-        { "wave": 1, "spawns": ["SP-S4-01"], "enemies": 6 },
-        { "wave": 2, "spawns": ["SP-S4-01", "SP-S4-02"], "enemies": 7 }
+        {
+          "wave": 1,
+          "spawns": [
+            "SP-S4-01"
+          ],
+          "enemies": 6
+        },
+        {
+          "wave": 2,
+          "spawns": [
+            "SP-S4-01",
+            "SP-S4-02"
+          ],
+          "enemies": 7
+        }
       ]
     },
     {
       "id": "CZ5",
       "name": "última defensa del comedor",
       "section_id": "S5",
-      "area": { "x": 5980, "y": 480, "width": 1180, "height": 300 },
+      "area": {
+        "x": 5980,
+        "y": 480,
+        "width": 1180,
+        "height": 300
+      },
       "activation_trigger": {
         "type": "enter_area",
-        "position": { "x": 6460, "y": 650 },
+        "position": {
+          "x": 6460,
+          "y": 650
+        },
         "radius": 150,
         "action": "lock_cafeteria_exit_and_spawn_final_wave"
       },
-      "clear_condition": { "type": "eliminate_enemies", "count": 16 },
+      "clear_condition": {
+        "type": "eliminate_enemies",
+        "count": 16
+      },
       "waves": [
-        { "wave": 1, "spawns": ["SP-S5-01"], "enemies": 8 },
-        { "wave": 2, "spawns": ["SP-S5-01", "SP-S5-02", "SP-S6-01"], "enemies": 8 }
+        {
+          "wave": 1,
+          "spawns": [
+            "SP-S5-01"
+          ],
+          "enemies": 8
+        },
+        {
+          "wave": 2,
+          "spawns": [
+            "SP-S5-01",
+            "SP-S5-02",
+            "SP-S6-01"
+          ],
+          "enemies": 8
+        }
       ]
     }
   ],
@@ -349,89 +741,153 @@
     {
       "id": "CV-S1-01",
       "section_id": "S1",
-      "position": { "x": 470, "y": 560 },
-      "size": { "width": 120, "height": 60 },
+      "position": {
+        "x": 470,
+        "y": 560
+      },
+      "size": {
+        "width": 120,
+        "height": 60
+      },
       "cover_type": "half",
       "asset_placeholder": "stair_landing_concrete_barrier_placeholder"
     },
     {
       "id": "CV-S2-01",
       "section_id": "S2",
-      "position": { "x": 1400, "y": 540 },
-      "size": { "width": 120, "height": 70 },
+      "position": {
+        "x": 1400,
+        "y": 540
+      },
+      "size": {
+        "width": 120,
+        "height": 70
+      },
       "cover_type": "half",
       "asset_placeholder": "cleaning_cart_cover_placeholder"
     },
     {
       "id": "CV-S2-02",
       "section_id": "S2",
-      "position": { "x": 1880, "y": 520 },
-      "size": { "width": 160, "height": 80 },
+      "position": {
+        "x": 1880,
+        "y": 520
+      },
+      "size": {
+        "width": 160,
+        "height": 80
+      },
       "cover_type": "full",
       "asset_placeholder": "storage_shelf_cover_placeholder"
     },
     {
       "id": "CV-S3-01",
       "section_id": "S3",
-      "position": { "x": 3200, "y": 640 },
-      "size": { "width": 180, "height": 70 },
+      "position": {
+        "x": 3200,
+        "y": 640
+      },
+      "size": {
+        "width": 180,
+        "height": 70
+      },
       "cover_type": "half",
       "asset_placeholder": "kitchen_prep_island_cover_placeholder"
     },
     {
       "id": "CV-S3-02",
       "section_id": "S3",
-      "position": { "x": 3720, "y": 540 },
-      "size": { "width": 130, "height": 90 },
+      "position": {
+        "x": 3720,
+        "y": 540
+      },
+      "size": {
+        "width": 130,
+        "height": 90
+      },
       "cover_type": "full",
       "asset_placeholder": "industrial_freezer_unit_cover_placeholder"
     },
     {
       "id": "CV-S4-01",
       "section_id": "S4",
-      "position": { "x": 4720, "y": 680 },
-      "size": { "width": 170, "height": 70 },
+      "position": {
+        "x": 4720,
+        "y": 680
+      },
+      "size": {
+        "width": 170,
+        "height": 70
+      },
       "cover_type": "half",
       "asset_placeholder": "conveyor_edge_cover_placeholder"
     },
     {
       "id": "CV-S4-02",
       "section_id": "S4",
-      "position": { "x": 5260, "y": 680 },
-      "size": { "width": 120, "height": 90 },
+      "position": {
+        "x": 5260,
+        "y": 680
+      },
+      "size": {
+        "width": 120,
+        "height": 90
+      },
       "cover_type": "full",
       "asset_placeholder": "crate_stack_cover_placeholder"
     },
     {
       "id": "CV-S5-01",
       "section_id": "S5",
-      "position": { "x": 6200, "y": 700 },
-      "size": { "width": 220, "height": 80 },
+      "position": {
+        "x": 6200,
+        "y": 700
+      },
+      "size": {
+        "width": 220,
+        "height": 80
+      },
       "cover_type": "half",
       "asset_placeholder": "dining_table_cover_placeholder"
     },
     {
       "id": "CV-S5-02",
       "section_id": "S5",
-      "position": { "x": 6740, "y": 580 },
-      "size": { "width": 130, "height": 110 },
+      "position": {
+        "x": 6740,
+        "y": 580
+      },
+      "size": {
+        "width": 130,
+        "height": 110
+      },
       "cover_type": "full",
       "asset_placeholder": "vending_machine_cover_placeholder"
     },
     {
       "id": "CV-S6-01",
       "section_id": "S6",
-      "position": { "x": 7440, "y": 620 },
-      "size": { "width": 150, "height": 90 },
+      "position": {
+        "x": 7440,
+        "y": 620
+      },
+      "size": {
+        "width": 150,
+        "height": 90
+      },
       "cover_type": "full",
       "asset_placeholder": "security_gate_cover_placeholder"
     }
   ],
   "exit_point": {
     "id": "EXIT-L6-01",
-    "position": { "x": 7600, "y": 560 },
+    "position": {
+      "x": 7600,
+      "y": 560
+    },
     "interaction_radius": 110,
     "destination_level": "level7_azotea_mantenimiento",
     "unlock_condition": "all_combat_zones_cleared"
-  }
+  },
+  "runtimeLevelId": "level_2_subsuelo"
 }

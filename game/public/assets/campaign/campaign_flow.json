@@ -21,13 +21,13 @@
       "id": "drive-cinematic",
       "type": "cinematic",
       "sceneKey": "CinematicScene",
-      "cinematicPath": "drive_to_santelmo_cinematic"
+      "cinematicPath": "assets/cinematics/drive_to_santelmo.json"
     },
     {
       "id": "drive-dialogue",
       "type": "dialogue",
       "sceneKey": "DialogueScene",
-      "dialoguePath": "campaign_intro_dialogue"
+      "dialoguePath": "assets/dialogues/campaign_intro_dialogue.json"
     },
     {
       "id": "level-10-loot",

@@ -240,22 +240,52 @@
       },
       "once": true,
       "startsEnabled": true
+    },
+    {
+      "id": "trigger_level2_intro_cinematic",
+      "type": "cinematic",
+      "bounds": {
+        "x": 520,
+        "y": 640,
+        "width": 220,
+        "height": 220
+      },
+      "payload": {
+        "cinematicId": "intro_level_3"
+      },
+      "once": true,
+      "startsEnabled": true
     }
   ],
   "cinematics": [
     {
-      "cinematicId": "level2_intro_call",
-      "movementLocked": true,
-      "steps": [
+      "cinematic_id": "intro_level_3",
+      "cameraPath": [
         {
-          "kind": "line",
-          "line": {
-            "speaker": "Valentina",
-            "text": "El subsuelo está infectado, salimos por Planta Baja.",
-            "durationMs": 2200
-          }
+          "x": 520,
+          "y": 620,
+          "zoom": 1.2
+        },
+        {
+          "x": 980,
+          "y": 610,
+          "zoom": 1.35
         }
-      ]
+      ],
+      "dialogueSequence": [
+        {
+          "speaker": "Valentina",
+          "text": "Mantengan formación. Este sector está tomado.",
+          "durationMs": 2200
+        },
+        {
+          "speaker": "Lorena",
+          "text": "Recibido. Revisando ruta al siguiente nivel.",
+          "durationMs": 2200
+        }
+      ],
+      "duration": 10000,
+      "pauseGameplay": true
     }
   ],
   "exits": [

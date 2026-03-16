@@ -45,6 +45,8 @@ import { levelManager } from '../systems/level/levelCatalog';
 import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
 import { InteractableSystem } from '../systems/core/InteractableSystem';
 import { TriggerSystem } from '../systems/TriggerSystem';
+import { CinematicSystem } from '../systems/core/CinematicSystem';
+import { DialogueSystem } from '../systems/core/DialogueSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -129,6 +131,8 @@ export class GameScene extends Phaser.Scene {
   private objectiveSystem?: ObjectiveSystem;
   private interactableSystem?: InteractableSystem;
   private triggerSystem?: TriggerSystem;
+  private levelCinematicSystem?: CinematicSystem;
+  private dialogueSystem?: DialogueSystem;
   private interactKey?: Phaser.Input.Keyboard.Key;
   private interactionHintOwnedByInteractables = false;
   private advanceDialogueRequested = false;
@@ -343,12 +347,42 @@ export class GameScene extends Phaser.Scene {
     this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
     this.objectiveSystem = levelManager.instantiateObjectives('level_2_subsuelo');
     this.interactableSystem = levelManager.instantiateInteractables('level_2_subsuelo');
+    this.dialogueSystem = new DialogueSystem({
+      show: (line) => {
+        this.registry.set('dialogueState', {
+          speaker: line.speaker,
+          text: line.text,
+          canSkip: false,
+          canAdvance: false
+        });
+      },
+      clear: () => {
+        this.registry.set('dialogueState', null);
+      }
+    });
+    this.levelCinematicSystem = new CinematicSystem(
+      this,
+      levelManager.getCinematics('level_2_subsuelo'),
+      this.dialogueSystem,
+      {
+        onGameplayPauseChanged: (paused) => this.setNarrativeMovementLock(paused),
+        onCinematicStarted: () => {
+          this.registry.set('interactionHint', 'Cinemática activa');
+        },
+        onCinematicCompleted: () => {
+          this.registry.set('interactionHint', '');
+        }
+      }
+    );
     this.triggerSystem = levelManager.instantiateTriggers(
       'level_2_subsuelo',
       this,
       this.players as unknown as Phaser.Types.Physics.Arcade.GameObjectWithBody[],
       {
-      onNarrativeMessage: (payload) => this.showMissionStatus(`${payload.speaker ?? 'Radio'}: ${payload.message}`)
+      onNarrativeMessage: (payload) => this.showMissionStatus(`${payload.speaker ?? 'Radio'}: ${payload.message}`),
+      onCinematic: (payload) => {
+        void this.levelCinematicSystem?.playById(payload.cinematicId);
+      }
       }
     );
 
@@ -441,6 +475,8 @@ export class GameScene extends Phaser.Scene {
       this.pickupSystem = undefined;
       this.triggerSystem?.destroy();
       this.triggerSystem = undefined;
+      this.levelCinematicSystem = undefined;
+      this.dialogueSystem = undefined;
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.registry.set('interactionHint', '');

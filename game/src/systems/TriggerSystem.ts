@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-export type TriggerType = 'combat_activation' | 'zombie_spawn' | 'narrative_message' | 'level_transition';
+export type TriggerType = 'combat_activation' | 'zombie_spawn' | 'narrative_message' | 'level_transition' | 'cinematic';
 
 export interface TriggerBounds {
   x: number;
@@ -46,16 +46,23 @@ export interface LevelTransitionPayload {
   metadata?: Record<string, unknown>;
 }
 
+export interface CinematicPayload {
+  cinematicId: string;
+  metadata?: Record<string, unknown>;
+}
+
 export type CombatActivationTrigger = TriggerDefinitionBase<'combat_activation', CombatActivationPayload>;
 export type ZombieSpawnTrigger = TriggerDefinitionBase<'zombie_spawn', ZombieSpawnPayload>;
 export type NarrativeMessageTrigger = TriggerDefinitionBase<'narrative_message', NarrativeMessagePayload>;
 export type LevelTransitionTrigger = TriggerDefinitionBase<'level_transition', LevelTransitionPayload>;
+export type CinematicTrigger = TriggerDefinitionBase<'cinematic', CinematicPayload>;
 
 export type TriggerDefinition =
   | CombatActivationTrigger
   | ZombieSpawnTrigger
   | NarrativeMessageTrigger
-  | LevelTransitionTrigger;
+  | LevelTransitionTrigger
+  | CinematicTrigger;
 
 export interface TriggerConfig {
   levelId: string;
@@ -73,6 +80,7 @@ export interface TriggerSystemCallbacks {
   onZombieSpawn?: (payload: ZombieSpawnPayload, context: TriggerContext) => void;
   onNarrativeMessage?: (payload: NarrativeMessagePayload, context: TriggerContext) => void;
   onLevelTransition?: (payload: LevelTransitionPayload, context: TriggerContext) => void;
+  onCinematic?: (payload: CinematicPayload, context: TriggerContext) => void;
   onTriggerActivated?: (trigger: TriggerDefinition, context: TriggerContext) => void;
 }
 
@@ -212,6 +220,9 @@ export class TriggerSystem {
         break;
       case 'level_transition':
         this.callbacks.onLevelTransition?.(runtime.config.payload, context);
+        break;
+      case 'cinematic':
+        this.callbacks.onCinematic?.(runtime.config.payload, context);
         break;
       default: {
         const exhaustiveCheck: never = runtime.config;

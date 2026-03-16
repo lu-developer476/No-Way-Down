@@ -1,15 +1,24 @@
 import Phaser from 'phaser';
 import { PartyHudMember } from './sceneShared';
 import { controlManager } from '../input/ControlManager';
+import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
   nameText: Phaser.GameObjects.Text;
   hpFill: Phaser.GameObjects.Rectangle;
+  activeWeaponText: Phaser.GameObjects.Text;
+  secondaryWeaponText: Phaser.GameObjects.Text;
+  ammoText: Phaser.GameObjects.Text;
+  statusText: Phaser.GameObjects.Text;
 }
+
+type CombatHudStatusTone = 'normal' | 'reload' | 'switch' | 'empty';
 
 export class UIScene extends Phaser.Scene {
   private protagonistHud?: ProtagonistHud;
+  private previousProtagonistHud?: PartyHudMember;
+  private combatStatusClearTimer?: Phaser.Time.TimerEvent;
   private zombieCountText?: Phaser.GameObjects.Text;
   private objectiveText?: Phaser.GameObjects.Text;
   private interactionText?: Phaser.GameObjects.Text;
@@ -67,10 +76,102 @@ export class UIScene extends Phaser.Scene {
     const hp = Phaser.Math.Clamp(Math.round(protagonist.health), 0, Math.max(1, protagonist.maxHealth));
     const maxHp = Math.max(1, Math.round(protagonist.maxHealth));
     const hpRatio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
+    const activeWeaponText = this.getWeaponDisplayLabel(protagonist.activeWeapon);
+    const secondaryWeaponText = protagonist.secondaryWeapon
+      ? this.getWeaponDisplayLabel(protagonist.secondaryWeapon)
+      : 'Sin secundaria';
+    const activeWeaponCatalog = getWeaponCatalogEntry(protagonist.activeWeapon);
+    const isTrayShield = protagonist.activeWeapon === 'tray_shield';
+    const specialStateText = isTrayShield
+      ? 'ESCUDO ACTIVO'
+      : activeWeaponCatalog.isMelee
+        ? 'MODO MELEE'
+        : '';
+    const ammoText = this.getAmmoDisplayText(protagonist);
+    const prev = this.previousProtagonistHud;
+    const startedReload = !prev?.isReloading && Boolean(protagonist.isReloading);
+    const switchedWeapon = prev?.activeWeapon !== undefined && prev.activeWeapon !== protagonist.activeWeapon;
+    const justReachedEmpty = protagonist.usesAmmo
+      && (protagonist.ammoCurrent ?? 0) <= 0
+      && (protagonist.ammoReserve ?? 0) <= 0
+      && ((prev?.ammoCurrent ?? 0) > 0 || (prev?.ammoReserve ?? 0) > 0);
+    const shouldClearStatus = !protagonist.isReloading && !specialStateText;
 
     this.protagonistHud.nameText.setText(`[${protagonist.name.toUpperCase()}]`);
     this.protagonistHud.hpFill.setSize(122 * hpRatio, 8);
+    this.protagonistHud.activeWeaponText.setText(`Activa: ${activeWeaponText}`);
+    this.protagonistHud.secondaryWeaponText.setText(`Sec.: ${secondaryWeaponText}`);
+    this.protagonistHud.ammoText.setText(ammoText);
+
+    if (startedReload) {
+      this.showCombatStatus('RECARGANDO...', 'reload', 850);
+    } else if (switchedWeapon) {
+      this.showCombatStatus(`ARMA: ${activeWeaponText}`, 'switch', 850);
+    } else if (justReachedEmpty) {
+      this.showCombatStatus('SIN MUNICIÓN', 'empty', 1000);
+    } else if (protagonist.isReloading) {
+      this.showCombatStatus('RECARGANDO...', 'reload', 220);
+    } else if (specialStateText) {
+      this.showCombatStatus(specialStateText, isTrayShield ? 'switch' : 'normal', 220);
+    } else if (shouldClearStatus) {
+      this.showCombatStatus('', 'normal', 0);
+    }
+
     this.protagonistHud.container.setVisible(true);
+    this.previousProtagonistHud = {
+      ...protagonist
+    };
+  }
+
+  private getWeaponDisplayLabel(weaponKey?: string): string {
+    if (!weaponKey) {
+      return '—';
+    }
+
+    return getWeaponCatalogEntry(weaponKey).displayName;
+  }
+
+  private getAmmoDisplayText(member: PartyHudMember): string {
+    if (!member.usesAmmo) {
+      return 'Munición: —';
+    }
+
+    const current = Math.max(0, member.ammoCurrent ?? 0);
+    const reserve = Math.max(0, member.ammoReserve ?? 0);
+    const ammoType = member.ammoType ? ` ${member.ammoType}` : '';
+    return `Munición: ${current} / ${reserve}${ammoType}`;
+  }
+
+  private showCombatStatus(message: string, tone: CombatHudStatusTone, durationMs: number): void {
+    if (!this.protagonistHud) {
+      return;
+    }
+
+    this.combatStatusClearTimer?.remove(false);
+
+    const statusText = this.protagonistHud.statusText;
+    if (!message) {
+      statusText.setText('').setVisible(false);
+      return;
+    }
+
+    const colorByTone: Record<CombatHudStatusTone, string> = {
+      normal: '#cbd5e1',
+      reload: '#93c5fd',
+      switch: '#fde68a',
+      empty: '#fca5a5'
+    };
+
+    statusText
+      .setColor(colorByTone[tone])
+      .setText(message)
+      .setVisible(true);
+
+    if (durationMs > 0) {
+      this.combatStatusClearTimer = this.time.delayedCall(durationMs, () => {
+        statusText.setText('').setVisible(false);
+      });
+    }
   }
 
   private handleZombiesChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -135,13 +236,43 @@ export class UIScene extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScrollFactor(0);
 
+    const activeWeaponText = this.add.text(16, 44, '', {
+      color: '#e2e8f0',
+      fontSize: '11px',
+      fontFamily: pixelFont
+    }).setScrollFactor(0);
+
+    const secondaryWeaponText = this.add.text(16, 58, '', {
+      color: '#cbd5e1',
+      fontSize: '11px',
+      fontFamily: pixelFont
+    }).setScrollFactor(0);
+
+    const ammoText = this.add.text(16, 72, '', {
+      color: '#f8fafc',
+      fontSize: '11px',
+      fontFamily: pixelFont,
+      fontStyle: 'bold'
+    }).setScrollFactor(0);
+
+    const statusText = this.add.text(16, 86, '', {
+      color: '#cbd5e1',
+      fontSize: '10px',
+      fontFamily: pixelFont,
+      fontStyle: 'bold'
+    }).setScrollFactor(0).setVisible(false);
+
     this.protagonistHud = {
-      container: this.add.container(0, 0, [nameText, hpBg, hpFill]).setVisible(false),
+      container: this.add.container(0, 0, [nameText, hpBg, hpFill, activeWeaponText, secondaryWeaponText, ammoText, statusText]).setVisible(false),
       nameText,
-      hpFill
+      hpFill,
+      activeWeaponText,
+      secondaryWeaponText,
+      ammoText,
+      statusText
     };
 
-    this.zombieCountText = this.add.text(18, 74, '', {
+    this.zombieCountText = this.add.text(18, 106, '', {
       color: '#fca5a5',
       fontSize: '12px',
       fontFamily: pixelFont

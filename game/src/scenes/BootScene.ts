@@ -10,6 +10,7 @@ import { getAllWeaponCatalogEntries } from '../config/weaponCatalog';
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
 const CHARACTER_FRAME_COUNT = 8;
+const CHARACTER_SPRITE_SHEET_SUFFIX = '-sheet';
 
 type HexColor = number;
 
@@ -89,7 +90,7 @@ export class BootScene extends Phaser.Scene {
     this.registry.set('audioMuted', audioManager.isMuted());
     this.registry.set('audioVolume', audioManager.getVolumePercent());
 
-    this.createCharacterFrameTextures();
+    this.createCharacterSpriteSheets();
 
     const graphics = this.add.graphics();
     const { palette } = visualTheme;
@@ -218,26 +219,39 @@ export class BootScene extends Phaser.Scene {
     this.scene.start('AssetPreloadScene');
   }
 
-  private createCharacterFrameTextures(): void {
+  private createCharacterSpriteSheets(): void {
     const protagonists = getCharacterVisualsByFaction('protagonist');
     const allies = getCharacterVisualsByFaction('ally');
     const zombies = getCharacterVisualsByFaction('zombie');
 
-    protagonists.forEach((profile) => this.createCharacterFrames(profile));
-    allies.forEach((profile) => this.createCharacterFrames(profile));
-    zombies.forEach((profile) => this.createCharacterFrames(profile));
+    protagonists.forEach((profile) => this.createCharacterSheet(profile));
+    allies.forEach((profile) => this.createCharacterSheet(profile));
+    zombies.forEach((profile) => this.createCharacterSheet(profile));
   }
 
-  private createCharacterFrames(profile: CharacterVisualProfile): void {
+  private createCharacterSheet(profile: CharacterVisualProfile): void {
+    const spriteSheetWidth = CHARACTER_FRAME_WIDTH * CHARACTER_FRAME_COUNT;
+    const frameGraphics = this.add.graphics();
+
     for (let frame = 0; frame < CHARACTER_FRAME_COUNT; frame += 1) {
-      const frameGraphics = this.add.graphics();
-      this.drawCharacterFrame(frameGraphics, frame, profile);
-      frameGraphics.generateTexture(`${profile.id}-base-${frame}`, CHARACTER_FRAME_WIDTH, CHARACTER_FRAME_HEIGHT);
-      frameGraphics.destroy();
+      this.drawCharacterFrame(frameGraphics, frame, profile, frame * CHARACTER_FRAME_WIDTH);
     }
+
+    const spriteSheetKey = `${profile.id}${CHARACTER_SPRITE_SHEET_SUFFIX}`;
+    const rawSheetKey = `${spriteSheetKey}-raw`;
+    frameGraphics.generateTexture(rawSheetKey, spriteSheetWidth, CHARACTER_FRAME_HEIGHT);
+    frameGraphics.destroy();
+
+    const rawTexture = this.textures.get(rawSheetKey);
+    this.textures.addSpriteSheet(spriteSheetKey, rawTexture, {
+      frameWidth: CHARACTER_FRAME_WIDTH,
+      frameHeight: CHARACTER_FRAME_HEIGHT,
+      endFrame: CHARACTER_FRAME_COUNT - 1
+    });
+    this.textures.remove(rawSheetKey);
   }
 
-  private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, profile: CharacterVisualProfile): void {
+  private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, profile: CharacterVisualProfile, offsetX = 0): void {
     const { palette } = profile;
     const bob = [1, 3, 5, 7].includes(frame) ? 1 : 0;
     const isRunFrame = [2, 3, 4, 5].includes(frame);
@@ -250,80 +264,80 @@ export class BootScene extends Phaser.Scene {
     const bodyY = 15 + bob;
     const legY = 27 + bob;
 
-    this.fillPixelRect(graphics, 12, 6 + bob, 8, 8, palette.skin);
-    this.drawHair(graphics, profile, bob);
-    this.drawFacialHair(graphics, profile, bob);
-    this.fillPixelRect(graphics, 13, 9 + bob, 1, 1, palette.eye);
-    this.fillPixelRect(graphics, 18, 9 + bob, 1, 1, palette.eye);
+    this.fillPixelRect(graphics, offsetX + 12, 6 + bob, 8, 8, palette.skin);
+    this.drawHair(graphics, profile, bob, offsetX);
+    this.drawFacialHair(graphics, profile, bob, offsetX);
+    this.fillPixelRect(graphics, offsetX + 13, 9 + bob, 1, 1, palette.eye);
+    this.fillPixelRect(graphics, offsetX + 18, 9 + bob, 1, 1, palette.eye);
 
-    this.fillPixelRect(graphics, torsoX, bodyY, torsoWidth, 12, palette.torso);
-    this.fillPixelRect(graphics, torsoX, bodyY + 8, torsoWidth, 2, palette.factionBand);
-    this.fillPixelRect(graphics, torsoX, bodyY + 10, torsoWidth, 2, palette.accent);
-    this.drawOutfitDetails(graphics, profile, torsoX, bodyY, torsoWidth);
-    this.drawGearDetails(graphics, profile, torsoX, bodyY, torsoWidth);
+    this.fillPixelRect(graphics, offsetX + torsoX, bodyY, torsoWidth, 12, palette.torso);
+    this.fillPixelRect(graphics, offsetX + torsoX, bodyY + 8, torsoWidth, 2, palette.factionBand);
+    this.fillPixelRect(graphics, offsetX + torsoX, bodyY + 10, torsoWidth, 2, palette.accent);
+    this.drawOutfitDetails(graphics, profile, torsoX + offsetX, bodyY, torsoWidth);
+    this.drawGearDetails(graphics, profile, torsoX + offsetX, bodyY, torsoWidth);
 
     if (isShootFrame) {
-      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 3, true);
-      this.fillPixelRect(graphics, torsoX - 2, bodyY + 4, 2, 7, palette.torso);
+      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 3, true, offsetX);
+      this.fillPixelRect(graphics, offsetX + torsoX - 2, bodyY + 4, 2, 7, palette.torso);
     } else if (isHurtFrame) {
-      this.fillPixelRect(graphics, torsoX - 2, bodyY + 5, 2, 6, palette.accent);
-      this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 5, 2, 6, palette.accent);
-      this.fillPixelRect(graphics, torsoX - 1, bodyY + 1, torsoWidth + 2, 2, isZombie ? 0x7f1d1d : 0xdc2626);
+      this.fillPixelRect(graphics, offsetX + torsoX - 2, bodyY + 5, 2, 6, palette.accent);
+      this.fillPixelRect(graphics, offsetX + torsoX + torsoWidth, bodyY + 5, 2, 6, palette.accent);
+      this.fillPixelRect(graphics, offsetX + torsoX - 1, bodyY + 1, torsoWidth + 2, 2, isZombie ? 0x7f1d1d : 0xdc2626);
     } else {
-      this.fillPixelRect(graphics, torsoX - 2, bodyY + 4, 2, 7, palette.torso);
-      this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 4, 2, 7, palette.torso);
-      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 4, false);
+      this.fillPixelRect(graphics, offsetX + torsoX - 2, bodyY + 4, 2, 7, palette.torso);
+      this.fillPixelRect(graphics, offsetX + torsoX + torsoWidth, bodyY + 4, 2, 7, palette.torso);
+      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 4, false, offsetX);
     }
 
     if (isRunFrame) {
       if (frame === 2 || frame === 4) {
-        this.fillPixelRect(graphics, 11, legY, 4, 12, palette.pants);
-        this.fillPixelRect(graphics, 17, legY + 2, 4, 10, palette.pants);
+        this.fillPixelRect(graphics, offsetX + 11, legY, 4, 12, palette.pants);
+        this.fillPixelRect(graphics, offsetX + 17, legY + 2, 4, 10, palette.pants);
       } else {
-        this.fillPixelRect(graphics, 11, legY + 2, 4, 10, palette.pants);
-        this.fillPixelRect(graphics, 17, legY, 4, 12, palette.pants);
+        this.fillPixelRect(graphics, offsetX + 11, legY + 2, 4, 10, palette.pants);
+        this.fillPixelRect(graphics, offsetX + 17, legY, 4, 12, palette.pants);
       }
     } else {
-      this.fillPixelRect(graphics, 11, legY, 4, 11, palette.pants);
-      this.fillPixelRect(graphics, 17, legY, 4, 11, palette.pants);
+      this.fillPixelRect(graphics, offsetX + 11, legY, 4, 11, palette.pants);
+      this.fillPixelRect(graphics, offsetX + 17, legY, 4, 11, palette.pants);
     }
 
-    this.fillPixelRect(graphics, 10, 39 + bob, 6, 2, palette.accent);
-    this.fillPixelRect(graphics, 16, 39 + bob, 6, 2, palette.accent);
+    this.fillPixelRect(graphics, offsetX + 10, 39 + bob, 6, 2, palette.accent);
+    this.fillPixelRect(graphics, offsetX + 16, 39 + bob, 6, 2, palette.accent);
 
     if (isZombie) {
-      this.fillPixelRect(graphics, 9, 21 + bob, 2, 2, 0x7f1d1d);
-      this.fillPixelRect(graphics, 20, 30 + bob, 2, 2, 0x7f1d1d);
+      this.fillPixelRect(graphics, offsetX + 9, 21 + bob, 2, 2, 0x7f1d1d);
+      this.fillPixelRect(graphics, offsetX + 20, 30 + bob, 2, 2, 0x7f1d1d);
     }
   }
 
-  private drawHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number): void {
+  private drawHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number, offsetX = 0): void {
     const hairY = 3 + bob;
 
     if (profile.hairStyle === 'afro') {
-      this.fillPixelRect(graphics, 10, hairY, 12, 5, profile.palette.hair);
+      this.fillPixelRect(graphics, offsetX + 10, hairY, 12, 5, profile.palette.hair);
       return;
     }
 
     if (profile.hairStyle === 'long') {
-      this.fillPixelRect(graphics, 11, hairY, 10, 3, profile.palette.hair);
-      this.fillPixelRect(graphics, 10, hairY + 2, 2, 10, profile.palette.hair);
-      this.fillPixelRect(graphics, 20, hairY + 2, 2, 10, profile.palette.hair);
+      this.fillPixelRect(graphics, offsetX + 11, hairY, 10, 3, profile.palette.hair);
+      this.fillPixelRect(graphics, offsetX + 10, hairY + 2, 2, 10, profile.palette.hair);
+      this.fillPixelRect(graphics, offsetX + 20, hairY + 2, 2, 10, profile.palette.hair);
       return;
     }
 
-    this.fillPixelRect(graphics, 11, hairY, 10, 3, profile.palette.hair);
+    this.fillPixelRect(graphics, offsetX + 11, hairY, 10, 3, profile.palette.hair);
   }
 
-  private drawFacialHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number): void {
+  private drawFacialHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number, offsetX = 0): void {
     if (profile.facialHair === 'beard') {
-      this.fillPixelRect(graphics, 12, 12 + bob, 8, 2, 0x3f3f46);
-      this.fillPixelRect(graphics, 13, 14 + bob, 6, 1, 0x52525b);
+      this.fillPixelRect(graphics, offsetX + 12, 12 + bob, 8, 2, 0x3f3f46);
+      this.fillPixelRect(graphics, offsetX + 13, 14 + bob, 6, 1, 0x52525b);
       return;
     }
 
     if (profile.facialHair === 'stubble') {
-      this.fillPixelRect(graphics, 13, 13 + bob, 6, 1, 0x57534e);
+      this.fillPixelRect(graphics, offsetX + 13, 13 + bob, 6, 1, 0x57534e);
     }
   }
 
@@ -389,43 +403,44 @@ export class BootScene extends Phaser.Scene {
     profile: CharacterVisualProfile,
     color: HexColor,
     y: number,
-    isAiming: boolean
+    isAiming: boolean,
+    offsetX = 0
   ): void {
     const anchorY = isAiming ? y : y + 1;
     const weaponStyle = profile.weaponStyle;
     const anchorX = profile.weaponCarry === 'shoulder' ? 19 : 22;
 
     if (weaponStyle === 'rifle') {
-      this.fillPixelRect(graphics, anchorX, anchorY, 10, 2, color);
-      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 4, 1, 0x0f172a);
-      this.fillPixelRect(graphics, anchorX + 8, anchorY - 1, 2, 4, 0x111827);
+      this.fillPixelRect(graphics, offsetX + anchorX, anchorY, 10, 2, color);
+      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 4, 1, 0x0f172a);
+      this.fillPixelRect(graphics, offsetX + anchorX + 8, anchorY - 1, 2, 4, 0x111827);
       return;
     }
 
     if (weaponStyle === 'shotgun') {
-      this.fillPixelRect(graphics, anchorX, anchorY, 8, 3, color);
-      this.fillPixelRect(graphics, anchorX + 1, anchorY + 3, 3, 1, 0x78350f);
-      this.fillPixelRect(graphics, anchorX + 7, anchorY - 1, 1, 5, 0x111827);
+      this.fillPixelRect(graphics, offsetX + anchorX, anchorY, 8, 3, color);
+      this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY + 3, 3, 1, 0x78350f);
+      this.fillPixelRect(graphics, offsetX + anchorX + 7, anchorY - 1, 1, 5, 0x111827);
       return;
     }
 
     if (weaponStyle === 'smg') {
-      this.fillPixelRect(graphics, anchorX + 1, anchorY, 6, 2, color);
-      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 2, 2, 0x0f172a);
-      this.fillPixelRect(graphics, anchorX + 6, anchorY + 1, 1, 1, 0xe2e8f0);
+      this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY, 6, 2, color);
+      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 2, 2, 0x0f172a);
+      this.fillPixelRect(graphics, offsetX + anchorX + 6, anchorY + 1, 1, 1, 0xe2e8f0);
       return;
     }
 
     if (weaponStyle === 'revolver') {
-      this.fillPixelRect(graphics, anchorX + 1, anchorY, 5, 2, color);
-      this.fillPixelRect(graphics, anchorX + 2, anchorY - 1, 2, 1, 0xe2e8f0);
-      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 1, 2, 0x111827);
+      this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY, 5, 2, color);
+      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY - 1, 2, 1, 0xe2e8f0);
+      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 1, 2, 0x111827);
       return;
     }
 
-    this.fillPixelRect(graphics, anchorX + 1, anchorY, 4, 2, color);
-    this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 1, 2, 0x111827);
-    this.fillPixelRect(graphics, anchorX + 4, anchorY + 1, 1, 1, 0xe2e8f0);
+    this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY, 4, 2, color);
+    this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 1, 2, 0x111827);
+    this.fillPixelRect(graphics, offsetX + anchorX + 4, anchorY + 1, 1, 1, 0xe2e8f0);
   }
 
   private fillPixelRect(
@@ -450,33 +465,28 @@ export class BootScene extends Phaser.Scene {
     animationPrefixes.forEach((prefix) => {
       this.anims.create({
         key: `${prefix}-idle`,
-        frames: [{ key: `${prefix}-base-0` }, { key: `${prefix}-base-1` }],
+        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 0, end: 1 }),
         frameRate: 4,
         repeat: -1
       });
 
       this.anims.create({
         key: `${prefix}-run`,
-        frames: [
-          { key: `${prefix}-base-2` },
-          { key: `${prefix}-base-3` },
-          { key: `${prefix}-base-4` },
-          { key: `${prefix}-base-5` }
-        ],
+        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 2, end: 5 }),
         frameRate: 9,
         repeat: -1
       });
 
       this.anims.create({
         key: `${prefix}-shoot`,
-        frames: [{ key: `${prefix}-base-6` }],
+        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 6, end: 6 }),
         frameRate: 1,
         repeat: 0
       });
 
       this.anims.create({
         key: `${prefix}-hurt`,
-        frames: [{ key: `${prefix}-base-7` }],
+        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 7, end: 7 }),
         frameRate: 1,
         repeat: 0
       });
@@ -509,6 +519,13 @@ export class BootScene extends Phaser.Scene {
       graphics.generateTexture(weapon.visualKey, template.width, template.height);
       uniqueVisualKeys.add(weapon.visualKey);
     });
+
+    graphics.clear();
+    graphics.fillStyle(0xffe08a, 1);
+    graphics.fillTriangle(0, 8, 18, 4, 0, 0);
+    graphics.fillStyle(0xfff7d1, 1);
+    graphics.fillTriangle(2, 7, 12, 4, 2, 1);
+    graphics.generateTexture('fx-muzzle-flash', 18, 9);
   }
 
 

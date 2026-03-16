@@ -19,6 +19,9 @@ import level3PickupConfig from '../../public/assets/levels/level3_pickups.json';
 import { addEnvironmentProp } from './environmentLayout';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
 import { PickupSystem } from '../systems/PickupSystem';
+import { levelManager } from '../systems/level/levelCatalog';
+import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
+import { InteractableSystem } from '../systems/core/InteractableSystem';
 
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.2;
@@ -33,6 +36,8 @@ export class UpperFloorScene extends Phaser.Scene {
   private projectileSystem?: ProjectileSystem;
   private staircaseSystem?: StaircaseSystem;
   private pickupSystem?: PickupSystem;
+  private objectiveSystem?: ObjectiveSystem;
+  private interactableSystem?: InteractableSystem;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
@@ -44,13 +49,13 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   create(data: UpperFloorSceneData = {}): void {
-    const levelBounds = this.resolveLevelBounds();
-    const levelWidth = levelBounds.width;
-    const levelHeight = levelBounds.height;
-    const floorHeight = 84;
+    const levelConfig = levelManager.loadLevel('level_3_upper_floor');
+    const levelWidth = levelConfig.layout.width;
+    const levelHeight = levelConfig.layout.height;
+    const floorHeight = levelConfig.layout.floor_height ?? 84;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
-    registerEnvironmentProfile(this, 'level3_hall_planta_baja');
+    registerEnvironmentProfile(this, String(levelConfig.layout.environment_profile ?? 'level3_hall_planta_baja'));
     this.cameras.main
       .setBounds(0, 0, levelWidth, levelHeight)
       .setZoom(ARCADE_CAMERA_ZOOM)
@@ -75,7 +80,7 @@ export class UpperFloorScene extends Phaser.Scene {
       this.registry.set('initialRunSetup', setupFromStorage);
     }
 
-    const defaultEntry = this.resolveDefaultSpawnPoint(levelHeight);
+    const defaultEntry = levelConfig.layout.default_spawn ?? this.resolveDefaultSpawnPoint(levelHeight);
     const spawnPoint = data.respawnPoint ?? defaultEntry;
     const setup = (this.registry.get('initialRunSetup') ?? loadInitialRunSetup()) ?? null;
     const activePlayerConfigs = getActivePlayerConfigs(setup);
@@ -94,6 +99,8 @@ export class UpperFloorScene extends Phaser.Scene {
     this.projectileSystem.createSolidCollider(environment);
 
     this.pickupSystem = PickupSystem.fromJSON(this, level3PickupConfig);
+    this.objectiveSystem = levelManager.instantiateObjectives('level_3_upper_floor');
+    this.interactableSystem = levelManager.instantiateInteractables('level_3_upper_floor');
     this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'upper-to-dining',
@@ -112,7 +119,7 @@ export class UpperFloorScene extends Phaser.Scene {
 
     this.addStairVisual(spawnPoint.x - 40, spawnPoint.y - 12, 180, 120);
     this.createTransitionUI();
-    this.registry.set('currentObjective', 'Cruza el hall de Planta Baja y reconoce su distribución antes de volver.');
+    this.registry.set('currentObjective', this.objectiveSystem?.getActiveObjective()?.label ?? 'Cruza el hall de Planta Baja y reconoce su distribución antes de volver.');
     this.registry.set('interactionHint', '');
     this.registerApiControls();
 
@@ -293,6 +300,11 @@ export class UpperFloorScene extends Phaser.Scene {
     this.transitionText?.setText('Bajando al nivel anterior...').setVisible(true);
 
     this.time.delayedCall(500, () => {
+      if (target.sceneKey === 'GameScene') {
+        levelManager.transitionToLevel(this, 'level_3_upper_floor', 'return_dining');
+        return;
+      }
+
       this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });
     });
   }

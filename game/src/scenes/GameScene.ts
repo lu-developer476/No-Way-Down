@@ -41,6 +41,10 @@ import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { controlManager } from '../input/ControlManager';
 import { CombatActionSystem } from '../systems/CombatActionSystem';
 import { PickupSystem } from '../systems/PickupSystem';
+import { levelManager } from '../systems/level/levelCatalog';
+import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
+import { InteractableSystem } from '../systems/core/InteractableSystem';
+import { TriggerSystem } from '../systems/TriggerSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -122,6 +126,9 @@ export class GameScene extends Phaser.Scene {
   private spawnsShutDown = false;
   private visitedCheckpoints = new Set<string>();
   private cinematicCallSystem?: CinematicCallSystem;
+  private objectiveSystem?: ObjectiveSystem;
+  private interactableSystem?: InteractableSystem;
+  private triggerSystem?: TriggerSystem;
   private advanceDialogueRequested = false;
   private skipDialogueRequested = false;
   private movementLockedByNarrative = false;
@@ -225,14 +232,15 @@ export class GameScene extends Phaser.Scene {
     const setupFromRegistry = this.registry.get('initialRunSetup') as InitialRunSetup | undefined;
     const difficulty = setupFromRegistry?.difficulty ?? setupFromStorage?.difficulty ?? 'complejo';
     const difficultyRuntime = getDifficultyRuntimeConfig(difficulty);
-    const levelWidth = level2Subsuelo.dimensiones.anchoTotalPx;
-    const levelHeight = level2Subsuelo.dimensiones.altoTotalPx;
-    const floorHeight = 64;
+    const levelConfig = levelManager.loadLevel('level_2_subsuelo');
+    const levelWidth = levelConfig.layout.width;
+    const levelHeight = levelConfig.layout.height;
+    const floorHeight = levelConfig.layout.floor_height ?? 64;
     const floorY = levelHeight - floorHeight / 2;
     const tableTopY = levelHeight - 146;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
-    registerEnvironmentProfile(this, 'level2_subsuelo');
+    registerEnvironmentProfile(this, String(levelConfig.layout.environment_profile ?? 'level2_subsuelo'));
 
     this.cameras.main
       .setBounds(0, 0, levelWidth, levelHeight)
@@ -261,7 +269,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('audioMuted', audioManager.isMuted());
     this.registry.set('audioVolume', audioManager.getVolumePercent());
 
-    this.respawnPoint = this.resolveRespawnPoint(data, {
+    this.respawnPoint = this.resolveRespawnPoint(data, levelConfig.layout.default_spawn ?? {
       x: 140,
       y: levelHeight - 140
     });
@@ -325,18 +333,21 @@ export class GameScene extends Phaser.Scene {
       this.zombieSystem?.spawn(spawnPoint.x, spawnPoint.y);
     });
 
-    this.spawnManager = SpawnManager.fromLevelJson(
+    this.spawnManager = levelManager.instantiateSpawns('level_2_subsuelo', this, this.zombieSystem, this.players, {
+      spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier,
+      getEnemyLimit: () => this.zombieSystem?.getGroup().maxSize ?? Number.MAX_SAFE_INTEGER
+    });
+    this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
+    this.objectiveSystem = levelManager.instantiateObjectives('level_2_subsuelo');
+    this.interactableSystem = levelManager.instantiateInteractables('level_2_subsuelo');
+    this.triggerSystem = levelManager.instantiateTriggers(
+      'level_2_subsuelo',
       this,
-      this.zombieSystem,
-      this.players,
-      level2Subsuelo,
-      verticalSpawnConfig,
+      this.players as unknown as Phaser.Types.Physics.Arcade.GameObjectWithBody[],
       {
-        spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier,
-        getEnemyLimit: () => this.zombieSystem?.getGroup().maxSize ?? Number.MAX_SAFE_INTEGER
+      onNarrativeMessage: (payload) => this.showMissionStatus(`${payload.speaker ?? 'Radio'}: ${payload.message}`)
       }
     );
-    this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
 
     this.levelExitSystem = new LevelExitSystem(
       this,
@@ -424,6 +435,8 @@ export class GameScene extends Phaser.Scene {
       this.levelExitSystem = undefined;
       this.pickupSystem?.destroy();
       this.pickupSystem = undefined;
+      this.triggerSystem?.destroy();
+      this.triggerSystem = undefined;
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.registry.set('interactionHint', '');

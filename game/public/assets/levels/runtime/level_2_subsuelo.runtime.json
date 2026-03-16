@@ -1,0 +1,179 @@
+{
+  "level_id": "level_2_subsuelo",
+  "layout": {
+    "width": 8000,
+    "height": 864,
+    "floor_height": 64,
+    "environment_profile": "level2_subsuelo",
+    "default_spawn": { "x": 140, "y": 724 }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1350,
+    "viewportSafePadding": 100,
+    "areas": [
+      {
+        "id": "ZL-01",
+        "trigger": { "x": 780, "y": 640, "width": 820, "height": 280 }
+      },
+      {
+        "id": "ZL-02",
+        "trigger": { "x": 2460, "y": 640, "width": 900, "height": 280 }
+      },
+      {
+        "id": "ZL-03",
+        "trigger": { "x": 4180, "y": 640, "width": 940, "height": 280 }
+      }
+    ],
+    "points": [
+      {
+        "id": "ZL-01-wave-left",
+        "x": 560,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 1000,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1,
+        "spawnBudget": 7
+      },
+      {
+        "id": "ZL-01-wave-right",
+        "x": 1180,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 1000,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1,
+        "spawnBudget": 7
+      },
+      {
+        "id": "ZL-02-wave-left",
+        "x": 2220,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 950,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1,
+        "spawnBudget": 8
+      },
+      {
+        "id": "ZL-02-wave-right",
+        "x": 2720,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 950,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1,
+        "spawnBudget": 8
+      },
+      {
+        "id": "ZL-03-wave-left",
+        "x": 3920,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 900,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 1,
+        "spawnBudget": 10
+      },
+      {
+        "id": "ZL-03-wave-right",
+        "x": 4620,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 900,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 1,
+        "spawnBudget": 10
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "level2_secure_corridor",
+      "label": "Asegurar el corredor del subsuelo y mantener unido al equipo.",
+      "completion": [
+        { "type": "cleanup_completed", "targetId": "ZL-03" }
+      ]
+    },
+    {
+      "id": "level2_reach_upper_floor",
+      "label": "Subir al hall de Planta Baja para continuar la evacuación.",
+      "completion": [
+        { "type": "exit_used", "targetId": "upper-floor-stairs" }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "subsuelo_atm_cluster",
+      "label": "Cajeros internos dañados",
+      "kind": "object",
+      "decorative": false,
+      "interactable": true,
+      "locked": false,
+      "loot": { "ammo_pistol": true }
+    },
+    {
+      "id": "subsuelo_recycle_box",
+      "label": "Caja solidaria del pasillo",
+      "kind": "object",
+      "decorative": false,
+      "interactable": true,
+      "locked": true,
+      "breakable": true,
+      "loot": { "food_small": true }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trigger_level2_mid_warning",
+      "type": "narrative_message",
+      "bounds": { "x": 3200, "y": 640, "width": 280, "height": 220 },
+      "payload": {
+        "message": "Escucho pasos arriba. Mantengan la formación.",
+        "speaker": "Valentina",
+        "durationMs": 1800
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
+  "cinematics": [
+    {
+      "cinematicId": "level2_intro_call",
+      "movementLocked": true,
+      "steps": [
+        {
+          "kind": "line",
+          "line": {
+            "speaker": "Valentina",
+            "text": "El subsuelo está infectado, salimos por Planta Baja.",
+            "durationMs": 2200
+          }
+        }
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "id": "upper-floor-stairs",
+      "target_level_id": "level_3_upper_floor",
+      "scene_key": "UpperFloorScene",
+      "spawn_point": { "x": 220, "y": 724 },
+      "label": "Escaleras al hall"
+    }
+  ]
+}

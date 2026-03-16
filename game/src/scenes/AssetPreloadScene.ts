@@ -24,6 +24,34 @@ export class AssetPreloadScene extends Phaser.Scene {
       fontFamily: 'monospace'
     }).setOrigin(0.5);
 
+    const preloadedAssetPaths = new Map(PRELOAD_FILES.map(({ key, path }) => [key, path]));
+    const loggedGroups = new Set<string>();
+
+    this.load.on('filecomplete', (key: string, type: string) => {
+      const assetPath = preloadedAssetPaths.get(key);
+      console.log(`[AssetLoader] ${type}:${key} cargado`);
+
+      if (key === 'campaign_flow' && !loggedGroups.has('campaign_flow')) {
+        console.log('[AssetLoader] campaign_flow cargado');
+        loggedGroups.add('campaign_flow');
+      }
+
+      if (assetPath?.includes('/dialogues/') && !loggedGroups.has('dialogues')) {
+        console.log('[AssetLoader] dialogues cargados');
+        loggedGroups.add('dialogues');
+      }
+
+      if (assetPath?.includes('/cinematics/') && !loggedGroups.has('cinematics')) {
+        console.log('[AssetLoader] cinematics cargadas');
+        loggedGroups.add('cinematics');
+      }
+
+      if (assetPath?.includes('/levels/') && !loggedGroups.has('levels')) {
+        console.log('[AssetLoader] levels cargados');
+        loggedGroups.add('levels');
+      }
+    });
+
     PRELOAD_FILES.forEach(({ key, path, type }) => {
       if (type === 'json') {
         this.load.json(key, path);

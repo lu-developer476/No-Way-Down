@@ -8,6 +8,7 @@ import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { MissionRuntimeSystem } from '../systems/MissionRuntimeSystem';
 import { controlManager } from '../input/ControlManager';
 import { Checkpoint } from './sceneShared';
+import { FlowDebugOverlay } from './flowDebug';
 
 type LevelSceneCreateData = {
   flowNode?: CampaignFlowNode;
@@ -21,6 +22,12 @@ export class LevelScene extends GameScene {
   private combatSystem?: CombatSystem;
   private environmentSystem?: EnvironmentSystem;
   private missionRuntimeSystem?: MissionRuntimeSystem;
+  private flowManager?: SceneFlowManager;
+  private flowDebug?: FlowDebugOverlay;
+  private enterKey?: Phaser.Input.Keyboard.Key;
+  private hasStarted = false;
+  private isTransitioning = false;
+  private flowNode?: CampaignFlowNode;
 
   constructor() {
     super('LevelScene');
@@ -33,6 +40,7 @@ export class LevelScene extends GameScene {
     }
 
     const { flowNode } = data;
+    this.flowNode = flowNode;
     console.log(`[LevelScene] flowNode.id recibido: ${flowNode.id}`);
 
     if (!flowNode.levelConfigPath) {
@@ -43,6 +51,19 @@ export class LevelScene extends GameScene {
     console.log(`[LevelScene] levelConfigPath a cargar: ${flowNode.levelConfigPath}`);
     this.registry.set('activeCampaignNode', flowNode);
     this.registry.set('flowNodeId', flowNode.id);
+
+    this.flowManager = new SceneFlowManager(this);
+    this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
+      flowNode: this.flowNode,
+      enterDown: this.enterKey?.isDown ?? false,
+      hasStarted: this.hasStarted,
+      isTransitioning: this.isTransitioning
+    }));
+    this.flowDebug.create();
+
+    if (this.input.keyboard) {
+      this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
+    }
 
     this.ensureCampaignLevelConfigLoaded(flowNode, (campaignLevelConfig, usedFallback) => {
       super.create({
@@ -70,13 +91,26 @@ export class LevelScene extends GameScene {
       }
 
       this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
-        const manager = new SceneFlowManager(this);
-        const nextNode = manager.advanceFromNodeId(flowNode.id);
-        if (nextNode) {
-          manager.transitionToNode(nextNode);
+        if (this.hasStarted) {
+          return;
         }
+
+        this.hasStarted = true;
+        const manager = this.flowManager ?? new SceneFlowManager(this);
+        const nextNode = manager.advanceFromNodeId(flowNode.id);
+        if (!nextNode) {
+          return;
+        }
+
+        this.isTransitioning = true;
+        manager.transitionToNode(nextNode);
       });
     });
+  }
+
+  update(): void {
+    super.update();
+    this.flowDebug?.update();
   }
 
   private ensureCampaignLevelConfigLoaded(

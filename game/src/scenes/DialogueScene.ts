@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { controlManager } from '../input/ControlManager';
+import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 
 interface DialogueLine {
@@ -14,9 +15,13 @@ interface DialogueSceneData {
 export class DialogueScene extends Phaser.Scene {
   private enterKey?: Phaser.Input.Keyboard.Key;
 
-  private hasAdvanced = false;
+  private hasStarted = false;
+
+  private isTransitioning = false;
 
   private flowManager?: SceneFlowManager;
+
+  private flowDebug?: FlowDebugOverlay;
 
   constructor() {
     super('DialogueScene');
@@ -48,6 +53,13 @@ export class DialogueScene extends Phaser.Scene {
     this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
 
     this.flowManager = new SceneFlowManager(this);
+    this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
+      flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
+      enterDown: this.enterKey?.isDown ?? false,
+      hasStarted: this.hasStarted,
+      isTransitioning: this.isTransitioning
+    }));
+    this.flowDebug.create();
 
     if (this.input.keyboard) {
       this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
@@ -62,7 +74,9 @@ export class DialogueScene extends Phaser.Scene {
   }
 
   update(): void {
-    if (!this.enterKey || this.hasAdvanced) {
+    this.flowDebug?.update();
+
+    if (!this.enterKey || this.hasStarted) {
       return;
     }
 
@@ -73,11 +87,11 @@ export class DialogueScene extends Phaser.Scene {
   }
 
   private advanceToNextNode(source: 'enter' | 'click'): void {
-    if (this.hasAdvanced) {
+    if (this.hasStarted) {
       return;
     }
 
-    this.hasAdvanced = true;
+    this.hasStarted = true;
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
@@ -93,6 +107,7 @@ export class DialogueScene extends Phaser.Scene {
       return;
     }
 
+    this.isTransitioning = true;
     console.log(`[DialogueScene] Transición ejecutada por ${source}.`);
     manager.transitionToNode(next);
   }

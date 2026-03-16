@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { controlManager } from '../input/ControlManager';
+import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 
 interface CampaignIntroSceneData {
@@ -11,7 +12,11 @@ export class CampaignIntroScene extends Phaser.Scene {
 
   private hasStarted = false;
 
+  private isTransitioning = false;
+
   private flowManager?: SceneFlowManager;
+
+  private flowDebug?: FlowDebugOverlay;
 
   constructor() {
     super('CampaignIntroScene');
@@ -30,6 +35,13 @@ export class CampaignIntroScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.flowManager = new SceneFlowManager(this);
+    this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
+      flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
+      enterDown: this.enterKey?.isDown ?? false,
+      hasStarted: this.hasStarted,
+      isTransitioning: this.isTransitioning
+    }));
+    this.flowDebug.create();
 
     if (this.input.keyboard) {
       this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
@@ -44,6 +56,8 @@ export class CampaignIntroScene extends Phaser.Scene {
   }
 
   update(): void {
+    this.flowDebug?.update();
+
     if (!this.enterKey || this.hasStarted) {
       return;
     }
@@ -77,6 +91,7 @@ export class CampaignIntroScene extends Phaser.Scene {
       return;
     }
 
+    this.isTransitioning = true;
     console.log('[CampaignIntroScene] Llamando a transitionToNode() con nodo:', next);
     manager.transitionToNode(next);
   }

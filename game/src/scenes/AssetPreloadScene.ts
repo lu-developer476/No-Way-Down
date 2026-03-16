@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { visualTheme } from './visualTheme';
 import { CampaignFlowDefinition, SceneFlowManager } from './SceneFlowManager';
+import { CharacterAnimations } from '../systems/CharacterAnimations';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
   { key: 'menu_background', path: 'assets/images/NWD-menu.png', type: 'image' },
@@ -59,6 +60,51 @@ export class AssetPreloadScene extends Phaser.Scene {
         this.load.image(key, path);
       }
     });
+
+    this.load.spritesheet('damian', 'assets/characters/damian.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('nahir', 'assets/characters/nahir.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('alan', 'assets/characters/alan.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('giovanna', 'assets/characters/giovanna.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('hernan', 'assets/characters/hernan.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('selene', 'assets/characters/selene.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('celestino', 'assets/characters/celestino.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('lorena', 'assets/characters/lorena.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+
+    this.load.spritesheet('yamil', 'assets/characters/yamil.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
   }
 
   create(): void {
@@ -80,6 +126,8 @@ export class AssetPreloadScene extends Phaser.Scene {
     }
 
     const definition = this.cache.json.get('campaign_flow') as CampaignFlowDefinition;
+
+    CharacterAnimations.create(this);
 
     manager.loadDefinition(definition);
     this.scene.start('MainMenuScene');

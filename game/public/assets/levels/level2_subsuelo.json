@@ -25,182 +25,434 @@
   "segmentos": [
     {
       "id": 1,
-      "posicionX": { "inicioPx": 0, "finPx": 444 },
+      "posicionX": {
+        "inicioPx": 0,
+        "finPx": 444
+      },
       "tipoDecoracion": "acceso_subsuelo_con_columna_doble_y_carteleria",
-      "obstaculos": ["columna_piedra_ancha", "señal_piso_humedo"],
+      "obstaculos": [
+        "columna_piedra_ancha",
+        "señal_piso_humedo"
+      ],
       "spawnPointsPosibles": [
-        { "x": 148, "y": 640, "tipo": "walker" },
-        { "x": 356, "y": 640, "tipo": "crawler" }
+        {
+          "x": 148,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 356,
+          "y": 640,
+          "tipo": "crawler"
+        }
       ]
     },
     {
       "id": 2,
-      "posicionX": { "inicioPx": 445, "finPx": 889 },
+      "posicionX": {
+        "inicioPx": 445,
+        "finPx": 889
+      },
       "tipoDecoracion": "cajeros_internos_lado_norte",
-      "obstaculos": ["frente_cajero_saliente", "banco_espera_metalico"],
+      "obstaculos": [
+        "frente_cajero_saliente",
+        "banco_espera_metalico"
+      ],
       "spawnPointsPosibles": [
-        { "x": 518, "y": 640, "tipo": "walker" },
-        { "x": 832, "y": 640, "tipo": "runner" }
+        {
+          "x": 518,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 832,
+          "y": 640,
+          "tipo": "runner"
+        }
       ]
     },
     {
       "id": 3,
-      "posicionX": { "inicioPx": 890, "finPx": 1333 },
+      "posicionX": {
+        "inicioPx": 890,
+        "finPx": 1333
+      },
       "tipoDecoracion": "sector_cajas_reciclaje_pared_sur",
-      "obstaculos": ["caja_reciclaje_grande", "caja_carton_mediana"],
+      "obstaculos": [
+        "caja_reciclaje_grande",
+        "caja_carton_mediana"
+      ],
       "spawnPointsPosibles": [
-        { "x": 980, "y": 640, "tipo": "crawler" },
-        { "x": 1260, "y": 640, "tipo": "walker" }
+        {
+          "x": 980,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 1260,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 4,
-      "posicionX": { "inicioPx": 1334, "finPx": 1778 },
+      "posicionX": {
+        "inicioPx": 1334,
+        "finPx": 1778
+      },
       "tipoDecoracion": "tramo_colonial_con_columnas_de_piedra",
-      "obstaculos": ["columna_piedra_redonda", "carrito_limpieza"],
+      "obstaculos": [
+        "columna_piedra_redonda",
+        "carrito_limpieza"
+      ],
       "spawnPointsPosibles": [
-        { "x": 1450, "y": 640, "tipo": "walker" },
-        { "x": 1712, "y": 640, "tipo": "runner" }
+        {
+          "x": 1450,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 1712,
+          "y": 640,
+          "tipo": "runner"
+        }
       ]
     },
     {
       "id": 5,
-      "posicionX": { "inicioPx": 1779, "finPx": 2222 },
+      "posicionX": {
+        "inicioPx": 1779,
+        "finPx": 2222
+      },
       "tipoDecoracion": "nucleo_cajeros_y_panel_luz",
-      "obstaculos": ["fila_delimitador", "frente_cajero_saliente"],
+      "obstaculos": [
+        "fila_delimitador",
+        "frente_cajero_saliente"
+      ],
       "spawnPointsPosibles": [
-        { "x": 1875, "y": 640, "tipo": "walker" },
-        { "x": 2150, "y": 640, "tipo": "crawler" }
+        {
+          "x": 1875,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 2150,
+          "y": 640,
+          "tipo": "crawler"
+        }
       ]
     },
     {
       "id": 6,
-      "posicionX": { "inicioPx": 2223, "finPx": 2667 },
+      "posicionX": {
+        "inicioPx": 2223,
+        "finPx": 2667
+      },
       "tipoDecoracion": "pasillo_abierto_piso_reflectante",
-      "obstaculos": ["tacho_residuos", "cable_proteccion_suelo"],
+      "obstaculos": [
+        "tacho_residuos",
+        "cable_proteccion_suelo"
+      ],
       "spawnPointsPosibles": [
-        { "x": 2355, "y": 640, "tipo": "runner" },
-        { "x": 2588, "y": 640, "tipo": "walker" }
+        {
+          "x": 2355,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 2588,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 7,
-      "posicionX": { "inicioPx": 2668, "finPx": 3111 },
+      "posicionX": {
+        "inicioPx": 2668,
+        "finPx": 3111
+      },
       "tipoDecoracion": "sector_reclinado_con_bancos_y_macetero",
-      "obstaculos": ["banco_espera_metalico", "macetero_bajo"],
+      "obstaculos": [
+        "banco_espera_metalico",
+        "macetero_bajo"
+      ],
       "spawnPointsPosibles": [
-        { "x": 2732, "y": 640, "tipo": "crawler" },
-        { "x": 3028, "y": 640, "tipo": "walker" }
+        {
+          "x": 2732,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 3028,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 8,
-      "posicionX": { "inicioPx": 3112, "finPx": 3556 },
+      "posicionX": {
+        "inicioPx": 3112,
+        "finPx": 3556
+      },
       "tipoDecoracion": "zona_columna_triple_con_luces_lineales",
-      "obstaculos": ["columna_piedra_ancha", "caja_reciclaje_chica"],
+      "obstaculos": [
+        "columna_piedra_ancha",
+        "caja_reciclaje_chica"
+      ],
       "spawnPointsPosibles": [
-        { "x": 3208, "y": 640, "tipo": "walker" },
-        { "x": 3470, "y": 640, "tipo": "runner" }
+        {
+          "x": 3208,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 3470,
+          "y": 640,
+          "tipo": "runner"
+        }
       ]
     },
     {
       "id": 9,
-      "posicionX": { "inicioPx": 3557, "finPx": 4000 },
+      "posicionX": {
+        "inicioPx": 3557,
+        "finPx": 4000
+      },
       "tipoDecoracion": "transicion_media_del_pasillo_con_indicadores",
-      "obstaculos": ["atril_info", "cono_seguridad"],
+      "obstaculos": [
+        "atril_info",
+        "cono_seguridad"
+      ],
       "spawnPointsPosibles": [
-        { "x": 3666, "y": 640, "tipo": "walker" },
-        { "x": 3928, "y": 640, "tipo": "crawler" }
+        {
+          "x": 3666,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 3928,
+          "y": 640,
+          "tipo": "crawler"
+        }
       ]
     },
     {
       "id": 10,
-      "posicionX": { "inicioPx": 4001, "finPx": 4444 },
+      "posicionX": {
+        "inicioPx": 4001,
+        "finPx": 4444
+      },
       "tipoDecoracion": "segundo_nucleo_cajeros_internos",
-      "obstaculos": ["frente_cajero_saliente", "barrera_fila"],
+      "obstaculos": [
+        "frente_cajero_saliente",
+        "barrera_fila"
+      ],
       "spawnPointsPosibles": [
-        { "x": 4108, "y": 640, "tipo": "runner" },
-        { "x": 4352, "y": 640, "tipo": "walker" }
+        {
+          "x": 4108,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 4352,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 11,
-      "posicionX": { "inicioPx": 4445, "finPx": 4889 },
+      "posicionX": {
+        "inicioPx": 4445,
+        "finPx": 4889
+      },
       "tipoDecoracion": "sector_reciclaje_extendido_con_cartones",
-      "obstaculos": ["caja_reciclaje_grande", "pila_cajas_carton"],
+      "obstaculos": [
+        "caja_reciclaje_grande",
+        "pila_cajas_carton"
+      ],
       "spawnPointsPosibles": [
-        { "x": 4560, "y": 640, "tipo": "crawler" },
-        { "x": 4800, "y": 640, "tipo": "walker" }
+        {
+          "x": 4560,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 4800,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 12,
-      "posicionX": { "inicioPx": 4890, "finPx": 5333 },
+      "posicionX": {
+        "inicioPx": 4890,
+        "finPx": 5333
+      },
       "tipoDecoracion": "tramo_largo_de_columnas_repetidas",
-      "obstaculos": ["columna_piedra_redonda", "carro_archivo"],
+      "obstaculos": [
+        "columna_piedra_redonda",
+        "carro_archivo"
+      ],
       "spawnPointsPosibles": [
-        { "x": 5000, "y": 640, "tipo": "walker" },
-        { "x": 5270, "y": 640, "tipo": "runner" }
+        {
+          "x": 5000,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 5270,
+          "y": 640,
+          "tipo": "runner"
+        }
       ]
     },
     {
       "id": 13,
-      "posicionX": { "inicioPx": 5334, "finPx": 5778 },
+      "posicionX": {
+        "inicioPx": 5334,
+        "finPx": 5778
+      },
       "tipoDecoracion": "sector_iluminacion_intensa_y_piso_limpio",
-      "obstaculos": ["señal_piso_humedo", "tacho_residuos"],
+      "obstaculos": [
+        "señal_piso_humedo",
+        "tacho_residuos"
+      ],
       "spawnPointsPosibles": [
-        { "x": 5410, "y": 640, "tipo": "crawler" },
-        { "x": 5695, "y": 640, "tipo": "walker" }
+        {
+          "x": 5410,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 5695,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 14,
-      "posicionX": { "inicioPx": 5779, "finPx": 6222 },
+      "posicionX": {
+        "inicioPx": 5779,
+        "finPx": 6222
+      },
       "tipoDecoracion": "zona_mixta_cajero_y_columna",
-      "obstaculos": ["frente_cajero_saliente", "columna_piedra_ancha"],
+      "obstaculos": [
+        "frente_cajero_saliente",
+        "columna_piedra_ancha"
+      ],
       "spawnPointsPosibles": [
-        { "x": 5890, "y": 640, "tipo": "runner" },
-        { "x": 6148, "y": 640, "tipo": "walker" }
+        {
+          "x": 5890,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 6148,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 15,
-      "posicionX": { "inicioPx": 6223, "finPx": 6667 },
+      "posicionX": {
+        "inicioPx": 6223,
+        "finPx": 6667
+      },
       "tipoDecoracion": "paso_angosto_con_objetos_de_pasillo",
-      "obstaculos": ["carrito_limpieza", "caja_reciclaje_chica"],
+      "obstaculos": [
+        "carrito_limpieza",
+        "caja_reciclaje_chica"
+      ],
       "spawnPointsPosibles": [
-        { "x": 6320, "y": 640, "tipo": "crawler" },
-        { "x": 6620, "y": 640, "tipo": "walker" }
+        {
+          "x": 6320,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 6620,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 16,
-      "posicionX": { "inicioPx": 6668, "finPx": 7111 },
+      "posicionX": {
+        "inicioPx": 6668,
+        "finPx": 7111
+      },
       "tipoDecoracion": "tramo_final_con_columnas_y_carteleria_salida",
-      "obstaculos": ["columna_piedra_redonda", "atril_info"],
+      "obstaculos": [
+        "columna_piedra_redonda",
+        "atril_info"
+      ],
       "spawnPointsPosibles": [
-        { "x": 6785, "y": 640, "tipo": "runner" },
-        { "x": 7040, "y": 640, "tipo": "walker" }
+        {
+          "x": 6785,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 7040,
+          "y": 640,
+          "tipo": "walker"
+        }
       ]
     },
     {
       "id": 17,
-      "posicionX": { "inicioPx": 7112, "finPx": 7556 },
+      "posicionX": {
+        "inicioPx": 7112,
+        "finPx": 7556
+      },
       "tipoDecoracion": "antecamara_tecnica_con_luz_parpadeante",
-      "obstaculos": ["tablero_mantenimiento", "cable_proteccion_suelo"],
+      "obstaculos": [
+        "tablero_mantenimiento",
+        "cable_proteccion_suelo"
+      ],
       "spawnPointsPosibles": [
-        { "x": 7240, "y": 640, "tipo": "crawler" },
-        { "x": 7488, "y": 640, "tipo": "runner" }
+        {
+          "x": 7240,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 7488,
+          "y": 640,
+          "tipo": "runner"
+        }
       ]
     },
     {
       "id": 18,
-      "posicionX": { "inicioPx": 7557, "finPx": 8000 },
+      "posicionX": {
+        "inicioPx": 7557,
+        "finPx": 8000
+      },
       "tipoDecoracion": "salida_subsuelo_con_porton_institucional",
-      "obstaculos": ["barrera_seguridad", "columna_piedra_ancha"],
+      "obstaculos": [
+        "barrera_seguridad",
+        "columna_piedra_ancha"
+      ],
       "spawnPointsPosibles": [
-        { "x": 7680, "y": 640, "tipo": "walker" },
-        { "x": 7925, "y": 640, "tipo": "runner" }
+        {
+          "x": 7680,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 7925,
+          "y": 640,
+          "tipo": "runner"
+        }
       ]
     }
   ],
@@ -208,66 +460,627 @@
     {
       "id": "ZL-01",
       "nombre": "Entrada del subsuelo",
-      "segmentosCubiertos": [2, 3],
-      "activacion": { "x": 760, "y": 620 },
+      "segmentosCubiertos": [
+        2,
+        3
+      ],
+      "activacion": {
+        "x": 760,
+        "y": 620
+      },
       "spawnsZombies": [
-        { "x": 690, "y": 640, "tipo": "walker" },
-        { "x": 910, "y": 640, "tipo": "crawler" },
-        { "x": 1130, "y": 640, "tipo": "walker" }
+        {
+          "x": 690,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 910,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 1130,
+          "y": 640,
+          "tipo": "walker"
+        }
       ],
       "zombiesIniciales": 8
     },
     {
       "id": "ZL-02",
       "nombre": "Núcleo de cajeros y columnas",
-      "segmentosCubiertos": [5, 6, 7],
-      "activacion": { "x": 2460, "y": 620 },
+      "segmentosCubiertos": [
+        5,
+        6,
+        7
+      ],
+      "activacion": {
+        "x": 2460,
+        "y": 620
+      },
       "spawnsZombies": [
-        { "x": 2280, "y": 640, "tipo": "runner" },
-        { "x": 2485, "y": 640, "tipo": "walker" },
-        { "x": 2740, "y": 640, "tipo": "crawler" },
-        { "x": 2980, "y": 640, "tipo": "walker" }
+        {
+          "x": 2280,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 2485,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 2740,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 2980,
+          "y": 640,
+          "tipo": "walker"
+        }
       ],
       "zombiesIniciales": 12
     },
     {
       "id": "ZL-03",
       "nombre": "Centro del pasillo",
-      "segmentosCubiertos": [9, 10, 11],
-      "activacion": { "x": 4180, "y": 620 },
+      "segmentosCubiertos": [
+        9,
+        10,
+        11
+      ],
+      "activacion": {
+        "x": 4180,
+        "y": 620
+      },
       "spawnsZombies": [
-        { "x": 3900, "y": 640, "tipo": "crawler" },
-        { "x": 4150, "y": 640, "tipo": "runner" },
-        { "x": 4410, "y": 640, "tipo": "walker" },
-        { "x": 4680, "y": 640, "tipo": "walker" }
+        {
+          "x": 3900,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 4150,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 4410,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 4680,
+          "y": 640,
+          "tipo": "walker"
+        }
       ],
       "zombiesIniciales": 14
     },
     {
       "id": "ZL-04",
       "nombre": "Tramo técnico e iluminación fuerte",
-      "segmentosCubiertos": [13, 14, 15],
-      "activacion": { "x": 6060, "y": 620 },
+      "segmentosCubiertos": [
+        13,
+        14,
+        15
+      ],
+      "activacion": {
+        "x": 6060,
+        "y": 620
+      },
       "spawnsZombies": [
-        { "x": 5830, "y": 640, "tipo": "runner" },
-        { "x": 6110, "y": 640, "tipo": "walker" },
-        { "x": 6380, "y": 640, "tipo": "crawler" },
-        { "x": 6600, "y": 640, "tipo": "walker" }
+        {
+          "x": 5830,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 6110,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 6380,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 6600,
+          "y": 640,
+          "tipo": "walker"
+        }
       ],
       "zombiesIniciales": 16
     },
     {
       "id": "ZL-05",
       "nombre": "Salida del subsuelo",
-      "segmentosCubiertos": [16, 17, 18],
-      "activacion": { "x": 7420, "y": 620 },
+      "segmentosCubiertos": [
+        16,
+        17,
+        18
+      ],
+      "activacion": {
+        "x": 7420,
+        "y": 620
+      },
       "spawnsZombies": [
-        { "x": 7150, "y": 640, "tipo": "crawler" },
-        { "x": 7360, "y": 640, "tipo": "runner" },
-        { "x": 7600, "y": 640, "tipo": "walker" },
-        { "x": 7860, "y": 640, "tipo": "runner" }
+        {
+          "x": 7150,
+          "y": 640,
+          "tipo": "crawler"
+        },
+        {
+          "x": 7360,
+          "y": 640,
+          "tipo": "runner"
+        },
+        {
+          "x": 7600,
+          "y": 640,
+          "tipo": "walker"
+        },
+        {
+          "x": 7860,
+          "y": 640,
+          "tipo": "runner"
+        }
       ],
       "zombiesIniciales": 20
     }
-  ]
+  ],
+  "zombieSpawnManager": {
+    "minPlayerDistance": 260,
+    "maxPlayerDistance": 1250,
+    "viewportSafePadding": 120,
+    "areas": [
+      {
+        "id": "ZL-01",
+        "trigger": {
+          "x": 760,
+          "y": 620,
+          "width": 140,
+          "height": 220
+        },
+        "blockers": {
+          "left": {
+            "x": 409,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          },
+          "right": {
+            "x": 1369,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          }
+        },
+        "maxAlive": 8
+      },
+      {
+        "id": "ZL-02",
+        "trigger": {
+          "x": 2460,
+          "y": 620,
+          "width": 140,
+          "height": 220
+        },
+        "blockers": {
+          "left": {
+            "x": 1743,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          },
+          "right": {
+            "x": 3147,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          }
+        },
+        "maxAlive": 9
+      },
+      {
+        "id": "ZL-03",
+        "trigger": {
+          "x": 4180,
+          "y": 620,
+          "width": 140,
+          "height": 220
+        },
+        "blockers": {
+          "left": {
+            "x": 3521,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          },
+          "right": {
+            "x": 4925,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          }
+        },
+        "maxAlive": 10
+      },
+      {
+        "id": "ZL-04",
+        "trigger": {
+          "x": 6060,
+          "y": 620,
+          "width": 140,
+          "height": 220
+        },
+        "blockers": {
+          "left": {
+            "x": 5298,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          },
+          "right": {
+            "x": 6703,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          }
+        },
+        "maxAlive": 12
+      },
+      {
+        "id": "ZL-05",
+        "trigger": {
+          "x": 7420,
+          "y": 620,
+          "width": 140,
+          "height": 220
+        },
+        "blockers": {
+          "left": {
+            "x": 6632,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          },
+          "right": {
+            "x": 8000,
+            "y": 432.0,
+            "width": 30,
+            "height": 864
+          }
+        },
+        "maxAlive": 15
+      }
+    ],
+    "points": [
+      {
+        "id": "ZL-01-wave-left-0",
+        "x": 690,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1,
+        "spawnBudget": 4
+      },
+      {
+        "id": "ZL-01-wave-right-0",
+        "x": 910,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1,
+        "spawnBudget": 2
+      },
+      {
+        "id": "ZL-01-wave-right-1",
+        "x": 1130,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1,
+        "spawnBudget": 2
+      },
+      {
+        "id": "ZL-02-wave-left-0",
+        "x": 2280,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1,
+        "spawnBudget": 6
+      },
+      {
+        "id": "ZL-02-wave-right-0",
+        "x": 2485,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1,
+        "spawnBudget": 2
+      },
+      {
+        "id": "ZL-02-wave-right-1",
+        "x": 2740,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1,
+        "spawnBudget": 2
+      },
+      {
+        "id": "ZL-02-wave-right-2",
+        "x": 2980,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1,
+        "spawnBudget": 2
+      },
+      {
+        "id": "ZL-03-wave-left-0",
+        "x": 3900,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 1,
+        "spawnBudget": 4
+      },
+      {
+        "id": "ZL-03-wave-left-1",
+        "x": 4150,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 1,
+        "spawnBudget": 4
+      },
+      {
+        "id": "ZL-03-wave-right-0",
+        "x": 4410,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 1,
+        "spawnBudget": 4
+      },
+      {
+        "id": "ZL-03-wave-right-1",
+        "x": 4680,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 1,
+        "spawnBudget": 4
+      },
+      {
+        "id": "ZL-04-wave-left-0",
+        "x": 5830,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-04",
+        "difficultyModifier": 1,
+        "spawnBudget": 8
+      },
+      {
+        "id": "ZL-04-wave-right-0",
+        "x": 6110,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-04",
+        "difficultyModifier": 1,
+        "spawnBudget": 3
+      },
+      {
+        "id": "ZL-04-wave-right-1",
+        "x": 6380,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-04",
+        "difficultyModifier": 1,
+        "spawnBudget": 3
+      },
+      {
+        "id": "ZL-04-wave-right-2",
+        "x": 6600,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-04",
+        "difficultyModifier": 1,
+        "spawnBudget": 3
+      },
+      {
+        "id": "ZL-05-wave-left-0",
+        "x": 7150,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-05",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "ZL-05-wave-left-1",
+        "x": 7360,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "ZL-05",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "ZL-05-wave-right-0",
+        "x": 7600,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-05",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "ZL-05-wave-right-1",
+        "x": 7860,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "ZL-05",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "ZL-01-ambient",
+        "x": 760,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 6400,
+        "spawnType": "ambient_spawn",
+        "spawnDirection": "none",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 0.9,
+        "spawnBudget": 1
+      },
+      {
+        "id": "ZL-02-ambient",
+        "x": 2460,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 6400,
+        "spawnType": "ambient_spawn",
+        "spawnDirection": "none",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 0.9,
+        "spawnBudget": 1
+      },
+      {
+        "id": "ZL-03-ambient",
+        "x": 4180,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 6400,
+        "spawnType": "ambient_spawn",
+        "spawnDirection": "none",
+        "spawnArea": "ZL-03",
+        "difficultyModifier": 0.9,
+        "spawnBudget": 1
+      },
+      {
+        "id": "ZL-04-ambient",
+        "x": 6060,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 6400,
+        "spawnType": "ambient_spawn",
+        "spawnDirection": "none",
+        "spawnArea": "ZL-04",
+        "difficultyModifier": 0.9,
+        "spawnBudget": 1
+      },
+      {
+        "id": "ZL-05-ambient",
+        "x": 7420,
+        "y": 640,
+        "maxActive": 1,
+        "spawnCooldown": 6400,
+        "spawnType": "ambient_spawn",
+        "spawnDirection": "none",
+        "spawnArea": "ZL-05",
+        "difficultyModifier": 0.9,
+        "spawnBudget": 1
+      },
+      {
+        "id": "VS-ST-01",
+        "x": 760,
+        "y": 530,
+        "maxActive": 2,
+        "spawnCooldown": 4200,
+        "spawnType": "vertical_spawn",
+        "spawnDirection": "stairs_down",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1
+      },
+      {
+        "id": "VS-ST-02",
+        "x": 1300,
+        "y": 510,
+        "maxActive": 3,
+        "spawnCooldown": 3600,
+        "spawnType": "vertical_spawn",
+        "spawnDirection": "stairs_up",
+        "spawnArea": "ZL-01",
+        "difficultyModifier": 1,
+        "minPlayerDistance": 310
+      },
+      {
+        "id": "VS-DR-03",
+        "x": 1920,
+        "y": 590,
+        "maxActive": 1,
+        "spawnCooldown": 5000,
+        "spawnType": "door_spawn",
+        "spawnDirection": "door_left",
+        "spawnArea": "ZL-02",
+        "difficultyModifier": 1
+      }
+    ]
+  }
 }

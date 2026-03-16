@@ -7,9 +7,8 @@ import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StairSegmentSystem } from '../systems/StairSegmentSystem';
 import { AllySystem } from '../systems/AllySystem';
-import { ZombieWaveZone, createZombieWaveZonesFromLevelJson } from '../systems/ZombieWaveZone';
 import { LevelExitSystem } from '../systems/LevelExitSystem';
-import { VerticalSpawnSystem } from '../systems/VerticalSpawnSystem';
+import { SpawnManager } from '../systems/SpawnManager';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
 import level4StairSegments from '../../public/assets/levels/level4_stair_segments.json';
@@ -81,12 +80,6 @@ interface GameSceneData {
   skipLoad?: boolean;
 }
 
-interface CleanupZoneBoundary {
-  id: string;
-  minX: number;
-  maxX: number;
-}
-
 interface AllyWorldHealthBar {
   container: Phaser.GameObjects.Container;
   fill: Phaser.GameObjects.Rectangle;
@@ -104,9 +97,8 @@ export class GameScene extends Phaser.Scene {
   private missionSystem?: MissionSystem;
   private stairSegmentSystem?: StairSegmentSystem;
   private allySystem?: AllySystem;
-  private zombieWaveZoneSystem?: ZombieWaveZone;
+  private spawnManager?: SpawnManager;
   private levelExitSystem?: LevelExitSystem;
-  private verticalSpawnSystem?: VerticalSpawnSystem;
   private missionStatusText?: Phaser.GameObjects.Text;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
@@ -129,8 +121,6 @@ export class GameScene extends Phaser.Scene {
   private exitUnlocked = false;
   private spawnsShutDown = false;
   private visitedCheckpoints = new Set<string>();
-  private readonly verticalPointsByCleanupZone = new Map<string, string[]>();
-  private readonly disabledVerticalZones = new Set<string>();
   private cinematicCallSystem?: CinematicCallSystem;
   private advanceDialogueRequested = false;
   private skipDialogueRequested = false;
@@ -335,36 +325,24 @@ export class GameScene extends Phaser.Scene {
       this.zombieSystem?.spawn(spawnPoint.x, spawnPoint.y);
     });
 
-    const zombieWaveZonesFromJson = createZombieWaveZonesFromLevelJson(level2Subsuelo, {
-      triggerSize: { width: 140, height: 220 },
-      blockerWidth: 30,
-      blockerPadding: 36,
-      spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier
-    });
-
-    this.zombieWaveZoneSystem = new ZombieWaveZone(
+    this.spawnManager = SpawnManager.fromLevelJson(
       this,
       this.zombieSystem,
       this.players,
-      zombieWaveZonesFromJson
-    );
-    this.cleanupZonesRequired = this.zombieWaveZoneSystem.getTotalZonesCount();
-
-    // Ejemplo de integración: spawn vertical configurable por JSON (escaleras/puertas laterales).
-    this.verticalSpawnSystem = VerticalSpawnSystem.fromJson(
-      this,
-      this.zombieSystem,
-      this.players,
+      level2Subsuelo,
       verticalSpawnConfig,
-      { spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier }
+      {
+        spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier,
+        getEnemyLimit: () => this.zombieSystem?.getGroup().maxSize ?? Number.MAX_SAFE_INTEGER
+      }
     );
-    this.mapVerticalSpawnsToCleanupZones(verticalSpawnConfig.verticalZombieSpawns.points);
+    this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
 
     this.levelExitSystem = new LevelExitSystem(
       this,
       this.players,
       {
-        requiredCleanupZones: zombieWaveZonesFromJson.length,
+        requiredCleanupZones: this.cleanupZonesRequired,
         exitZone: {
           x: levelWidth - 90,
           y: levelHeight - 140,
@@ -379,7 +357,7 @@ export class GameScene extends Phaser.Scene {
         transitionMessage: 'Subiendo al siguiente nivel...',
         transitionDelayMs: 700
       },
-      () => this.zombieWaveZoneSystem?.getCompletedZonesCount() ?? 0,
+      () => this.spawnManager?.getCompletedAreasCount() ?? 0,
       (message) => this.showMissionStatus(message),
       (transitionMessage) => this.triggerLevelExitTransition(transitionMessage),
       () => this.handleExitUnlocked()
@@ -468,8 +446,6 @@ export class GameScene extends Phaser.Scene {
     this.cleanupZonesRequired = 0;
     this.exitUnlocked = false;
     this.spawnsShutDown = false;
-    this.verticalPointsByCleanupZone.clear();
-    this.disabledVerticalZones.clear();
     this.advanceDialogueRequested = false;
     this.skipDialogueRequested = false;
     this.movementLockedByNarrative = false;
@@ -513,9 +489,8 @@ export class GameScene extends Phaser.Scene {
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.registry.set('zombiesRemaining', zombiesRemaining);
-    this.zombieWaveZoneSystem?.update();
-    this.syncSpawnSystemsWithCleanupProgress();
-    this.verticalSpawnSystem?.update(this.time.now);
+    this.spawnManager?.update(this.time.now);
+    this.syncCleanupNarrativeProgress();
     this.levelExitSystem?.update();
 
     this.updateMissionProgress(zombiesRemaining);
@@ -594,7 +569,7 @@ export class GameScene extends Phaser.Scene {
         description: `Despeja las ${this.cleanupZonesRequired} zonas del pasillo del subsuelo`,
         completedDescription: 'Pasillo despejado. Salida habilitada al siguiente tramo.',
         isCompleted: (context) => {
-          const allCleanupZonesCompleted = (this.zombieWaveZoneSystem?.getCompletedZonesCount() ?? 0) >= this.cleanupZonesRequired;
+          const allCleanupZonesCompleted = (this.spawnManager?.getCompletedAreasCount() ?? 0) >= this.cleanupZonesRequired;
           return allCleanupZonesCompleted && context.zombiesRemaining === 0;
         }
       }
@@ -637,80 +612,21 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.spawnsShutDown = true;
-    this.verticalSpawnSystem?.setEnabled(false, reason);
-    this.zombieWaveZoneSystem?.setEnabled(false, reason);
+    this.spawnManager?.setEnabled(false, reason);
     console.info(`[GameScene] spawn systems disabled (${reason})`);
   }
 
-  private mapVerticalSpawnsToCleanupZones(points: Array<{ id: string; position: { x: number; y: number } }>): void {
-    const boundaries = this.getCleanupZoneBoundaries();
+  private syncCleanupNarrativeProgress(): void {
+    if (this.firstCleanupNarrativeTriggered) {
+      return;
+    }
 
-    points.forEach((point) => {
-      const ownerZone = boundaries.find((zoneBoundary) => (
-        point.position.x >= zoneBoundary.minX && point.position.x <= zoneBoundary.maxX
-      ));
+    if ((this.spawnManager?.getCompletedAreasCount() ?? 0) <= 0) {
+      return;
+    }
 
-      if (!ownerZone) {
-        return;
-      }
-
-      const zonePointIds = this.verticalPointsByCleanupZone.get(ownerZone.id) ?? [];
-      zonePointIds.push(point.id);
-      this.verticalPointsByCleanupZone.set(ownerZone.id, zonePointIds);
-    });
-
-    this.verticalPointsByCleanupZone.forEach((pointIds, zoneId) => {
-      console.info(`[GameScene] cleanup zone ${zoneId} controls vertical points: ${pointIds.join(', ')}`);
-    });
-  }
-
-  private getCleanupZoneBoundaries(): CleanupZoneBoundary[] {
-    const segmentsById = new Map(level2Subsuelo.segmentos.map((segment) => [segment.id, segment]));
-
-    return level2Subsuelo.zonasLimpiezaZombies
-      .map((zone) => {
-        const coveredSegments = zone.segmentosCubiertos.reduce<typeof level2Subsuelo.segmentos>((accumulator, segmentId) => {
-          const segment = segmentsById.get(segmentId);
-          if (segment) {
-            accumulator.push(segment);
-          }
-          return accumulator;
-        }, []);
-
-        if (coveredSegments.length === 0) {
-          return null;
-        }
-
-        return {
-          id: zone.id,
-          minX: Math.min(...coveredSegments.map((segment) => segment.posicionX.inicioPx)),
-          maxX: Math.max(...coveredSegments.map((segment) => segment.posicionX.finPx))
-        };
-      })
-      .filter((zone): zone is CleanupZoneBoundary => zone !== null);
-  }
-
-  private syncSpawnSystemsWithCleanupProgress(): void {
-    const completedZoneIds = this.zombieWaveZoneSystem?.getCompletedZoneIds() ?? [];
-
-    completedZoneIds.forEach((zoneId) => {
-      if (this.disabledVerticalZones.has(zoneId)) {
-        return;
-      }
-
-      this.disabledVerticalZones.add(zoneId);
-      const pointIds = this.verticalPointsByCleanupZone.get(zoneId) ?? [];
-      pointIds.forEach((pointId) => this.verticalSpawnSystem?.setPointEnabled(pointId, false, `cleanup-zone-completed:${zoneId}`));
-
-      if (pointIds.length > 0) {
-        console.info(`[GameScene] cleanup zone ${zoneId} completed: disabled vertical points ${pointIds.join(', ')}`);
-      }
-
-      if (!this.firstCleanupNarrativeTriggered) {
-        this.firstCleanupNarrativeTriggered = true;
-        void this.triggerNarrativeCheckpoint('level2-checkpoint-first-zone-cleared');
-      }
-    });
+    this.firstCleanupNarrativeTriggered = true;
+    void this.triggerNarrativeCheckpoint('level2-checkpoint-first-zone-cleared');
   }
 
   private setupNarrativeSystems(): void {

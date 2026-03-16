@@ -32,6 +32,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: AllyProfile;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
+  private isNameTagVisible = true;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
   private currentHealth: number;
@@ -87,6 +88,11 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   getMaxHealth(): number {
     return this.maxHealth;
+  }
+
+  setNameTagVisible(visible: boolean): void {
+    this.isNameTagVisible = visible;
+    this.nameTag.setVisible(this.active && visible);
   }
 
   updateAI(player: Player, zombies: Zombie[], currentTime: number): void {
@@ -267,7 +273,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta);
     this.nameTag.setPosition(this.x, this.y - 42);
-    this.nameTag.setVisible(this.active);
+    this.nameTag.setVisible(this.active && this.isNameTagVisible);
   }
 
   destroy(fromScene?: boolean): void {

@@ -215,8 +215,8 @@ export class GameScene extends Phaser.Scene {
     void this.loadProgressFromApi();
   };
 
-  constructor() {
-    super('GameScene');
+  constructor(sceneKey = 'GameScene') {
+    super(sceneKey);
   }
 
   create(data: GameSceneData = {}): void {

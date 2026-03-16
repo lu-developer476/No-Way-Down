@@ -1,0 +1,46 @@
+{
+  "flowId": "main_campaign",
+  "nodes": [
+    {
+      "id": "campaign-intro",
+      "type": "campaignIntro",
+      "sceneKey": "CampaignIntroScene"
+    },
+    {
+      "id": "level-6-combat",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level6_cuarto_piso_comedor.json",
+      "systems": {
+        "combat": ["Level6CombatSystem"],
+        "spawn": ["MixedSpawnSystem", "VerticalSpawnSystem"],
+        "environment": ["Level10ParkingExplorationSystem"]
+      }
+    },
+    {
+      "id": "drive-cinematic",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "drive_to_santelmo_cinematic"
+    },
+    {
+      "id": "drive-dialogue",
+      "type": "dialogue",
+      "sceneKey": "DialogueScene",
+      "dialoguePath": "campaign_intro_dialogue"
+    },
+    {
+      "id": "level-10-loot",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_vehicle_loot.json",
+      "systems": {
+        "campaign": ["DriveToSanTelmoCinematicSystem"],
+        "spawn": ["OfficeSpawnSystem"],
+        "combat": ["Level7CombatSystem"],
+        "environment": ["Level10ParkingExplorationSystem"],
+        "mission": ["VehicleLootSystem"]
+      }
+    }
+  ]
+}

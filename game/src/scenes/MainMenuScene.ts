@@ -7,6 +7,7 @@ import {
   saveInitialRunSetup
 } from './sceneShared';
 import { getAudioManager } from '../audio/AudioManager';
+import { SceneFlowManager } from './SceneFlowManager';
 
 interface MenuOption {
   label: string;
@@ -538,7 +539,11 @@ export class MainMenuScene extends Phaser.Scene {
     this.registry.set('initialRunSetup', setup);
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
-    this.scene.start('GameScene', { skipLoad: true });
+    const flowManager = new SceneFlowManager(this);
+    const firstNode = flowManager.startFromBeginning();
+    if (firstNode) {
+      flowManager.transitionToNode(firstNode);
+    }
   }
 
   private withCheck(checked: boolean, label: string): string {
@@ -548,7 +553,11 @@ export class MainMenuScene extends Phaser.Scene {
   private continueRun(): void {
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
-    this.scene.start('GameScene');
+    const flowManager = new SceneFlowManager(this);
+    const firstNode = flowManager.startFromBeginning();
+    if (firstNode) {
+      flowManager.transitionToNode(firstNode);
+    }
   }
 
   private hasSavedProgress(): boolean {

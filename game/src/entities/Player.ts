@@ -9,6 +9,7 @@ import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
+import { getMovementSpeedMultiplier, getReloadTimeMultiplier } from '../config/attributeRuntime';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -44,6 +45,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private defenseMitigationRatio = 0;
   private defenseFrontalOnly = true;
   private readonly spriteAnimationSystem: SpriteAnimationSystem;
+  private readonly movementSpeed: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, projectileSystem: ProjectileSystem, profile: PlayerConfig) {
     const characterVisual = getCharacterVisualById(profile.characterId);
@@ -63,6 +65,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.ammoRuntime = new WeaponAmmoRuntime(this.runtimeConfig.loadout);
     this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
+    this.movementSpeed = MOVE_SPEED * getMovementSpeedMultiplier(this.runtimeConfig.attributes);
     this.healthPoints = this.runtimeConfig.maxHealth;
     this.setTint(profile.color);
     this.spriteAnimationSystem.rememberDefaultTint(this, profile.color);
@@ -107,12 +110,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.isClimbing) {
       this.setVelocityX(0);
     } else if (this.leftKey.isDown) {
-      this.setVelocityX(-MOVE_SPEED);
+      this.setVelocityX(-this.movementSpeed);
       this.lookDirection = -1;
       this.setFlipX(true);
       isMovingHorizontally = true;
     } else if (this.rightKey.isDown) {
-      this.setVelocityX(MOVE_SPEED);
+      this.setVelocityX(this.movementSpeed);
       this.lookDirection = 1;
       this.setFlipX(false);
       isMovingHorizontally = true;
@@ -342,6 +345,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return this.runtimeConfig;
   }
 
+  getAttributes() {
+    return this.runtimeConfig.attributes;
+  }
+
   getProfile(): PlayerConfig {
     return this.profile;
   }
@@ -400,7 +407,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.isReloading = true;
     this.reloadingWeaponKey = activeWeapon;
-    this.reloadEndsAt = this.scene.time.now + Math.max(0, weaponCatalog.reloadTimeMs);
+    const reloadMultiplier = getReloadTimeMultiplier(this.runtimeConfig.attributes);
+    this.reloadEndsAt = this.scene.time.now + Math.max(0, weaponCatalog.reloadTimeMs * reloadMultiplier);
     getAudioManager(this.scene).play('reload', { x: this.x, y: this.y, volume: 0.2 });
     return true;
   }

@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import { Projectile } from '../entities/Projectile';
 import { CharacterWeaponKey } from '../config/characterRuntime';
+import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { applyLegacyWeaponOverrides, getWeaponRuntimeConfig, WeaponRuntimeConfig } from '../config/weaponRuntime';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { getAudioManager } from '../audio/AudioManager';
+import { getAccuracySpreadMultiplier } from '../config/attributeRuntime';
 
 export interface FireConfig {
   originX: number;
@@ -56,7 +58,7 @@ export class ProjectileSystem {
     }
 
     const now = this.scene.time.now;
-    const weaponRuntime = this.getWeaponRuntime(config.weapon);
+    const weaponRuntime = this.getWeaponRuntime(config.weapon, config.shooterCharacterId);
     const weaponVisual = getWeaponVisualRuntimeConfig(weaponRuntime.key);
     const shooterId = config.shooterId ?? 'shared';
     const nextFireTime = this.nextFireTimeByShooter.get(shooterId) ?? 0;
@@ -117,8 +119,12 @@ export class ProjectileSystem {
     });
   }
 
-  private getWeaponRuntime(weapon?: CharacterWeaponKey): WeaponRuntimeConfig {
-    return getWeaponRuntimeConfig(weapon);
+  private getWeaponRuntime(weapon?: CharacterWeaponKey, shooterCharacterId?: string): WeaponRuntimeConfig {
+    const attributes = shooterCharacterId ? getCharacterRuntimeConfig(shooterCharacterId).attributes : undefined;
+
+    return getWeaponRuntimeConfig(weapon, {
+      spreadMultiplier: attributes ? getAccuracySpreadMultiplier(attributes) : 1
+    });
   }
 
   private canFireByRuntime(config: FireConfig): boolean {

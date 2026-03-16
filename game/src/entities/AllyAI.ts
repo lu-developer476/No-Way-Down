@@ -9,6 +9,7 @@ import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { CombatActionSystem } from '../systems/CombatActionSystem';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
+import { getMovementSpeedMultiplier, getReloadTimeMultiplier } from '../config/attributeRuntime';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -54,6 +55,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private currentTargetId?: Zombie;
   private currentTargetLockedUntil = 0;
   private readonly spriteAnimationSystem: SpriteAnimationSystem;
+  private readonly movementSpeedMultiplier: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, profile: AllyProfile, projectileSystem: ProjectileSystem, combatActionSystem: CombatActionSystem) {
     const visual = getCharacterVisualById(profile.characterId);
@@ -65,6 +67,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.ammoRuntime = new WeaponAmmoRuntime(this.runtimeConfig.loadout);
     this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
+    this.movementSpeedMultiplier = getMovementSpeedMultiplier(this.runtimeConfig.attributes);
     this.projectileSystem = projectileSystem;
     this.combatActionSystem = combatActionSystem;
     this.maxHealth = this.runtimeConfig.maxHealth;
@@ -100,6 +103,10 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   getRuntimeConfig(): CharacterRuntimeConfig {
     return this.runtimeConfig;
+  }
+
+  getAttributes() {
+    return this.runtimeConfig.attributes;
   }
 
   getHealth(): number {
@@ -203,7 +210,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const desiredX = player.x + this.profile.followOffsetX;
     const desiredY = player.y + this.profile.followOffsetY;
 
-    this.moveTowards(desiredX, desiredY, ALLY_FOLLOW_SPEED, ALLY_STOP_RADIUS);
+    this.moveTowards(desiredX, desiredY, ALLY_FOLLOW_SPEED * this.movementSpeedMultiplier, ALLY_STOP_RADIUS);
     this.avoidBlockingPlayer(player);
   }
 
@@ -218,22 +225,22 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const activeCatalog = getWeaponCatalogEntry(activeWeapon.key);
 
     if (distanceToTarget < ALLY_ATTACK_MIN_DISTANCE) {
-      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED * 0.9, ALLY_STOP_RADIUS + 10);
+      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED * 0.9 * this.movementSpeedMultiplier, ALLY_STOP_RADIUS + 10);
       return;
     }
 
     if (activeCatalog.isDefensive && distanceToTarget <= ALLY_DEFENSE_SWITCH_DISTANCE) {
-      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_FOLLOW_SPEED * 0.85, ALLY_STOP_RADIUS + 14);
+      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_FOLLOW_SPEED * 0.85 * this.movementSpeedMultiplier, ALLY_STOP_RADIUS + 14);
       return;
     }
 
     if (distanceToTarget <= ALLY_ATTACK_RANGE) {
-      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_FOLLOW_SPEED * 0.95, ALLY_STOP_RADIUS + 16);
+      this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_FOLLOW_SPEED * 0.95 * this.movementSpeedMultiplier, ALLY_STOP_RADIUS + 16);
       this.tryAttackTarget(target);
       return;
     }
 
-    this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED, ALLY_STOP_RADIUS);
+    this.moveTowards(combatAnchor.x, combatAnchor.y, ALLY_ATTACK_APPROACH_SPEED * this.movementSpeedMultiplier, ALLY_STOP_RADIUS);
   }
 
   private moveTowards(targetX: number, targetY: number, baseSpeed: number, stopRadius: number): void {
@@ -365,7 +372,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.isReloading = true;
     this.reloadingWeaponKey = weaponKey;
-    this.reloadEndsAt = this.scene.time.now + Math.max(0, getWeaponCatalogEntry(weaponKey).reloadTimeMs);
+    const reloadMultiplier = getReloadTimeMultiplier(this.runtimeConfig.attributes);
+    this.reloadEndsAt = this.scene.time.now + Math.max(0, getWeaponCatalogEntry(weaponKey).reloadTimeMs * reloadMultiplier);
     return true;
   }
 

@@ -50,6 +50,7 @@ export interface CharacterRuntimeConfig {
   role: CharacterRole;
   playable: boolean;
   aiPossible: boolean;
+  attributes: CharacterAttributes;
   maxHealth: number;
   baseWeapon: CharacterWeaponKey;
   weaponRuntime: WeaponRuntimeConfig;
@@ -59,6 +60,23 @@ export interface CharacterRuntimeConfig {
 
 interface CharacterStats {
   health?: number;
+  stamina?: number;
+  speed?: number;
+  accuracy?: number;
+  agility?: number;
+  recoil_control?: number;
+  melee_skill?: number;
+  reload_speed?: number;
+}
+
+export interface CharacterAttributes {
+  health: number;
+  stamina: number;
+  agility: number;
+  accuracy: number;
+  recoil_control: number;
+  melee_skill: number;
+  reload_speed: number;
 }
 
 interface CharacterCatalogLoadout {
@@ -94,6 +112,15 @@ const DEFAULT_RUNTIME_CHARACTER: Omit<CharacterRuntimeConfig, 'characterId'> = {
   role: 'secondary',
   playable: false,
   aiPossible: true,
+  attributes: {
+    health: 100,
+    stamina: 70,
+    agility: 70,
+    accuracy: 70,
+    recoil_control: 70,
+    melee_skill: 70,
+    reload_speed: 70
+  },
   maxHealth: 100,
   baseWeapon: 'pistol',
   weaponRuntime: getWeaponRuntimeConfig('pistol'),
@@ -107,6 +134,32 @@ const DEFAULT_RUNTIME_CHARACTER: Omit<CharacterRuntimeConfig, 'characterId'> = {
     secondary: undefined
   }
 };
+
+function clampAttributeValue(value: number | undefined, fallback: number): number {
+  const normalized = Math.round(value ?? fallback);
+  return Math.max(1, Math.min(100, normalized));
+}
+
+function resolveAttributes(stats?: CharacterStats): CharacterAttributes {
+  const health = clampAttributeValue(stats?.health, DEFAULT_RUNTIME_CHARACTER.attributes.health);
+  const stamina = clampAttributeValue(stats?.stamina, DEFAULT_RUNTIME_CHARACTER.attributes.stamina);
+  const agility = clampAttributeValue(stats?.agility ?? stats?.speed, DEFAULT_RUNTIME_CHARACTER.attributes.agility);
+  const accuracy = clampAttributeValue(stats?.accuracy, DEFAULT_RUNTIME_CHARACTER.attributes.accuracy);
+
+  const recoilControlFallback = Math.round(accuracy * 0.55 + stamina * 0.45);
+  const meleeSkillFallback = Math.round(stamina * 0.52 + agility * 0.48);
+  const reloadSpeedFallback = Math.round(stamina * 0.58 + agility * 0.42);
+
+  return {
+    health,
+    stamina,
+    agility,
+    accuracy,
+    recoil_control: clampAttributeValue(stats?.recoil_control, recoilControlFallback),
+    melee_skill: clampAttributeValue(stats?.melee_skill, meleeSkillFallback),
+    reload_speed: clampAttributeValue(stats?.reload_speed, reloadSpeedFallback)
+  };
+}
 
 function buildLoadoutFromCatalog(entry: CharacterCatalogEntry): CharacterInventoryLoadout {
   const weaponDefault = resolveWeaponKey(entry.weapon_default ?? DEFAULT_RUNTIME_CHARACTER.baseWeapon);
@@ -174,6 +227,7 @@ const RUNTIME_CONFIG_BY_ID = new Map<RuntimeCharacterId, CharacterRuntimeConfig>
     const loadout = buildLoadoutFromCatalog(entry);
     const weaponRuntimeBySlot = buildWeaponRuntimeBySlot(loadout);
     const baseWeapon = resolveBaseWeapon(loadout);
+    const attributes = resolveAttributes(entry.stats);
 
     return [
       characterId,
@@ -183,7 +237,8 @@ const RUNTIME_CONFIG_BY_ID = new Map<RuntimeCharacterId, CharacterRuntimeConfig>
         role: entry.role,
         playable: entry.playable,
         aiPossible: entry.ai_possible,
-        maxHealth: entry.stats?.health ?? DEFAULT_RUNTIME_CHARACTER.maxHealth,
+        attributes,
+        maxHealth: attributes.health,
         baseWeapon,
         weaponRuntime: getWeaponRuntimeConfig(baseWeapon),
         loadout,

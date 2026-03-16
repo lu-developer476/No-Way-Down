@@ -65,19 +65,19 @@ Cada checkpoint define:
 
 ## 6) Archivos JSON involucrados
 ### Runtime/flujo principal nivel 7
-- `game/public/assets/levels/level7_quinto_piso.json`
+- `assets/levels/level7_quinto_piso.json`
   - Layout completo (secciones, spawns, zonas de combate, checkpoints, objetos interactivos, cinemática final).
-- `game/public/assets/levels/level7_combat_system.json`
+- `assets/levels/level7_combat_system.json`
   - Definición de zonas de combate para `Level7CombatSystem` (triggers, waves, lock mode, narrative gates).
-- `game/public/assets/levels/level7_narrative_checkpoints.json`
+- `assets/levels/level7_narrative_checkpoints.json`
   - Definición de checkpoints narrativos para `NarrativeCheckpointSystem`.
-- `game/public/assets/levels/level7_cinematic_call.json`
+- `assets/levels/level7_cinematic_call.json`
   - Configuración de llamadas/cinemáticas de diálogo por checkpoint.
-- `game/public/assets/levels/level7_objective_chain.json`
+- `assets/levels/level7_objective_chain.json`
   - Secuencia de objetivos del nivel 7.
 
 ### Soporte de recuperación de pertenencias
-- `game/public/assets/levels/level7_belongings.json`
+- `assets/levels/level7_belongings.json`
   - Configuración para `BelongingsRecoverySystem` (área, checkpoints, recuperables y reglas por actor).
 
 ### JSONs auxiliares en raíz del repo (referencia de diseño)

@@ -1,6 +1,6 @@
 # Nivel 5 - Tercer Piso Institucional (explicación de secciones)
 
-Archivo base: `game/public/assets/levels/level5_tercer_piso.json`.
+Archivo base: `assets/levels/level5_tercer_piso.json`.
 
 ## S1. acceso por escaleras
 - Funciona como transición inmediata desde el nivel anterior.

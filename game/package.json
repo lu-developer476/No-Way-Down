@@ -14,7 +14,9 @@
     "generate:tall-windows-spritesheet": "node scripts/generateInstitutionalTallWindowsSpritesheet.mjs",
     "generate:institutional-decor-spritesheet": "node scripts/generateInstitutionalDecorSpritesheet.mjs",
     "generate:stairs-spritesheet": "node scripts/generateInstitutionalStairsSpritesheet.mjs",
-    "generate:zombie-damage-tilesheet": "node scripts/generateZombieDamageTileset.mjs"
+    "generate:zombie-damage-tilesheet": "node scripts/generateZombieDamageTileset.mjs",
+    "audit:asset-routes": "node scripts/auditAssetRoutes.mjs",
+    "fix:asset-routes": "node scripts/auditAssetRoutes.mjs --fix"
   },
   "dependencies": {
     "phaser": "^3.90.0"

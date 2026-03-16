@@ -135,15 +135,15 @@ El objective chain utiliza `combat-completed: level8-floor1-final-siege`, por lo
 
 ## 7) Archivos JSON implicados
 ### Flujo principal Nivel 8
-- `game/public/assets/levels/level8_objective_chain.json`
-- `game/public/assets/levels/level8_intro_dialogue.json`
-- `game/public/assets/levels/level8_office422_rescue.json`
-- `game/public/assets/levels/level8_office422_wave_combat.json`
-- `game/public/assets/levels/level8_sister_message_dialogue.json`
+- `assets/levels/level8_objective_chain.json`
+- `assets/levels/level8_intro_dialogue.json`
+- `assets/levels/level8_office422_rescue.json`
+- `assets/levels/level8_office422_wave_combat.json`
+- `assets/levels/level8_sister_message_dialogue.json`
 - `game/config/levels/level8/level8_timed_checkpoint.json`
-- `game/public/assets/levels/level8_descent_route.json`
-- `game/public/assets/levels/level8_final_siege.json`
-- `game/public/assets/levels/level8_outro_dialogue.json`
+- `assets/levels/level8_descent_route.json`
+- `assets/levels/level8_final_siege.json`
+- `assets/levels/level8_outro_dialogue.json`
 
 ### Soporte documental
 - `docs/level8_rescate_oficina_422_ascii_layout.md`

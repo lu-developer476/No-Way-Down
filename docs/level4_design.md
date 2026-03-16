@@ -7,7 +7,7 @@
 ---
 
 ## 1) Recorrido completo (diseño de Nivel 4)
-Referencia principal: `game/public/assets/levels/level4_segundo_piso.json`.
+Referencia principal: `assets/levels/level4_segundo_piso.json`.
 
 1. **S1 · Sección de escaleras curvas**
    - Entrada en coordenadas bajas (`entry`) y ascenso en zigzag por `path_hint`.
@@ -93,19 +93,19 @@ Además:
 ## 5) Archivos JSON usados
 
 ### Usados en runtime principal actual
-- `game/public/assets/levels/level2_subsuelo.json`
-- `game/public/assets/levels/level2_stairs.json`
-- `game/public/assets/levels/level2_vertical_spawns.json`
-- `game/public/assets/levels/level4_stair_segments.json` (**importado en `GameScene` como ejemplo, no activado en create**)
+- `assets/levels/level2_subsuelo.json`
+- `assets/levels/level2_stairs.json`
+- `assets/levels/level2_vertical_spawns.json`
+- `assets/levels/level4_stair_segments.json` (**importado en `GameScene` como ejemplo, no activado en create**)
 
 ### Configuración de Nivel 4 lista para integración
-- `game/public/assets/levels/level4_segundo_piso.json`
-- `game/public/assets/levels/level4_combat_zones.json`
-- `game/public/assets/levels/level4_mixed_spawns.json`
-- `game/public/assets/levels/level4_landing_zones.json`
-- `game/public/assets/levels/turnstiles_level4.json`
-- `game/public/assets/levels/level4_ambient_events.example.json`
-- `game/public/assets/levels/second_floor_sector.json` (layout detallado adicional del sector S4)
+- `assets/levels/level4_segundo_piso.json`
+- `assets/levels/level4_combat_zones.json`
+- `assets/levels/level4_mixed_spawns.json`
+- `assets/levels/level4_landing_zones.json`
+- `assets/levels/turnstiles_level4.json`
+- `assets/levels/level4_ambient_events.example.json`
+- `assets/levels/second_floor_sector.json` (layout detallado adicional del sector S4)
 
 ---
 

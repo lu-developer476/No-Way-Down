@@ -50,6 +50,7 @@ export class LevelExitSystem {
   private readonly onExitUnlocked?: () => void;
 
   private readonly exitZone: Phaser.GameObjects.Zone;
+  private readonly advanceKey: Phaser.Input.Keyboard.Key;
   private readonly state: RuntimeState = {
     hasShownCompletedMessage: false,
     hasTransitionStarted: false
@@ -88,6 +89,12 @@ export class LevelExitSystem {
     );
 
     this.scene.physics.add.existing(this.exitZone, true);
+    const keyboard = this.scene.input.keyboard;
+    if (!keyboard) {
+      throw new Error('Keyboard input is not available in this scene.');
+    }
+
+    this.advanceKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.bindExitOverlap();
   }
 
@@ -117,7 +124,7 @@ export class LevelExitSystem {
   }
 
   private tryCompleteAndTransition(): void {
-    if (this.state.hasTransitionStarted || !this.canCompleteLevel()) {
+    if (this.state.hasTransitionStarted || !this.canCompleteLevel() || !Phaser.Input.Keyboard.JustDown(this.advanceKey)) {
       return;
     }
 

@@ -12,6 +12,8 @@ export interface PlayerControlScheme {
   down: number;
   jump: number;
   shoot: number;
+  reload: number;
+  interact: number;
 }
 
 export interface PlayerConfig {
@@ -35,11 +37,13 @@ export interface PartySeedConfig {
 }
 
 const CONTROLS_P1: PlayerControlScheme = {
-  left: Phaser.Input.Keyboard.KeyCodes.A,
-  right: Phaser.Input.Keyboard.KeyCodes.D,
-  down: Phaser.Input.Keyboard.KeyCodes.S,
-  jump: Phaser.Input.Keyboard.KeyCodes.W,
-  shoot: Phaser.Input.Keyboard.KeyCodes.F
+  left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+  right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+  down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+  jump: Phaser.Input.Keyboard.KeyCodes.SPACE,
+  shoot: Phaser.Input.Keyboard.KeyCodes.S,
+  reload: Phaser.Input.Keyboard.KeyCodes.R,
+  interact: Phaser.Input.Keyboard.KeyCodes.E
 };
 
 const PARTY_MEMBER_TINT: Record<PartyCharacterId, number> = {

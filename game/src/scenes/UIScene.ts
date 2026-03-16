@@ -112,13 +112,13 @@ export class UIScene extends Phaser.Scene {
 
   private handleAudioMutedChanged(_parent: Phaser.Data.DataManager, isMuted: boolean): void {
     const volume = this.registry.get('audioVolume') ?? 100;
-    this.audioStateText?.setText(isMuted ? `Audio: Muted (${volume}%)` : `Audio: ${volume}%`);
+    this.audioStateText?.setText(isMuted ? `Sonido: silenciado (${volume}%)` : `Sonido: ${volume}%`);
   }
 
   private handleAudioVolumeChanged(_parent: Phaser.Data.DataManager, volume: number): void {
     const muted = this.registry.get('audioMuted') ?? false;
     const clampedVolume = Phaser.Math.Clamp(Math.round(Number(volume) || 0), 0, 100);
-    this.audioStateText?.setText(muted ? `Audio: Muted (${clampedVolume}%)` : `Audio: ${clampedVolume}%`);
+    this.audioStateText?.setText(muted ? `Sonido: silenciado (${clampedVolume}%)` : `Sonido: ${clampedVolume}%`);
   }
 
   private handleDifficultyChanged(_parent: Phaser.Data.DataManager, value: string): void {
@@ -198,7 +198,7 @@ export class UIScene extends Phaser.Scene {
       wordWrap: { width: 320 }
     }).setScrollFactor(0);
 
-    this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Mover A/D · Disparar F · Pausa ESC · Audio M', {
+    this.controlsHintText = this.add.text(this.scale.width - 18, this.scale.height - 16, 'Flechas mover · Espacio saltar · S disparar · R recargar · E interactuar · Enter avanzar · P pausa · ESC salir', {
       color: '#93c5fd',
       fontSize: '12px',
       fontFamily: pixelFont,
@@ -248,7 +248,7 @@ export class UIScene extends Phaser.Scene {
       .setScrollFactor(0)
       .setVisible(false);
 
-    this.audioStateText = this.add.text(this.scale.width - 14, 18, 'Audio: 100%', {
+    this.audioStateText = this.add.text(this.scale.width - 14, 18, 'Sonido: 100%', {
       color: '#93c5fd',
       fontSize: '12px',
       fontFamily: pixelFont,

@@ -2,11 +2,24 @@ import Phaser from 'phaser';
 import { Survivor } from '../entities/Survivor';
 import { Zombie } from '../entities/Zombie';
 
+export type SquadMemberType = 'primary' | 'optional';
+
 export interface SquadManagerConfig {
   readonly searchRadius?: number;
   readonly maxSimultaneousShots?: number;
   readonly volleyCooldownMs?: number;
   readonly minimumShooterSpacing?: number;
+  readonly onMemberDeath?: (member: Survivor, memberType: SquadMemberType) => void;
+}
+
+export interface SquadMemberOptions {
+  readonly memberType?: SquadMemberType;
+  readonly selected?: boolean;
+}
+
+interface SquadMemberRecord {
+  readonly survivor: Survivor;
+  readonly memberType: SquadMemberType;
 }
 
 interface ShotOrder {
@@ -26,42 +39,54 @@ export class SquadManager {
   private readonly maxSimultaneousShots: number;
   private readonly volleyCooldownMs: number;
   private readonly minimumShooterSpacingSq: number;
+  private readonly onMemberDeath?: (member: Survivor, memberType: SquadMemberType) => void;
 
   private nextVolleyAt = 0;
-  private survivors: Survivor[] = [];
+  private members: SquadMemberRecord[] = [];
 
   constructor(config: SquadManagerConfig = {}) {
     const searchRadius = Math.max(1, config.searchRadius ?? DEFAULT_SEARCH_RADIUS);
     this.searchRadiusSq = searchRadius * searchRadius;
     this.maxSimultaneousShots = Math.max(1, Math.floor(config.maxSimultaneousShots ?? DEFAULT_MAX_SIMULTANEOUS_SHOTS));
     this.volleyCooldownMs = Math.max(0, Math.floor(config.volleyCooldownMs ?? DEFAULT_VOLLEY_COOLDOWN_MS));
+    this.onMemberDeath = config.onMemberDeath;
 
     const minimumShooterSpacing = Math.max(0, config.minimumShooterSpacing ?? DEFAULT_MINIMUM_SHOOTER_SPACING);
     this.minimumShooterSpacingSq = minimumShooterSpacing * minimumShooterSpacing;
   }
 
-  addMember(member: Survivor): void {
-    if (!member.active || this.survivors.includes(member)) {
+  addMember(member: Survivor, options: SquadMemberOptions = {}): void {
+    if (!member.active || this.members.some((record) => record.survivor === member)) {
       return;
     }
 
-    this.survivors.push(member);
+    const memberType = options.memberType ?? 'primary';
+    const isSelected = options.selected ?? true;
+
+    if (memberType === 'optional' && !isSelected) {
+      return;
+    }
+
+    this.members.push({
+      survivor: member,
+      memberType
+    });
   }
 
   removeMember(member: Survivor | string): void {
-    this.survivors = this.survivors.filter((survivor) => {
+    this.members = this.members.filter((record) => {
       if (typeof member === 'string') {
-        return survivor.id !== member;
+        return record.survivor.id !== member;
       }
 
-      return survivor !== member;
+      return record.survivor !== member;
     });
   }
 
   update(zombies: readonly Zombie[], currentTime: number): void {
     this.cleanupDeadMembers();
 
-    if (this.survivors.length === 0 || currentTime < this.nextVolleyAt) {
+    if (this.members.length === 0 || currentTime < this.nextVolleyAt) {
       return;
     }
 
@@ -104,7 +129,7 @@ export class SquadManager {
 
     const orders: ShotOrder[] = [];
 
-    this.survivors.forEach((survivor) => {
+    this.members.forEach(({ survivor }) => {
       let nearestZombie: Zombie | null = null;
       let nearestDistanceSq = Number.POSITIVE_INFINITY;
 
@@ -147,6 +172,22 @@ export class SquadManager {
   }
 
   private cleanupDeadMembers(): void {
-    this.survivors = this.survivors.filter((survivor) => survivor.active && survivor.health > 0);
+    if (this.members.length === 0) {
+      return;
+    }
+
+    const aliveMembers: SquadMemberRecord[] = [];
+
+    this.members.forEach((record) => {
+      const isAlive = record.survivor.active && record.survivor.health > 0;
+      if (isAlive) {
+        aliveMembers.push(record);
+        return;
+      }
+
+      this.onMemberDeath?.(record.survivor, record.memberType);
+    });
+
+    this.members = aliveMembers;
   }
 }

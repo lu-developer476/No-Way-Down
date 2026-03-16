@@ -25,16 +25,55 @@ interface SetupActionOption {
   action: () => void;
 }
 
+type UiStyles = {
+  'font-title': Phaser.Types.GameObjects.Text.TextStyle;
+  'font-menu': Phaser.Types.GameObjects.Text.TextStyle;
+  'font-subtext': Phaser.Types.GameObjects.Text.TextStyle;
+  'panel-background': {
+    fillColor: number;
+    fillAlpha: number;
+    strokeColor: number;
+    strokeAlpha: number;
+  };
+  'highlight-color': string;
+};
+
 type SetupStep = 'protagonist' | 'difficulty' | 'party' | 'confirm';
 
 const REQUIRED_PARTY = ['Alan Nahuel', 'Giovanna', 'Damián', 'Nahir'] as const;
 const OPTIONAL_PARTY = ['Celestino', 'Hernán', 'Yamil'] as const;
+
+const UI_STYLES: UiStyles = {
+  'font-title': {
+    color: '#f8fafc',
+    fontSize: '28px',
+    fontFamily: '"Courier New", monospace'
+  },
+  'font-menu': {
+    color: '#cbd5e1',
+    fontSize: '18px',
+    fontFamily: '"Courier New", monospace'
+  },
+  'font-subtext': {
+    color: '#94a3b8',
+    fontSize: '13px',
+    fontFamily: '"Courier New", monospace'
+  },
+  'panel-background': {
+    fillColor: 0x020617,
+    fillAlpha: 0.62,
+    strokeColor: 0x0ea5e9,
+    strokeAlpha: 0.34
+  },
+  'highlight-color': '#fde047'
+};
 
 export class MainMenuScene extends Phaser.Scene {
   private menuOptions: MenuOption[] = [];
   private optionTexts: Phaser.GameObjects.Text[] = [];
   private optionBackgrounds: Phaser.GameObjects.Rectangle[] = [];
   private menuBar?: Phaser.GameObjects.Rectangle;
+  private menuHintText?: Phaser.GameObjects.Text;
   private selectedIndex = 0;
   private controlsPanel?: Phaser.GameObjects.Container;
   private setupPanel?: Phaser.GameObjects.Container;
@@ -62,6 +101,11 @@ export class MainMenuScene extends Phaser.Scene {
     this.buildSetupPanel();
     this.registerMenuInputs();
     this.refreshMenuSelection();
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this);
+    });
   }
 
   private buildBackground(): void {
@@ -85,35 +129,34 @@ export class MainMenuScene extends Phaser.Scene {
       {
         label: 'Nueva partida',
         action: () => this.openSetupFlow()
-      }
-    ];
-
-    if (this.hasSavedProgress()) {
-      this.menuOptions.push({
+      },
+      {
         label: 'Continuar',
         action: () => this.continueRun()
-      });
-    }
+      },
+      {
+        label: 'Opciones',
+        action: () => this.toggleControlsPanel(true)
+      },
+      {
+        label: 'Salir',
+        action: () => this.exitGame()
+      }
+    ];
+    this.volumeOptionIndex = -1;
 
-    this.menuOptions.push({
-      label: 'Volumen: --',
-      action: () => this.adjustMasterVolume(10)
-    });
-    this.volumeOptionIndex = this.menuOptions.length - 1;
+    this.menuBar = this.add.rectangle(
+      width / 2,
+      height - 68,
+      width - 56,
+      54,
+      UI_STYLES['panel-background'].fillColor,
+      UI_STYLES['panel-background'].fillAlpha
+    ).setStrokeStyle(1, UI_STYLES['panel-background'].strokeColor, UI_STYLES['panel-background'].strokeAlpha);
 
-    this.menuOptions.push({
-      label: 'Controles',
-      action: () => this.toggleControlsPanel(true)
-    });
-
-    this.menuBar = this.add.rectangle(width / 2, height - 84, width - 56, 62, 0x020617, 0.62)
-      .setStrokeStyle(1, 0x0ea5e9, 0.34);
-
-    this.optionTexts = this.menuOptions.map((option) => this.add.text(0, 0, option.label, {
-      color: '#cbd5e1',
-      fontSize: '22px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5).setDepth(4));
+    this.optionTexts = this.menuOptions.map((option) => this.add.text(0, 0, option.label, UI_STYLES['font-menu'])
+      .setOrigin(0.5)
+      .setDepth(4));
 
     this.optionBackgrounds = this.menuOptions.map(() => this.add.rectangle(0, 0, 0, 42, 0x020617, 0.7)
       .setStrokeStyle(1, 0x334155, 0.85)
@@ -121,13 +164,9 @@ export class MainMenuScene extends Phaser.Scene {
 
     this.layoutMenuOptions();
 
-    this.add.text(width / 2, height - 30, '←/→ o ↑/↓ seleccionar · ENTER confirmar', {
-      color: '#94a3b8',
-      fontSize: '14px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
-
-    this.refreshVolumeOptionLabel();
+    this.menuHintText = this.add.text(width / 2, height - 26, '← → seleccionar · ENTER confirmar · ESC volver', UI_STYLES['font-subtext'])
+      .setOrigin(0.5)
+      .setDepth(4);
   }
 
   private buildControlsPanel(): void {
@@ -136,11 +175,7 @@ export class MainMenuScene extends Phaser.Scene {
     const panel = this.add.rectangle(width / 2, height / 2, 520, 280, 0x020617, 0.94)
       .setStrokeStyle(2, 0x38bdf8, 1);
 
-    const title = this.add.text(width / 2, height / 2 - 96, 'CONTROLES', {
-      color: '#f8fafc',
-      fontSize: '28px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
+    const title = this.add.text(width / 2, height / 2 - 96, 'OPCIONES', UI_STYLES['font-title']).setOrigin(0.5);
 
     const body = this.add.text(width / 2, height / 2 - 6, [
       'Mover: Flechas del teclado',
@@ -153,17 +188,13 @@ export class MainMenuScene extends Phaser.Scene {
       'Abandonar / volver: ESC'
     ].join('\n'), {
       color: '#cbd5e1',
-      fontSize: '20px',
+      fontSize: '19px',
       align: 'center',
       fontFamily: '"Courier New", monospace',
       lineSpacing: 10
     }).setOrigin(0.5);
 
-    const closeHint = this.add.text(width / 2, height / 2 + 108, 'ESC o ENTER para volver', {
-      color: '#93c5fd',
-      fontSize: '14px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5);
+    const closeHint = this.add.text(width / 2, height / 2 + 108, 'ESC o ENTER para volver', UI_STYLES['font-subtext']).setOrigin(0.5);
 
     this.controlsPanel = this.add.container(0, 0, [panel, title, body, closeHint]).setVisible(false).setDepth(10);
   }
@@ -316,7 +347,7 @@ export class MainMenuScene extends Phaser.Scene {
   private refreshMenuSelection(): void {
     this.optionTexts.forEach((text, index) => {
       const isSelected = this.selectedIndex === index;
-      text.setColor(isSelected ? '#fde047' : '#cbd5e1');
+      text.setColor(isSelected ? UI_STYLES['highlight-color'] : '#cbd5e1');
       text.setScale(isSelected ? 1.04 : 1);
       this.optionBackgrounds[index]
         ?.setFillStyle(isSelected ? 0x1e293b : 0x020617, isSelected ? 0.9 : 0.7)
@@ -326,34 +357,36 @@ export class MainMenuScene extends Phaser.Scene {
 
   private layoutMenuOptions(): void {
     const { width, height } = this.scale;
-    const menuY = height - 84;
-    const minGap = 16;
-    const itemPaddingX = 20;
+    const menuY = height - 68;
+    const minGap = width < 900 ? 10 : 14;
+    const itemPaddingX = width < 900 ? 14 : 18;
     const maxLayoutWidth = width - 88;
 
-    let fontSize = 22;
+    let fontSize = width < 900 ? 15 : 18;
     this.optionTexts.forEach((text) => text.setFontSize(fontSize));
 
     let itemWidths = this.optionTexts.map((text) => Math.ceil(text.width) + itemPaddingX * 2);
     let totalWidth = itemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) + minGap * (itemWidths.length - 1);
 
     if (totalWidth > maxLayoutWidth) {
-      fontSize = 20;
+      fontSize = Math.max(13, fontSize - 2);
       this.optionTexts.forEach((text) => text.setFontSize(fontSize));
       itemWidths = this.optionTexts.map((text) => Math.ceil(text.width) + itemPaddingX * 2);
       totalWidth = itemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) + minGap * (itemWidths.length - 1);
     }
 
-    this.menuBar?.setPosition(width / 2, menuY).setSize(Math.min(width - 56, totalWidth + 44), 62);
+    this.menuBar?.setPosition(width / 2, menuY).setSize(Math.min(width - 56, totalWidth + 36), 54);
 
     let currentX = width / 2 - totalWidth / 2;
     this.optionTexts.forEach((text, index) => {
       const itemWidth = itemWidths[index] ?? 0;
       const centerX = currentX + itemWidth / 2;
-      this.optionBackgrounds[index]?.setPosition(centerX, menuY).setSize(itemWidth, 42);
+      this.optionBackgrounds[index]?.setPosition(centerX, menuY).setSize(itemWidth, 36);
       text.setPosition(centerX, menuY);
       currentX += itemWidth + minGap;
     });
+
+    this.menuHintText?.setPosition(width / 2, height - 24);
   }
 
   private adjustMasterVolume(delta: number): void {
@@ -377,6 +410,41 @@ export class MainMenuScene extends Phaser.Scene {
     this.menuOptions[this.volumeOptionIndex].label = label;
     this.optionTexts[this.volumeOptionIndex]?.setText(label);
     this.layoutMenuOptions();
+  }
+
+  private handleResize(): void {
+    const { width, height } = this.scale;
+
+    this.menuHintText?.setPosition(width / 2, height - 24);
+    this.layoutMenuOptions();
+
+    if (this.controlsPanel) {
+      const [panel, title, body, closeHint] = this.controlsPanel.list as [
+        Phaser.GameObjects.Rectangle,
+        Phaser.GameObjects.Text,
+        Phaser.GameObjects.Text,
+        Phaser.GameObjects.Text
+      ];
+      panel.setPosition(width / 2, height / 2);
+      title.setPosition(width / 2, height / 2 - 96);
+      body.setPosition(width / 2, height / 2 - 6);
+      closeHint.setPosition(width / 2, height / 2 + 108);
+    }
+
+    if (this.setupPanel) {
+      const [overlay, panel, title, subtitle, characterArt, ...rest] = this.setupPanel.list as Phaser.GameObjects.GameObject[];
+      (overlay as Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2).setSize(width, height);
+      (panel as Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2);
+      (title as Phaser.GameObjects.Text).setPosition(width / 2, height / 2 - 176);
+      (subtitle as Phaser.GameObjects.Text).setPosition(width / 2, height / 2 - 138);
+      (characterArt as Phaser.GameObjects.Image | Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2 - 52);
+
+      this.setupOptionTexts.forEach((text, index) => {
+        text.setPosition(width / 2, height / 2 + 24 + index * 38);
+      });
+      this.setupHintText?.setPosition(width / 2, height / 2 + 178);
+      void rest;
+    }
   }
 
   private refreshSetupSelection(): void {
@@ -551,6 +619,11 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private continueRun(): void {
+    if (!this.hasSavedProgress()) {
+      getAudioManager(this).play('uiConfirm');
+      return;
+    }
+
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
     const flowManager = new SceneFlowManager(this);
@@ -562,5 +635,9 @@ export class MainMenuScene extends Phaser.Scene {
 
   private hasSavedProgress(): boolean {
     return hasCompatibleLocalProgress();
+  }
+
+  private exitGame(): void {
+    window.close();
   }
 }

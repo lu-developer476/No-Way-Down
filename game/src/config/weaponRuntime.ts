@@ -4,6 +4,9 @@ export interface WeaponRuntimeConfig {
   key: string;
   damage: number;
   projectileSpeed: number;
+  spread: number;
+  cadenceMs: number;
+  penetration: number;
   fireCooldownMs: number;
   maxRange: number;
 }
@@ -16,12 +19,16 @@ let legacyPistolOverrides: {
 export function getWeaponRuntimeConfig(weaponKey?: string): WeaponRuntimeConfig {
   const weapon = getWeaponCatalogEntry(weaponKey);
   const isPistol = weapon.key === 'pistol';
+  const cadenceMs = isPistol ? legacyPistolOverrides.fireCooldownMs ?? weapon.fireRateMs : weapon.fireRateMs;
 
   return {
     key: weapon.key,
     damage: weapon.damage,
     projectileSpeed: isPistol ? legacyPistolOverrides.projectileSpeed ?? weapon.bulletSpeed : weapon.bulletSpeed,
-    fireCooldownMs: isPistol ? legacyPistolOverrides.fireCooldownMs ?? weapon.fireRateMs : weapon.fireRateMs,
+    spread: weapon.spread,
+    cadenceMs,
+    penetration: weapon.key === 'sniper_rifle' || weapon.key === 'carbine' ? 1 : 0,
+    fireCooldownMs: cadenceMs,
     maxRange: weapon.maxRange
   };
 }

@@ -8,6 +8,7 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
   private shooterId = 'shared';
   private shooterCharacterId = 'alan';
   private maxRange = 0;
+  private remainingPenetration = 0;
   private spawnX = 0;
   private spawnY = 0;
 
@@ -26,10 +27,11 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
   launch(
     x: number,
     y: number,
-    direction: number,
-    speed: number,
+    velocityX: number,
+    velocityY: number,
     damage: number,
     maxRange: number,
+    penetration: number,
     metadata: {
       weaponKey: string;
       shooterId: string;
@@ -39,13 +41,14 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
       projectileScale?: number;
     }
   ): void {
-    this.speed = speed;
-    this.direction = direction;
+    this.speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+    this.direction = velocityX >= 0 ? 1 : -1;
     this.damage = damage;
     this.weaponKey = metadata.weaponKey;
     this.shooterId = metadata.shooterId;
     this.shooterCharacterId = metadata.shooterCharacterId;
     this.maxRange = Math.max(0, maxRange);
+    this.remainingPenetration = Math.max(0, penetration);
     this.spawnX = x;
     this.spawnY = y;
 
@@ -54,8 +57,8 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
     this.setScale(metadata.projectileScale ?? 1);
     this.setTint(metadata.projectileTint ?? 0xffffff);
     this.setFlipX(this.direction < 0);
-    this.setVelocityX(this.direction * this.speed);
-    this.setVelocityY(0);
+    this.setVelocityX(velocityX);
+    this.setVelocityY(velocityY);
   }
 
   getDamage(): number {
@@ -76,6 +79,15 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
 
   deactivate(): void {
     this.disableBody(true, true);
+  }
+
+  consumePenetrationOrDeactivate(): void {
+    if (this.remainingPenetration > 0) {
+      this.remainingPenetration -= 1;
+      return;
+    }
+
+    this.deactivate();
   }
 
   reachedMaxRange(): boolean {

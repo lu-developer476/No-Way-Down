@@ -293,6 +293,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     const activeWeapon = this.getActiveWeaponRuntime();
+    const ammoSnapshot = this.ammoRuntime.getSnapshotForWeapon(activeWeapon.key);
     if (!this.ammoRuntime.canFire(activeWeapon.key)) {
       return false;
     }
@@ -304,7 +305,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       direction: this.lookDirection,
       weapon: activeWeapon.key,
       shooterId: `player-${this.profile.slot}`,
-      shooterCharacterId: this.runtimeConfig.characterId
+      shooterCharacterId: this.runtimeConfig.characterId,
+      activeWeapon: {
+        key: activeWeapon.key,
+        usesAmmo: ammoSnapshot.usesAmmo,
+        ammoCurrent: ammoSnapshot.ammoCurrent
+      }
     });
 
     if (!hasFired) {

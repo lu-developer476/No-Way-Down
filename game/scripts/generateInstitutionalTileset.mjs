@@ -215,7 +215,7 @@ const png = Buffer.concat([
 ]);
 
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-const outputPath = path.resolve(scriptDir, '../public/assets/tilesets/institutional_hall_tileset.png');
+const outputPath = path.resolve(scriptDir, '../public/assets/images/tilesets/institutional_hall_tileset.png');
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, png);
 

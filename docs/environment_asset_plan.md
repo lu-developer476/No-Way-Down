@@ -134,12 +134,12 @@ Reglas activas (manifiesto):
 - `/docs/environment_asset_plan.md`
 
 ### Nuevos JSON de entorno
-- `/game/public/assets/environment/bna_environment_manifest.json`
-- `/game/public/assets/environment/bna_tilesets_by_zone.json`
-- `/game/public/assets/environment/bna_props_by_zone.json`
-- `/game/public/assets/environment/bna_background_layers.json`
-- `/game/public/assets/environment/bna_interactive_objects.json`
-- `/game/public/assets/environment/bna_level_variants.json`
+- `/game/public/assets/images/environment/bna_environment_manifest.json`
+- `/game/public/assets/images/environment/bna_tilesets_by_zone.json`
+- `/game/public/assets/images/environment/bna_props_by_zone.json`
+- `/game/public/assets/images/environment/bna_background_layers.json`
+- `/game/public/assets/images/environment/bna_interactive_objects.json`
+- `/game/public/assets/images/environment/bna_level_variants.json`
 
 ### Ajustes de sistema/escena
 - `/game/src/config/environmentProfiles.ts`

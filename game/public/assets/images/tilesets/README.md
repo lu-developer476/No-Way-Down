@@ -10,7 +10,7 @@ npm --prefix game run generate:institutional-tileset
 
 Esto produce:
 
-- `game/public/assets/tilesets/institutional_hall_tileset.png`
+- `game/public/assets/images/tilesets/institutional_hall_tileset.png`
 
 El mapa JSON (`institutional_hall_tileset_map.json`) y el ejemplo de Phaser usan ese nombre de archivo.
 
@@ -26,9 +26,9 @@ npm --prefix game run generate:bank-counter-spritesheet
 
 Esto produce:
 
-- `game/public/assets/tilesets/bank_counter_spritesheet.png`
-- `game/public/assets/tilesets/bank_counter_spritesheet.svg` (fuente no binaria editable)
-- `game/public/assets/tilesets/bank_counter_spritesheet_coords.json`
+- `game/public/assets/images/tilesets/bank_counter_spritesheet.png`
+- `game/public/assets/images/tilesets/bank_counter_spritesheet.svg` (fuente no binaria editable)
+- `game/public/assets/images/tilesets/bank_counter_spritesheet_coords.json`
 
 Coordenadas incluidas:
 
@@ -57,9 +57,9 @@ npm --prefix game run generate:dining-tables-spritesheet
 
 Esto produce:
 
-- `game/public/assets/tilesets/institutional_dining_tables_spritesheet.png`
-- `game/public/assets/tilesets/institutional_dining_tables_spritesheet.svg` (fuente no binaria editable)
-- `game/public/assets/tilesets/institutional_dining_tables_spritesheet_coords.json`
+- `game/public/assets/images/tilesets/institutional_dining_tables_spritesheet.png`
+- `game/public/assets/images/tilesets/institutional_dining_tables_spritesheet.svg` (fuente no binaria editable)
+- `game/public/assets/images/tilesets/institutional_dining_tables_spritesheet_coords.json`
 
 ## Institutional stone columns spritesheet
 
@@ -80,9 +80,9 @@ npm --prefix game run generate:stone-columns-spritesheet
 
 Esto produce:
 
-- `game/public/assets/tilesets/institutional_stone_columns_spritesheet.png`
-- `game/public/assets/tilesets/institutional_stone_columns_spritesheet.svg` (fuente no binaria editable)
-- `game/public/assets/tilesets/institutional_stone_columns_spritesheet_coords.json`
+- `game/public/assets/images/tilesets/institutional_stone_columns_spritesheet.png`
+- `game/public/assets/images/tilesets/institutional_stone_columns_spritesheet.svg` (fuente no binaria editable)
+- `game/public/assets/images/tilesets/institutional_stone_columns_spritesheet_coords.json`
 
 ## Institutional decor spritesheet
 
@@ -114,8 +114,8 @@ npm --prefix game run generate:institutional-decor-spritesheet
 
 Esto produce únicamente archivos no binarios:
 
-- `game/public/assets/tilesets/institutional_decor_spritesheet.svg` (fuente editable)
-- `game/public/assets/tilesets/institutional_decor_spritesheet_coords.json`
+- `game/public/assets/images/tilesets/institutional_decor_spritesheet.svg` (fuente editable)
+- `game/public/assets/images/tilesets/institutional_decor_spritesheet_coords.json`
 
 ## Institutional stairs spritesheet
 
@@ -136,8 +136,8 @@ npm --prefix game run generate:stairs-spritesheet
 
 Esto produce únicamente archivos no binarios:
 
-- `game/public/assets/tilesets/institutional_stairs_spritesheet.svg` (fuente editable)
-- `game/public/assets/tilesets/institutional_stairs_spritesheet_coords.json`
+- `game/public/assets/images/tilesets/institutional_stairs_spritesheet.svg` (fuente editable)
+- `game/public/assets/images/tilesets/institutional_stairs_spritesheet_coords.json`
 
 ## Zombie damage tilesheet
 
@@ -158,5 +158,5 @@ npm --prefix game run generate:zombie-damage-tilesheet
 
 Esto produce únicamente archivos no binarios:
 
-- `game/public/assets/tilesets/institutional_zombie_damage_tilesheet.svg` (fuente editable)
-- `game/public/assets/tilesets/institutional_zombie_damage_tilesheet_coords.json`
+- `game/public/assets/images/tilesets/institutional_zombie_damage_tilesheet.svg` (fuente editable)
+- `game/public/assets/images/tilesets/institutional_zombie_damage_tilesheet_coords.json`

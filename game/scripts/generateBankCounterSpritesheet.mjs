@@ -197,11 +197,11 @@ const png = Buffer.concat([
 ]);
 
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-const outputPath = path.resolve(scriptDir, '../public/assets/tilesets/bank_counter_spritesheet.png');
+const outputPath = path.resolve(scriptDir, '../public/assets/images/tilesets/bank_counter_spritesheet.png');
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, png);
 
-const svgPath = path.resolve(scriptDir, '../public/assets/tilesets/bank_counter_spritesheet.svg');
+const svgPath = path.resolve(scriptDir, '../public/assets/images/tilesets/bank_counter_spritesheet.svg');
 const rows = [];
 for (let y = 0; y < height; y++) {
   for (let x = 0; x < width; x++) {
@@ -219,7 +219,7 @@ const svg = [
 ].join('\n');
 fs.writeFileSync(svgPath, svg);
 
-const coordinatesPath = path.resolve(scriptDir, '../public/assets/tilesets/bank_counter_spritesheet_coords.json');
+const coordinatesPath = path.resolve(scriptDir, '../public/assets/images/tilesets/bank_counter_spritesheet_coords.json');
 const coords = {
   image: 'bank_counter_spritesheet.png',
   source: 'bank_counter_spritesheet.svg',

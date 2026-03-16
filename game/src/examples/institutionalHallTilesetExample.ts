@@ -12,12 +12,12 @@ export class InstitutionalHallTilesetExample extends Phaser.Scene {
   preload(): void {
     this.load.image(
       'institutional-hall-tileset',
-      'assets/tilesets/institutional_hall_tileset.png',
+      'assets/images/tilesets/institutional_hall_tileset.png',
     );
 
     this.load.tilemapTiledJSON(
       'institutional-hall-map',
-      'assets/tilesets/institutional_hall_tileset_map.json',
+      'assets/images/tilesets/institutional_hall_tileset_map.json',
     );
   }
 

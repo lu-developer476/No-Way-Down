@@ -4,7 +4,7 @@ import { PlayerConfig } from '../config/localMultiplayer';
 import { StairAnimationKeys } from '../systems/StairSystem';
 import { getCharacterVisualById } from '../config/characterVisuals';
 import { getAudioManager } from '../audio/AudioManager';
-import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
+import { CharacterRuntimeConfig, CharacterWeaponSlot, getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 
 const MOVE_SPEED = 220;
@@ -22,6 +22,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private lookDirection: 1 | -1 = 1;
   private projectileSystem: ProjectileSystem;
   private readonly runtimeConfig: CharacterRuntimeConfig;
+  private activeWeaponSlot: CharacterWeaponSlot;
   private healthPoints = 0;
   private invulnerableUntil = 0;
   private isDeadState = false;
@@ -46,6 +47,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.profile = profile;
     this.characterVisualId = characterVisual.id;
     this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
+    this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.healthPoints = this.runtimeConfig.maxHealth;
     this.setTint(profile.color);
 
@@ -107,12 +109,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
       this.play(`${this.characterVisualId}-shoot`, true);
-      const weaponVisual = getWeaponVisualRuntimeConfig(this.runtimeConfig.weaponRuntime.key);
+      const activeWeapon = this.getActiveWeaponRuntime();
+      const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key);
       const hasFired = this.projectileSystem.tryFire({
         originX: this.x + this.lookDirection * weaponVisual.muzzleOffsetX,
         originY: this.y + weaponVisual.muzzleOffsetY,
         direction: this.lookDirection,
-        weapon: this.runtimeConfig.weaponRuntime.key,
+        weapon: activeWeapon.key,
         shooterId: `player-${this.profile.slot}`,
         shooterCharacterId: this.runtimeConfig.characterId
       });
@@ -210,6 +213,34 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return this.runtimeConfig.maxHealth;
   }
 
+
+  getActiveWeaponSlot(): CharacterWeaponSlot {
+    return this.activeWeaponSlot;
+  }
+
+  switchActiveWeaponSlot(slot?: CharacterWeaponSlot): boolean {
+    const requestedSlot = slot ?? (this.activeWeaponSlot === 'primary' ? 'secondary' : 'primary');
+    if (requestedSlot === this.activeWeaponSlot) {
+      return true;
+    }
+
+    if (!this.runtimeConfig.weaponRuntimeBySlot[requestedSlot]) {
+      return false;
+    }
+
+    this.activeWeaponSlot = requestedSlot;
+    return true;
+  }
+
+  getInventoryState(): { primaryWeapon: string; secondaryWeapon?: string; activeSlot: CharacterWeaponSlot; activeWeapon: string } {
+    return {
+      primaryWeapon: this.runtimeConfig.loadout.primaryWeapon,
+      secondaryWeapon: this.runtimeConfig.loadout.secondaryWeapon,
+      activeSlot: this.activeWeaponSlot,
+      activeWeapon: this.getActiveWeaponRuntime().key
+    };
+  }
+
   getRuntimeConfig(): CharacterRuntimeConfig {
     return this.runtimeConfig;
   }
@@ -221,6 +252,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
     super.destroy(fromScene);
+  }
+
+
+  private getActiveWeaponRuntime() {
+    return this.runtimeConfig.weaponRuntimeBySlot[this.activeWeaponSlot] ?? this.runtimeConfig.weaponRuntimeBySlot.primary ?? this.runtimeConfig.weaponRuntime;
   }
 
   private updateNameTagPosition(): void {

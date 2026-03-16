@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Player } from './Player';
 import { Zombie } from './Zombie';
 import { getCharacterVisualById } from '../config/characterVisuals';
-import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
+import { CharacterRuntimeConfig, CharacterWeaponSlot, getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 
@@ -35,6 +35,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private isNameTagVisible = true;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
+  private activeWeaponSlot: CharacterWeaponSlot;
   private currentHealth: number;
   private readonly maxHealth: number;
   private currentTargetId?: Zombie;
@@ -47,6 +48,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.profile = profile;
     this.characterVisualId = visual.id;
     this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
+    this.activeWeaponSlot = this.runtimeConfig.loadout.activeSlot;
     this.projectileSystem = projectileSystem;
     this.maxHealth = this.runtimeConfig.maxHealth;
     this.currentHealth = this.maxHealth;
@@ -88,6 +90,34 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   getMaxHealth(): number {
     return this.maxHealth;
+  }
+
+
+  getActiveWeaponSlot(): CharacterWeaponSlot {
+    return this.activeWeaponSlot;
+  }
+
+  switchActiveWeaponSlot(slot?: CharacterWeaponSlot): boolean {
+    const requestedSlot = slot ?? (this.activeWeaponSlot === 'primary' ? 'secondary' : 'primary');
+    if (requestedSlot === this.activeWeaponSlot) {
+      return true;
+    }
+
+    if (!this.runtimeConfig.weaponRuntimeBySlot[requestedSlot]) {
+      return false;
+    }
+
+    this.activeWeaponSlot = requestedSlot;
+    return true;
+  }
+
+  getInventoryState(): { primaryWeapon: string; secondaryWeapon?: string; activeSlot: CharacterWeaponSlot; activeWeapon: string } {
+    return {
+      primaryWeapon: this.runtimeConfig.loadout.primaryWeapon,
+      secondaryWeapon: this.runtimeConfig.loadout.secondaryWeapon,
+      activeSlot: this.activeWeaponSlot,
+      activeWeapon: this.getActiveWeaponRuntime().key
+    };
   }
 
   setNameTagVisible(visible: boolean): void {
@@ -188,6 +218,11 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+
+  private getActiveWeaponRuntime() {
+    return this.runtimeConfig.weaponRuntimeBySlot[this.activeWeaponSlot] ?? this.runtimeConfig.weaponRuntimeBySlot.primary ?? this.runtimeConfig.weaponRuntime;
+  }
+
   private tryAttackTarget(target: Zombie): void {
     if (!target.active) {
       return;
@@ -196,12 +231,13 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const direction = target.x >= this.x ? 1 : -1;
     this.setFlipX(direction < 0);
 
-    const weaponVisual = getWeaponVisualRuntimeConfig(this.runtimeConfig.weaponRuntime.key);
+    const activeWeapon = this.getActiveWeaponRuntime();
+    const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key);
     const fired = this.projectileSystem.tryFire({
       originX: this.x + direction * weaponVisual.muzzleOffsetX,
       originY: this.y + weaponVisual.muzzleOffsetY,
       direction,
-      weapon: this.runtimeConfig.weaponRuntime.key,
+      weapon: activeWeapon.key,
       shooterId: this.profile.id,
       shooterCharacterId: this.runtimeConfig.characterId
     });

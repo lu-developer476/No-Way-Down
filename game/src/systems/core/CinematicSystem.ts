@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { DialogueLine, DialogueSystem } from './DialogueSystem';
+import { DialogueChoice, DialogueLine, DialogueSystem } from './DialogueSystem';
 
 export interface CinematicLine {
   speaker: string;
@@ -60,6 +60,12 @@ export interface DataCinematicCallbacks {
   onGameplayPauseChanged?: (paused: boolean, cinematicId: string) => void;
   onCinematicStarted?: (cinematicId: string) => void;
   onCinematicCompleted?: (cinematicId: string) => void;
+  onDialogueChoiceRequested?: (
+    line: DialogueLine,
+    choices: DialogueChoice[],
+    context: { cinematicId: string; lineIndex: number }
+  ) => Promise<number> | number;
+  isDialogueInterrupted?: (context: { cinematicId: string }) => boolean;
 }
 
 export class CinematicSystem {
@@ -156,7 +162,7 @@ export class CinematicSystem {
 
     const totalDurationMs = Math.max(0, config.duration);
     const cameraTimeline = this.playCameraPath(config.cameraPath, totalDurationMs);
-    const dialogueTimeline = this.playDialogue(config.dialogueSequence, totalDurationMs);
+    const dialogueTimeline = this.playDialogue(config.dialogueSequence, totalDurationMs, config.cinematic_id);
 
     await Promise.all([cameraTimeline, dialogueTimeline, this.wait(totalDurationMs)]);
 
@@ -187,17 +193,22 @@ export class CinematicSystem {
     }
   }
 
-  private async playDialogue(lines: DialogueLine[], totalDurationMs: number): Promise<void> {
+  private async playDialogue(lines: DialogueLine[], totalDurationMs: number, cinematicId: string): Promise<void> {
     if (lines.length === 0 || totalDurationMs <= 0 || !this.dialogueSystem) {
       return;
     }
 
     const lineDuration = Math.max(1, Math.round(totalDurationMs / lines.length));
 
-    for (const line of lines) {
-      this.dialogueSystem.showLine(line);
-      await this.wait(line.durationMs ?? lineDuration);
-    }
+    await this.dialogueSystem.playSequence(lines, {
+      context: { cinematicId },
+      onLine: (line) => this.wait(line.durationMs ?? lineDuration),
+      onChoiceRequested: (line, choices) => this.dataCallbacks.onDialogueChoiceRequested?.(line, choices, {
+        cinematicId,
+        lineIndex: lines.indexOf(line)
+      }) ?? 0,
+      shouldInterrupt: () => this.dataCallbacks.isDialogueInterrupted?.({ cinematicId }) ?? false
+    });
   }
 
   private wait(durationMs: number): Promise<void> {

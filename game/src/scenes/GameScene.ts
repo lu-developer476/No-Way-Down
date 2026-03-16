@@ -137,6 +137,7 @@ export class GameScene extends Phaser.Scene {
   private interactionHintOwnedByInteractables = false;
   private advanceDialogueRequested = false;
   private skipDialogueRequested = false;
+  private selectedDialogueChoiceIndex = 0;
   private movementLockedByNarrative = false;
   private firstCleanupNarrativeTriggered = false;
   private lateRescueAlliesIntegrated = false;
@@ -147,6 +148,15 @@ export class GameScene extends Phaser.Scene {
   };
   private readonly onNarrativeSkipKey = () => {
     this.skipDialogueRequested = true;
+  };
+  private readonly onDialogueChoice1Key = () => {
+    this.selectedDialogueChoiceIndex = 0;
+  };
+  private readonly onDialogueChoice2Key = () => {
+    this.selectedDialogueChoiceIndex = 1;
+  };
+  private readonly onDialogueChoice3Key = () => {
+    this.selectedDialogueChoiceIndex = 2;
   };
   private readonly onPauseToggleKey = () => {
     if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
@@ -352,6 +362,9 @@ export class GameScene extends Phaser.Scene {
         this.registry.set('dialogueState', {
           speaker: line.speaker,
           text: line.text,
+          emotion: line.emotion,
+          portrait: line.portrait,
+          choices: line.choices?.map((choice) => ({ text: choice.text })),
           canSkip: false,
           canAdvance: false
         });
@@ -371,7 +384,13 @@ export class GameScene extends Phaser.Scene {
         },
         onCinematicCompleted: () => {
           this.registry.set('interactionHint', '');
-        }
+        },
+        onDialogueChoiceRequested: (_line, choices) => {
+          const selected = Phaser.Math.Clamp(this.selectedDialogueChoiceIndex, 0, Math.max(0, choices.length - 1));
+          this.selectedDialogueChoiceIndex = 0;
+          return selected;
+        },
+        isDialogueInterrupted: () => this.skipDialogueRequested
       }
     );
     this.triggerSystem = levelManager.instantiateTriggers(
@@ -815,11 +834,17 @@ export class GameScene extends Phaser.Scene {
   private registerNarrativeControls(): void {
     this.input.keyboard?.on('keydown-SPACE', this.onNarrativeAdvanceKey);
     this.input.keyboard?.on('keydown-X', this.onNarrativeSkipKey);
+    this.input.keyboard?.on('keydown-ONE', this.onDialogueChoice1Key);
+    this.input.keyboard?.on('keydown-TWO', this.onDialogueChoice2Key);
+    this.input.keyboard?.on('keydown-THREE', this.onDialogueChoice3Key);
   }
 
   private unregisterNarrativeControls(): void {
     this.input.keyboard?.off('keydown-SPACE', this.onNarrativeAdvanceKey);
     this.input.keyboard?.off('keydown-X', this.onNarrativeSkipKey);
+    this.input.keyboard?.off('keydown-ONE', this.onDialogueChoice1Key);
+    this.input.keyboard?.off('keydown-TWO', this.onDialogueChoice2Key);
+    this.input.keyboard?.off('keydown-THREE', this.onDialogueChoice3Key);
   }
 
   private setNarrativeMovementLock(locked: boolean): void {

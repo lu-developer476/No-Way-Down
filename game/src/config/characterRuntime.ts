@@ -1,5 +1,6 @@
 import characterCatalog from '../../assets/characters/characters.json';
 import { getWeaponRuntimeConfig, WeaponRuntimeConfig } from './weaponRuntime';
+import { resolveWeaponKey } from './weaponCatalog';
 
 export type RuntimeCharacterId =
   | 'alan'
@@ -26,6 +27,12 @@ export type CharacterWeaponKey =
   | 'revolver'
   | 'smg'
   | 'shotgun'
+  | 'light_machine_gun'
+  | 'knife'
+  | 'machete'
+  | 'sword'
+  | 'tray_shield'
+  | 'submachine_gun'
   | string;
 
 export interface CharacterRuntimeConfig {
@@ -92,7 +99,7 @@ const RUNTIME_CONFIG_BY_ID = new Map<RuntimeCharacterId, CharacterRuntimeConfig>
       ];
     }
 
-    const weaponKey = entry.weapon_default ?? DEFAULT_RUNTIME_CHARACTER.baseWeapon;
+    const weaponKey = resolveWeaponKey(entry.weapon_default ?? DEFAULT_RUNTIME_CHARACTER.baseWeapon);
 
     return [
       characterId,

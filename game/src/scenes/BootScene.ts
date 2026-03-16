@@ -5,12 +5,79 @@ import {
   getCharacterVisualsByFaction
 } from '../config/characterVisuals';
 import { getAudioManager } from '../audio/AudioManager';
+import { getAllWeaponCatalogEntries } from '../config/weaponCatalog';
 
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
 const CHARACTER_FRAME_COUNT = 8;
 
 type HexColor = number;
+
+
+interface ProjectileSpriteRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: number;
+}
+
+interface ProjectileSpriteTemplate {
+  width: number;
+  height: number;
+  rects: ProjectileSpriteRect[];
+}
+
+const PROJECTILE_SPRITE_TEMPLATES: Record<string, ProjectileSpriteTemplate> = {
+  pistol: {
+    width: 10,
+    height: 12,
+    rects: [
+      { x: 0, y: 5, width: 7, height: 2, color: 0xf8fafc },
+      { x: 7, y: 5, width: 2, height: 2, color: 0xd97706 }
+    ]
+  },
+  revolver: {
+    width: 12,
+    height: 12,
+    rects: [
+      { x: 0, y: 4, width: 8, height: 3, color: 0xf59e0b },
+      { x: 8, y: 4, width: 2, height: 3, color: 0x78350f }
+    ]
+  },
+  smg: {
+    width: 10,
+    height: 12,
+    rects: [
+      { x: 1, y: 5, width: 6, height: 2, color: 0x93c5fd },
+      { x: 7, y: 5, width: 1, height: 2, color: 0x1e3a8a }
+    ]
+  },
+  shotgun: {
+    width: 10,
+    height: 12,
+    rects: [
+      { x: 0, y: 4, width: 4, height: 4, color: 0xfde68a },
+      { x: 4, y: 5, width: 2, height: 2, color: 0x92400e }
+    ]
+  },
+  carbine: {
+    width: 14,
+    height: 12,
+    rects: [
+      { x: 0, y: 4, width: 10, height: 3, color: 0x86efac },
+      { x: 10, y: 4, width: 2, height: 3, color: 0x14532d }
+    ]
+  },
+  sniper_rifle: {
+    width: 16,
+    height: 12,
+    rects: [
+      { x: 0, y: 4, width: 12, height: 3, color: 0xe2e8f0 },
+      { x: 12, y: 4, width: 2, height: 3, color: 0x334155 }
+    ]
+  }
+};
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -43,47 +110,7 @@ export class BootScene extends Phaser.Scene {
     }
     graphics.generateTexture('ground-placeholder', 64, 52);
 
-    graphics.clear();
-    graphics.fillStyle(palette.bullet, 1);
-    graphics.fillRect(0, 5, 7, 2);
-    graphics.fillStyle(0xd97706, 1);
-    graphics.fillRect(7, 5, 2, 2);
-    graphics.generateTexture('projectile-pistol', 10, 12);
-
-    graphics.clear();
-    graphics.fillStyle(0xf59e0b, 1);
-    graphics.fillRect(0, 4, 8, 3);
-    graphics.fillStyle(0x78350f, 1);
-    graphics.fillRect(8, 4, 2, 3);
-    graphics.generateTexture('projectile-revolver', 12, 12);
-
-    graphics.clear();
-    graphics.fillStyle(0x93c5fd, 1);
-    graphics.fillRect(1, 5, 6, 2);
-    graphics.fillStyle(0x1e3a8a, 1);
-    graphics.fillRect(7, 5, 1, 2);
-    graphics.generateTexture('projectile-smg', 10, 12);
-
-    graphics.clear();
-    graphics.fillStyle(0xfde68a, 1);
-    graphics.fillRect(0, 4, 4, 4);
-    graphics.fillStyle(0x92400e, 1);
-    graphics.fillRect(4, 5, 2, 2);
-    graphics.generateTexture('projectile-shotgun', 10, 12);
-
-    graphics.clear();
-    graphics.fillStyle(0x86efac, 1);
-    graphics.fillRect(0, 4, 10, 3);
-    graphics.fillStyle(0x14532d, 1);
-    graphics.fillRect(10, 4, 2, 3);
-    graphics.generateTexture('projectile-carbine', 14, 12);
-
-    graphics.clear();
-    graphics.fillStyle(0xe2e8f0, 1);
-    graphics.fillRect(0, 4, 12, 3);
-    graphics.fillStyle(0x334155, 1);
-    graphics.fillRect(12, 4, 2, 3);
-    graphics.generateTexture('projectile-sniper_rifle', 16, 12);
+    this.createWeaponProjectileTextures(graphics);
 
     graphics.clear();
     graphics.fillStyle(palette.bullet, 1);
@@ -455,4 +482,34 @@ export class BootScene extends Phaser.Scene {
       });
     });
   }
+
+  private createWeaponProjectileTextures(graphics: Phaser.GameObjects.Graphics): void {
+    const uniqueVisualKeys = new Set<string>();
+
+    getAllWeaponCatalogEntries().forEach((weapon) => {
+      if (!weapon.visualKey.startsWith('projectile-')) {
+        return;
+      }
+      if (uniqueVisualKeys.has(weapon.visualKey)) {
+        return;
+      }
+
+      const template = PROJECTILE_SPRITE_TEMPLATES[weapon.projectileStyle] ?? PROJECTILE_SPRITE_TEMPLATES.pistol;
+      if (!PROJECTILE_SPRITE_TEMPLATES[weapon.projectileStyle]) {
+        console.warn(
+          `[BootScene] Unknown projectile style "${weapon.projectileStyle}" for "${weapon.key}". Using "pistol" style.`
+        );
+      }
+
+      graphics.clear();
+      template.rects.forEach((rect) => {
+        graphics.fillStyle(rect.color, 1);
+        graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+      });
+      graphics.generateTexture(weapon.visualKey, template.width, template.height);
+      uniqueVisualKeys.add(weapon.visualKey);
+    });
+  }
+
+
 }

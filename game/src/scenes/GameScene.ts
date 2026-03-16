@@ -78,6 +78,8 @@ interface CleanupZoneBoundary {
   maxX: number;
 }
 
+type PauseMenuState = 'root' | 'options';
+
 export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
   private projectileSystem?: ProjectileSystem;
@@ -104,6 +106,8 @@ export class GameScene extends Phaser.Scene {
   private audioVolumeOptionIndex = -1;
   private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
+  private pauseHintText?: Phaser.GameObjects.Text;
+  private pauseMenuState: PauseMenuState = 'root';
   private cleanupZonesRequired = 0;
   private exitUnlocked = false;
   private spawnsShutDown = false;
@@ -310,7 +314,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('partyHud', this.buildPartyHud());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
     this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
-    this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M (volumen en pausa ←/→)');
+    this.registry.set('interactionHint', '');
     this.registry.set('campaignState', this.campaignState?.getSnapshot());
     this.registry.set('partyState', this.partyState?.getSnapshot());
     this.registry.set('isGamePaused', false);
@@ -425,7 +429,7 @@ export class GameScene extends Phaser.Scene {
 
     this.exitUnlocked = true;
     this.shutdownSpawnSystems('exit-unlocked');
-    this.registry.set('interactionHint', 'Salida habilitada: avanza al extremo derecho para continuar.');
+    this.registry.set('interactionHint', 'Salida habilitada: entra en la zona final y presiona ENTER para avanzar.');
     console.info('[GameScene] exit unlocked and progression clarified for current slice');
   }
 
@@ -539,7 +543,7 @@ export class GameScene extends Phaser.Scene {
           this.showMissionStatus(objectiveText);
         },
         onCinematicCompleted: () => {
-          this.registry.set('interactionHint', 'Mover: A/D · Disparar: F · Pausa: ESC · Audio: M (volumen en pausa ←/→)');
+          this.registry.set('interactionHint', '');
         },
         consumeAdvance: () => {
           if (!this.advanceDialogueRequested) {
@@ -955,7 +959,7 @@ export class GameScene extends Phaser.Scene {
       .setDepth(40)
       .setVisible(false);
 
-    const panel = this.add.rectangle(0, 0, 440, 284, 0x0b1220, 0.94)
+    const panel = this.add.rectangle(0, 0, 520, 360, 0x0b1220, 0.94)
       .setScrollFactor(0)
       .setStrokeStyle(2, 0x38bdf8, 1);
 
@@ -968,15 +972,9 @@ export class GameScene extends Phaser.Scene {
 
     this.pauseMenuOptions = [
       { label: 'Reanudar', action: () => this.resumeGameplay() },
-      { label: 'Audio: --', action: () => this.toggleAudioMute() },
-      { label: 'Volumen: --', action: () => this.adjustMasterVolume(10) },
-      { label: 'Reiniciar nivel', action: () => this.restartLevelFromPause() },
-      { label: 'Volver al menú principal', action: () => this.returnToMainMenu() }
+      { label: 'Opciones', action: () => this.openPauseOptions() },
+      { label: 'Salir', action: () => this.returnToMainMenu() }
     ];
-    this.audioToggleOptionIndex = 1;
-    this.audioVolumeOptionIndex = 2;
-    this.refreshAudioPauseOptionLabel();
-    this.refreshVolumePauseOptionLabel();
 
     this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(0, -18 + index * 52, option.label, {
       color: '#cbd5e1',
@@ -985,14 +983,14 @@ export class GameScene extends Phaser.Scene {
     }).setOrigin(0.5)
       .setScrollFactor(0));
 
-    const hint = this.add.text(0, 108, '↑/↓ seleccionar · ENTER confirmar · ESC reanudar', {
+    this.pauseHintText = this.add.text(0, 146, '↑/↓ seleccionar · ENTER confirmar · ESC volver/abandonar', {
       color: '#93c5fd',
       fontSize: '14px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5)
       .setScrollFactor(0);
 
-    this.pausePanel = this.add.container(width / 2, height / 2, [panel, title, ...this.pauseMenuTexts, hint])
+    this.pausePanel = this.add.container(width / 2, height / 2, [panel, title, ...this.pauseMenuTexts, this.pauseHintText])
       .setScrollFactor(0)
       .setDepth(41)
       .setVisible(false);
@@ -1015,16 +1013,34 @@ export class GameScene extends Phaser.Scene {
   }
 
   private registerPauseControls(): void {
+    this.input.keyboard?.on('keydown-P', () => {
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
+        return;
+      }
+
+      if (this.isPauseMenuOpen()) {
+        this.resumeGameplay();
+      } else {
+        this.pauseGameplay();
+      }
+    });
+
     this.input.keyboard?.on('keydown-ESC', () => {
       if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
         return;
       }
 
-      if (this.physics.world.isPaused) {
+      if (this.isPauseMenuOpen()) {
+        if (this.pauseMenuState === 'options') {
+          this.openPauseRoot();
+          return;
+        }
+
         this.resumeGameplay();
-      } else {
-        this.pauseGameplay();
+        return;
       }
+
+      this.returnToMainMenu();
     });
 
     this.input.keyboard?.on('keydown-UP', () => {
@@ -1074,9 +1090,6 @@ export class GameScene extends Phaser.Scene {
       }
     });
 
-    this.input.keyboard?.on('keydown-M', () => {
-      this.toggleAudioMute();
-    });
   }
 
   private isPauseMenuOpen(): boolean {
@@ -1088,6 +1101,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.pause();
     this.pauseOverlay?.setVisible(true);
     this.pausePanel?.setVisible(true);
+    this.openPauseRoot();
     this.pauseMenuIndex = 0;
     this.updatePauseMenuSelection();
     this.registry.set('isGamePaused', true);
@@ -1102,14 +1116,6 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
-  }
-
-  private restartLevelFromPause(): void {
-    this.registry.set('isGamePaused', false);
-    this.registry.set('dialogueState', null);
-    this.registry.set('audioMuted', getAudioManager(this).isMuted());
-    this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
-    this.scene.restart({ respawnPoint: this.respawnPoint, skipLoad: true });
   }
 
   private returnToMainMenu(): void {
@@ -1158,7 +1164,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     const muted = getAudioManager(this).isMuted();
-    const label = muted ? 'Audio: Muted' : 'Audio: Unmuted';
+    const label = muted ? 'Sonido: Silenciado' : 'Sonido: Activado';
     if (this.pauseMenuOptions[this.audioToggleOptionIndex]) {
       this.pauseMenuOptions[this.audioToggleOptionIndex].label = label;
     }
@@ -1194,12 +1200,53 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
+  private openPauseRoot(): void {
+    this.pauseMenuState = 'root';
+    this.audioToggleOptionIndex = -1;
+    this.audioVolumeOptionIndex = -1;
+    this.pauseMenuOptions = [
+      { label: 'Reanudar', action: () => this.resumeGameplay() },
+      { label: 'Opciones', action: () => this.openPauseOptions() },
+      { label: 'Salir', action: () => this.returnToMainMenu() }
+    ];
+    this.pauseMenuIndex = 0;
+    this.refreshPauseMenuTexts();
+    this.pauseHintText?.setText('↑/↓ seleccionar · ENTER confirmar · ESC volver/abandonar');
+  }
+
+  private openPauseOptions(): void {
+    this.pauseMenuState = 'options';
+    this.pauseMenuOptions = [
+      { label: 'Controles: Flechas / Espacio / S / R / E / Enter / P / ESC', action: () => undefined },
+      { label: 'Sonido: --', action: () => this.toggleAudioMute() },
+      { label: 'Volumen: --', action: () => this.adjustMasterVolume(10) },
+      { label: 'Diálogos: SPACE avanzar · X saltar', action: () => undefined },
+      { label: 'Volver', action: () => this.openPauseRoot() }
+    ];
+    this.audioToggleOptionIndex = 1;
+    this.audioVolumeOptionIndex = 2;
+    this.refreshAudioPauseOptionLabel();
+    this.refreshVolumePauseOptionLabel();
+    this.pauseMenuIndex = 0;
+    this.refreshPauseMenuTexts();
+    this.pauseHintText?.setText('↑/↓ seleccionar · ←/→ ajustar volumen · ESC volver');
+  }
+
+  private refreshPauseMenuTexts(): void {
+    this.pauseMenuTexts.forEach((text, index) => {
+      const option = this.pauseMenuOptions[index];
+      text.setVisible(Boolean(option));
+      text.setText(option?.label ?? '');
+    });
+    this.updatePauseMenuSelection();
+  }
+
   private registerApiControls(): void {
-    this.input.keyboard?.on('keydown-P', () => {
+    this.input.keyboard?.on('keydown-F5', () => {
       void this.saveProgressToApi();
     });
 
-    this.input.keyboard?.on('keydown-O', () => {
+    this.input.keyboard?.on('keydown-F9', () => {
       void this.loadProgressFromApi();
     });
   }

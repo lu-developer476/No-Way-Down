@@ -16,6 +16,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly jumpKey: Phaser.Input.Keyboard.Key;
   private readonly downKey: Phaser.Input.Keyboard.Key;
   private readonly shootKey: Phaser.Input.Keyboard.Key;
+  private readonly reloadKey: Phaser.Input.Keyboard.Key;
+  private readonly interactKey: Phaser.Input.Keyboard.Key;
   private lookDirection: 1 | -1 = 1;
   private projectileSystem: ProjectileSystem;
   private readonly runtimeConfig: CharacterRuntimeConfig;
@@ -56,6 +58,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.jumpKey = keyboard.addKey(profile.controls.jump);
     this.downKey = keyboard.addKey(profile.controls.down);
     this.shootKey = keyboard.addKey(profile.controls.shoot);
+    this.reloadKey = keyboard.addKey(profile.controls.reload);
+    this.interactKey = keyboard.addKey(profile.controls.interact);
 
     this.play(`${this.characterVisualId}-idle`, true);
 
@@ -134,6 +138,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   isClimbRequestActive(): boolean {
     return this.isClimbUpPressed() || this.isClimbDownPressed();
+  }
+
+  isInteractJustPressed(): boolean {
+    return Phaser.Input.Keyboard.JustDown(this.interactKey);
+  }
+
+  isReloadJustPressed(): boolean {
+    return Phaser.Input.Keyboard.JustDown(this.reloadKey);
   }
 
   setClimbingState(isClimbing: boolean, animations?: StairAnimationKeys): void {

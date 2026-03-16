@@ -142,11 +142,14 @@ export class MainMenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     const body = this.add.text(width / 2, height / 2 - 6, [
-      'Mover: A / D',
-      'Saltar: W o ESPACIO',
-      'Disparar: F',
-      'Guardar / Cargar: P / O',
-      'Pausa: ESC'
+      'Mover: Flechas del teclado',
+      'Saltar: Barra espaciadora',
+      'Disparar: S',
+      'Recargar: R',
+      'Interactuar: E',
+      'Siguiente nivel: ENTER',
+      'Pausa: P',
+      'Abandonar / volver: ESC'
     ].join('\n'), {
       color: '#cbd5e1',
       fontSize: '20px',

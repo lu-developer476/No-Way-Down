@@ -14,6 +14,7 @@ export interface PlayerControlScheme {
   jump: number;
   shoot: number;
   reload: number;
+  switchWeapon: number;
   interact: number;
 }
 
@@ -44,6 +45,7 @@ const CONTROLS_P1: PlayerControlScheme = {
   jump: controlManager.getKeyCode('jump'),
   shoot: controlManager.getKeyCode('shoot'),
   reload: controlManager.getKeyCode('reload'),
+  switchWeapon: controlManager.getKeyCode('switch_weapon'),
   interact: controlManager.getKeyCode('interact')
 };
 

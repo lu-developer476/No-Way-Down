@@ -8,6 +8,7 @@ import {
 } from './sceneShared';
 import { getAudioManager } from '../audio/AudioManager';
 import { SceneFlowManager } from './SceneFlowManager';
+import { controlManager } from '../input/ControlManager';
 
 interface MenuOption {
   label: string;
@@ -178,14 +179,14 @@ export class MainMenuScene extends Phaser.Scene {
     const title = this.add.text(width / 2, height / 2 - 96, 'OPCIONES', UI_STYLES['font-title']).setOrigin(0.5);
 
     const body = this.add.text(width / 2, height / 2 - 6, [
-      'Mover: Flechas del teclado',
-      'Saltar: Barra espaciadora',
-      'Disparar: S',
-      'Recargar: R',
-      'Interactuar: E',
-      'Siguiente nivel: ENTER',
-      'Pausa: P',
-      'Abandonar / volver: ESC'
+      `Movimiento: ${controlManager.getMovementDisplayLabel()}`,
+      `Saltar: ${controlManager.getDisplayLabel('jump')}`,
+      `Disparar: ${controlManager.getDisplayLabel('shoot')}`,
+      `Recargar: ${controlManager.getDisplayLabel('reload')}`,
+      `Interactuar: ${controlManager.getDisplayLabel('interact')}`,
+      `Siguiente nivel: ${controlManager.getDisplayLabel('next_level')}`,
+      `Pausa: ${controlManager.getDisplayLabel('pause')}`,
+      `Abandonar partida: ${controlManager.getDisplayLabel('quit')}`
     ].join('\n'), {
       color: '#cbd5e1',
       fontSize: '19px',
@@ -194,7 +195,7 @@ export class MainMenuScene extends Phaser.Scene {
       lineSpacing: 10
     }).setOrigin(0.5);
 
-    const closeHint = this.add.text(width / 2, height / 2 + 108, 'ESC o ENTER para volver', UI_STYLES['font-subtext']).setOrigin(0.5);
+    const closeHint = this.add.text(width / 2, height / 2 + 108, `${controlManager.getDisplayLabel('quit')} o ${controlManager.getDisplayLabel('next_level')} para volver`, UI_STYLES['font-subtext']).setOrigin(0.5);
 
     this.controlsPanel = this.add.container(0, 0, [panel, title, body, closeHint]).setVisible(false).setDepth(10);
   }
@@ -273,7 +274,7 @@ export class MainMenuScene extends Phaser.Scene {
       this.refreshMenuSelection();
     });
 
-    this.input.keyboard?.on('keydown-ENTER', () => {
+    this.input.keyboard?.on(controlManager.getPhaserEventName('next_level'), () => {
       if (this.controlsPanel?.visible) {
         this.toggleControlsPanel(false);
         return;
@@ -316,7 +317,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     });
 
-    this.input.keyboard?.on('keydown-ESC', () => {
+    this.input.keyboard?.on(controlManager.getPhaserEventName('quit'), () => {
       if (this.controlsPanel?.visible) {
         this.toggleControlsPanel(false);
         return;

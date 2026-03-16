@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
+import { controlManager } from '../input/ControlManager';
 
 export interface LevelExitZoneConfig {
   x: number;
@@ -94,7 +95,7 @@ export class LevelExitSystem {
       throw new Error('Keyboard input is not available in this scene.');
     }
 
-    this.advanceKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    this.advanceKey = keyboard.addKey(controlManager.getKeyCode('next_level'));
     this.bindExitOverlap();
   }
 

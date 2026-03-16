@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { PartyHudMember } from './sceneShared';
+import { controlManager } from '../input/ControlManager';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
@@ -18,6 +19,7 @@ export class UIScene extends Phaser.Scene {
   private dialogueSpeakerText?: Phaser.GameObjects.Text;
   private dialogueBodyText?: Phaser.GameObjects.Text;
   private dialogueHintText?: Phaser.GameObjects.Text;
+  private controlsLegendText?: Phaser.GameObjects.Text;
 
   constructor() {
     super('UIScene');
@@ -104,6 +106,18 @@ export class UIScene extends Phaser.Scene {
     this.dialogueBodyText?.setText(value.text);
     this.dialogueHintText?.setText('SPACE: avanzar · X: saltar diálogo');
     this.dialoguePanel?.setVisible(true);
+  }
+
+  private getControlsLegendText(): string {
+    return [
+      `${controlManager.getMovementDisplayLabel()}` ,
+      `${controlManager.getDisplayLabel('jump')} saltar`,
+      `${controlManager.getDisplayLabel('shoot')} disparar`,
+      `${controlManager.getDisplayLabel('reload')} recargar`,
+      `${controlManager.getDisplayLabel('interact')} interactuar`,
+      `${controlManager.getDisplayLabel('pause')} pausa`,
+      `${controlManager.getDisplayLabel('quit')} salir`
+    ].join(' · ');
   }
 
   private createHudFrame(): void {
@@ -198,6 +212,14 @@ export class UIScene extends Phaser.Scene {
     this.dialoguePanel = this.add.container(0, 0, [dialogueBg, this.dialogueSpeakerText, this.dialogueBodyText, this.dialogueHintText])
       .setDepth(50)
       .setVisible(false);
+
+    this.controlsLegendText = this.add.text(this.scale.width - 12, 12, this.getControlsLegendText(), {
+      color: '#cbd5e1',
+      fontSize: '11px',
+      fontFamily: pixelFont,
+      backgroundColor: '#0f172a',
+      padding: { x: 6, y: 4 }
+    }).setOrigin(1, 0).setScrollFactor(0).setDepth(12).setAlpha(0.9);
 
     this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 48, '', {
       color: '#bbf7d0',

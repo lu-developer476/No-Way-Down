@@ -14,6 +14,8 @@ import {
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
+import level3HallLayout from '../../public/assets/levels/level3_hall_planta_baja.json';
+import { addEnvironmentProp } from './environmentLayout';
 import { registerEnvironmentProfile } from '../config/environmentProfiles';
 
 const API_MESSAGE_DURATION_MS = 2600;
@@ -39,12 +41,13 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   create(data: UpperFloorSceneData = {}): void {
-    const levelWidth = 1200;
-    const levelHeight = this.scale.height;
-    const floorHeight = 64;
+    const levelBounds = this.resolveLevelBounds();
+    const levelWidth = levelBounds.width;
+    const levelHeight = levelBounds.height;
+    const floorHeight = 84;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
-    registerEnvironmentProfile(this, 'level4_segundo_piso');
+    registerEnvironmentProfile(this, 'level3_hall_planta_baja');
     this.cameras.main
       .setBounds(0, 0, levelWidth, levelHeight)
       .setZoom(ARCADE_CAMERA_ZOOM)
@@ -53,12 +56,14 @@ export class UpperFloorScene extends Phaser.Scene {
     this.drawUpperFloorBackground(levelWidth, levelHeight, floorHeight);
 
     const environment = this.physics.add.staticGroup();
-    environment.create(levelWidth / 2, levelHeight - floorHeight / 2, 'ground-placeholder')
+    const floorY = this.resolveFloorY(levelHeight);
+    environment.create(levelWidth / 2, floorY + floorHeight / 2, 'ground-placeholder')
       .setDisplaySize(levelWidth, floorHeight)
       .refreshBody()
       .setDepth(4);
 
-    this.add.rectangle(levelWidth / 2, levelHeight - floorHeight + 8, levelWidth, 8, visualTheme.palette.platformTop).setDepth(5);
+    this.add.rectangle(levelWidth / 2, floorY + 8, levelWidth, 8, visualTheme.palette.platformTop).setDepth(5);
+    this.placeHallLayoutProps(environment, floorY);
 
     this.projectileSystem = new ProjectileSystem(this);
 
@@ -67,7 +72,8 @@ export class UpperFloorScene extends Phaser.Scene {
       this.registry.set('initialRunSetup', setupFromStorage);
     }
 
-    const spawnPoint = data.respawnPoint ?? { x: 140, y: levelHeight - 130 };
+    const defaultEntry = this.resolveDefaultSpawnPoint(levelHeight);
+    const spawnPoint = data.respawnPoint ?? defaultEntry;
     const setup = (this.registry.get('initialRunSetup') ?? loadInitialRunSetup()) ?? null;
     const activePlayerConfigs = getActivePlayerConfigs(setup);
     this.players = activePlayerConfigs.map((config, index) => new Player(
@@ -87,22 +93,22 @@ export class UpperFloorScene extends Phaser.Scene {
     this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'upper-to-dining',
-      x: 120,
-      y: levelHeight - 94,
-      width: 150,
-      height: 108,
+      x: spawnPoint.x - 40,
+      y: spawnPoint.y - 12,
+      width: 180,
+      height: 120,
       prompt: 'Mantén E para bajar al comedor',
       activeLabel: 'ESCALERA\nBAJADA',
       target: {
         sceneKey: 'GameScene',
-        spawnPoint: { x: levelWidth - 200, y: levelHeight - 140 }
+        spawnPoint: { x: Math.max(180, levelWidth - 260), y: floorY - 36 }
       },
       startsUnlocked: true
     });
 
-    this.addStairVisual(120, levelHeight - 94, 150, 108);
+    this.addStairVisual(spawnPoint.x - 40, spawnPoint.y - 12, 180, 120);
     this.createTransitionUI();
-    this.registry.set('currentObjective', 'Explora el piso superior y regresa cuando quieras.');
+    this.registry.set('currentObjective', 'Cruza el hall de Planta Baja y reconoce su distribución antes de volver.');
     this.registry.set('interactionHint', '');
     this.registerApiControls();
 
@@ -128,38 +134,102 @@ export class UpperFloorScene extends Phaser.Scene {
 
   private drawUpperFloorBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
     const { palette } = visualTheme;
+    const floorY = this.resolveFloorY(levelHeight);
+
     const backdrop = this.add.graphics();
-    backdrop.fillGradientStyle(palette.skyTop, palette.skyTop, palette.skyBottom, palette.skyBottom, 1);
+    backdrop.fillGradientStyle(0x0b1322, 0x0b1322, 0x111827, 0x111827, 1);
     backdrop.fillRect(0, 0, levelWidth, levelHeight);
-    backdrop.fillStyle(0x1a2235, 1);
-    backdrop.fillRect(0, 68, levelWidth, 130);
-    backdrop.fillStyle(0x263248, 1);
-    backdrop.fillRect(0, 170, levelWidth, 138);
-    backdrop.fillStyle(0x2f3d56, 1);
-    backdrop.fillRect(0, levelHeight - floorHeight - 62, levelWidth, 62);
+    backdrop.fillStyle(0x24324a, 1);
+    backdrop.fillRect(0, 80, levelWidth, 320);
+    backdrop.fillStyle(0x334155, 0.9);
+    backdrop.fillRect(0, floorY - floorHeight - 140, levelWidth, 140);
+    backdrop.fillStyle(0x4b5563, 1);
+    backdrop.fillRect(0, floorY - 26, levelWidth, 26);
     backdrop.destroy();
 
-    for (let x = 80; x < levelWidth; x += 170) {
-      this.add.rectangle(x, 110, 58, 40, 0x0f172a, 0.65).setDepth(1);
-      this.add.rectangle(x, 110, 52, 34, 0x38bdf8, 0.09).setDepth(1);
-      this.add.rectangle(x, 42, 52, 8, palette.lamp, 0.23).setDepth(2);
+    for (let x = 120; x < levelWidth; x += 240) {
+      this.add.rectangle(x, 146, 84, 120, 0x0f172a, 0.45).setDepth(1);
+      this.add.rectangle(x, 146, 74, 108, 0x7dd3fc, 0.06).setDepth(1);
     }
 
-
-    for (let x = 120; x < levelWidth; x += 260) {
-      this.add.rectangle(x, 190, 120, 56, 0x0c1220, 0.34).setDepth(1).setScrollFactor(0.5, 1);
-      this.add.rectangle(x - 34, 190, 20, 56, 0x334155, 0.24).setDepth(1).setScrollFactor(0.5, 1);
-      this.add.rectangle(x + 38, 190, 16, 56, 0x1f2937, 0.32).setDepth(1).setScrollFactor(0.5, 1);
+    for (let x = 100; x < levelWidth; x += 210) {
+      this.add.rectangle(x, floorY - floorHeight - 72, 128, 22, palette.lamp, 0.2).setDepth(2);
     }
 
-    for (let x = 100; x < levelWidth; x += 200) {
-      this.add.rectangle(x, levelHeight - floorHeight - 120, 14, 140, 0x64748b, 0.4).setDepth(2);
+    for (let x = 160; x < levelWidth; x += 320) {
+      this.add.rectangle(x, floorY - 12, 120, 10, 0x7a4340, 0.45).setDepth(3);
     }
+  }
 
-    for (let x = 180; x < levelWidth; x += 300) {
-      this.add.rectangle(x, levelHeight - floorHeight - 54, 90, 26, 0x0f172a, 0.52).setDepth(3).setScrollFactor(0.88, 1);
-      this.add.rectangle(x + 34, levelHeight - floorHeight - 56, 20, 8, 0xeab308, 0.22).setDepth(3).setScrollFactor(0.88, 1);
-    }
+  private resolveLevelBounds(): { width: number; height: number } {
+    const sections = level3HallLayout.sections ?? [];
+    const maxX = sections.reduce((acc, section) => Math.max(acc, section.bounds.x + section.bounds.width), this.scale.width);
+    const maxY = sections.reduce((acc, section) => Math.max(acc, section.bounds.y + section.bounds.height), this.scale.height);
+    return { width: maxX, height: maxY };
+  }
+
+  private resolveFloorY(levelHeight: number): number {
+    return Math.min(levelHeight - 120, 1560);
+  }
+
+  private resolveDefaultSpawnPoint(levelHeight: number): Checkpoint {
+    const fallbackY = this.resolveFloorY(levelHeight) - 36;
+    const section = level3HallLayout.sections?.find((entry) => entry.id === 'S1');
+    const entry = section?.navigation?.entry;
+    return {
+      x: entry?.x ?? 220,
+      y: entry?.y ?? fallbackY
+    };
+  }
+
+  private placeHallLayoutProps(environment: Phaser.Physics.Arcade.StaticGroup, floorY: number): void {
+    const hallSection = level3HallLayout.sections?.find((entry) => entry.id === 'S2');
+    const columns = hallSection?.layout_points?.columns ?? [];
+    const counters = hallSection?.layout_points?.service_counters ?? [];
+
+    columns.forEach((column) => {
+      addEnvironmentProp(this, {
+        kind: 'stone-column',
+        x: column.x,
+        y: column.y - 30,
+        depth: 6,
+        scale: 1.05
+      });
+
+      environment.create(column.x, floorY - 22, 'ground-placeholder')
+        .setDisplaySize(52, 44)
+        .refreshBody()
+        .setAlpha(0)
+        .setDepth(4);
+    });
+
+    counters.forEach((counter) => {
+      addEnvironmentProp(this, {
+        kind: 'bank-counter',
+        x: counter.x,
+        y: counter.y,
+        depth: 6,
+        scale: 1
+      });
+
+      environment.create(counter.x, counter.y + 10, 'ground-placeholder')
+        .setDisplaySize(148, 40)
+        .refreshBody()
+        .setAlpha(0)
+        .setDepth(4);
+    });
+
+    const lanePoints = hallSection?.layout_points?.central_lane ?? [];
+    lanePoints.forEach((lanePoint, index) => {
+      addEnvironmentProp(this, {
+        kind: index % 2 === 0 ? 'turnstile' : 'info-screen',
+        x: lanePoint.x,
+        y: lanePoint.y - 34,
+        depth: 5,
+        alpha: 0.9,
+        scale: 0.95
+      });
+    });
   }
 
   private addStairVisual(x: number, y: number, width: number, height: number): void {

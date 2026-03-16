@@ -18,6 +18,9 @@ export class CampaignIntroScene extends Phaser.Scene {
   }
 
   create(_data: CampaignIntroSceneData = {}): void {
+    this.registry.set('activeCampaignNode', { id: 'campaign-intro', type: 'campaignIntro', sceneKey: 'CampaignIntroScene' });
+    this.registry.set('flowNodeId', 'campaign-intro');
+
     const { width, height } = this.scale;
     this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
     this.add.text(width / 2, height / 2, 'ENTER para iniciar', {
@@ -59,9 +62,14 @@ export class CampaignIntroScene extends Phaser.Scene {
     this.hasStarted = true;
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
+    const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    if (currentNode) {
+      console.log('[CampaignIntroScene] activeCampaignNode detectado en registry:', currentNode.id);
+    }
+
     console.log(`[CampaignIntroScene] Iniciando transición por ${source}.`);
     console.log('[CampaignIntroScene] Llamando a advance().');
-    const next = manager.advance();
+    const next = manager.advanceFromNodeId(currentNode?.id ?? 'campaign-intro');
     console.log('[CampaignIntroScene] advance() devolvió:', next ?? null);
 
     if (!next) {

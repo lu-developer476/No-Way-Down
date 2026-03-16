@@ -5,6 +5,7 @@ import { CampaignSystem } from '../systems/CampaignSystem';
 import { SpawnSystem } from '../systems/SpawnSystem';
 import { CombatSystem } from '../systems/CombatSystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
+import { MissionRuntimeSystem } from '../systems/MissionRuntimeSystem';
 import { controlManager } from '../input/ControlManager';
 import { Checkpoint } from './sceneShared';
 
@@ -19,6 +20,7 @@ export class LevelScene extends GameScene {
   private spawnSystem?: SpawnSystem;
   private combatSystem?: CombatSystem;
   private environmentSystem?: EnvironmentSystem;
+  private missionRuntimeSystem?: MissionRuntimeSystem;
 
   constructor() {
     super('LevelScene');
@@ -39,6 +41,8 @@ export class LevelScene extends GameScene {
     }
 
     console.log(`[LevelScene] levelConfigPath a cargar: ${flowNode.levelConfigPath}`);
+    this.registry.set('activeCampaignNode', flowNode);
+    this.registry.set('flowNodeId', flowNode.id);
 
     this.ensureCampaignLevelConfigLoaded(flowNode, (campaignLevelConfig, usedFallback) => {
       super.create({
@@ -53,11 +57,13 @@ export class LevelScene extends GameScene {
       this.spawnSystem = new SpawnSystem(this);
       this.combatSystem = new CombatSystem(this);
       this.environmentSystem = new EnvironmentSystem(this);
+      this.missionRuntimeSystem = new MissionRuntimeSystem(this);
 
       this.campaignSystem.configureFlowNode(flowNode);
       this.spawnSystem.instantiate(flowNode.systems?.spawn ?? []);
       this.combatSystem.instantiate(flowNode.systems?.combat ?? []);
       this.environmentSystem.instantiate(flowNode.systems?.environment ?? []);
+      this.missionRuntimeSystem.instantiate(flowNode.systems?.mission ?? []);
 
       if (usedFallback) {
         console.warn(`[LevelScene] fallback activado para ${flowNode.id}.`);
@@ -65,7 +71,7 @@ export class LevelScene extends GameScene {
 
       this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
         const manager = new SceneFlowManager(this);
-        const nextNode = manager.advance();
+        const nextNode = manager.advanceFromNodeId(flowNode.id);
         if (nextNode) {
           manager.transitionToNode(nextNode);
         }

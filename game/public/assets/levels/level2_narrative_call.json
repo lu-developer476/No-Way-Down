@@ -43,19 +43,19 @@
       "preDialoguePauseMs": 250,
       "dialogue": [
         {
-          "speaker": "Lorena",
-          "text": "¡Alan! Pensé que no llegábamos. Nos escondimos detrás de archivo y escuchábamos todo... fue horrible.",
+          "speaker": "Alan",
+          "text": "Bien, esa zona quedó limpia. Escuchen: siguen golpes al fondo del pasillo, así que no aflojemos ahora.",
           "durationMs": 2800
         },
         {
-          "speaker": "Selene",
-          "text": "No quiero volver ahí atrás. Me tiemblan las manos, pero puedo seguir... decime qué hacemos.",
-          "durationMs": 2600
+          "speaker": "Giovanna",
+          "text": "Nos mantenemos juntos y cubrimos los ángulos. Si alguien cae atrás, frenamos y lo levantamos.",
+          "durationMs": 2700
         },
         {
-          "speaker": "Giovanna",
-          "text": "Hacemos esto juntos. Nadie se hace el héroe, nadie se suelta. Salimos de acá y después vemos qué quedó del resto.",
-          "durationMs": 2900
+          "speaker": "Alan",
+          "text": "Avanzamos despacio y con munición contada. Todavía no encontramos al resto del equipo.",
+          "durationMs": 2800
         }
       ],
       "objectiveAfterCall": "Sigan avanzando por el subsuelo y mantengan al grupo unido."

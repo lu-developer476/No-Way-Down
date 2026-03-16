@@ -40,7 +40,9 @@ import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.25;
-const LATE_ALLY_JOIN_CHECKPOINT_ID = 'level2-checkpoint-first-zone-cleared';
+// Este checkpoint queda reservado para una futura integración narrativa.
+// En nivel 1 no debe incorporar a Lorena/Selene.
+const LATE_ALLY_JOIN_CHECKPOINT_ID = 'late-rescue-allies-join';
 
 const LATE_RESCUE_ALLIES = [
   {

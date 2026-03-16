@@ -3,15 +3,7 @@ import { DEFAULT_ZOMBIE_HEALTH, Zombie } from '../entities/Zombie';
 import { Projectile } from '../entities/Projectile';
 import { Player } from '../entities/Player';
 import { getCharacterRuntimeConfig } from '../config/characterRuntime';
-
-const WEAPON_HEADSHOT_CHANCE_BY_KEY: Record<string, number> = {
-  pistol: 0.1,
-  revolver: 0.18,
-  smg: 0.08,
-  shotgun: 0.16,
-  carbine: 0.24,
-  sniper_rifle: 0.4
-};
+import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 
 const CHARACTER_HEADSHOT_BONUS_BY_ID: Record<string, number> = {
   alan: 0,
@@ -87,7 +79,7 @@ export class ZombieSystem {
   }
 
   private rollHeadshot(projectile: Projectile): boolean {
-    const weaponChance = WEAPON_HEADSHOT_CHANCE_BY_KEY[projectile.getWeaponKey()] ?? 0.1;
+    const weaponChance = getWeaponCatalogEntry(projectile.getWeaponKey()).headshotChance;
     const shooterBonus = CHARACTER_HEADSHOT_BONUS_BY_ID[projectile.getShooterCharacterId()] ?? 0;
     const shooterConfig = getCharacterRuntimeConfig(projectile.getShooterCharacterId());
     const weaponPrecisionBonus = Phaser.Math.Clamp((shooterConfig.weaponRuntime.projectileSpeed - 520) / 2000, -0.03, 0.07);

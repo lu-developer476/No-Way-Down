@@ -128,12 +128,96 @@ export class GameScene extends Phaser.Scene {
   private firstCleanupNarrativeTriggered = false;
   private lateRescueAlliesIntegrated = false;
   private readonly allyHealthBars = new Map<string, AllyWorldHealthBar>();
+  private readonly onNarrativeAdvanceKey = () => {
+    this.advanceDialogueRequested = true;
+  };
+  private readonly onNarrativeSkipKey = () => {
+    this.skipDialogueRequested = true;
+  };
+  private readonly onPauseToggleKey = () => {
+    if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
+      return;
+    }
+
+    if (this.isPauseMenuOpen()) {
+      this.resumeGameplay();
+    } else {
+      this.pauseGameplay();
+    }
+  };
+  private readonly onPauseBackKey = () => {
+    if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
+      return;
+    }
+
+    if (this.isPauseMenuOpen()) {
+      if (this.pauseMenuState === 'options') {
+        this.openPauseRoot();
+        return;
+      }
+
+      this.resumeGameplay();
+      return;
+    }
+
+    this.returnToMainMenu();
+  };
+  private readonly onPauseUpKey = () => {
+    if (!this.isPauseMenuOpen()) {
+      return;
+    }
+
+    this.pauseMenuIndex = Phaser.Math.Wrap(this.pauseMenuIndex - 1, 0, this.pauseMenuOptions.length);
+    this.updatePauseMenuSelection();
+  };
+  private readonly onPauseDownKey = () => {
+    if (!this.isPauseMenuOpen()) {
+      return;
+    }
+
+    this.pauseMenuIndex = Phaser.Math.Wrap(this.pauseMenuIndex + 1, 0, this.pauseMenuOptions.length);
+    this.updatePauseMenuSelection();
+  };
+  private readonly onPauseConfirmKey = () => {
+    if (!this.isPauseMenuOpen()) {
+      return;
+    }
+
+    this.pauseMenuOptions[this.pauseMenuIndex]?.action();
+    getAudioManager(this).play('uiConfirm');
+  };
+  private readonly onPauseLeftKey = () => {
+    if (!this.isPauseMenuOpen()) {
+      return;
+    }
+
+    if (this.pauseMenuIndex === this.audioVolumeOptionIndex) {
+      this.adjustMasterVolume(-10);
+    }
+  };
+  private readonly onPauseRightKey = () => {
+    if (!this.isPauseMenuOpen()) {
+      return;
+    }
+
+    if (this.pauseMenuIndex === this.audioVolumeOptionIndex) {
+      this.adjustMasterVolume(10);
+    }
+  };
+  private readonly onSaveApiKey = () => {
+    void this.saveProgressToApi();
+  };
+  private readonly onLoadApiKey = () => {
+    void this.loadProgressFromApi();
+  };
 
   constructor() {
     super('GameScene');
   }
 
   create(data: GameSceneData = {}): void {
+    this.resetRuntimeStateForRestart();
+
     const setupFromStorage = loadInitialRunSetup();
     if (setupFromStorage && !this.registry.has('initialRunSetup')) {
       this.registry.set('initialRunSetup', setupFromStorage);
@@ -353,13 +437,43 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.input.keyboard?.removeAllListeners();
+      this.unregisterPauseControls();
+      this.unregisterApiControls();
+      this.unregisterNarrativeControls();
+      this.levelExitSystem?.destroy();
+      this.levelExitSystem = undefined;
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
+      this.registry.set('interactionHint', '');
       this.setNarrativeMovementLock(false);
+      this.physics.resume();
       this.clearAllyWorldHealthBars();
       getAudioManager(this).stopGameplayAmbient();
     });
+  }
+
+  private resetRuntimeStateForRestart(): void {
+    this.hasTriggeredTransition = false;
+    this.hasPlayerBeenDefeated = false;
+    this.pauseMenuOptions = [];
+    this.audioToggleOptionIndex = -1;
+    this.audioVolumeOptionIndex = -1;
+    this.pauseMenuTexts = [];
+    this.pauseMenuIndex = 0;
+    this.pauseMenuState = 'root';
+    this.cleanupZonesRequired = 0;
+    this.exitUnlocked = false;
+    this.spawnsShutDown = false;
+    this.verticalPointsByCleanupZone.clear();
+    this.disabledVerticalZones.clear();
+    this.advanceDialogueRequested = false;
+    this.skipDialogueRequested = false;
+    this.movementLockedByNarrative = false;
+    this.firstCleanupNarrativeTriggered = false;
+    this.lateRescueAlliesIntegrated = false;
+    this.registry.set('isGamePaused', false);
+    this.registry.set('dialogueState', null);
+    this.registry.set('interactionHint', '');
   }
 
   update(): void {
@@ -628,13 +742,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   private registerNarrativeControls(): void {
-    this.input.keyboard?.on('keydown-SPACE', () => {
-      this.advanceDialogueRequested = true;
-    });
+    this.input.keyboard?.on('keydown-SPACE', this.onNarrativeAdvanceKey);
+    this.input.keyboard?.on('keydown-X', this.onNarrativeSkipKey);
+  }
 
-    this.input.keyboard?.on('keydown-X', () => {
-      this.skipDialogueRequested = true;
-    });
+  private unregisterNarrativeControls(): void {
+    this.input.keyboard?.off('keydown-SPACE', this.onNarrativeAdvanceKey);
+    this.input.keyboard?.off('keydown-X', this.onNarrativeSkipKey);
   }
 
   private setNarrativeMovementLock(locked: boolean): void {
@@ -1088,83 +1202,23 @@ export class GameScene extends Phaser.Scene {
   }
 
   private registerPauseControls(): void {
-    this.input.keyboard?.on('keydown-P', () => {
-      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
-        return;
-      }
+    this.input.keyboard?.on('keydown-P', this.onPauseToggleKey);
+    this.input.keyboard?.on('keydown-ESC', this.onPauseBackKey);
+    this.input.keyboard?.on('keydown-UP', this.onPauseUpKey);
+    this.input.keyboard?.on('keydown-DOWN', this.onPauseDownKey);
+    this.input.keyboard?.on('keydown-ENTER', this.onPauseConfirmKey);
+    this.input.keyboard?.on('keydown-LEFT', this.onPauseLeftKey);
+    this.input.keyboard?.on('keydown-RIGHT', this.onPauseRightKey);
+  }
 
-      if (this.isPauseMenuOpen()) {
-        this.resumeGameplay();
-      } else {
-        this.pauseGameplay();
-      }
-    });
-
-    this.input.keyboard?.on('keydown-ESC', () => {
-      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
-        return;
-      }
-
-      if (this.isPauseMenuOpen()) {
-        if (this.pauseMenuState === 'options') {
-          this.openPauseRoot();
-          return;
-        }
-
-        this.resumeGameplay();
-        return;
-      }
-
-      this.returnToMainMenu();
-    });
-
-    this.input.keyboard?.on('keydown-UP', () => {
-      if (!this.isPauseMenuOpen()) {
-        return;
-      }
-
-      this.pauseMenuIndex = Phaser.Math.Wrap(this.pauseMenuIndex - 1, 0, this.pauseMenuOptions.length);
-      this.updatePauseMenuSelection();
-    });
-
-    this.input.keyboard?.on('keydown-DOWN', () => {
-      if (!this.isPauseMenuOpen()) {
-        return;
-      }
-
-      this.pauseMenuIndex = Phaser.Math.Wrap(this.pauseMenuIndex + 1, 0, this.pauseMenuOptions.length);
-      this.updatePauseMenuSelection();
-    });
-
-    this.input.keyboard?.on('keydown-ENTER', () => {
-      if (!this.isPauseMenuOpen()) {
-        return;
-      }
-
-      this.pauseMenuOptions[this.pauseMenuIndex]?.action();
-      getAudioManager(this).play('uiConfirm');
-    });
-
-    this.input.keyboard?.on('keydown-LEFT', () => {
-      if (!this.isPauseMenuOpen()) {
-        return;
-      }
-
-      if (this.pauseMenuIndex === this.audioVolumeOptionIndex) {
-        this.adjustMasterVolume(-10);
-      }
-    });
-
-    this.input.keyboard?.on('keydown-RIGHT', () => {
-      if (!this.isPauseMenuOpen()) {
-        return;
-      }
-
-      if (this.pauseMenuIndex === this.audioVolumeOptionIndex) {
-        this.adjustMasterVolume(10);
-      }
-    });
-
+  private unregisterPauseControls(): void {
+    this.input.keyboard?.off('keydown-P', this.onPauseToggleKey);
+    this.input.keyboard?.off('keydown-ESC', this.onPauseBackKey);
+    this.input.keyboard?.off('keydown-UP', this.onPauseUpKey);
+    this.input.keyboard?.off('keydown-DOWN', this.onPauseDownKey);
+    this.input.keyboard?.off('keydown-ENTER', this.onPauseConfirmKey);
+    this.input.keyboard?.off('keydown-LEFT', this.onPauseLeftKey);
+    this.input.keyboard?.off('keydown-RIGHT', this.onPauseRightKey);
   }
 
   private isPauseMenuOpen(): boolean {
@@ -1317,13 +1371,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   private registerApiControls(): void {
-    this.input.keyboard?.on('keydown-F5', () => {
-      void this.saveProgressToApi();
-    });
+    this.input.keyboard?.on('keydown-F5', this.onSaveApiKey);
+    this.input.keyboard?.on('keydown-F9', this.onLoadApiKey);
+  }
 
-    this.input.keyboard?.on('keydown-F9', () => {
-      void this.loadProgressFromApi();
-    });
+  private unregisterApiControls(): void {
+    this.input.keyboard?.off('keydown-F5', this.onSaveApiKey);
+    this.input.keyboard?.off('keydown-F9', this.onLoadApiKey);
   }
 
   private getPlayerId(): string {

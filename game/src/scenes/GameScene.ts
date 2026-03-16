@@ -529,31 +529,33 @@ export class GameScene extends Phaser.Scene {
       const maxHealth = Math.max(1, ally.getMaxHealth());
       const health = Phaser.Math.Clamp(Math.round(ally.getHealth()), 0, maxHealth);
       const ratio = Phaser.Math.Clamp(health / maxHealth, 0, 1);
-      bar.fill.width = 34 * ratio;
-      bar.nameText.setText(ally.getRuntimeConfig().name.toUpperCase());
-      bar.container.setPosition(ally.x, ally.y - 48);
+      bar.fill.width = 44 * ratio;
+      bar.nameText.setText(`[${ally.getRuntimeConfig().name.toUpperCase()}]`);
+      bar.container.setPosition(ally.x, ally.y - 52);
       bar.container.setVisible(ally.active);
     });
   }
 
   private createAllyWorldHealthBar(ally: AllyAI): AllyWorldHealthBar {
-    const nameText = this.add.text(0, -14, ally.getRuntimeConfig().name.toUpperCase(), {
+    ally.setNameTagVisible(false);
+
+    const nameText = this.add.text(0, -14, `[${ally.getRuntimeConfig().name.toUpperCase()}]`, {
       color: '#99f6e4',
-      fontSize: '9px',
+      fontSize: '10px',
       fontFamily: '"Courier New", monospace',
       stroke: '#042f2e',
       strokeThickness: 2,
       fontStyle: 'bold'
     }).setOrigin(0.5, 1);
 
-    const bg = this.add.rectangle(0, 0, 34, 4, 0x111827, 0.95)
+    const bg = this.add.rectangle(0, 0, 44, 5, 0x111827, 0.95)
       .setOrigin(0.5, 0)
       .setStrokeStyle(1, 0x334155, 0.9);
 
-    const fill = this.add.rectangle(-17, 0, 34, 4, 0x34d399, 1)
+    const fill = this.add.rectangle(-22, 0, 44, 5, 0x34d399, 1)
       .setOrigin(0, 0);
 
-    const container = this.add.container(ally.x, ally.y - 48, [nameText, bg, fill])
+    const container = this.add.container(ally.x, ally.y - 52, [nameText, bg, fill])
       .setDepth(27);
 
     return { container, fill, nameText };

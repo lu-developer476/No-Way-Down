@@ -4,9 +4,7 @@ import { controlManager } from '../input/ControlManager';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
-  titleText: Phaser.GameObjects.Text;
   nameText: Phaser.GameObjects.Text;
-  hpText: Phaser.GameObjects.Text;
   hpFill: Phaser.GameObjects.Rectangle;
 }
 
@@ -70,10 +68,8 @@ export class UIScene extends Phaser.Scene {
     const maxHp = Math.max(1, Math.round(protagonist.maxHealth));
     const hpRatio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
 
-    this.protagonistHud.titleText.setText('GRUPO');
-    this.protagonistHud.nameText.setText(protagonist.name.toUpperCase());
-    this.protagonistHud.hpText.setText(`${hp}/${maxHp}`);
-    this.protagonistHud.hpFill.setSize(112 * hpRatio, 7);
+    this.protagonistHud.nameText.setText(`[${protagonist.name.toUpperCase()}]`);
+    this.protagonistHud.hpFill.setSize(122 * hpRatio, 8);
     this.protagonistHud.container.setVisible(true);
   }
 
@@ -123,46 +119,26 @@ export class UIScene extends Phaser.Scene {
   private createHudFrame(): void {
     const pixelFont = '"Courier New", monospace';
 
-    const protagonistBg = this.add.rectangle(16, 16, 158, 52, 0x020617, 0.72)
-      .setOrigin(0, 0)
-      .setStrokeStyle(1, 0x38bdf8, 0.65)
-      .setScrollFactor(0);
-
-    const titleText = this.add.text(24, 20, 'GRUPO', {
-      color: '#7dd3fc',
-      fontSize: '10px',
-      fontFamily: pixelFont,
-      fontStyle: 'bold'
-    }).setScrollFactor(0);
-
-    const nameText = this.add.text(24, 32, '', {
+    const nameText = this.add.text(16, 14, '', {
       color: '#f8fafc',
-      fontSize: '11px',
+      fontSize: '12px',
       fontFamily: pixelFont,
       fontStyle: 'bold'
     }).setScrollFactor(0);
 
-    const hpBg = this.add.rectangle(24, 48, 112, 7, 0x1f2937, 1)
+    const hpBg = this.add.rectangle(16, 30, 122, 8, 0x1f2937, 0.95)
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setStrokeStyle(1, 0x334155, 1);
 
-    const hpFill = this.add.rectangle(24, 48, 0, 7, 0x38bdf8, 1)
+    const hpFill = this.add.rectangle(16, 30, 0, 8, 0x38bdf8, 1)
       .setOrigin(0, 0)
       .setScrollFactor(0);
 
-    const hpText = this.add.text(140, 44, '', {
-      color: '#cbd5e1',
-      fontSize: '10px',
-      fontFamily: pixelFont
-    }).setOrigin(1, 0).setScrollFactor(0);
-
     this.protagonistHud = {
-      container: this.add.container(0, 0, [protagonistBg, titleText, nameText, hpBg, hpFill, hpText]).setVisible(false),
-      titleText,
+      container: this.add.container(0, 0, [nameText, hpBg, hpFill]).setVisible(false),
       nameText,
-      hpFill,
-      hpText
+      hpFill
     };
 
     this.zombieCountText = this.add.text(18, 74, '', {

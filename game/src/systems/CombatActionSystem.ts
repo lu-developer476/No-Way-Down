@@ -4,6 +4,7 @@ import { AllyAI } from '../entities/AllyAI';
 import { Zombie } from '../entities/Zombie';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { getWeaponRuntimeConfig } from '../config/weaponRuntime';
+import { getMeleeDamageMultiplier } from '../config/attributeRuntime';
 
 interface MeleeSwingRuntime {
   actorId: string;
@@ -51,7 +52,8 @@ export class CombatActionSystem {
       actorId: player.getCombatActorId(),
       actor: player,
       direction: player.getLookDirection(),
-      weaponKey: weaponRuntime.key
+      weaponKey: weaponRuntime.key,
+      meleeDamageMultiplier: getMeleeDamageMultiplier(player.getAttributes())
     });
   }
 
@@ -73,7 +75,8 @@ export class CombatActionSystem {
       actorId: ally.getCombatActorId(),
       actor: ally,
       direction,
-      weaponKey: weaponRuntime.key
+      weaponKey: weaponRuntime.key,
+      meleeDamageMultiplier: getMeleeDamageMultiplier(ally.getAttributes())
     });
   }
 
@@ -93,9 +96,12 @@ export class CombatActionSystem {
     actor: Player | AllyAI;
     direction: 1 | -1;
     weaponKey: string;
+    meleeDamageMultiplier: number;
   }): boolean {
     const now = this.scene.time.now;
-    const runtime = getWeaponRuntimeConfig(config.weaponKey);
+    const runtime = getWeaponRuntimeConfig(config.weaponKey, {
+      meleeDamageMultiplier: config.meleeDamageMultiplier
+    });
     const nextAllowedAttackAt = this.cooldownUntilByActorId.get(config.actorId) ?? 0;
 
     if (now < nextAllowedAttackAt || runtime.meleeHitboxDurationMs <= 0 || runtime.meleeContactDamage <= 0) {

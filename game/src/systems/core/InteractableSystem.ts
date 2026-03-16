@@ -1,103 +1,189 @@
-export type InteractableKind = 'vehicle' | 'object';
+export type InteractableType = 'door' | 'stairs' | 'vehicle' | 'loot_container' | 'switch' | 'ally_rescue';
+
+export type InteractableEffectType =
+  | 'door'
+  | 'stairs'
+  | 'vehicle'
+  | 'loot'
+  | 'switch'
+  | 'ally_rescue'
+  | 'custom';
+
+export interface InteractableEffect {
+  type: InteractableEffectType;
+  targetId?: string;
+  message?: string;
+  rewardId?: string;
+  objectiveEventType?: string;
+}
 
 export interface InteractableDefinition {
   id: string;
-  label: string;
-  kind: InteractableKind;
-  decorative: boolean;
-  interactable: boolean;
-  breakable?: boolean;
-  locked?: boolean;
-  loot?: Record<string, boolean>;
-  usableForEscape?: boolean;
+  type: InteractableType;
+  x: number;
+  y: number;
+  interactionKey: string;
+  interactionRadius: number;
+  interactionEffect: InteractableEffect;
+  cinematicTrigger?: string;
+  prompt?: string;
+  enabled?: boolean;
 }
 
 export interface InteractableRuntime {
   id: string;
-  inspected: boolean;
-  opened: boolean;
-  locked: boolean;
-  forcedOpen: boolean;
-  lootCollected: Record<string, boolean>;
-  escapeReady: boolean;
+  enabled: boolean;
+  interactions: number;
+  lastInteractedAt?: number;
 }
 
-export type InteractableOutcome = 'inspected' | 'blocked' | 'opened' | 'forced-open' | 'escape-ready';
+export interface InteractableMatch {
+  definition: InteractableDefinition;
+  runtime: InteractableRuntime;
+  distance: number;
+}
+
+export interface InteractableInteractionResult {
+  success: boolean;
+  definition?: InteractableDefinition;
+  runtime?: InteractableRuntime;
+  effect?: InteractableEffect;
+  cinematicTrigger?: string;
+  reason?: 'missing' | 'disabled' | 'wrong-key' | 'out-of-range';
+}
+
+interface InteractableEntry {
+  definition: InteractableDefinition;
+  runtime: InteractableRuntime;
+}
+
+const DEFAULT_INTERACTION_KEY = 'E';
 
 export class InteractableSystem {
-  private readonly definitions = new Map<string, InteractableDefinition>();
-  private readonly runtime = new Map<string, InteractableRuntime>();
+  private readonly entries = new Map<string, InteractableEntry>();
 
   constructor(definitions: InteractableDefinition[]) {
     definitions.forEach((definition) => {
-      this.definitions.set(definition.id, definition);
-      this.runtime.set(definition.id, {
-        id: definition.id,
-        inspected: false,
-        opened: definition.decorative,
-        locked: definition.locked ?? false,
-        forcedOpen: false,
-        lootCollected: {},
-        escapeReady: false
-      });
+      this.register(definition);
     });
   }
 
-  interact(id: string): { outcome: InteractableOutcome; runtime?: InteractableRuntime } {
-    const definition = this.definitions.get(id);
-    const runtime = this.runtime.get(id);
-    if (!definition || !runtime) {
-      return { outcome: 'blocked' };
+  register(definition: InteractableDefinition): void {
+    const normalized: InteractableDefinition = {
+      ...definition,
+      interactionKey: (definition.interactionKey ?? DEFAULT_INTERACTION_KEY).toUpperCase(),
+      interactionRadius: Math.max(20, definition.interactionRadius ?? 100),
+      enabled: definition.enabled ?? true
+    };
+
+    this.entries.set(normalized.id, {
+      definition: normalized,
+      runtime: {
+        id: normalized.id,
+        enabled: normalized.enabled ?? true,
+        interactions: 0
+      }
+    });
+  }
+
+  findNearby(x: number, y: number): InteractableMatch | undefined {
+    let nearest: InteractableMatch | undefined;
+
+    this.entries.forEach((entry) => {
+      if (!entry.runtime.enabled) {
+        return;
+      }
+
+      const distance = Math.hypot(x - entry.definition.x, y - entry.definition.y);
+      if (distance > entry.definition.interactionRadius) {
+        return;
+      }
+
+      if (!nearest || distance < nearest.distance) {
+        nearest = {
+          definition: entry.definition,
+          runtime: { ...entry.runtime },
+          distance
+        };
+      }
+    });
+
+    return nearest;
+  }
+
+  getPromptFor(x: number, y: number): string {
+    const nearest = this.findNearby(x, y);
+    if (!nearest) {
+      return '';
     }
 
-    runtime.inspected = true;
-    if (!definition.interactable || definition.decorative) {
-      return { outcome: 'inspected', runtime: { ...runtime, lootCollected: { ...runtime.lootCollected } } };
+    return nearest.definition.prompt ?? `${nearest.definition.interactionKey} · ${this.describeType(nearest.definition.type)}`;
+  }
+
+  tryInteract(x: number, y: number, pressedKey: string): InteractableInteractionResult {
+    const nearest = this.findNearby(x, y);
+    if (!nearest) {
+      return { success: false, reason: 'missing' };
     }
 
-    if (runtime.locked) {
-      return { outcome: 'blocked', runtime: { ...runtime, lootCollected: { ...runtime.lootCollected } } };
+    const entry = this.entries.get(nearest.definition.id);
+    if (!entry) {
+      return { success: false, reason: 'missing' };
     }
 
-    runtime.opened = true;
-    runtime.lootCollected = { ...(definition.loot ?? {}) };
-    runtime.escapeReady = Boolean(definition.usableForEscape);
+    if (!entry.runtime.enabled) {
+      return { success: false, reason: 'disabled' };
+    }
+
+    if (nearest.distance > nearest.definition.interactionRadius) {
+      return { success: false, reason: 'out-of-range' };
+    }
+
+    if (nearest.definition.interactionKey !== pressedKey.toUpperCase()) {
+      return { success: false, reason: 'wrong-key' };
+    }
+
+    entry.runtime.interactions += 1;
+    entry.runtime.lastInteractedAt = Date.now();
 
     return {
-      outcome: runtime.escapeReady ? 'escape-ready' : 'opened',
-      runtime: { ...runtime, lootCollected: { ...runtime.lootCollected } }
+      success: true,
+      definition: entry.definition,
+      runtime: { ...entry.runtime },
+      effect: { ...entry.definition.interactionEffect },
+      cinematicTrigger: entry.definition.cinematicTrigger
     };
   }
 
-  forceOpen(id: string): { outcome: InteractableOutcome; runtime?: InteractableRuntime } {
-    const definition = this.definitions.get(id);
-    const runtime = this.runtime.get(id);
-    if (!definition || !runtime) {
-      return { outcome: 'blocked' };
+  setEnabled(id: string, enabled: boolean): void {
+    const entry = this.entries.get(id);
+    if (!entry) {
+      return;
     }
 
-    if (!runtime.locked) {
-      return this.interact(id);
-    }
-
-    if (!definition.breakable) {
-      return { outcome: 'blocked', runtime: { ...runtime, lootCollected: { ...runtime.lootCollected } } };
-    }
-
-    runtime.locked = false;
-    runtime.forcedOpen = true;
-    const result = this.interact(id);
-    if (!result.runtime) {
-      return { outcome: 'blocked' };
-    }
-
-    return {
-      outcome: result.runtime.escapeReady ? 'escape-ready' : 'forced-open',
-      runtime: result.runtime
-    };
+    entry.runtime.enabled = enabled;
   }
 
   getSnapshot(): InteractableRuntime[] {
-    return [...this.runtime.values()].map((entry) => ({ ...entry, lootCollected: { ...entry.lootCollected } }));
+    return [...this.entries.values()].map((entry) => ({ ...entry.runtime }));
+  }
+
+  private describeType(type: InteractableType): string {
+    switch (type) {
+      case 'door':
+        return 'Abrir puerta';
+      case 'stairs':
+        return 'Usar escaleras';
+      case 'vehicle':
+        return 'Usar vehículo';
+      case 'loot_container':
+        return 'Revisar contenedor';
+      case 'switch':
+        return 'Activar switch';
+      case 'ally_rescue':
+        return 'Rescatar aliado';
+      default:
+        return 'Interactuar';
+    }
   }
 }

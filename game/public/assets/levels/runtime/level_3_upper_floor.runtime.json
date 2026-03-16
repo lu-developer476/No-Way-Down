@@ -6,7 +6,10 @@
     "floor_y": 1560,
     "floor_height": 84,
     "environment_profile": "level3_hall_planta_baja",
-    "default_spawn": { "x": 220, "y": 1524 }
+    "default_spawn": {
+      "x": 220,
+      "y": 1524
+    }
   },
   "spawn_zones": {
     "areas": [],
@@ -17,26 +20,51 @@
       "id": "level3_recon",
       "label": "Reconocer la distribución del hall de Planta Baja.",
       "completion": [
-        { "type": "checkpoint", "targetId": "hall_recon_complete" }
+        {
+          "type": "checkpoint",
+          "targetId": "hall_recon_complete"
+        }
       ]
     },
     {
       "id": "level3_return",
       "label": "Volver al comedor para reagruparse.",
       "completion": [
-        { "type": "exit_used", "targetId": "return_dining" }
+        {
+          "type": "exit_used",
+          "targetId": "return_dining"
+        }
       ]
     }
   ],
   "interactables": [
     {
+      "id": "hall_main_door",
+      "type": "door",
+      "x": 920,
+      "y": 1500,
+      "interactionKey": "E",
+      "interactionRadius": 120,
+      "interactionEffect": {
+        "type": "door",
+        "message": "Puerta principal asegurada.",
+        "objectiveEventType": "checkpoint",
+        "targetId": "hall_recon_complete"
+      }
+    },
+    {
       "id": "hall_service_counter",
-      "label": "Mostrador de atención",
-      "kind": "object",
-      "decorative": false,
-      "interactable": true,
-      "locked": false,
-      "loot": { "ammo_revolver": true }
+      "type": "loot_container",
+      "x": 1320,
+      "y": 1500,
+      "interactionKey": "E",
+      "interactionRadius": 120,
+      "interactionEffect": {
+        "type": "loot",
+        "message": "Suministros recogidos del mostrador.",
+        "rewardId": "ammo_revolver",
+        "objectiveEventType": "checkpoint"
+      }
     }
   ],
   "triggers": [],
@@ -46,7 +74,10 @@
       "id": "return_dining",
       "target_level_id": "level_2_subsuelo",
       "scene_key": "GameScene",
-      "spawn_point": { "x": 2540, "y": 1524 },
+      "spawn_point": {
+        "x": 2540,
+        "y": 1524
+      },
       "label": "Escalera al comedor"
     }
   ]

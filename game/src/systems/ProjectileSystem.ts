@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Projectile } from '../entities/Projectile';
 import { CharacterWeaponKey } from '../config/characterRuntime';
 import { applyLegacyWeaponOverrides, getWeaponRuntimeConfig, WeaponRuntimeConfig } from '../config/weaponRuntime';
+import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 
 export interface FireConfig {
   originX: number;
@@ -45,6 +46,7 @@ export class ProjectileSystem {
   tryFire(config: FireConfig): boolean {
     const now = this.scene.time.now;
     const weaponRuntime = this.getWeaponRuntime(config.weapon);
+    const weaponVisual = getWeaponVisualRuntimeConfig(weaponRuntime.key);
     const shooterId = config.shooterId ?? 'shared';
     const nextFireTime = this.nextFireTimeByShooter.get(shooterId) ?? 0;
 
@@ -67,7 +69,10 @@ export class ProjectileSystem {
       {
         weaponKey: weaponRuntime.key,
         shooterId,
-        shooterCharacterId: config.shooterCharacterId ?? 'alan'
+        shooterCharacterId: config.shooterCharacterId ?? 'alan',
+        projectileTexture: weaponVisual.projectileTexture,
+        projectileTint: weaponVisual.projectileTint,
+        projectileScale: weaponVisual.projectileScale
       }
     );
 

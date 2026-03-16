@@ -4,6 +4,7 @@ import { Zombie } from './Zombie';
 import { getCharacterVisualById } from '../config/characterVisuals';
 import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { ProjectileSystem } from '../systems/ProjectileSystem';
+import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -189,9 +190,10 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const direction = target.x >= this.x ? 1 : -1;
     this.setFlipX(direction < 0);
 
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.runtimeConfig.weaponRuntime.key);
     const fired = this.projectileSystem.tryFire({
-      originX: this.x + direction * 22,
-      originY: this.y - 8,
+      originX: this.x + direction * weaponVisual.muzzleOffsetX,
+      originY: this.y + weaponVisual.muzzleOffsetY,
       direction,
       weapon: this.runtimeConfig.weaponRuntime.key,
       shooterId: this.profile.id,

@@ -45,6 +45,48 @@ export class BootScene extends Phaser.Scene {
 
     graphics.clear();
     graphics.fillStyle(palette.bullet, 1);
+    graphics.fillRect(0, 5, 7, 2);
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillRect(7, 5, 2, 2);
+    graphics.generateTexture('projectile-pistol', 10, 12);
+
+    graphics.clear();
+    graphics.fillStyle(0xf59e0b, 1);
+    graphics.fillRect(0, 4, 8, 3);
+    graphics.fillStyle(0x78350f, 1);
+    graphics.fillRect(8, 4, 2, 3);
+    graphics.generateTexture('projectile-revolver', 12, 12);
+
+    graphics.clear();
+    graphics.fillStyle(0x93c5fd, 1);
+    graphics.fillRect(1, 5, 6, 2);
+    graphics.fillStyle(0x1e3a8a, 1);
+    graphics.fillRect(7, 5, 1, 2);
+    graphics.generateTexture('projectile-smg', 10, 12);
+
+    graphics.clear();
+    graphics.fillStyle(0xfde68a, 1);
+    graphics.fillRect(0, 4, 4, 4);
+    graphics.fillStyle(0x92400e, 1);
+    graphics.fillRect(4, 5, 2, 2);
+    graphics.generateTexture('projectile-shotgun', 10, 12);
+
+    graphics.clear();
+    graphics.fillStyle(0x86efac, 1);
+    graphics.fillRect(0, 4, 10, 3);
+    graphics.fillStyle(0x14532d, 1);
+    graphics.fillRect(10, 4, 2, 3);
+    graphics.generateTexture('projectile-carbine', 14, 12);
+
+    graphics.clear();
+    graphics.fillStyle(0xe2e8f0, 1);
+    graphics.fillRect(0, 4, 12, 3);
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRect(12, 4, 2, 3);
+    graphics.generateTexture('projectile-sniper_rifle', 16, 12);
+
+    graphics.clear();
+    graphics.fillStyle(palette.bullet, 1);
     graphics.fillRect(0, 4, 12, 4);
     graphics.fillStyle(0xd97706, 1);
     graphics.fillRect(9, 4, 3, 4);
@@ -324,28 +366,39 @@ export class BootScene extends Phaser.Scene {
   ): void {
     const anchorY = isAiming ? y : y + 1;
     const weaponStyle = profile.weaponStyle;
-    const anchorX = profile.weaponCarry === 'shoulder' ? 20 : 22;
-    const length = weaponStyle === 'rifle' ? 8 : weaponStyle === 'shotgun' ? 7 : weaponStyle === 'smg' ? 6 : 5;
-    const height = weaponStyle === 'shotgun' ? 3 : 2;
+    const anchorX = profile.weaponCarry === 'shoulder' ? 19 : 22;
 
-    this.fillPixelRect(graphics, anchorX, anchorY, length, height, color);
-
-    if (weaponStyle === 'revolver') {
-      this.fillPixelRect(graphics, anchorX + 2, anchorY - 1, 2, 1, color);
+    if (weaponStyle === 'rifle') {
+      this.fillPixelRect(graphics, anchorX, anchorY, 10, 2, color);
+      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 4, 1, 0x0f172a);
+      this.fillPixelRect(graphics, anchorX + 8, anchorY - 1, 2, 4, 0x111827);
+      return;
     }
 
-    if (weaponStyle === 'rifle' || weaponStyle === 'shotgun') {
-      this.fillPixelRect(graphics, anchorX, anchorY + height, 2, 1, color);
-      this.fillPixelRect(graphics, anchorX + length - 1, anchorY - 1, 1, height + 2, 0x111827);
+    if (weaponStyle === 'shotgun') {
+      this.fillPixelRect(graphics, anchorX, anchorY, 8, 3, color);
+      this.fillPixelRect(graphics, anchorX + 1, anchorY + 3, 3, 1, 0x78350f);
+      this.fillPixelRect(graphics, anchorX + 7, anchorY - 1, 1, 5, 0x111827);
+      return;
     }
 
     if (weaponStyle === 'smg') {
-      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 2, 2, 0x111827);
+      this.fillPixelRect(graphics, anchorX + 1, anchorY, 6, 2, color);
+      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 2, 2, 0x0f172a);
+      this.fillPixelRect(graphics, anchorX + 6, anchorY + 1, 1, 1, 0xe2e8f0);
+      return;
     }
 
-    if (weaponStyle === 'pistol' || weaponStyle === 'revolver') {
-      this.fillPixelRect(graphics, anchorX + 1, anchorY + 2, 1, 2, 0x111827);
+    if (weaponStyle === 'revolver') {
+      this.fillPixelRect(graphics, anchorX + 1, anchorY, 5, 2, color);
+      this.fillPixelRect(graphics, anchorX + 2, anchorY - 1, 2, 1, 0xe2e8f0);
+      this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 1, 2, 0x111827);
+      return;
     }
+
+    this.fillPixelRect(graphics, anchorX + 1, anchorY, 4, 2, color);
+    this.fillPixelRect(graphics, anchorX + 2, anchorY + 2, 1, 2, 0x111827);
+    this.fillPixelRect(graphics, anchorX + 4, anchorY + 1, 1, 1, 0xe2e8f0);
   }
 
   private fillPixelRect(

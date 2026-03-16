@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
-import { LoadingScene } from './scenes/LoadingScene';
+import { AssetPreloadScene } from './scenes/AssetPreloadScene';
 import { MainMenuScene } from './scenes/MainMenuScene';
-import { GameScene } from './scenes/GameScene';
+import { CampaignIntroScene } from './scenes/CampaignIntroScene';
+import { LevelScene } from './scenes/LevelScene';
+import { CinematicScene } from './scenes/CinematicScene';
+import { DialogueScene } from './scenes/DialogueScene';
 import { UIScene } from './scenes/UIScene';
 import { UpperFloorScene } from './scenes/UpperFloorScene';
 
@@ -22,7 +25,17 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false
     }
   },
-  scene: [BootScene, LoadingScene, MainMenuScene, GameScene, UpperFloorScene, UIScene]
+  scene: [
+    BootScene,
+    AssetPreloadScene,
+    MainMenuScene,
+    CampaignIntroScene,
+    LevelScene,
+    CinematicScene,
+    DialogueScene,
+    UpperFloorScene,
+    UIScene
+  ]
 };
 
 void new Phaser.Game(config);

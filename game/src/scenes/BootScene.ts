@@ -188,7 +188,7 @@ export class BootScene extends Phaser.Scene {
 
     this.createCharacterAnimations();
 
-    this.scene.start('LoadingScene');
+    this.scene.start('AssetPreloadScene');
   }
 
   private createCharacterFrameTextures(): void {

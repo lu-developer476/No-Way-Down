@@ -1,0 +1,42 @@
+import Phaser from 'phaser';
+import { visualTheme } from './visualTheme';
+import { CampaignFlowDefinition, SceneFlowManager } from './SceneFlowManager';
+
+const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
+  { key: 'menu_background', path: 'images/NWD-menu.png', type: 'image' },
+  { key: 'characters_panel', path: 'images/NWD-characters.png', type: 'image' },
+  { key: 'campaign_flow', path: 'assets/campaign/campaign_flow.json', type: 'json' },
+  { key: 'campaign_intro_dialogue', path: 'assets/dialogues/campaign_intro_dialogue.json', type: 'json' },
+  { key: 'drive_to_santelmo_cinematic', path: 'assets/cinematics/drive_to_santelmo.json', type: 'json' }
+];
+
+export class AssetPreloadScene extends Phaser.Scene {
+  constructor() {
+    super('AssetPreloadScene');
+  }
+
+  preload(): void {
+    const { width, height } = this.scale;
+    this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.skyTop, 1);
+    this.add.text(width / 2, height / 2, 'Cargando campaña...', {
+      color: '#cbd5e1',
+      fontSize: '28px',
+      fontFamily: 'monospace'
+    }).setOrigin(0.5);
+
+    PRELOAD_FILES.forEach(({ key, path, type }) => {
+      if (type === 'json') {
+        this.load.json(key, path);
+      } else {
+        this.load.image(key, path);
+      }
+    });
+  }
+
+  create(): void {
+    const manager = new SceneFlowManager(this);
+    const definition = this.cache.json.get('campaign_flow') as CampaignFlowDefinition;
+    manager.loadDefinition(definition);
+    this.scene.start('MainMenuScene');
+  }
+}

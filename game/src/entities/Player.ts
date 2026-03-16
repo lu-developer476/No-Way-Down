@@ -5,6 +5,7 @@ import { StairAnimationKeys } from '../systems/StairSystem';
 import { getCharacterVisualById } from '../config/characterVisuals';
 import { getAudioManager } from '../audio/AudioManager';
 import { CharacterRuntimeConfig, getCharacterRuntimeConfig } from '../config/characterRuntime';
+import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -106,9 +107,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
       this.play(`${this.characterVisualId}-shoot`, true);
+      const weaponVisual = getWeaponVisualRuntimeConfig(this.runtimeConfig.weaponRuntime.key);
       const hasFired = this.projectileSystem.tryFire({
-        originX: this.x + this.lookDirection * 24,
-        originY: this.y - 6,
+        originX: this.x + this.lookDirection * weaponVisual.muzzleOffsetX,
+        originY: this.y + weaponVisual.muzzleOffsetY,
         direction: this.lookDirection,
         weapon: this.runtimeConfig.weaponRuntime.key,
         shooterId: `player-${this.profile.slot}`,

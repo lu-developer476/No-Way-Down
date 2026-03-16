@@ -34,6 +34,9 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
       weaponKey: string;
       shooterId: string;
       shooterCharacterId: string;
+      projectileTexture?: string;
+      projectileTint?: number;
+      projectileScale?: number;
     }
   ): void {
     this.speed = speed;
@@ -47,6 +50,10 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
     this.spawnY = y;
 
     this.enableBody(true, x, y, true, true);
+    this.setTexture(metadata.projectileTexture ?? 'bullet-placeholder');
+    this.setScale(metadata.projectileScale ?? 1);
+    this.setTint(metadata.projectileTint ?? 0xffffff);
+    this.setFlipX(this.direction < 0);
     this.setVelocityX(this.direction * this.speed);
     this.setVelocityY(0);
   }

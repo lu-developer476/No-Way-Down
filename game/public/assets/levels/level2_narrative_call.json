@@ -11,22 +11,27 @@
       "preDialoguePauseMs": 500,
       "dialogue": [
         {
+          "speaker": "Contexto",
+          "text": "Hace dos minutos era una mañana normal en el banco: teclados, café recalentado y gente esperando su turno. Ahora el subsuelo tiembla, hay golpes del otro lado de las puertas y nadie entiende qué está pasando afuera.",
+          "durationMs": 4200
+        },
+        {
           "speaker": "Alan",
-          "text": "Ya confirmamos el equipo. Bajamos al subsuelo y salimos por el extremo derecho.",
-          "durationMs": 2400
+          "text": "Pará... pará. No entiendo nada. Hace un rato estábamos trabajando y ahora hay gritos por todos lados.",
+          "durationMs": 2600
         },
         {
           "speaker": "Giovanna",
-          "text": "No improvisen: despejen zonas, cubran escaleras y no rompan formación.",
-          "durationMs": 2400
+          "text": "Yo tampoco. Pero si nos quedamos clavados acá nos van a encerrar. Respiren y vayamos paso a paso.",
+          "durationMs": 2600
         },
         {
-          "speaker": "Radio",
-          "text": "Contexto operativo: el corredor está dividido por focos infectados. Limpien cada tramo para abrir la salida.",
+          "speaker": "Alan",
+          "text": "Listo. Nos movemos juntos por el pasillo, sin correr de más. Si alguien se queda atrás, volvemos por esa persona.",
           "durationMs": 2800
         }
       ],
-      "objectiveAfterCall": "Objetivo narrativo: aseguren el corredor del subsuelo y avancen juntos hacia la salida."
+      "objectiveAfterCall": "Busquen una salida del subsuelo sin separarse del grupo."
     },
     {
       "id": "level2-cinematic-first-zone-cleared",
@@ -38,17 +43,22 @@
       "preDialoguePauseMs": 250,
       "dialogue": [
         {
-          "speaker": "Radio",
-          "text": "Primer tramo asegurado. Lorena y Selene lograron llegar a su posición: se incorporan al avance.",
-          "durationMs": 2300
+          "speaker": "Lorena",
+          "text": "¡Alan! Pensé que no llegábamos. Nos escondimos detrás de archivo y escuchábamos todo... fue horrible.",
+          "durationMs": 2800
         },
         {
-          "speaker": "Alan",
-          "text": "Recibido. Ajustamos formación con ellas y seguimos empujando hasta desbloquear la salida.",
-          "durationMs": 1900
+          "speaker": "Selene",
+          "text": "No quiero volver ahí atrás. Me tiemblan las manos, pero puedo seguir... decime qué hacemos.",
+          "durationMs": 2600
+        },
+        {
+          "speaker": "Giovanna",
+          "text": "Hacemos esto juntos. Nadie se hace el héroe, nadie se suelta. Salimos de acá y después vemos qué quedó del resto.",
+          "durationMs": 2900
         }
       ],
-      "objectiveAfterCall": "Objetivo actualizado: completar la limpieza total del subsuelo para habilitar la transición."
+      "objectiveAfterCall": "Sigan avanzando por el subsuelo y mantengan al grupo unido."
     }
   ]
 }

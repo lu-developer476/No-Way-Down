@@ -22,6 +22,7 @@ import { PickupSystem } from '../systems/PickupSystem';
 import { levelManager } from '../systems/level/levelCatalog';
 import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
 import { InteractableSystem } from '../systems/core/InteractableSystem';
+import { controlManager } from '../input/ControlManager';
 
 const API_MESSAGE_DURATION_MS = 2600;
 const ARCADE_CAMERA_ZOOM = 1.2;
@@ -38,6 +39,8 @@ export class UpperFloorScene extends Phaser.Scene {
   private pickupSystem?: PickupSystem;
   private objectiveSystem?: ObjectiveSystem;
   private interactableSystem?: InteractableSystem;
+  private interactKey?: Phaser.Input.Keyboard.Key;
+  private interactionHintOwnedByInteractables = false;
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
@@ -101,6 +104,7 @@ export class UpperFloorScene extends Phaser.Scene {
     this.pickupSystem = PickupSystem.fromJSON(this, level3PickupConfig);
     this.objectiveSystem = levelManager.instantiateObjectives('level_3_upper_floor');
     this.interactableSystem = levelManager.instantiateInteractables('level_3_upper_floor');
+    this.interactKey = this.input.keyboard?.addKey(controlManager.getKeyCode('interact'));
     this.staircaseSystem = new StaircaseSystem(this, this.players);
     this.staircaseSystem.registerStair({
       id: 'upper-to-dining',
@@ -147,6 +151,47 @@ export class UpperFloorScene extends Phaser.Scene {
     this.staircaseSystem?.update((target) => {
       this.transitionToTarget(target);
     });
+
+    this.updateInteractables();
+  }
+
+  private updateInteractables(): void {
+    if (!this.interactableSystem) {
+      return;
+    }
+
+    const leadPlayer = this.players[0];
+    if (!leadPlayer) {
+      return;
+    }
+
+    const prompt = this.interactableSystem.getPromptFor(leadPlayer.x, leadPlayer.y);
+    if (prompt.length > 0) {
+      this.registry.set('interactionHint', prompt);
+      this.interactionHintOwnedByInteractables = true;
+    } else if (this.interactionHintOwnedByInteractables) {
+      this.registry.set('interactionHint', '');
+      this.interactionHintOwnedByInteractables = false;
+    }
+
+    if (!this.interactKey || !Phaser.Input.Keyboard.JustDown(this.interactKey)) {
+      return;
+    }
+
+    const interaction = this.interactableSystem.tryInteract(leadPlayer.x, leadPlayer.y, controlManager.getDisplayLabel('interact'));
+    if (!interaction.success || !interaction.effect || !interaction.definition) {
+      return;
+    }
+
+    this.registry.set('interactionHint', interaction.effect.message ?? `Interacción: ${interaction.definition.id}`);
+    const objectiveUpdate = this.objectiveSystem?.process({
+      type: interaction.effect.objectiveEventType ?? 'interactable_used',
+      targetId: interaction.effect.targetId ?? interaction.definition.id
+    });
+
+    if (objectiveUpdate?.status === 'completed') {
+      this.registry.set('currentObjective', this.objectiveSystem?.getActiveObjective()?.label ?? 'Objetivo completado');
+    }
   }
 
   private drawUpperFloorBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {

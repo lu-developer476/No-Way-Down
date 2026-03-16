@@ -129,6 +129,8 @@ export class GameScene extends Phaser.Scene {
   private objectiveSystem?: ObjectiveSystem;
   private interactableSystem?: InteractableSystem;
   private triggerSystem?: TriggerSystem;
+  private interactKey?: Phaser.Input.Keyboard.Key;
+  private interactionHintOwnedByInteractables = false;
   private advanceDialogueRequested = false;
   private skipDialogueRequested = false;
   private movementLockedByNarrative = false;
@@ -380,6 +382,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.pickupSystem = PickupSystem.fromJSON(this, level2PickupConfig);
+    this.interactKey = this.input.keyboard?.addKey(controlManager.getKeyCode('interact'));
 
     this.setupMissionSystem();
     this.stairSegmentSystem = StairSegmentSystem.fromLegacyStairAreas(this, stairConfigLevel2);
@@ -513,6 +516,70 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.projectileSystem?.update();
+
+    this.updateInteractables();
+  }
+
+  private updateInteractables(): void {
+    if (!this.interactableSystem) {
+      return;
+    }
+
+    const leadPlayer = this.players[0];
+    if (!leadPlayer) {
+      return;
+    }
+
+    const prompt = this.interactableSystem.getPromptFor(leadPlayer.x, leadPlayer.y);
+    if (prompt.length > 0) {
+      this.registry.set('interactionHint', prompt);
+      this.interactionHintOwnedByInteractables = true;
+    } else if (this.interactionHintOwnedByInteractables) {
+      this.registry.set('interactionHint', '');
+      this.interactionHintOwnedByInteractables = false;
+    }
+
+    if (!this.interactKey || !Phaser.Input.Keyboard.JustDown(this.interactKey)) {
+      return;
+    }
+
+    const interaction = this.interactableSystem.tryInteract(leadPlayer.x, leadPlayer.y, controlManager.getDisplayLabel('interact'));
+    if (!interaction.success || !interaction.effect) {
+      return;
+    }
+
+    this.applyInteractionEffect(interaction.definition?.id ?? 'unknown', interaction.effect.type, interaction.effect.message);
+
+    if (interaction.cinematicTrigger) {
+      void this.triggerNarrativeCheckpoint(interaction.cinematicTrigger);
+    }
+
+    const objectiveEventType = interaction.effect.objectiveEventType ?? 'interactable_used';
+    const objectiveUpdate = this.objectiveSystem?.process({
+      type: objectiveEventType,
+      targetId: interaction.effect.targetId ?? interaction.definition?.id
+    });
+
+    if (objectiveUpdate?.status === 'completed') {
+      this.registry.set('currentObjective', this.objectiveSystem?.getActiveObjective()?.label ?? 'Objetivo completado');
+    }
+  }
+
+  private applyInteractionEffect(interactableId: string, effectType: string, message?: string): void {
+    const fallbackByType: Record<string, string> = {
+      door: 'Puerta desbloqueada.',
+      stairs: 'Escaleras activadas.',
+      vehicle: 'Vehículo preparado.',
+      loot: 'Contenedor revisado.',
+      switch: 'Switch activado.',
+      ally_rescue: 'Aliado rescatado.'
+    };
+
+    this.showMissionStatus(message ?? fallbackByType[effectType] ?? `Interacción ejecutada: ${interactableId}`);
+
+    if (effectType === 'ally_rescue') {
+      this.integrateLateRescueAllies(LATE_ALLY_JOIN_CHECKPOINT_ID);
+    }
   }
 
   private refreshAllyWorldHealthBars(): void {

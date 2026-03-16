@@ -33,6 +33,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly nameTag: Phaser.GameObjects.Text;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
+  private currentHealth: number;
+  private readonly maxHealth: number;
   private currentTargetId?: Zombie;
   private currentTargetLockedUntil = 0;
 
@@ -44,6 +46,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.characterVisualId = visual.id;
     this.runtimeConfig = getCharacterRuntimeConfig(profile.characterId);
     this.projectileSystem = projectileSystem;
+    this.maxHealth = this.runtimeConfig.maxHealth;
+    this.currentHealth = this.maxHealth;
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -74,6 +78,14 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   getRuntimeConfig(): CharacterRuntimeConfig {
     return this.runtimeConfig;
+  }
+
+  getHealth(): number {
+    return this.currentHealth;
+  }
+
+  getMaxHealth(): number {
+    return this.maxHealth;
   }
 
   updateAI(player: Player, zombies: Zombie[], currentTime: number): void {

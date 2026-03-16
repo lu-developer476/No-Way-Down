@@ -57,6 +57,12 @@ export class AllySystem {
     });
   }
 
+  getActiveAllies(): AllyAI[] {
+    return this.allies.getChildren()
+      .map((child) => child as AllyAI)
+      .filter((ally) => ally.active);
+  }
+
   private spawnAtPlayer(profile: AllyProfile, player: Player): AllyAI | null {
     const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y + profile.followOffsetY, profile, this.projectileSystem);
     this.allies.add(ally);

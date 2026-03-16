@@ -137,6 +137,28 @@ export class SceneFlowManager {
     return definition.nodes[nextIndex];
   }
 
+  peekNextFromNodeId(nodeId?: string): CampaignFlowNode | undefined {
+    const definition = this.ensureDefinitionLoadedFromCache();
+    if (!definition) {
+      return undefined;
+    }
+
+    if (!nodeId) {
+      return definition.nodes[this.getCursor() + 1];
+    }
+
+    const currentIndex = definition.nodes.findIndex((node) => node.id === nodeId);
+    if (currentIndex < 0) {
+      return definition.nodes[this.getCursor() + 1];
+    }
+
+    return definition.nodes[currentIndex + 1];
+  }
+
+  getCursor(): number {
+    return this.readCursor();
+  }
+
   startFromBeginning(): CampaignFlowNode | undefined {
     const definition = this.ensureDefinitionLoadedFromCache();
     if (!definition || definition.nodes.length === 0) {
@@ -155,7 +177,7 @@ export class SceneFlowManager {
     return this.scene.registry.get(FLOW_REGISTRY_KEY) as CampaignFlowDefinition | undefined;
   }
 
-  private getCursor(): number {
+  private readCursor(): number {
     return (this.scene.registry.get(FLOW_CURSOR_KEY) as number | undefined) ?? 0;
   }
 }

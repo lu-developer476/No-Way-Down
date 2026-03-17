@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 
-export type CharacterAnimationState = 'idle' | 'walk' | 'shoot' | 'reload' | 'death';
+export type CharacterAnimationState = 'idle' | 'run' | 'shoot' | 'hurt';
 
 export interface CharacterAnimationFrameRange {
   state: CharacterAnimationState;
-  keySuffix: string;
   start: number;
   end: number;
   frameRate: number;
@@ -12,7 +11,7 @@ export interface CharacterAnimationFrameRange {
   hideOnComplete?: boolean;
 }
 
-const DEFAULT_CHARACTER_NAMES = [
+export const DEFAULT_CHARACTER_VISUAL_IDS = [
   'alan',
   'giovanna',
   'yamil',
@@ -24,37 +23,38 @@ const DEFAULT_CHARACTER_NAMES = [
   'damian'
 ] as const;
 
-const CHARACTER_SPRITESHEET_CONFIG = {
-  frameWidth: 64,
-  frameHeight: 64
-} as const;
+const CHARACTER_SPRITESHEET_SUFFIX = '-sheet';
 
 const DEFAULT_ANIMATION_RANGES: CharacterAnimationFrameRange[] = [
-  { state: 'idle', keySuffix: 'idle', start: 0, end: 3, frameRate: 6, repeat: -1 },
-  { state: 'walk', keySuffix: 'walk', start: 4, end: 11, frameRate: 12, repeat: -1 },
-  { state: 'shoot', keySuffix: 'shoot', start: 12, end: 15, frameRate: 14, repeat: 0 },
-  { state: 'reload', keySuffix: 'reload', start: 16, end: 21, frameRate: 10, repeat: 0 },
-  { state: 'death', keySuffix: 'die', start: 22, end: 29, frameRate: 8, repeat: 0, hideOnComplete: true }
+  { state: 'idle', start: 0, end: 1, frameRate: 4, repeat: -1 },
+  { state: 'run', start: 2, end: 5, frameRate: 9, repeat: -1 },
+  { state: 'shoot', start: 6, end: 6, frameRate: 1, repeat: 0 },
+  { state: 'hurt', start: 7, end: 7, frameRate: 1, repeat: 0 }
 ];
 
-function buildAnimationKey(characterName: string, suffix: string): string {
-  return `${characterName}_${suffix}`;
+function buildAnimationKey(characterVisualId: string, state: CharacterAnimationState): string {
+  return `${characterVisualId}-${state}`;
 }
 
 function createCharacterAnimation(
   scene: Phaser.Scene,
-  characterName: string,
+  characterVisualId: string,
   range: CharacterAnimationFrameRange
 ): void {
-  const key = buildAnimationKey(characterName, range.keySuffix);
+  const key = buildAnimationKey(characterVisualId, range.state);
 
   if (scene.anims.exists(key)) {
     return;
   }
 
+  const textureKey = `${characterVisualId}${CHARACTER_SPRITESHEET_SUFFIX}`;
+  if (!scene.textures.exists(textureKey)) {
+    return;
+  }
+
   scene.anims.create({
     key,
-    frames: scene.anims.generateFrameNumbers(characterName, {
+    frames: scene.anims.generateFrameNumbers(textureKey, {
       start: range.start,
       end: range.end
     }),
@@ -65,31 +65,14 @@ function createCharacterAnimation(
 }
 
 export class CharacterAnimations {
-  static preload(
-    scene: Phaser.Scene,
-    characterNames: readonly string[] = DEFAULT_CHARACTER_NAMES
-  ): void {
-    characterNames.forEach((characterName) => {
-      if (scene.textures.exists(characterName)) {
-        return;
-      }
-
-      scene.load.spritesheet(
-        characterName,
-        `assets/characters/${characterName}.png`,
-        CHARACTER_SPRITESHEET_CONFIG
-      );
-    });
-  }
-
   static create(
     scene: Phaser.Scene,
-    characterNames: readonly string[] = DEFAULT_CHARACTER_NAMES,
+    characterVisualIds: readonly string[] = DEFAULT_CHARACTER_VISUAL_IDS,
     ranges: readonly CharacterAnimationFrameRange[] = DEFAULT_ANIMATION_RANGES
   ): void {
-    characterNames.forEach((characterName) => {
+    characterVisualIds.forEach((characterVisualId) => {
       ranges.forEach((range) => {
-        createCharacterAnimation(scene, characterName, range);
+        createCharacterAnimation(scene, characterVisualId, range);
       });
     });
   }

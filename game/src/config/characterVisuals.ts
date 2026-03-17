@@ -1,5 +1,4 @@
 import characterCatalog from '../../public/assets/images/characters/characters.json';
-import animationCatalog from '../../public/assets/images/characters/animations.json';
 
 export type CharacterFaction = 'protagonist' | 'ally' | 'zombie';
 export type CharacterSilhouette = 'slim' | 'standard' | 'broad';
@@ -60,8 +59,6 @@ interface CharacterNarrativeEntry {
 const NARRATIVE_BY_NAME = new Map(
   (characterCatalog.characters as CharacterNarrativeEntry[]).map((entry) => [entry.name, entry])
 );
-
-const animationNames = new Set(Object.keys(animationCatalog.characters));
 
 function toHex(color: string): number {
   return Number.parseInt(color.replace('#', '0x'), 16);
@@ -232,10 +229,6 @@ const CHARACTER_VISUALS: CharacterVisualProfile[] = Object.entries(CHARACTER_VIS
     const narrative = NARRATIVE_BY_NAME.get(name);
     if (!narrative) {
       throw new Error(`Missing narrative character data for ${name}.`);
-    }
-
-    if (!animationNames.has(name)) {
-      throw new Error(`Missing animation entry for ${name}.`);
     }
 
     const weaponStyle = WEAPON_STYLE_BY_KEY[narrative.weapon_default] ?? 'pistol';

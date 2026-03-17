@@ -91,6 +91,18 @@ interface GameSceneData {
   campaignLevelConfig?: unknown;
 }
 
+interface ResistancePhaseRuntimeConfig {
+  durationMs: number;
+  holdAreaIds: string[];
+  advanceAreaIds: string[];
+  holdObjectiveText?: string;
+  advanceObjectiveText?: string;
+  completionEvent?: {
+    type: string;
+    targetId?: string;
+  };
+}
+
 interface AllyWorldHealthBar {
   container: Phaser.GameObjects.Container;
   fill: Phaser.GameObjects.Rectangle;
@@ -150,6 +162,9 @@ export class GameScene extends Phaser.Scene {
   private firstCleanupNarrativeTriggered = false;
   private lateRescueAlliesIntegrated = false;
   private nextFootstepAt = 0;
+  private resistancePhaseConfig?: ResistancePhaseRuntimeConfig;
+  private resistancePhaseEndsAt?: number;
+  private resistancePhaseCompleted = false;
   private readonly allyHealthBars = new Map<string, AllyWorldHealthBar>();
   private readonly onNarrativeAdvanceKey = () => {
     this.advanceDialogueRequested = true;
@@ -369,6 +384,7 @@ export class GameScene extends Phaser.Scene {
       getEnemyLimit: () => this.zombieSystem?.getGroup().maxSize ?? Number.MAX_SAFE_INTEGER
     });
     this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
+    this.setupResistancePhase(levelConfig.layout.level_flow);
     this.objectiveSystem = levelManager.instantiateObjectives(selectedLevelId);
     this.interactableSystem = levelManager.instantiateInteractables(selectedLevelId);
     this.levelRestartManager = levelManager.instantiateRestartManager(this, {
@@ -592,6 +608,9 @@ export class GameScene extends Phaser.Scene {
     this.movementLockedByNarrative = false;
     this.firstCleanupNarrativeTriggered = false;
     this.lateRescueAlliesIntegrated = false;
+    this.resistancePhaseConfig = undefined;
+    this.resistancePhaseEndsAt = undefined;
+    this.resistancePhaseCompleted = false;
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('interactionHint', '');
@@ -633,6 +652,7 @@ export class GameScene extends Phaser.Scene {
     this.refreshAllyWorldHealthBars();
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
+    this.updateResistancePhase();
     this.registry.set('zombiesRemaining', zombiesRemaining);
     this.spawnManager?.update(this.time.now);
     this.syncCleanupNarrativeProgress();
@@ -791,10 +811,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   private setupMissionSystem(): void {
+    const defaultMissionDescription = this.resistancePhaseConfig?.holdObjectiveText
+      ?? `Despeja las ${this.cleanupZonesRequired} zonas del pasillo del subsuelo`;
+
     const objectives: MissionObjective[] = [
       {
         id: 'clear-sublevel-corridor',
-        description: `Despeja las ${this.cleanupZonesRequired} zonas del pasillo del subsuelo`,
+        description: defaultMissionDescription,
         completedDescription: 'Pasillo despejado. Salida habilitada al siguiente tramo.',
         isCompleted: (context) => {
           const allCleanupZonesCompleted = (this.spawnManager?.getCompletedAreasCount() ?? 0) >= this.cleanupZonesRequired;
@@ -811,6 +834,10 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    if (this.resistancePhaseConfig && !this.resistancePhaseCompleted) {
+      return;
+    }
+
     const completedObjective = this.missionSystem.update({ zombiesRemaining });
 
     if (completedObjective) {
@@ -821,6 +848,84 @@ export class GameScene extends Phaser.Scene {
     } else {
       this.registry.set('currentObjective', this.missionSystem.getActiveObjectiveText());
     }
+  }
+
+  private setupResistancePhase(levelFlowConfig: unknown): void {
+    if (!this.spawnManager || !levelFlowConfig || typeof levelFlowConfig !== 'object') {
+      return;
+    }
+
+    const resistance = (levelFlowConfig as Record<string, unknown>).resistance;
+    if (!resistance || typeof resistance !== 'object') {
+      return;
+    }
+
+    const configAsRecord = resistance as Record<string, unknown>;
+    const durationMs = Number(configAsRecord.durationMs ?? 120000);
+    const holdAreaIds = Array.isArray(configAsRecord.holdAreaIds)
+      ? configAsRecord.holdAreaIds.filter((item): item is string => typeof item === 'string' && item.length > 0)
+      : [];
+    const advanceAreaIds = Array.isArray(configAsRecord.advanceAreaIds)
+      ? configAsRecord.advanceAreaIds.filter((item): item is string => typeof item === 'string' && item.length > 0)
+      : [];
+
+    if (holdAreaIds.length === 0 || advanceAreaIds.length === 0 || durationMs <= 0) {
+      return;
+    }
+
+    this.resistancePhaseConfig = {
+      durationMs,
+      holdAreaIds,
+      advanceAreaIds,
+      holdObjectiveText: typeof configAsRecord.holdObjectiveText === 'string' ? configAsRecord.holdObjectiveText : undefined,
+      advanceObjectiveText: typeof configAsRecord.advanceObjectiveText === 'string' ? configAsRecord.advanceObjectiveText : undefined,
+      completionEvent: {
+        type: typeof configAsRecord.completionEventType === 'string' ? configAsRecord.completionEventType : 'phase_completed',
+        targetId: typeof configAsRecord.completionEventTargetId === 'string'
+          ? configAsRecord.completionEventTargetId
+          : undefined
+      }
+    };
+
+    this.resistancePhaseConfig.advanceAreaIds.forEach((areaId) => {
+      this.spawnManager?.setAreaEnabled(areaId, false, 'level1-resistance-gate');
+    });
+
+    this.resistancePhaseEndsAt = this.time.now + this.resistancePhaseConfig.durationMs;
+    this.registry.set('currentObjective', this.resistancePhaseConfig.holdObjectiveText ?? 'Resistan hasta que se abra el paso.');
+    this.showMissionStatus('Fase 1: resistir 2 minutos en el comedor.');
+  }
+
+  private updateResistancePhase(): void {
+    if (!this.resistancePhaseConfig || this.resistancePhaseCompleted || this.resistancePhaseEndsAt === undefined) {
+      return;
+    }
+
+    const remainingMs = Math.max(0, this.resistancePhaseEndsAt - this.time.now);
+    const remainingSeconds = Math.ceil(remainingMs / 1000);
+    const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+    const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+    this.registry.set('currentObjective', `Resiste en el comedor (${minutes}:${seconds})`);
+
+    if (remainingMs > 0) {
+      return;
+    }
+
+    this.resistancePhaseCompleted = true;
+    this.resistancePhaseConfig.advanceAreaIds.forEach((areaId) => {
+      this.spawnManager?.setAreaEnabled(areaId, true, 'level1-resistance-complete');
+    });
+
+    const completionEvent = this.resistancePhaseConfig.completionEvent;
+    if (completionEvent) {
+      this.objectiveSystem?.process(completionEvent);
+    }
+
+    this.registry.set(
+      'currentObjective',
+      this.resistancePhaseConfig.advanceObjectiveText ?? 'Abran paso por los pasillos y alcancen las escaleras a Planta Baja.'
+    );
+    this.showMissionStatus('Fase 2: avance por pasillos hacia las escaleras.');
   }
 
   private handleExitUnlocked(): void {

@@ -29,7 +29,7 @@ import {
 import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
-import { registerEnvironmentProfile } from '../config/environmentProfiles';
+import { EnvironmentProfile, registerEnvironmentProfile } from '../config/environmentProfiles';
 import { getAudioManager } from '../audio/AudioManager';
 import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
 import { CinematicCallSystem, type CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
@@ -140,6 +140,7 @@ export class GameScene extends Phaser.Scene {
   private dialogueSystem?: DialogueSystem;
   private checkpointSystem?: CheckpointSystem;
   private levelRestartManager?: LevelRestartManager;
+  private activeEnvironmentProfile: EnvironmentProfile | null = null;
   private interactKey?: Phaser.Input.Keyboard.Key;
   private interactionHintOwnedByInteractables = false;
   private advanceDialogueRequested = false;
@@ -267,13 +268,14 @@ export class GameScene extends Phaser.Scene {
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
     registerEnvironmentProfile(this, String(levelConfig.layout.environment_profile ?? 'level2_subsuelo'));
+    this.activeEnvironmentProfile = (this.registry.get('environmentProfile') as EnvironmentProfile | null) ?? null;
 
     this.cameras.main
       .setBounds(0, 0, levelWidth, levelHeight)
       .setZoom(ARCADE_CAMERA_ZOOM)
       .setRoundPixels(true);
 
-    this.drawSubsueloBackground(levelWidth, levelHeight, floorHeight);
+    this.drawSubsueloBackground(levelWidth, levelHeight, floorHeight, this.activeEnvironmentProfile);
 
     const environment = this.physics.add.staticGroup();
 
@@ -1096,19 +1098,53 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private drawSubsueloBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
+  private drawSubsueloBackground(levelWidth: number, levelHeight: number, floorHeight: number, profile: EnvironmentProfile | null): void {
     const { palette } = visualTheme;
+    const usesInstitutionalHall = profile?.level.zones.includes('hall_publico') ?? false;
+    const usesVerticalCore = profile?.level.zones.includes('circulacion_vertical') ?? false;
+    const usesServiceWing = profile?.level.zones.includes('servicios_comedor_cocina') ?? false;
+
+    const skyTop = usesInstitutionalHall ? 0xd9c6a3 : palette.skyTop;
+    const skyBottom = usesInstitutionalHall ? 0xb79f78 : palette.skyBottom;
+    const farWall = usesInstitutionalHall ? 0xc7b08d : palette.wallFar;
+    const midWall = usesServiceWing ? 0x9e8a6d : palette.wallMid;
+    const nearWall = usesVerticalCore ? 0x6f5a45 : palette.wallNear;
 
     const base = this.add.graphics();
-    base.fillGradientStyle(palette.skyTop, palette.skyTop, palette.skyBottom, palette.skyBottom, 1);
+    base.fillGradientStyle(skyTop, skyTop, skyBottom, skyBottom, 1);
     base.fillRect(0, 0, levelWidth, levelHeight);
-    base.fillStyle(palette.wallFar, 1);
+    base.fillStyle(farWall, 1);
     base.fillRect(0, 54, levelWidth, 210);
-    base.fillStyle(palette.wallMid, 1);
+    base.fillStyle(midWall, 1);
     base.fillRect(0, 150, levelWidth, 170);
-    base.fillStyle(palette.wallNear, 1);
+    base.fillStyle(nearWall, 1);
     base.fillRect(0, levelHeight - floorHeight - 58, levelWidth, 58);
     base.destroy();
+
+    if (profile) {
+      const hasHallGlow = Object.values(profile.zoneLayerPreset).flat().includes('bg_hall_window_glow');
+      const hasStairDepth = Object.values(profile.zoneLayerPreset).flat().includes('bg_staircase_void_depth');
+      const hasServicePipes = Object.values(profile.zoneLayerPreset).flat().includes('bg_service_pipes_and_vents');
+
+      if (hasHallGlow) {
+        for (let x = 140; x < levelWidth; x += 260) {
+          this.add.rectangle(x, 104, 110, 64, 0xf5deb3, 0.08).setDepth(0.8).setScrollFactor(0.35, 1);
+        }
+      }
+
+      if (hasStairDepth) {
+        for (let x = 110; x < levelWidth; x += 320) {
+          this.add.rectangle(x, levelHeight - floorHeight - 130, 42, 170, 0x2f251d, 0.26).setDepth(1.8).setScrollFactor(0.6, 1);
+        }
+      }
+
+      if (hasServicePipes) {
+        for (let x = 60; x < levelWidth; x += 180) {
+          this.add.rectangle(x, 74, 120, 6, 0x6b7280, 0.35).setDepth(1.2).setScrollFactor(0.45, 1);
+          this.add.rectangle(x + 42, 86, 36, 6, 0x9ca3af, 0.22).setDepth(1.2).setScrollFactor(0.45, 1);
+        }
+      }
+    }
 
     this.add.tileSprite(levelWidth / 2, 126, levelWidth, 180, 'ground-placeholder')
       .setDepth(0.6)
@@ -1175,6 +1211,8 @@ export class GameScene extends Phaser.Scene {
     const scalePxPerMeter = level2Subsuelo.unidades.escalaPxPorMetro;
     const defaultTopY = tableTopY + 12;
 
+    const zoneProps = Object.values(this.activeEnvironmentProfile?.zoneProps ?? {}).flat() as string[];
+
     corridorObjectsConfig.objetos.forEach((objeto) => {
       const widthPx = Math.max(24, Math.round(objeto.tamaño_aproximado.ancho_m * scalePxPerMeter));
       const heightPx = Math.max(24, Math.round(objeto.tamaño_aproximado.alto_m * scalePxPerMeter));
@@ -1190,7 +1228,7 @@ export class GameScene extends Phaser.Scene {
         });
       }
 
-      this.renderSubsueloProp(objeto.tipo, centerX, centerY, widthPx, heightPx, defaultTopY);
+      this.renderSubsueloProp(objeto.tipo, centerX, centerY, widthPx, heightPx, defaultTopY, zoneProps);
     });
   }
 
@@ -1200,7 +1238,8 @@ export class GameScene extends Phaser.Scene {
     y: number,
     width: number,
     height: number,
-    fallbackTopY: number
+    fallbackTopY: number,
+    zoneProps: string[]
   ): void {
     const lowerY = Math.max(y, fallbackTopY);
 
@@ -1221,6 +1260,16 @@ export class GameScene extends Phaser.Scene {
 
     if (tipo.includes('pantalla')) {
       addEnvironmentProp(this, { kind: 'info-screen', x, y: lowerY - 36, depth: 6, scale: Phaser.Math.Clamp(height / 78, 0.8, 1.3) });
+      return;
+    }
+
+    if (zoneProps.includes('mostrador_bna_lineal') && (tipo.includes('mostrador') || tipo.includes('control'))) {
+      addEnvironmentProp(this, { kind: 'bank-counter', x, y: lowerY - 18, depth: 6, scale: Phaser.Math.Clamp(width / 128, 0.85, 1.4) });
+      return;
+    }
+
+    if (zoneProps.includes('molinete_brazos_vidrio') && (tipo.includes('acceso') || tipo.includes('molinete'))) {
+      addEnvironmentProp(this, { kind: 'turnstile', x, y: lowerY - 20, depth: 6, scale: Phaser.Math.Clamp(height / 82, 0.8, 1.3) });
       return;
     }
 

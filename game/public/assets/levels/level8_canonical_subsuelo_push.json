@@ -1,0 +1,47 @@
+{
+  "levelId": "level8_canon_pasillo_subsuelo",
+  "registryKey": "level8CanonicalState",
+  "massAssault": {
+    "waveId": "level8_mass_assault_105",
+    "requiredKills": 105,
+    "introObjective": "Aguantar la embestida inicial y eliminar 105 infectados sin pausa."
+  },
+  "damianId": "damian",
+  "damianCinematicId": "level8_damian_infection_farewell",
+  "damianCinematicDialogue": [
+    {
+      "speaker": "Alan Nahuel",
+      "text": "Cerramos la línea... ya está, ciento cinco. Respiren, limpien sangre y revisen heridas."
+    },
+    {
+      "speaker": "Giovanna",
+      "text": "No puedo sacar este olor de encima..."
+    },
+    {
+      "speaker": "Damián",
+      "text": "No hay tiempo... me mordieron en la oleada.",
+      "durationMs": 2800
+    },
+    {
+      "speaker": "Nahir",
+      "text": "Damián, esperá, podemos intentar..."
+    },
+    {
+      "speaker": "Damián",
+      "text": "Si me quedo, los condeno a todos. Corran cuando escuch...",
+      "durationMs": 2600
+    }
+  ],
+  "pursuit": {
+    "objective": "El disparo atrajo infectados del 2° y 1° subsuelo y del 1° piso: correr al otro extremo del pasillo hacia las escaleras, eliminando rezagados.",
+    "stairsTargetId": "stairs_to_subsuelo3",
+    "minStragglersToClear": 6
+  },
+  "sacrifice": {
+    "optionalSacrificeIds": ["hernan", "yamil"],
+    "protectIds": ["alan", "giovanna", "nahir", "selene"],
+    "decisionCinematicId": "level8_optional_duo_hold_decision",
+    "lastStandCinematicId": "level8_optional_duo_overrun"
+  },
+  "nextLevelId": "level9"
+}

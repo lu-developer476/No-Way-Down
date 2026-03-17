@@ -1,0 +1,80 @@
+{
+  "levelId": "level7_canonical_subsuelo_descent",
+  "registryKey": "level7CanonicalSubsueloState",
+  "cinematicId": "level7_canonical_discusion_escape",
+  "cinematicDialogue": [
+    {
+      "speaker": "Narrador",
+      "text": "Tras lo ocurrido en el nivel anterior, el grupo baja horrorizado por las escaleras adyacentes y vuelve al 1° Subsuelo.",
+      "durationMs": 3400
+    },
+    {
+      "speaker": "Giovanna",
+      "text": "Tenemos que salir por la única salida de este lugar. Si dudamos, nos comen acá.",
+      "durationMs": 3000
+    },
+    {
+      "speaker": "Alan Nahuel",
+      "text": "No estoy de acuerdo. Los infectados podrían obstruir ese paso en minutos.",
+      "durationMs": 3000
+    },
+    {
+      "speaker": "Teo",
+      "text": "Si vamos por la salida directa y está tapada, quedamos en un cuello de botella.",
+      "durationMs": 2600
+    },
+    {
+      "speaker": "Luján",
+      "text": "Nos estamos quedando sin margen. Necesitamos una ruta con más opciones.",
+      "durationMs": 2600
+    },
+    {
+      "speaker": "Alan Nahuel",
+      "text": "Bajemos al garage del 3° Subsuelo, busquemos un vehículo, tomemos las llaves y escapamos por ahí.",
+      "durationMs": 3200
+    },
+    {
+      "speaker": "Narrador",
+      "text": "El grupo asiente y repasa en voz alta recursos y munición antes de retomar la marcha.",
+      "durationMs": 2800
+    }
+  ],
+  "inventory": {
+    "ammo": {
+      "9mm": 84,
+      "12g": 18,
+      "5.56": 62
+    },
+    "healing": {
+      "botiquines": 2,
+      "vendas": 5,
+      "analgesicos": 3
+    },
+    "utility": {
+      "granadas_improvisadas": 2,
+      "bengalas": 3,
+      "llaves_maestras": 1
+    }
+  },
+  "descentObjective": "Retomen gameplay y desciendan en espiral hasta alcanzar el 2° subsuelo.",
+  "infectedCorridorObjective": "Cruzar el pasillo completamente infectado hasta el extremo opuesto para mantener el descenso al 3° subsuelo.",
+  "level8LinkObjective": "Asegurar la salida del pasillo y activar la transición al Nivel 8 (garage del 3° subsuelo).",
+  "corridorZones": [
+    {
+      "id": "b2_corridor_entry",
+      "label": "Ingreso al pasillo infectado"
+    },
+    {
+      "id": "b2_corridor_mid",
+      "label": "Núcleo de densidad infectada"
+    },
+    {
+      "id": "b2_corridor_far_end",
+      "label": "Extremo opuesto del pasillo"
+    }
+  ],
+  "level8Link": {
+    "triggerId": "b2_to_b3_spiral_access",
+    "nextLevelId": "level8_garage_vehicle_escape"
+  }
+}

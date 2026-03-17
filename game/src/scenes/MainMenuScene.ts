@@ -492,9 +492,9 @@ export class MainMenuScene extends Phaser.Scene {
       this.setupHintText?.setText('Confirmar: ENTER | Cancelar: ESC');
       this.setupActionOptions = [
         {
-          label: this.withCheck(this.setupState.protagonist === 'alan-nahuel', 'Alan Nahuel'),
+          label: this.withCheck(this.setupState.protagonist === 'alan', 'Alan Nahuel'),
           action: () => {
-            this.setupState.protagonist = 'alan-nahuel';
+            this.setupState.protagonist = 'alan';
             this.setupStep = 'difficulty';
             this.setupSelectedIndex = 0;
             this.renderSetupStep();

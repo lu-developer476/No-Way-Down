@@ -1777,13 +1777,17 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (snapshot.setup) {
-      const protagonist = snapshot.setup.protagonist;
+      const protagonistRaw = snapshot.setup.protagonist;
+      const protagonist = protagonistRaw === 'alan' || protagonistRaw === 'alan-nahuel' || protagonistRaw === 'alanNahuel'
+        ? 'alan'
+        : protagonistRaw === 'giovanna'
+          ? 'giovanna'
+          : null;
       const difficulty = snapshot.setup.difficulty;
-      const validProtagonist = protagonist === 'alan-nahuel' || protagonist === 'giovanna';
       const validDifficulty = difficulty === 'complejo' || difficulty === 'pesadilla';
 
       const existing = this.getInitialSetup();
-      if (!existing && validProtagonist && validDifficulty) {
+      if (!existing && protagonist && validDifficulty) {
         this.registry.set('initialRunSetup', {
           protagonist,
           difficulty,

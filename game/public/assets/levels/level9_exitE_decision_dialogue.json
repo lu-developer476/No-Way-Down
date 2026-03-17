@@ -1,6 +1,6 @@
 {
-  "levelId": "level9",
-  "cinematicId": "level9_exit_e_decision",
+  "levelId": "level6_canonico",
+  "cinematicId": "level9_exit_e_guard_shutters",
   "movementLocked": true,
   "preDialoguePauseMs": 500,
   "objectiveUpdatePauseMs": 650,
@@ -8,55 +8,45 @@
     "complete_group": [
       {
         "speaker": "Explorador",
-        "text": "Las persianas de las giratorias están totalmente bajas. No hay forma de abrir esto desde afuera.",
-        "durationMs": 2200
+        "text": "Salida E operativa. ¡Las giratorias responden!",
+        "durationMs": 1800
       },
       {
-        "speaker": "Apoyo",
-        "text": "Quedan pocos rezagados, pero no van a parar. ¿Qué hacemos ahora?",
-        "durationMs": 2000
+        "speaker": "Guardia",
+        "text": "¡Nadie sale! ¡Bajo persianas ahora!",
+        "durationMs": 1700
       },
       {
-        "speaker": "Compañero",
-        "text": "Podemos volver al 1° subsuelo y salir por la entrada única. Es nuestra ruta conocida.",
-        "durationMs": 2300
-      },
-      {
-        "speaker": "Protagonista",
-        "text": "No. Ahí empezó todo para nosotros y está demasiado expuesto. Bajamos al estacionamiento del 3° subsuelo y buscamos un vehículo utilizable.",
+        "speaker": "Narrador",
+        "text": "El guardia cierra las persianas sin advertir al grupo. La horda lo alcanza y lo devora frente a todos.",
         "durationMs": 2700
       },
       {
-        "speaker": "Grupo",
-        "text": "Entendido. Te seguimos al 3° subsuelo.",
-        "durationMs": 1800
+        "speaker": "Líder",
+        "text": "No hay tiempo. Nivel cerrado: nos movemos con los sobrevivientes.",
+        "durationMs": 2000
       }
     ],
     "reduced_group": [
       {
         "speaker": "Explorador",
-        "text": "Persianas bajas en todas las giratorias... esta salida E también murió.",
-        "durationMs": 2200
+        "text": "Salida E funciona... pero miren al guardia.",
+        "durationMs": 1900
       },
       {
-        "speaker": "Apoyo",
-        "text": "Los rezagados son pocos, pero no tenemos margen. ¿Volvemos al 1° subsuelo?",
-        "durationMs": 2300
-      },
-      {
-        "speaker": "Protagonista",
-        "text": "Negativo. Ese lugar nos quebró y volver sería un suicidio. Vamos al estacionamiento del 3° subsuelo, ahora.",
+        "speaker": "Narrador",
+        "text": "El guardia baja las persianas sin avisar. Queda atrapado y los zombies lo devoran.",
         "durationMs": 2600
       },
       {
-        "speaker": "Superviviente",
-        "text": "Copiado. Cerramos búsqueda de salidas y nos movemos al 3° subsuelo.",
-        "durationMs": 2000
+        "speaker": "Protagonista",
+        "text": "Se terminó el margen. Confirmamos E y cerramos este nivel.",
+        "durationMs": 2100
       }
     ]
   },
   "objectiveAfterDecision": {
-    "id": "level9_reach_b3_parking",
-    "label": "Dirigirse al estacionamiento del 3° subsuelo y asegurar un vehículo"
+    "id": "level6_canonico_complete",
+    "label": "Finalizar nivel tras la cinemática del guardia en salida E"
   }
 }

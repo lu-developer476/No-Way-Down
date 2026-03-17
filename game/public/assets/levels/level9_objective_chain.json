@@ -1,77 +1,62 @@
 {
-  "levelId": "level9_escape_objective_chain",
-  "registryKey": "level9ObjectiveChainState",
+  "levelId": "level6_canonico_escape_hall",
+  "registryKey": "level6ObjectiveChainState",
   "failChainOnObjectiveFailure": true,
   "objectives": [
     {
-      "id": "start_floor_1",
-      "label": "Iniciar en piso 1",
-      "completion": { "type": "floor-reached", "targetId": "floor_1" }
+      "id": "retomar_oficinas_previas",
+      "label": "Retomar formación en las oficinas del nivel anterior",
+      "completion": { "type": "section-entered", "targetId": "oficinas_previas" }
     },
     {
-      "id": "descend_ground_floor",
-      "label": "Bajar a Planta Baja",
-      "completion": { "type": "floor-reached", "targetId": "ground_floor" }
+      "id": "avanzar_hacia_planta_baja",
+      "label": "Salir al pasillo y dirigirse a Planta Baja hacia la salida A",
+      "completion": { "type": "floor-reached", "targetId": "planta_baja" }
     },
     {
-      "id": "attempt_exit_a",
-      "label": "Intentar salida A",
-      "completion": { "type": "exit-attempted", "targetId": "A" }
+      "id": "limpiar_primer_piso_rapido",
+      "label": "Eliminar rápidamente los pocos infectados del 1° piso",
+      "completion": { "type": "combat-completed", "targetId": "primer_piso_contacto_ligero" }
     },
     {
-      "id": "survive_false_exit_a",
-      "label": "Sobrevivir a falsa salida y retroceder",
-      "completion": { "type": "cinematic-played", "targetId": "level9_exit_a_false_hope" }
+      "id": "cinematica_salida_a",
+      "label": "Activar cinemática de la salida A y retroceso forzado",
+      "completion": { "type": "cinematic-played", "targetId": "level9_exit_a_canonical_retroceso" }
     },
     {
-      "id": "evaluate_exit_b",
-      "label": "Evaluar salida B",
+      "id": "chequear_salida_b",
+      "label": "Verificar salida B",
       "completion": { "type": "exit-evaluated", "targetId": "B" }
     },
     {
-      "id": "irreversible_loss_exit_b",
-      "label": "Sufrir pérdida irreversible en salida B",
-      "completion": { "type": "permanent-loss-applied", "targetId": "exit_b_irreversible_loss", "minLosses": 1 }
+      "id": "caida_lorena_en_b",
+      "label": "Confirmar la muerte de Lorena en salida B",
+      "completion": { "type": "permanent-loss-applied", "targetId": "exit_b_lorena_neck_bite", "minLosses": 1 }
     },
     {
-      "id": "evaluate_exits_c_d",
-      "label": "Evaluar salidas C y D",
-      "completion": { "type": "combat-completed", "targetId": "salidas_cd_flanqueadas" }
+      "id": "chequear_salida_c",
+      "label": "Verificar salida C",
+      "completion": { "type": "exit-evaluated", "targetId": "C" }
     },
     {
-      "id": "reach_exit_e",
-      "label": "Llegar a salida E",
+      "id": "chequear_salida_d",
+      "label": "Verificar salida D",
+      "completion": { "type": "exit-evaluated", "targetId": "D" }
+    },
+    {
+      "id": "chequear_salida_e",
+      "label": "Verificar salida E",
       "completion": { "type": "exit-evaluated", "targetId": "E" }
     },
     {
-      "id": "new_plan_cinematic",
-      "label": "Activar cinemática de cambio de plan",
-      "completion": { "type": "cinematic-played", "targetId": "level9_exit_e_decision" }
+      "id": "cinematica_guardia_en_e",
+      "label": "Ver cinemática del guardia devorado en salida E",
+      "completion": { "type": "cinematic-played", "targetId": "level9_exit_e_guard_shutters" }
     },
     {
-      "id": "descend_to_basements",
-      "label": "Descender hacia subsuelos",
-      "completion": { "type": "floor-reached", "targetId": "subsuelo_1" }
-    },
-    {
-      "id": "subsuelo2_cinematic",
-      "label": "Activar cinemática del 2° subsuelo",
-      "completion": { "type": "cinematic-played", "targetId": "level9_subsuelo2_infection_break" }
-    },
-    {
-      "id": "advance_to_subsuelo3_stairs",
-      "label": "Avanzar hacia escaleras del 3° subsuelo",
-      "completion": { "type": "stairs-reached", "targetId": "stairs_to_subsuelo3" }
-    },
-    {
-      "id": "trigger_final_sacrifice",
-      "label": "Activar sacrificio final",
-      "completion": { "type": "cinematic-played", "targetId": "nivel9_sacrificio_final" }
-    },
-    {
-      "id": "complete_level_escape",
-      "label": "Completar nivel con el resto del grupo escapando",
-      "completion": { "type": "group-escaped", "targetId": "subsuelo_3_escape" }
+      "id": "finalizar_nivel6_canonico",
+      "label": "Finalizar el nivel tras confirmar salida E",
+      "completion": { "type": "group-escaped", "targetId": "nivel6_canonico_finalizado" }
     }
   ]
 }

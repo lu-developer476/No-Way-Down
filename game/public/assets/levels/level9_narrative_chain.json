@@ -1,76 +1,66 @@
 {
-  "levelId": "level9_escape_basement_chain",
-  "registryKey": "level9NarrativeState",
+  "levelId": "level6_canonico_narrative_chain",
+  "registryKey": "level6NarrativeState",
   "failChainOnObjectiveFailure": true,
   "beats": [
     {
-      "id": "start_floor1_corridors",
-      "label": "Iniciar en pasillos del piso 1",
-      "description": "El grupo retoma control en el piso 1 y avanza por pasillos interiores.",
-      "visualPlaceholder": "lvl9_floor1_corridor_start_placeholder",
-      "completion": { "type": "section-entered", "targetId": "floor1_corridors" }
+      "id": "inicio_mismas_oficinas",
+      "label": "Comienzo en las mismas oficinas del nivel anterior",
+      "description": "El grupo retoma control en las oficinas previas antes de volver al pasillo.",
+      "visualPlaceholder": "lvl6_oficinas_previas_inicio",
+      "completion": { "type": "section-entered", "targetId": "oficinas_previas" }
     },
     {
-      "id": "descend_ground_floor",
-      "label": "Descender a Planta Baja",
-      "visualPlaceholder": "lvl9_stairs_to_ground_floor_placeholder",
-      "completion": { "type": "floor-reached", "targetId": "ground_floor" }
+      "id": "salida_al_pasillo",
+      "label": "Salida al pasillo rumbo a Planta Baja",
+      "visualPlaceholder": "lvl6_pasillo_hacia_planta_baja",
+      "completion": { "type": "floor-reached", "targetId": "planta_baja" }
     },
     {
-      "id": "failed_exit_a",
-      "label": "Intento fallido de salida por puerta A",
-      "visualPlaceholder": "lvl9_exit_a_blocked_gate_placeholder",
-      "completion": { "type": "exit-attempted", "targetId": "door_a_failed" }
+      "id": "contacto_ligero_piso1",
+      "label": "Encuentro con pocos infectados en 1° piso",
+      "description": "La resistencia infectada es mínima y se resuelve rápidamente.",
+      "visualPlaceholder": "lvl6_primer_piso_contacto_ligero",
+      "completion": { "type": "exit-state-confirmed", "targetId": "primer_piso_limpio" }
     },
     {
-      "id": "survey_exits_b_to_e",
-      "label": "Explorar salidas B, C, D y E",
-      "description": "Validar rutas de escape restantes tras descartar la salida A.",
-      "visualPlaceholder": "lvl9_multi_exit_search_placeholder",
-      "completion": { "type": "exit-explored", "targetId": "doors_b_c_d_e" }
+      "id": "salida_a_retroceso",
+      "label": "Cinemática en salida A: horda exterior detecta al grupo",
+      "visualPlaceholder": "lvl6_salida_a_retroceso_obligatorio",
+      "completion": { "type": "cinematic-played", "targetId": "level9_exit_a_canonical_retroceso" }
     },
     {
-      "id": "confirm_exit_states",
-      "label": "Confirmar estados de salida",
-      "description": "Registrar salidas obstruidas, infectadas y operativas con persianas bajas.",
-      "visualPlaceholder": "lvl9_exit_status_board_placeholder",
-      "completion": { "type": "exit-state-confirmed", "targetId": "doors_status_obstructed_infected_operational_shutters" }
+      "id": "celestino_opcional",
+      "label": "Muerte opcional de Celestino durante el retroceso",
+      "description": "Sólo ocurre si Celestino forma parte de la partida activa.",
+      "visualPlaceholder": "lvl6_celestino_optional_loss",
+      "completion": { "type": "ally-lost", "targetId": "exit_a_celestino_if_present" }
     },
     {
-      "id": "irreversible_loss_exit_b",
-      "label": "Pérdida irreversible de personajes en salida B",
-      "visualPlaceholder": "lvl9_exit_b_irreversible_loss_placeholder",
-      "completion": { "type": "ally-lost", "targetId": "exit_b_irreversible" }
+      "id": "retomar_gameplay",
+      "label": "Se reanuda el gameplay",
+      "visualPlaceholder": "lvl6_gameplay_resumed",
+      "completion": { "type": "manual-complete", "targetId": "resume_after_exit_a" }
     },
     {
-      "id": "cinematic_decision_exit_e",
-      "label": "Cinemática de decisión en salida E",
-      "visualPlaceholder": "lvl9_exit_e_decision_cinematic_placeholder",
-      "completion": { "type": "cinematic-played", "targetId": "exit_e_decision" }
+      "id": "chequeo_b_c_d_e",
+      "label": "Chequeo de salidas B, C, D y E",
+      "description": "B cerrada con baja de Lorena, C bloqueada por infectados, D destruida y E funcional.",
+      "visualPlaceholder": "lvl6_multi_exit_check",
+      "completion": { "type": "exit-explored", "targetId": "salidas_b_c_d_e_verificadas" }
     },
     {
-      "id": "unlock_new_stairs_to_sub3",
-      "label": "Descenso por nuevas escaleras hacia 3° subsuelo",
-      "visualPlaceholder": "lvl9_new_stairs_to_sub3_placeholder",
-      "completion": { "type": "stairs-unlocked", "targetId": "new_stairs_sub3" }
+      "id": "cine_guardia_salida_e",
+      "label": "Cinemática del guardia en salida E",
+      "description": "El guardia cierra persianas sin advertir al grupo y es devorado por zombies.",
+      "visualPlaceholder": "lvl6_exit_e_guard_death",
+      "completion": { "type": "cinematic-played", "targetId": "level9_exit_e_guard_shutters" }
     },
     {
-      "id": "cinematic_sub2_infected_suicide",
-      "label": "Cinemática en 2° subsuelo con suicidio de un personaje infectado",
-      "visualPlaceholder": "lvl9_sub2_infected_suicide_cinematic_placeholder",
-      "completion": { "type": "cinematic-played", "targetId": "sub2_infected_suicide" }
-    },
-    {
-      "id": "advance_to_sub3_stairs",
-      "label": "Tramo final hacia escaleras del 3° subsuelo",
-      "visualPlaceholder": "lvl9_sub3_stairs_final_advance_placeholder",
-      "completion": { "type": "stairs-reached", "targetId": "sub3_stairs_access" }
-    },
-    {
-      "id": "final_two_allies_sacrifice",
-      "label": "Sacrificio final de dos aliados para que el resto escape",
-      "visualPlaceholder": "lvl9_final_sacrifice_two_allies_placeholder",
-      "completion": { "type": "ally-lost", "targetId": "final_sacrifice", "allyCount": 2 }
+      "id": "nivel_finalizado",
+      "label": "Fin del nivel",
+      "visualPlaceholder": "lvl6_end",
+      "completion": { "type": "manual-complete", "targetId": "level_complete" }
     }
   ]
 }

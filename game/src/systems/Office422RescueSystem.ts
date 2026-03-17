@@ -16,12 +16,18 @@ export interface RescueCinematicStep {
   durationMs?: number;
 }
 
+export interface RescueVariantConfig {
+  rescuerCharacterId: string;
+  sequence: RescueCinematicStep[];
+}
+
 export interface RescueSceneConfig {
   id: string;
   movementLockDuringRescue: boolean;
   preRescueDelayMs: number;
   postRescueDelayMs: number;
   sequence: RescueCinematicStep[];
+  rescueVariants?: RescueVariantConfig[];
 }
 
 export interface CompanionRescueConfig {
@@ -71,10 +77,12 @@ export interface Office422RescueCallbacks {
   onTriggerActivated?: (context: { rescueId: string; player: Phaser.Types.Physics.Arcade.GameObjectWithBody }) => void;
   onMovementLockChanged?: (locked: boolean, context: { rescueId: string }) => void;
   onRescueSceneSpawned?: (sceneConfig: RescueSceneConfig, context: { rescueId: string }) => void;
+  onRescueVariantSelected?: (variant: { rescuerCharacterId: string; usedFallback: boolean }, context: { rescueId: string }) => void;
   onCompanionRescued?: (companion: CompanionRescueConfig, state: RescueRuntimeState) => void;
   onWeaponGranted?: (weapon: WeaponRewardConfig, companion: CompanionRescueConfig, state: RescueRuntimeState) => void;
   onGroupCompositionUpdated?: (groupUpdate: GroupCompositionConfig, state: RescueRuntimeState) => void;
   onRescueCompleted?: (state: RescueRuntimeState) => void;
+  resolveRescuerCharacterId?: () => string | undefined;
 }
 
 const DEFAULT_STEP_DURATION_MS = 1200;
@@ -213,8 +221,21 @@ export class Office422RescueSystem {
 
     await this.wait(this.config.rescueScene.preRescueDelayMs);
 
-    for (let stepIndex = 0; stepIndex < this.config.rescueScene.sequence.length; stepIndex += 1) {
-      const step = this.config.rescueScene.sequence[stepIndex];
+    const selectedRescuerCharacterId = this.callbacks.resolveRescuerCharacterId?.();
+    const { sequence, usedFallback } = this.resolveSequenceForRescuer(selectedRescuerCharacterId);
+
+    if (selectedRescuerCharacterId) {
+      this.callbacks.onRescueVariantSelected?.(
+        {
+          rescuerCharacterId: selectedRescuerCharacterId,
+          usedFallback
+        },
+        sceneContext
+      );
+    }
+
+    for (let stepIndex = 0; stepIndex < sequence.length; stepIndex += 1) {
+      const step = sequence[stepIndex];
       this.presentation.showRescueStep(step, {
         rescueId: this.config.rescueId,
         stepIndex
@@ -309,5 +330,55 @@ export class Office422RescueSystem {
     if (config.groupComposition.addMemberIds.length === 0) {
       throw new Error('Office422RescueSystem: groupComposition.addMemberIds debe tener al menos un miembro.');
     }
+
+    config.rescueScene.rescueVariants?.forEach((variant, index) => {
+      if (variant.rescuerCharacterId.trim().length === 0) {
+        throw new Error(`Office422RescueSystem: rescueVariants[${index}].rescuerCharacterId es obligatorio.`);
+      }
+
+      if (variant.sequence.length === 0) {
+        throw new Error(`Office422RescueSystem: rescueVariants[${index}].sequence no puede estar vacío.`);
+      }
+
+      variant.sequence.forEach((step, sequenceIndex) => {
+        if (step.id.trim().length === 0) {
+          throw new Error(`Office422RescueSystem: rescueVariants[${index}].sequence[${sequenceIndex}] requiere id.`);
+        }
+
+        if (step.actor.trim().length === 0) {
+          throw new Error(`Office422RescueSystem: rescueVariants[${index}].sequence[${sequenceIndex}] requiere actor.`);
+        }
+
+        if (step.text.trim().length === 0) {
+          throw new Error(`Office422RescueSystem: rescueVariants[${index}].sequence[${sequenceIndex}] requiere text.`);
+        }
+      });
+    });
+  }
+
+  private resolveSequenceForRescuer(rescuerCharacterId?: string): {
+    sequence: RescueCinematicStep[];
+    usedFallback: boolean;
+  } {
+    const variants = this.config.rescueScene.rescueVariants;
+    if (!rescuerCharacterId || !variants || variants.length === 0) {
+      return {
+        sequence: this.config.rescueScene.sequence,
+        usedFallback: true
+      };
+    }
+
+    const variant = variants.find((entry) => entry.rescuerCharacterId === rescuerCharacterId);
+    if (!variant) {
+      return {
+        sequence: this.config.rescueScene.sequence,
+        usedFallback: true
+      };
+    }
+
+    return {
+      sequence: variant.sequence,
+      usedFallback: false
+    };
   }
 }

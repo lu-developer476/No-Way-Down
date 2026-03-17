@@ -23,6 +23,7 @@ export class CampaignIntroScene extends Phaser.Scene {
   }
 
   create(_data: CampaignIntroSceneData = {}): void {
+    console.info('[CampaignIntroScene] create() inicializando nodo canónico de intro.');
     this.registry.set('activeCampaignNode', { id: 'campaign-intro', type: 'campaignIntro', sceneKey: 'CampaignIntroScene' });
     this.registry.set('flowNodeId', 'campaign-intro');
 
@@ -85,6 +86,13 @@ export class CampaignIntroScene extends Phaser.Scene {
     console.log('[CampaignIntroScene] Llamando a advance().');
     const next = manager.advanceFromNodeId(currentNode?.id ?? 'campaign-intro');
     console.log('[CampaignIntroScene] advance() devolvió:', next ?? null);
+
+    if (next?.id && !next.id.startsWith('lvl01-')) {
+      console.error('[CampaignIntroScene] Desvío narrativo detectado: el nodo posterior al intro no es lvl01.', {
+        nextNodeId: next.id
+      });
+      return;
+    }
 
     if (!next) {
       console.error('[CampaignIntroScene] No hay siguiente nodo de campaña para avanzar desde CampaignIntroScene.');

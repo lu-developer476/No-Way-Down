@@ -92,6 +92,9 @@ export class LevelScene extends GameScene {
       }
 
       this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
+        console.info('[LevelScene] Evento de avance manual recibido (next_level).', {
+          currentNodeId: flowNode.id
+        });
         if (this.hasStarted) {
           return;
         }
@@ -99,6 +102,10 @@ export class LevelScene extends GameScene {
         this.hasStarted = true;
         const manager = this.flowManager ?? new SceneFlowManager(this);
         const nextNode = manager.advanceFromNodeId(flowNode.id);
+        console.info('[LevelScene] Resultado de advanceFromNodeId().', {
+          currentNodeId: flowNode.id,
+          nextNodeId: nextNode?.id
+        });
         if (!nextNode) {
           return;
         }

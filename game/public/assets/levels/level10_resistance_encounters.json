@@ -1,17 +1,11 @@
 {
-  "levelId": "level10_b3_estacionamiento",
+  "levelId": "level9_b3_estacionamiento_canonico",
   "encounters": [
     {
-      "id": "defensa_auto_principal",
-      "label": "Defensa principal en estacionamiento",
+      "id": "level9_b3_holdout",
+      "label": "Resistencia canónica del 3° subsuelo",
       "durationMs": 600000,
-      "zoneId": "zona_auto_escape"
-    },
-    {
-      "id": "defensa_final_barrio",
-      "label": "Defensa final a dos cuadras de San Telmo",
-      "durationMs": 120000,
-      "zoneId": "zona_emboscada_final"
+      "zoneId": "garage_b3_escape_ring"
     }
   ]
 }

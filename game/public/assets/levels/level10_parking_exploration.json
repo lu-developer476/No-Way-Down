@@ -1,76 +1,83 @@
 {
-  "levelId": "level10_b3_estacionamiento",
+  "levelId": "level9_b3_estacionamiento_canonico",
   "vehicles": [
     {
-      "id": "camioneta_mordida",
-      "label": "Camioneta utilitaria",
+      "id": "sedan_inutilizable_colisionado",
+      "label": "Sedán colisionado (inutilizable)",
       "kind": "interactive",
-      "visualPlaceholder": "veh_camioneta_mordida_placeholder",
-      "grantsItemIds": ["llave_garage_a", "registro_mantenimiento"]
+      "visualPlaceholder": "veh_sedan_colisionado",
+      "grantsItemIds": ["enlatado_supervivencia", "municion_9mm_lote_a"]
     },
     {
-      "id": "sedan_aliada",
-      "label": "Sedán gris recuperable",
+      "id": "furgon_servicio_sin_ruedas",
+      "label": "Furgón de servicio sin ruedas",
       "kind": "interactive",
-      "visualPlaceholder": "veh_sedan_aliada_placeholder",
-      "requiredKeyId": "llave_sedan_gris",
-      "grantsItemIds": ["botiquin_rapido", "municion_9mm"]
+      "visualPlaceholder": "veh_furgon_sin_ruedas",
+      "grantsItemIds": ["botiquin_basico", "escopeta_recortada"]
     },
     {
-      "id": "patrullero_sin_bateria",
-      "label": "Patrullero fuera de servicio",
+      "id": "auto_puertas_abiertas",
+      "label": "Auto con puertas abiertas",
       "kind": "interactive",
-      "visualPlaceholder": "veh_patrullero_sin_bateria_placeholder",
-      "grantsItemIds": ["bateria_auxiliar"]
+      "visualPlaceholder": "veh_auto_puertas_abiertas",
+      "requiredKeyId": "llave_sedan_supervivencia",
+      "grantsItemIds": ["llave_sedan_supervivencia", "botiquin_trauma", "racion_energia"]
     },
     {
-      "id": "hatchback_oxidado",
-      "label": "Hatchback oxidado",
+      "id": "espacio_vacio_01",
+      "label": "Plaza vacía (auto faltante)",
       "kind": "decorative",
-      "visualPlaceholder": "veh_hatchback_oxidado_placeholder"
+      "visualPlaceholder": "vehiculo_faltante_placeholder"
     },
     {
-      "id": "pickup_volcada",
-      "label": "Pickup volcada",
+      "id": "pickup_incendiada",
+      "label": "Pickup incendiada",
       "kind": "decorative",
-      "visualPlaceholder": "veh_pickup_volcada_placeholder"
+      "visualPlaceholder": "veh_pickup_incendiada"
     }
   ],
   "resources": [
     {
-      "id": "llave_garage_a",
-      "label": "Llave de jaula A",
-      "category": "key",
-      "foundAtVehicleId": "camioneta_mordida"
-    },
-    {
-      "id": "registro_mantenimiento",
-      "label": "Registro de mantenimiento de flota",
+      "id": "enlatado_supervivencia",
+      "label": "Comida enlatada",
       "category": "story-item",
-      "foundAtVehicleId": "camioneta_mordida"
+      "foundAtVehicleId": "sedan_inutilizable_colisionado"
     },
     {
-      "id": "llave_sedan_gris",
-      "label": "Llave del sedán gris",
-      "category": "key"
-    },
-    {
-      "id": "botiquin_rapido",
-      "label": "Botiquín de primeros auxilios",
-      "category": "medical",
-      "foundAtVehicleId": "sedan_aliada"
-    },
-    {
-      "id": "municion_9mm",
+      "id": "municion_9mm_lote_a",
       "label": "Munición 9mm",
       "category": "ammo",
-      "foundAtVehicleId": "sedan_aliada"
+      "foundAtVehicleId": "sedan_inutilizable_colisionado"
     },
     {
-      "id": "bateria_auxiliar",
-      "label": "Batería auxiliar",
+      "id": "botiquin_basico",
+      "label": "Botiquín básico",
+      "category": "medical",
+      "foundAtVehicleId": "furgon_servicio_sin_ruedas"
+    },
+    {
+      "id": "escopeta_recortada",
+      "label": "Escopeta recortada",
       "category": "vehicle-part",
-      "foundAtVehicleId": "patrullero_sin_bateria"
+      "foundAtVehicleId": "furgon_servicio_sin_ruedas"
+    },
+    {
+      "id": "llave_sedan_supervivencia",
+      "label": "Llave del sedán operativo",
+      "category": "key",
+      "foundAtVehicleId": "auto_puertas_abiertas"
+    },
+    {
+      "id": "botiquin_trauma",
+      "label": "Botiquín de trauma",
+      "category": "medical",
+      "foundAtVehicleId": "auto_puertas_abiertas"
+    },
+    {
+      "id": "racion_energia",
+      "label": "Ración energética",
+      "category": "story-item",
+      "foundAtVehicleId": "auto_puertas_abiertas"
     }
   ]
 }

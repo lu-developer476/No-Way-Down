@@ -1,110 +1,53 @@
 {
-  "levelId": "level10",
-  "infectionId": "twin_bite_progression",
+  "levelId": "level9_b3_estacionamiento_canonico",
+  "infectionId": "selene_progressive_infection",
   "totalDurationMs": 600000,
-  "registryKey": "level10ProgressiveInfection",
+  "registryKey": "level9SeleneProgressiveInfection",
   "autoStart": true,
   "stages": [
     {
-      "id": "stage_0_disimulada",
-      "label": "Disimulada",
+      "id": "selene_stage_hidden",
+      "label": "Herida oculta",
       "thresholdMs": 0,
-      "severity": "leve",
-      "description": "La gemela oculta el dolor y mantiene puntería casi intacta.",
-      "visualCues": ["sudor_frio", "respiracion_corta"],
-      "behaviorFlags": ["prioriza_cobertura", "responde_normal"],
-      "hudMessage": "Está herida, pero sigue en pie.",
-      "groupImpact": {
-        "aimStabilityDelta": -0.02,
-        "movementSpeedDelta": -0.01,
-        "moraleDelta": -0.01
-      },
-      "narrativeHooks": {
-        "rescueLine": "Gracias... sigo contigo.",
-        "helpLine": "No me sueltes el ritmo.",
-        "postSceneTag": "infection_early"
-      }
-    },
-    {
-      "id": "stage_1_temblores",
-      "label": "Temblores",
-      "thresholdMs": 120000,
       "severity": "moderada",
-      "description": "Aparecen espasmos breves y reacciones tardías al fuego enemigo.",
-      "visualCues": ["temblor_mano_izquierda", "tos_seca"],
-      "behaviorFlags": ["rafagas_cortas", "demora_recarga"],
-      "hudMessage": "La mordida empeora. Su pulso ya no es estable.",
-      "groupImpact": {
-        "aimStabilityDelta": -0.07,
-        "reloadSpeedDelta": -0.05,
-        "moraleDelta": -0.03
-      },
+      "description": "Selene oculta la infección previa en el costado derecho del estómago y finge normalidad.",
+      "visualCues": ["respiracion_corta", "mano_costado_derecho"],
+      "behaviorFlags": ["disimula_dolor", "mantiene_formacion"],
+      "hudMessage": "Selene parece tensa, pero insiste en seguir.",
       "narrativeHooks": {
-        "rescueLine": "Otra vez me salvaste...",
-        "helpLine": "Necesito cubrirme dos segundos.",
-        "postSceneTag": "infection_mid"
+        "rescueLine": "Estoy bien... no pares.",
+        "helpLine": "Solo cúbranme un segundo.",
+        "postSceneTag": "selene_hidden_wound"
       }
     },
     {
-      "id": "stage_2_fiebre",
-      "label": "Fiebre alta",
-      "thresholdMs": 270000,
+      "id": "selene_stage_leg_bite",
+      "label": "Mordida bajo la rodilla",
+      "thresholdMs": 180000,
       "severity": "grave",
-      "description": "La fiebre sube y el equipo nota descoordinación en desplazamientos cortos.",
-      "visualCues": ["rostro_palido", "paso_inestable", "vision_borrosa"],
-      "behaviorFlags": ["retrocede_mas", "prioriza_objetivos_cercanos"],
-      "hudMessage": "Su fiebre está subiendo. El grupo empieza a cubrir su flanco.",
-      "groupImpact": {
-        "aimStabilityDelta": -0.12,
-        "movementSpeedDelta": -0.08,
-        "reloadSpeedDelta": -0.1,
-        "moraleDelta": -0.06
-      },
+      "description": "La mordida en la pierna derecha debajo de la rodilla compromete movilidad y puntería.",
+      "visualCues": ["sangrado_pierna_derecha", "cojera_marcada"],
+      "behaviorFlags": ["requiere_asistencia", "reduce_movilidad"],
+      "hudMessage": "Selene pierde estabilidad: asistila para sostener la línea.",
       "narrativeHooks": {
-        "rescueLine": "Si caigo, no te detengas...",
-        "helpLine": "Te sigo, pero marca tú el paso.",
-        "postSceneTag": "infection_high"
+        "rescueLine": "Gracias... casi me caigo.",
+        "helpLine": "No siento bien la pierna.",
+        "postSceneTag": "selene_leg_bite"
       }
     },
     {
-      "id": "stage_3_confusion",
-      "label": "Confusión",
+      "id": "selene_stage_terminal",
+      "label": "Colapso terminal",
       "thresholdMs": 420000,
-      "severity": "grave",
-      "description": "Tiene lagunas breves y necesita órdenes más directas para sostener la línea.",
-      "visualCues": ["mirada_perdida", "cambio_tono_voz", "micro_tropiezos"],
-      "behaviorFlags": ["requiere_ping_ayuda", "reduce_riesgo"],
-      "hudMessage": "Está desorientada. Mantén órdenes cortas y claras.",
-      "groupImpact": {
-        "aimStabilityDelta": -0.18,
-        "movementSpeedDelta": -0.12,
-        "moraleDelta": -0.1
-      },
-      "narrativeHooks": {
-        "rescueLine": "Escucho tu voz... eso ayuda.",
-        "helpLine": "Repíteme el objetivo.",
-        "postSceneTag": "infection_confused"
-      }
-    },
-    {
-      "id": "stage_4_colapso_inminente",
-      "label": "Colapso inminente",
-      "thresholdMs": 540000,
       "severity": "critica",
-      "description": "Último esfuerzo: la gemela pelea por pura voluntad y el grupo adapta todo alrededor de ella.",
-      "visualCues": ["sangrado_herida", "respiracion_agitada", "postura_encorvada"],
-      "behaviorFlags": ["modo_supervivencia", "prioridad_escape"],
-      "hudMessage": "No aguanta mucho más. Prepárense para extracción inmediata.",
-      "groupImpact": {
-        "aimStabilityDelta": -0.25,
-        "movementSpeedDelta": -0.16,
-        "reloadSpeedDelta": -0.15,
-        "moraleDelta": -0.14
-      },
+      "description": "La infección domina el comportamiento de Selene y la vuelve impredecible para el grupo.",
+      "visualCues": ["mirada_perdida", "temblor_armado", "voz_quebrada"],
+      "behaviorFlags": ["riesgo_fuego_amigo", "comandos_directos"],
+      "hudMessage": "Selene está en estado crítico. Prepará cierre del combate.",
       "narrativeHooks": {
-        "rescueLine": "Una más... solo una más.",
-        "helpLine": "Sácame de aquí cuando abras hueco.",
-        "postSceneTag": "infection_terminal"
+        "rescueLine": "No me dejen sola...",
+        "helpLine": "No escucho bien... ¿dónde están?",
+        "postSceneTag": "selene_terminal"
       }
     }
   ]

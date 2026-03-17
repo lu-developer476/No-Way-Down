@@ -55,10 +55,10 @@ export function buildLevel10ParkingNarrativeExample(scene: Phaser.Scene): Level1
     onResourceCollected: (resource, snapshot) => {
       scene.registry.set('interactionHint', `Recurso obtenido: ${resource.label}.`);
 
-      const requiredResources = ['llave_garage_a', 'llave_sedan_gris', 'bateria_auxiliar'];
+      const requiredResources = ['llave_sedan_supervivencia', 'botiquin_trauma', 'racion_energia'];
       const hasAll = requiredResources.every((resourceId) => snapshot.resourcesCollected.includes(resourceId));
       if (hasAll) {
-        emitNarrativeEvent({ type: 'resources-secured', targetId: 'kit_escape_listo' });
+        emitNarrativeEvent({ type: 'resources-secured', targetId: 'kit_supervivencia_b3' });
       }
     },
     onVehicleUnlocked: (vehicle) => {

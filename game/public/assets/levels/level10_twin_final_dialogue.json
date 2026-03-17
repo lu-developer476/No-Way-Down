@@ -1,91 +1,89 @@
 {
-  "levelId": "level10_subsuelo3_parking",
-  "cinematicId": "level10_twin_final_collapse",
-  "triggerId": "level10_resistance_last_wave_cleared",
+  "levelId": "level9_b3_estacionamiento_canonico",
+  "cinematicId": "level9_final_selene_betrayal",
+  "triggerId": "level9_b3_holdout_cleared",
   "lockMovement": true,
   "preSceneDelayMs": 600,
-  "twinsRemovedFromGroup": ["twin_redhead", "twin_brunette"],
-  "survivingGroupIds": ["protagonist", "ally_guard"],
-  "offscreenGunshotMarkerId": "sfx_placeholder_offscreen_final_gunshot",
+  "twinsRemovedFromGroup": ["nahir", "selene"],
+  "survivingGroupIds": ["alan_nahuel", "giovanna"],
+  "offscreenGunshotMarkerId": "level9_offscreen_selene_last_shot",
   "escapeObjective": {
-    "id": "escape_by_vehicle_now",
-    "label": "Suban al auto y escapen del estacionamiento"
+    "id": "escape_with_alan_giovanna",
+    "label": "Suban al auto y huyan del 3° subsuelo"
   },
   "sequence": [
     {
       "type": "dialogue",
-      "speaker": "Narrador",
-      "text": "La última oleada cae. El estacionamiento queda en silencio, roto solo por respiraciones ahogadas y casquillos rodando.",
-      "durationMs": 2900,
-      "mood": "agotamiento"
+      "speaker": "Nahir",
+      "text": "Selene... ¿esa herida en el costado ya la tenías? ¿Desde cuándo estabas infectada?",
+      "durationMs": 2700,
+      "mood": "sospecha"
     },
     {
       "type": "action",
-      "actionId": "second_bite_right_forearm",
-      "description": "Un infectado rezagado se abalanza y hunde los dientes en el antebrazo derecho de la gemela ya mordida.",
-      "durationMs": 1200,
+      "actionId": "selene_shoots_nahir",
+      "description": "Sin dejarla reaccionar, Selene le dispara a Nahir a quemarropa.",
+      "durationMs": 900,
       "payload": {
-        "victimId": "twin_brunette",
-        "limb": "right_forearm"
+        "executorId": "selene",
+        "victimId": "nahir"
       }
     },
     {
       "type": "dialogue",
-      "speaker": "Gemela pelirroja",
-      "text": "¡No, no, no! ¡No otra vez... por favor!",
-      "durationMs": 2100,
+      "speaker": "Narrador",
+      "text": "Giovanna y Alan Nahuel quedan atónitos ante la traición.",
+      "durationMs": 1900,
       "mood": "shock"
     },
     {
-      "type": "action",
-      "actionId": "redhead_shock_breakdown",
-      "description": "La gemela pelirroja entra en shock, cae de rodillas y llora sin poder apuntar su arma.",
-      "durationMs": 1500
-    },
-    {
       "type": "dialogue",
-      "speaker": "Gemela castaña",
-      "text": "Mírame... ya está. No hay vuelta atrás para ninguna de las dos.",
+      "speaker": "Selene",
+      "text": "Suban al auto y váyanse. Todo lo que hicimos fue una pérdida de tiempo.",
       "durationMs": 2500,
-      "mood": "aceptacion"
-    },
-    {
-      "type": "action",
-      "actionId": "brunette_executes_twin",
-      "description": "Entre lágrimas, la gemela castaña apunta y dispara a la cabeza de su propia hermana para evitar su transformación.",
-      "durationMs": 1100,
-      "payload": {
-        "executorId": "twin_brunette",
-        "victimId": "twin_redhead"
-      }
+      "mood": "amenaza"
     },
     {
       "type": "dialogue",
-      "speaker": "Gemela castaña",
-      "text": "Escuchen... este es nuestro final. Ustedes dos todavía pueden salir. ¡Suban al auto ya!",
-      "durationMs": 2600,
-      "mood": "despedida"
+      "speaker": "Alan Nahuel",
+      "text": "Selene, bajá el arma. Todavía podemos ayudarte.",
+      "durationMs": 2300,
+      "mood": "intento_calmar"
     },
     {
-      "type": "action",
-      "actionId": "brunette_forces_escape",
-      "description": "La gemela castaña amenaza al protagonista y a la otra aliada con el arma para obligarlos a retirarse.",
-      "durationMs": 1200
+      "type": "dialogue",
+      "speaker": "Giovanna",
+      "text": "Alan... no hay vuelta atrás. Nos tenemos que ir ahora.",
+      "durationMs": 2200,
+      "mood": "resolucion"
     },
     {
       "type": "action",
       "actionId": "enable_vehicle_escape",
-      "description": "El motor enciende; los dos supervivientes arrancan y abandonan la zona de combate.",
+      "description": "Alan Nahuel y Giovanna suben al auto y arrancan.",
       "durationMs": 1400
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Selene",
+      "text": "Perdón...",
+      "durationMs": 1200,
+      "mood": "quiebre"
+    },
+    {
+      "type": "action",
+      "actionId": "selene_suicide_offscreen",
+      "description": "Selene se quita la vida fuera del auto en marcha.",
+      "durationMs": 1000
     },
     {
       "type": "action",
       "actionId": "offscreen_final_gunshot_marker",
-      "description": "[SFX_PLACEHOLDER] Se escucha un disparo final fuera de escena cuando el auto se aleja.",
+      "description": "[SFX] El disparo final se escucha desde el auto mientras se aleja.",
       "durationMs": 900,
       "payload": {
         "offscreen": true,
-        "source": "narrative_marker"
+        "source": "selene_last_moment"
       }
     }
   ]

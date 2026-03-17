@@ -31,7 +31,7 @@ export const MAX_PLAYER_SEPARATION_PX = 320;
 export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 export const INITIAL_SETUP_STORAGE_KEY = 'nwd.setup.initial';
 
-export type PlayableProtagonist = 'alan-nahuel' | 'giovanna';
+export type PlayableProtagonist = 'alan' | 'giovanna';
 export type GameDifficulty = 'complejo' | 'pesadilla';
 
 export interface InitialRunSetup {
@@ -43,6 +43,18 @@ export interface InitialRunSetup {
   };
   startedAt: string;
   version: 1;
+}
+
+function normalizePlayableProtagonist(value: unknown): PlayableProtagonist | null {
+  if (value === 'alan' || value === 'alan-nahuel' || value === 'alanNahuel') {
+    return 'alan';
+  }
+
+  if (value === 'giovanna') {
+    return 'giovanna';
+  }
+
+  return null;
 }
 
 interface LocalProgressLike {
@@ -96,13 +108,13 @@ export function loadInitialRunSetup(): InitialRunSetup | null {
       return null;
     }
 
-    const protagonist = parsed.protagonist;
+    const protagonist = normalizePlayableProtagonist(parsed.protagonist);
     const difficulty = parsed.difficulty;
     const required = parsed.party?.required;
     const optional = parsed.party?.optional;
 
     if (
-      (protagonist !== 'alan-nahuel' && protagonist !== 'giovanna') ||
+      protagonist === null ||
       (difficulty !== 'complejo' && difficulty !== 'pesadilla') ||
       !Array.isArray(required) ||
       !Array.isArray(optional)

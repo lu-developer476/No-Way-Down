@@ -29,7 +29,7 @@ export const CHARACTERS = {
     speed: 95,
     textureKey: 'nahir-sheet'
   },
-  alanNahuel: {
+  alan: {
     name: 'Alan Nahuel',
     health: 130,
     weapon: 'shotgun',
@@ -48,7 +48,7 @@ export const CHARACTERS = {
     textureKey: 'giovanna-sheet'
   },
   hernan: {
-    name: 'Hernán',
+    name: 'Hernan',
     health: 125,
     weapon: 'rifle',
     damage: 26,

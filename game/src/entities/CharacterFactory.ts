@@ -3,7 +3,7 @@ import { CharacterStats } from './Character';
 import { CHARACTERS, CharacterId } from './CharacterRegistry';
 import { Survivor } from './Survivor';
 
-const DEFAULT_TEXTURE_KEY = 'survivor-sheet';
+const DEFAULT_TEXTURE_KEY = 'alan-sheet';
 
 export class CharacterFactory {
   create(scene: Phaser.Scene, characterId: CharacterId, x: number, y: number): Survivor {

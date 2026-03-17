@@ -6,6 +6,7 @@ import {
 } from '../config/characterVisuals';
 import { getAudioManager } from '../audio/AudioManager';
 import { getAllWeaponCatalogEntries } from '../config/weaponCatalog';
+import { CharacterAnimations } from '../systems/CharacterAnimations';
 
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
@@ -90,7 +91,7 @@ export class BootScene extends Phaser.Scene {
     this.registry.set('audioMuted', audioManager.isMuted());
     this.registry.set('audioVolume', audioManager.getVolumePercent());
 
-    this.createCharacterSpriteSheets();
+    const { protagonists, allies, zombies } = this.createCharacterSpriteSheets();
 
     const graphics = this.add.graphics();
     const { palette } = visualTheme;
@@ -214,12 +215,20 @@ export class BootScene extends Phaser.Scene {
 
     graphics.destroy();
 
-    this.createCharacterAnimations();
+    CharacterAnimations.create(this, [
+      ...protagonists.map((profile) => profile.id),
+      ...allies.map((profile) => profile.id),
+      ...zombies.map((profile) => profile.id)
+    ]);
 
     this.scene.start('AssetPreloadScene');
   }
 
-  private createCharacterSpriteSheets(): void {
+  private createCharacterSpriteSheets(): {
+    protagonists: CharacterVisualProfile[];
+    allies: CharacterVisualProfile[];
+    zombies: CharacterVisualProfile[];
+  } {
     const protagonists = getCharacterVisualsByFaction('protagonist');
     const allies = getCharacterVisualsByFaction('ally');
     const zombies = getCharacterVisualsByFaction('zombie');
@@ -227,6 +236,8 @@ export class BootScene extends Phaser.Scene {
     protagonists.forEach((profile) => this.createCharacterSheet(profile));
     allies.forEach((profile) => this.createCharacterSheet(profile));
     zombies.forEach((profile) => this.createCharacterSheet(profile));
+
+    return { protagonists, allies, zombies };
   }
 
   private createCharacterSheet(profile: CharacterVisualProfile): void {
@@ -453,44 +464,6 @@ export class BootScene extends Phaser.Scene {
   ): void {
     graphics.fillStyle(color, 1);
     graphics.fillRect(x, y, width, height);
-  }
-
-  private createCharacterAnimations(): void {
-    const animationPrefixes = [
-      ...getCharacterVisualsByFaction('protagonist'),
-      ...getCharacterVisualsByFaction('ally'),
-      ...getCharacterVisualsByFaction('zombie')
-    ].map((profile) => profile.id);
-
-    animationPrefixes.forEach((prefix) => {
-      this.anims.create({
-        key: `${prefix}-idle`,
-        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 0, end: 1 }),
-        frameRate: 4,
-        repeat: -1
-      });
-
-      this.anims.create({
-        key: `${prefix}-run`,
-        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 2, end: 5 }),
-        frameRate: 9,
-        repeat: -1
-      });
-
-      this.anims.create({
-        key: `${prefix}-shoot`,
-        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 6, end: 6 }),
-        frameRate: 1,
-        repeat: 0
-      });
-
-      this.anims.create({
-        key: `${prefix}-hurt`,
-        frames: this.anims.generateFrameNumbers(`${prefix}${CHARACTER_SPRITE_SHEET_SUFFIX}`, { start: 7, end: 7 }),
-        frameRate: 1,
-        repeat: 0
-      });
-    });
   }
 
   private createWeaponProjectileTextures(graphics: Phaser.GameObjects.Graphics): void {

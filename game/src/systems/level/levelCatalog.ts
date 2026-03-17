@@ -1,3 +1,4 @@
+import level1Runtime from '../../../public/assets/levels/runtime/level_1_subsuelo_comedor.runtime.json';
 import level2Runtime from '../../../public/assets/levels/runtime/level_2_subsuelo.runtime.json';
 import level3Runtime from '../../../public/assets/levels/runtime/level_3_upper_floor.runtime.json';
 import { LevelDefinition, LevelManager } from './LevelManager';
@@ -21,6 +22,7 @@ export const CAMPAIGN_LEVEL_SEQUENCE: CampaignLevelEntry[] = [
 ];
 
 const runtimeLevels: LevelDefinition[] = [
+  level1Runtime as unknown as LevelDefinition,
   level2Runtime as unknown as LevelDefinition,
   level3Runtime as unknown as LevelDefinition
 ];

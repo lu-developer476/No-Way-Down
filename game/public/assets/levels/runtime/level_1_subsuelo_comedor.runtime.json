@@ -1,0 +1,251 @@
+{
+  "level_id": "level_1_subsuelo_comedor",
+  "layout": {
+    "width": 6400,
+    "height": 864,
+    "floor_height": 64,
+    "environment_profile": "level2_subsuelo",
+    "default_spawn": {
+      "x": 260,
+      "y": 724
+    },
+    "level_flow": {
+      "resistance": {
+        "durationMs": 120000,
+        "holdAreaIds": ["L1-COMEDOR-ENTRY"],
+        "advanceAreaIds": ["L1-PASILLO-A", "L1-PASILLO-B"],
+        "holdObjectiveText": "Resiste 2 minutos en el comedor del 1° subsuelo.",
+        "advanceObjectiveText": "Avanza por los pasillos del 1° subsuelo y llega a las escaleras.",
+        "completionEventType": "phase_completed",
+        "completionEventTargetId": "level1-resistance"
+      }
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1250,
+    "viewportSafePadding": 100,
+    "areas": [
+      {
+        "id": "L1-COMEDOR-ENTRY",
+        "trigger": {
+          "x": 900,
+          "y": 640,
+          "width": 820,
+          "height": 280
+        },
+        "maxAlive": 18
+      },
+      {
+        "id": "L1-PASILLO-A",
+        "trigger": {
+          "x": 2850,
+          "y": 640,
+          "width": 1280,
+          "height": 280
+        },
+        "maxAlive": 14
+      },
+      {
+        "id": "L1-PASILLO-B",
+        "trigger": {
+          "x": 4940,
+          "y": 640,
+          "width": 1200,
+          "height": 280
+        },
+        "maxAlive": 16
+      }
+    ],
+    "points": [
+      {
+        "id": "L1-COMEDOR-ENTRY-LEFT",
+        "x": 980,
+        "y": 640,
+        "maxActive": 4,
+        "spawnCooldown": 720,
+        "spawnType": "door_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L1-COMEDOR-ENTRY",
+        "difficultyModifier": 1.1,
+        "spawnBudget": 46
+      },
+      {
+        "id": "L1-COMEDOR-ENTRY-RIGHT",
+        "x": 1090,
+        "y": 640,
+        "maxActive": 4,
+        "spawnCooldown": 760,
+        "spawnType": "door_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L1-COMEDOR-ENTRY",
+        "difficultyModifier": 1.1,
+        "spawnBudget": 42
+      },
+      {
+        "id": "L1-COMEDOR-PRESSURE",
+        "x": 900,
+        "y": 640,
+        "maxActive": 3,
+        "spawnCooldown": 980,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L1-COMEDOR-ENTRY",
+        "difficultyModifier": 1,
+        "spawnBudget": 36
+      },
+      {
+        "id": "L1-PASILLO-A-LEFT",
+        "x": 2360,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 980,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "L1-PASILLO-A",
+        "difficultyModifier": 1,
+        "spawnBudget": 14
+      },
+      {
+        "id": "L1-PASILLO-A-RIGHT",
+        "x": 3420,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 980,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L1-PASILLO-A",
+        "difficultyModifier": 1,
+        "spawnBudget": 14
+      },
+      {
+        "id": "L1-PASILLO-B-LEFT",
+        "x": 4460,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 920,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "L1-PASILLO-B",
+        "difficultyModifier": 1,
+        "spawnBudget": 16
+      },
+      {
+        "id": "L1-PASILLO-B-RIGHT",
+        "x": 5420,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 920,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L1-PASILLO-B",
+        "difficultyModifier": 1,
+        "spawnBudget": 16
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "level1_hold_dining_room",
+      "label": "Resistir 2 minutos en el comedor del 1° subsuelo.",
+      "completion": [
+        {
+          "type": "phase_completed",
+          "targetId": "level1-resistance"
+        }
+      ]
+    },
+    {
+      "id": "level1_reach_stairs",
+      "label": "Dirigirse a las escaleras hacia Planta Baja.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "upper-floor-stairs"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "subsuelo_stairs_upper_floor",
+      "type": "stairs",
+      "x": 5940,
+      "y": 720,
+      "interactionKey": "E",
+      "interactionRadius": 140,
+      "interactionEffect": {
+        "type": "stairs",
+        "message": "Escalera asegurada. Preparados para subir a Planta Baja.",
+        "objectiveEventType": "interactable_used"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trigger_level1_outro_cinematic",
+      "type": "cinematic",
+      "bounds": {
+        "x": 5880,
+        "y": 640,
+        "width": 260,
+        "height": 220
+      },
+      "payload": {
+        "cinematicId": "level1_stairs_outro"
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
+  "cinematics": [
+    {
+      "cinematic_id": "level1_stairs_outro",
+      "cameraPath": [
+        {
+          "x": 5620,
+          "y": 620,
+          "zoom": 1.25
+        },
+        {
+          "x": 5960,
+          "y": 610,
+          "zoom": 1.35
+        }
+      ],
+      "dialogueSequence": [
+        {
+          "id": "level1_outro_alan",
+          "speaker": "Alan",
+          "text": "La entrada del comedor quedó colapsada. No hay vuelta atrás.",
+          "emotion": "focused",
+          "portrait": "alan_default",
+          "durationMs": 2100,
+          "nextId": "level1_outro_valentina"
+        },
+        {
+          "id": "level1_outro_valentina",
+          "speaker": "Valentina",
+          "text": "Pasillos despejados. Subimos a Planta Baja y seguimos la extracción.",
+          "emotion": "tense",
+          "portrait": "valentina_default",
+          "durationMs": 2200
+        }
+      ],
+      "duration": 7600,
+      "pauseGameplay": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "upper-floor-stairs",
+      "target_level_id": "level_3_upper_floor",
+      "scene_key": "UpperFloorScene",
+      "spawn_point": {
+        "x": 220,
+        "y": 724
+      },
+      "label": "Escaleras a Planta Baja"
+    }
+  ]
+}

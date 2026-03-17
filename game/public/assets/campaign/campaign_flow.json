@@ -21,7 +21,7 @@
       }
     },
     {
-      "id": "lvl01-esc02-hall-planta-baja",
+      "id": "lvl02-esc01-hall-planta-baja",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level3_hall_planta_baja.json",
@@ -35,7 +35,7 @@
       }
     },
     {
-      "id": "lvl02-esc01-segundo-piso",
+      "id": "lvl03-esc01-segundo-piso",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level4_segundo_piso.json",
@@ -50,7 +50,7 @@
       }
     },
     {
-      "id": "lvl03-esc01-tercer-piso",
+      "id": "lvl04-esc01-tercer-piso",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level5_tercer_piso.json",
@@ -61,7 +61,7 @@
       }
     },
     {
-      "id": "lvl04-esc01-cuarto-piso-comedor",
+      "id": "lvl05-esc01-cuarto-piso-comedor",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level6_cuarto_piso_comedor.json",
@@ -72,7 +72,7 @@
       }
     },
     {
-      "id": "lvl05-esc01-quinto-piso-pertenencias",
+      "id": "lvl06-esc01-quinto-piso-pertenencias",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level7_quinto_piso.json",
@@ -83,7 +83,7 @@
       }
     },
     {
-      "id": "lvl06-esc01-oficina-422-rescate",
+      "id": "lvl07-esc01-oficina-422-rescate",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level8_office422_rescue.json",
@@ -94,7 +94,7 @@
       }
     },
     {
-      "id": "lvl07-esc01-descenso-con-temporizador",
+      "id": "lvl08-esc01-descenso-con-temporizador",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level9_descent_pressure.json",
@@ -108,7 +108,7 @@
       }
     },
     {
-      "id": "lvl08-esc01-verificacion-salidas",
+      "id": "lvl09-esc01-verificacion-salidas",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level9_exit_evaluation.json",
@@ -122,7 +122,7 @@
       }
     },
     {
-      "id": "lvl09-esc01-garage-busqueda-vehiculo",
+      "id": "lvl10-esc01-garage-busqueda-vehiculo",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_vehicle_loot.json",
@@ -136,7 +136,7 @@
       }
     },
     {
-      "id": "lvl09-esc02-resistencia-en-garage",
+      "id": "lvl10-esc02-resistencia-en-garage",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_parking_survival.json",
@@ -156,7 +156,7 @@
       "cinematicPath": "assets/cinematics/drive_to_santelmo.json"
     },
     {
-      "id": "lvl10-esc01-combate-final-en-via-publica",
+      "id": "lvl10-esc03-combate-final-en-via-publica",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_final_street_hold.json",
@@ -167,7 +167,7 @@
       }
     },
     {
-      "id": "lvl10-esc02-epilogo-final",
+      "id": "lvl10-esc04-epilogo-final",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_final_ending.json",

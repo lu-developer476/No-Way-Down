@@ -36,7 +36,7 @@ export const CHARACTERS = {
     damage: 32,
     fireRate: 750,
     speed: 85,
-    textureKey: 'alan-nahuel-sheet'
+    textureKey: 'alan-sheet'
   },
   giovanna: {
     name: 'Giovanna',

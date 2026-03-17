@@ -149,7 +149,12 @@
     "ammo": 72
   },
   "groupComposition": {
-    "addMemberIds": ["ally_lorena"],
-    "markAsRescuedIds": ["ally_lorena"]
-  }
+    "addMemberIds": [
+      "ally_lorena"
+    ],
+    "markAsRescuedIds": [
+      "ally_lorena"
+    ]
+  },
+  "runtimeLevelId": "level_7_escaleras_subsuelo2_infectado"
 }

@@ -3,83 +3,83 @@
   "levels": [
     {
       "level": 1,
-      "id": "level1_exterior_acceso",
-      "zones": ["exterior_calle_lateral"],
-      "visual_mood": "evacuacion diurna con tension",
-      "density_profile": "crowd_high",
-      "reuse_from": []
+      "id": "level1_subsuelo_comedor_pasillos",
+      "zones": ["servicios_comedor_cocina", "pisos_oficina"],
+      "visual_mood": "comedor del primer subsuelo y pasillos en evacuacion",
+      "density_profile": "service_high",
+      "reuse_from": [5]
     },
     {
       "level": 2,
-      "id": "level2_subsuelo",
-      "zones": ["circulacion_vertical", "servicios_comedor_cocina"],
-      "visual_mood": "transicion interior con desgaste",
-      "density_profile": "service_medium",
-      "reuse_from": [6]
+      "id": "level2_escaleras_espiral",
+      "zones": ["circulacion_vertical", "hall_publico"],
+      "visual_mood": "ascenso por escalera espiral entre subsuelo y quinto piso",
+      "density_profile": "vertical_high",
+      "reuse_from": [7]
     },
     {
       "level": 3,
-      "id": "level3_hall_planta_baja",
-      "zones": ["hall_publico", "circulacion_vertical"],
-      "visual_mood": "hall monumental ocupado",
-      "density_profile": "public_high",
-      "reuse_from": [4]
+      "id": "level3_quinto_piso_pasillos",
+      "zones": ["pisos_oficina"],
+      "visual_mood": "quinto piso tecnico con tres pasillos en tension",
+      "density_profile": "office_high",
+      "reuse_from": [5, 6]
     },
     {
       "level": 4,
-      "id": "level4_segundo_piso",
-      "zones": ["hall_publico", "circulacion_vertical", "pisos_oficina"],
-      "visual_mood": "marmol institucional en combate",
-      "density_profile": "combat_medium",
-      "reuse_from": [3, 7]
+      "id": "level4_oficina_422_comedor_escaleras",
+      "zones": ["pisos_oficina", "servicios_comedor_cocina", "circulacion_vertical"],
+      "visual_mood": "oficina 422 y comedor de cuarto piso bajo asedio",
+      "density_profile": "rescue_dense",
+      "reuse_from": [3, 8]
     },
     {
       "level": 5,
-      "id": "level5_tercer_piso",
-      "zones": ["pisos_oficina", "servicios_comedor_cocina"],
-      "visual_mood": "administrativo con fuga de personal",
+      "id": "level5_oficinas_selene_descenso",
+      "zones": ["pisos_oficina", "circulacion_vertical"],
+      "visual_mood": "descenso desde tercer piso al primer piso pasando por oficinas",
       "density_profile": "office_medium",
-      "reuse_from": [6, 7, 8]
+      "reuse_from": [3, 4]
     },
     {
       "level": 6,
-      "id": "level6_cuarto_piso_comedor",
-      "zones": ["servicios_comedor_cocina", "pisos_oficina"],
-      "visual_mood": "comedor tecnico bajo estres",
-      "density_profile": "service_high",
-      "reuse_from": [2, 5]
+      "id": "level6_pasillos_planta_baja_salidas",
+      "zones": ["hall_publico", "exterior_calle_lateral"],
+      "visual_mood": "pasillos hacia planta baja y decision de salidas",
+      "density_profile": "public_high",
+      "reuse_from": [1, 3]
     },
     {
       "level": 7,
-      "id": "level7_quinto_piso",
-      "zones": ["pisos_oficina", "hall_publico"],
-      "visual_mood": "piso ejecutivo en colapso",
-      "density_profile": "office_high",
-      "reuse_from": [4, 5, 8]
+      "id": "level7_escaleras_subsuelo2_infectado",
+      "zones": ["circulacion_vertical", "servicios_comedor_cocina"],
+      "visual_mood": "escaleras y subsuelo infectado con visibilidad degradada",
+      "density_profile": "hazard_high",
+      "reuse_from": [2, 8]
     },
     {
       "level": 8,
-      "id": "level8_oficina_422",
-      "zones": ["pisos_oficina", "circulacion_vertical"],
-      "visual_mood": "rescate en oficina tecnica",
-      "density_profile": "rescue_dense",
-      "reuse_from": [5, 7]
+      "id": "level8_pasillo_subsuelo2_escaleras_subsuelo3",
+      "zones": ["servicios_comedor_cocina", "subsuelo_estacionamiento", "circulacion_vertical"],
+      "visual_mood": "pasillo masivo del subsuelo y bajada al tercer subsuelo",
+      "density_profile": "pressure_high",
+      "reuse_from": [7, 9]
     },
     {
       "level": 9,
-      "id": "level9_escape_descent",
-      "zones": ["circulacion_vertical", "subsuelo_estacionamiento"],
-      "visual_mood": "descenso de emergencia",
-      "density_profile": "hazard_high",
-      "reuse_from": [10]
+      "id": "level9_subsuelo3_garage_salida",
+      "zones": ["subsuelo_estacionamiento", "exterior_calle_lateral"],
+      "visual_mood": "garage con vehiculos y salida exterior comprometida",
+      "density_profile": "garage_high",
+      "reuse_from": [8, 10]
     },
     {
       "level": 10,
-      "id": "level10_parking_final",
-      "zones": ["subsuelo_estacionamiento", "exterior_calle_lateral"],
-      "visual_mood": "escape final nocturno",
+      "id": "level10_exterior_urbano",
+      "zones": ["exterior_calle_lateral", "hall_publico"],
+      "visual_mood": "escape urbano por plaza de mayo y san telmo",
       "density_profile": "finale_high",
-      "reuse_from": [1, 9]
+      "reuse_from": [1, 6]
     }
   ]
 }

@@ -4,7 +4,7 @@
     "width": 9800,
     "height": 864,
     "floor_height": 64,
-    "environment_profile": "level2_subsuelo",
+    "environment_profile": "level2_escaleras_espiral",
     "default_spawn": {
       "x": 180,
       "y": 724

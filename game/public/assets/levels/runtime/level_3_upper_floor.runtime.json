@@ -5,7 +5,7 @@
     "height": 1850,
     "floor_y": 1680,
     "floor_height": 90,
-    "environment_profile": "level7_quinto_piso",
+    "environment_profile": "level3_quinto_piso_pasillos",
     "default_spawn": {
       "x": 300,
       "y": 1640

@@ -2,7 +2,12 @@
   "levelId": "level6_canonico_planta_baja",
   "mode": "sequential",
   "openAfterBacktrackFromExitId": "A",
-  "orderedExitIds": ["B", "C", "D", "E"],
+  "orderedExitIds": [
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
   "exits": [
     {
       "id": "B",
@@ -47,7 +52,10 @@
       ],
       "routeState": {
         "stateId": "cerrada",
-        "tags": ["blocked", "lorena_kia"]
+        "tags": [
+          "blocked",
+          "lorena_kia"
+        ]
       }
     },
     {
@@ -82,7 +90,10 @@
       ],
       "routeState": {
         "stateId": "bloqueada",
-        "tags": ["infected", "no_pass"]
+        "tags": [
+          "infected",
+          "no_pass"
+        ]
       }
     },
     {
@@ -109,14 +120,21 @@
       ],
       "routeState": {
         "stateId": "destruida",
-        "tags": ["collapsed", "broken"]
+        "tags": [
+          "collapsed",
+          "broken"
+        ]
       }
     },
     {
       "id": "E",
       "label": "Salida E",
       "description": "La salida funciona, pero se dispara una cinemática con el guardia y las persianas.",
-      "requiresEvaluated": ["B", "C", "D"],
+      "requiresEvaluated": [
+        "B",
+        "C",
+        "D"
+      ],
       "outcomes": [
         {
           "type": "narrative",
@@ -146,8 +164,12 @@
       "routeState": {
         "stateId": "funcional",
         "isFinal": true,
-        "tags": ["guard_cinematic", "level_end"]
+        "tags": [
+          "guard_cinematic",
+          "level_end"
+        ]
       }
     }
-  ]
+  ],
+  "runtimeLevelId": "level_9_subsuelo3_garage_salida"
 }

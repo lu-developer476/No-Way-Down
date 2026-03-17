@@ -1,0 +1,25 @@
+{
+  "level_id": "level_5_oficinas_selene_descenso",
+  "layout": {
+    "width": 7000,
+    "height": 1120,
+    "floor_height": 72,
+    "environment_profile": "level5_oficinas_selene_descenso",
+    "default_spawn": {
+      "x": 240,
+      "y": 980
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1300,
+    "viewportSafePadding": 100,
+    "areas": [],
+    "points": []
+  },
+  "objectives": [],
+  "interactables": [],
+  "triggers": [],
+  "cinematics": [],
+  "exits": []
+}

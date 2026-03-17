@@ -12,19 +12,37 @@
         "height": 1200
       },
       "navigation": {
-        "entry": { "x": 180, "y": 1060 },
+        "entry": {
+          "x": 180,
+          "y": 1060
+        },
         "landings": [
-          { "x": 620, "y": 880 },
-          { "x": 1180, "y": 700 },
-          { "x": 1680, "y": 520 }
+          {
+            "x": 620,
+            "y": 880
+          },
+          {
+            "x": 1180,
+            "y": 700
+          },
+          {
+            "x": 1680,
+            "y": 520
+          }
         ],
-        "exit_to_next_section": { "x": 2100, "y": 430 }
+        "exit_to_next_section": {
+          "x": 2100,
+          "y": 430
+        }
       },
       "event_triggers": [
         {
           "id": "TR-S1-ALARM-01",
           "type": "enter_area",
-          "position": { "x": 300, "y": 1020 },
+          "position": {
+            "x": 300,
+            "y": 1020
+          },
           "radius": 120,
           "action": "play_sfx_alarm_muffled"
         },
@@ -32,8 +50,14 @@
           "id": "TR-S1-WAVE-LOCK",
           "type": "cross_line",
           "line": {
-            "from": { "x": 1080, "y": 760 },
-            "to": { "x": 1340, "y": 760 }
+            "from": {
+              "x": 1080,
+              "y": 760
+            },
+            "to": {
+              "x": 1340,
+              "y": 760
+            }
           },
           "action": "lock_backtrack_and_start_combat_zone_CZ1"
         }
@@ -51,33 +75,88 @@
       },
       "layout_points": {
         "central_lane": [
-          { "x": 2500, "y": 1220 },
-          { "x": 3300, "y": 1220 },
-          { "x": 4200, "y": 1180 },
-          { "x": 5000, "y": 1120 }
+          {
+            "x": 2500,
+            "y": 1220
+          },
+          {
+            "x": 3300,
+            "y": 1220
+          },
+          {
+            "x": 4200,
+            "y": 1180
+          },
+          {
+            "x": 5000,
+            "y": 1120
+          }
         ],
         "service_counters": [
-          { "x": 2750, "y": 860, "side": "north" },
-          { "x": 3550, "y": 860, "side": "north" },
-          { "x": 2900, "y": 1520, "side": "south" },
-          { "x": 3720, "y": 1520, "side": "south" }
+          {
+            "x": 2750,
+            "y": 860,
+            "side": "north"
+          },
+          {
+            "x": 3550,
+            "y": 860,
+            "side": "north"
+          },
+          {
+            "x": 2900,
+            "y": 1520,
+            "side": "south"
+          },
+          {
+            "x": 3720,
+            "y": 1520,
+            "side": "south"
+          }
         ],
         "columns": [
-          { "x": 3050, "y": 1080 },
-          { "x": 3520, "y": 1080 },
-          { "x": 3980, "y": 1080 },
-          { "x": 4460, "y": 1080 },
-          { "x": 3050, "y": 1360 },
-          { "x": 3520, "y": 1360 },
-          { "x": 3980, "y": 1360 },
-          { "x": 4460, "y": 1360 }
+          {
+            "x": 3050,
+            "y": 1080
+          },
+          {
+            "x": 3520,
+            "y": 1080
+          },
+          {
+            "x": 3980,
+            "y": 1080
+          },
+          {
+            "x": 4460,
+            "y": 1080
+          },
+          {
+            "x": 3050,
+            "y": 1360
+          },
+          {
+            "x": 3520,
+            "y": 1360
+          },
+          {
+            "x": 3980,
+            "y": 1360
+          },
+          {
+            "x": 4460,
+            "y": 1360
+          }
         ]
       },
       "event_triggers": [
         {
           "id": "TR-S2-LIGHTS-FLICKER",
           "type": "enter_area",
-          "position": { "x": 3100, "y": 1200 },
+          "position": {
+            "x": 3100,
+            "y": 1200
+          },
           "radius": 160,
           "action": "flicker_hall_lights_6s"
         },
@@ -100,7 +179,10 @@
     {
       "id": "SP-S1-01",
       "section_id": "S1",
-      "position": { "x": 420, "y": 980 },
+      "position": {
+        "x": 420,
+        "y": 980
+      },
       "zombie_type": "walker",
       "max_active": 4,
       "respawn_s": 12
@@ -108,7 +190,10 @@
     {
       "id": "SP-S1-02",
       "section_id": "S1",
-      "position": { "x": 980, "y": 760 },
+      "position": {
+        "x": 980,
+        "y": 760
+      },
       "zombie_type": "crawler",
       "max_active": 3,
       "respawn_s": 16
@@ -116,7 +201,10 @@
     {
       "id": "SP-S1-03",
       "section_id": "S1",
-      "position": { "x": 1620, "y": 560 },
+      "position": {
+        "x": 1620,
+        "y": 560
+      },
       "zombie_type": "runner",
       "max_active": 2,
       "respawn_s": 18
@@ -124,7 +212,10 @@
     {
       "id": "SP-S2-01",
       "section_id": "S2",
-      "position": { "x": 2860, "y": 980 },
+      "position": {
+        "x": 2860,
+        "y": 980
+      },
       "zombie_type": "walker",
       "max_active": 5,
       "respawn_s": 10
@@ -132,7 +223,10 @@
     {
       "id": "SP-S2-02",
       "section_id": "S2",
-      "position": { "x": 3640, "y": 1480 },
+      "position": {
+        "x": 3640,
+        "y": 1480
+      },
       "zombie_type": "crawler",
       "max_active": 4,
       "respawn_s": 14
@@ -140,7 +234,10 @@
     {
       "id": "SP-S2-03",
       "section_id": "S2",
-      "position": { "x": 4320, "y": 980 },
+      "position": {
+        "x": 4320,
+        "y": 980
+      },
       "zombie_type": "runner",
       "max_active": 4,
       "respawn_s": 12
@@ -148,7 +245,10 @@
     {
       "id": "SP-S2-04",
       "section_id": "S2",
-      "position": { "x": 5120, "y": 880 },
+      "position": {
+        "x": 5120,
+        "y": 880
+      },
       "zombie_type": "brute",
       "max_active": 1,
       "respawn_s": 30
@@ -173,12 +273,18 @@
       "waves": [
         {
           "wave": 1,
-          "spawns": ["SP-S1-01", "SP-S1-02"],
+          "spawns": [
+            "SP-S1-01",
+            "SP-S1-02"
+          ],
           "enemies": 8
         },
         {
           "wave": 2,
-          "spawns": ["SP-S1-02", "SP-S1-03"],
+          "spawns": [
+            "SP-S1-02",
+            "SP-S1-03"
+          ],
           "enemies": 8
         }
       ]
@@ -195,7 +301,10 @@
       },
       "activation_trigger": {
         "type": "enter_area",
-        "position": { "x": 2950, "y": 1180 },
+        "position": {
+          "x": 2950,
+          "y": 1180
+        },
         "radius": 180
       },
       "clear_condition": {
@@ -205,17 +314,27 @@
       "waves": [
         {
           "wave": 1,
-          "spawns": ["SP-S2-01", "SP-S2-02"],
+          "spawns": [
+            "SP-S2-01",
+            "SP-S2-02"
+          ],
           "enemies": 10
         },
         {
           "wave": 2,
-          "spawns": ["SP-S2-01", "SP-S2-02", "SP-S2-03"],
+          "spawns": [
+            "SP-S2-01",
+            "SP-S2-02",
+            "SP-S2-03"
+          ],
           "enemies": 10
         },
         {
           "wave": 3,
-          "spawns": ["SP-S2-03", "SP-S2-04"],
+          "spawns": [
+            "SP-S2-03",
+            "SP-S2-04"
+          ],
           "enemies": 4
         }
       ]
@@ -238,12 +357,18 @@
       "waves": [
         {
           "wave": 1,
-          "spawns": ["SP-S2-04", "SP-S2-03"],
+          "spawns": [
+            "SP-S2-04",
+            "SP-S2-03"
+          ],
           "enemies": 6
         },
         {
           "wave": 2,
-          "spawns": ["SP-S2-01", "SP-S2-04"],
+          "spawns": [
+            "SP-S2-01",
+            "SP-S2-04"
+          ],
           "enemies": 4
         }
       ]
@@ -251,9 +376,13 @@
   ],
   "exit_point": {
     "id": "EXIT-L3-STAIRS-01",
-    "position": { "x": 5480, "y": 760 },
+    "position": {
+      "x": 5480,
+      "y": 760
+    },
     "interaction_radius": 110,
     "destination_level": "level4_primer_piso",
     "unlock_condition": "all_combat_zones_cleared"
-  }
+  },
+  "runtimeLevelId": "level_2_escaleras_espiral"
 }

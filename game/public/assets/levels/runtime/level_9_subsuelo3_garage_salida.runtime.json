@@ -1,0 +1,25 @@
+{
+  "level_id": "level_9_subsuelo3_garage_salida",
+  "layout": {
+    "width": 9200,
+    "height": 1240,
+    "floor_height": 74,
+    "environment_profile": "level9_subsuelo3_garage_salida",
+    "default_spawn": {
+      "x": 200,
+      "y": 1080
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1450,
+    "viewportSafePadding": 100,
+    "areas": [],
+    "points": []
+  },
+  "objectives": [],
+  "interactables": [],
+  "triggers": [],
+  "cinematics": [],
+  "exits": []
+}

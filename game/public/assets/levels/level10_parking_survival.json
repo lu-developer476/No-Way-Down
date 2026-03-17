@@ -21,7 +21,12 @@
     "rampEveryMs": 45000,
     "minSpawnIntervalMs": 3500,
     "enemiesPerSpawn": 2,
-    "spawnPointIds": ["north_ramp", "east_service", "west_gate", "south_lane"]
+    "spawnPointIds": [
+      "north_ramp",
+      "east_service",
+      "west_gate",
+      "south_lane"
+    ]
   },
   "narrativeEvents": [
     {
@@ -30,7 +35,11 @@
       "oneShot": true,
       "title": "Selene pierde estabilidad",
       "description": "Selene se desploma por dolor abdominal y Nahir debe asistirla mientras Alan y Giovanna contienen el frente.",
-      "tags": ["assist", "selene", "phase_1"]
+      "tags": [
+        "assist",
+        "selene",
+        "phase_1"
+      ]
     },
     {
       "id": "selene_assist_event_2",
@@ -38,7 +47,11 @@
       "oneShot": true,
       "title": "Selene compromete la defensa",
       "description": "La pierna mordida falla; el grupo debe cerrarle el perímetro para evitar que la sobrepasen.",
-      "tags": ["assist", "selene", "phase_2"]
+      "tags": [
+        "assist",
+        "selene",
+        "phase_2"
+      ]
     },
     {
       "id": "selene_assist_event_3",
@@ -46,7 +59,11 @@
       "oneShot": true,
       "title": "Selene entra en fase terminal",
       "description": "Selene sufre confusión severa y dispara fuera de ritmo, obligando al equipo a corregir su posición.",
-      "tags": ["assist", "selene", "phase_3"]
+      "tags": [
+        "assist",
+        "selene",
+        "phase_3"
+      ]
     }
   ],
   "infectionLink": {
@@ -75,5 +92,6 @@
         "hint": "Selene casi no distingue aliados de amenazas."
       }
     ]
-  }
+  },
+  "runtimeLevelId": "level_9_subsuelo3_garage_salida"
 }

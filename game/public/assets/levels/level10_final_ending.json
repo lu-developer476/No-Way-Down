@@ -3,44 +3,53 @@
   "cinematicId": "level10_final_open_ending",
   "triggerId": "level10_last_combat_cleared",
   "lockMovement": true,
-  "preSequenceDelayMs": 1200,
+  "preSequenceDelayMs": 1000,
   "sequence": [
     {
-      "type": "action",
-      "actionId": "survivors_enter_vehicle",
-      "description": "Los dos protagonistas suben al auto sin mirarse.",
-      "durationMs": 1500
-    },
-    {
-      "type": "silence",
-      "description": "Silencio sostenido. Solo respiración agitada y dedos temblando sobre el volante.",
-      "cameraFocus": "hands",
-      "durationMs": 3200
+      "type": "dialogue",
+      "speaker": "Giovanna",
+      "text": "¿Viste cómo estaban ahí, quietos? Como si la ciudad ya no les importara ni para matarnos.",
+      "mood": "fatigue",
+      "durationMs": 2600
     },
     {
       "type": "dialogue",
-      "speaker": "Protagonista 1",
-      "text": "...",
+      "speaker": "Alan Nahuel",
+      "text": "Si el gobierno armó una zona segura, no va a ser acá. En esta avenida no quedan respuestas.",
       "mood": "contained",
-      "durationMs": 1400
+      "durationMs": 2600
     },
     {
       "type": "action",
-      "actionId": "engine_ignition",
-      "description": "El motor enciende después de un intento fallido; nadie festeja.",
-      "durationMs": 1500
+      "actionId": "survivors_enter_vehicle",
+      "description": "Suben nuevamente al vehículo y avanzan por Av. Independencia hacia San Telmo.",
+      "durationMs": 1800
     },
     {
       "type": "silence",
-      "description": "Cruzan la avenida vacía. No saben quién sigue vivo al otro lado.",
+      "description": "A unas cuadras de haberse adentrado en Independencia, frenan sin mirar atrás.",
       "cameraFocus": "windshield",
-      "durationMs": 2800
+      "durationMs": 2200
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Giovanna",
+      "text": "Suerte, Alan Nahuel. Ojalá encuentres a tu gente.",
+      "mood": "contained",
+      "durationMs": 2200
+    },
+    {
+      "type": "dialogue",
+      "speaker": "Alan Nahuel",
+      "text": "Gracias, Giovanna. Que vos también llegues con tu familia.",
+      "mood": "contained",
+      "durationMs": 2200
     },
     {
       "type": "action",
       "actionId": "vehicle_departure",
-      "description": "El auto avanza hacia un destino incierto mientras la ciudad queda atrás.",
-      "durationMs": 2000
+      "description": "Se separan y cada uno sigue su camino en búsqueda de su familia. Fin.",
+      "durationMs": 2300
     }
   ],
   "campaignState": {
@@ -48,11 +57,11 @@
     "chapterId": "level10_subsuelo3_parking",
     "status": "completed",
     "endingType": "open",
-    "summary": "Escaparon, pero no hay garantías: el costo humano y la incertidumbre persisten."
+    "summary": "Alan Nahuel y Giovanna sobreviven al tramo final en Independencia y se separan en San Telmo para buscar a sus familias."
   },
   "continuationHook": {
-    "id": "search_for_family_signal",
-    "label": "Rastros de radio desde la zona sur",
-    "uncertainty": "No está claro si son familiares, sobrevivientes desconocidos o una trampa."
+    "id": "family_search_split",
+    "label": "Búsqueda separada de las familias en la zona sur",
+    "uncertainty": "No hay confirmación de zonas seguras ni de supervivientes identificados."
   }
 }

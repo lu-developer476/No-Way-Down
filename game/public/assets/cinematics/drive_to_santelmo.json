@@ -1,7 +1,17 @@
 {
   "id": "drive_to_santelmo",
   "beats": [
-    { "beat": "El vehículo atraviesa avenidas bloqueadas." },
-    { "beat": "Las luces se apagan y aparece una emboscada a dos cuadras de San Telmo." }
+    {
+      "beat": "Alan Nahuel y Giovanna avanzan en silencio bordeando Plaza de Mayo hasta tomar el Metrobús de Avda. Paseo Colón."
+    },
+    {
+      "beat": "Mientras asimilan el desastre, observan infectados dispersos actuando como muertos reanimados entre colectivos detenidos y veredas vacías."
+    },
+    {
+      "beat": "En la intersección con Avenida Independencia encuentran un puñado de zombies varado, inmóvil e inactivo, sin reaccionar a estímulos."
+    },
+    {
+      "beat": "Alan apaga el motor, baja decidido a pelear y Giovanna lo sigue para cubrirse mutuamente."
+    }
   ]
 }

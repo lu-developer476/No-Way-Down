@@ -1,137 +1,331 @@
 {
   "level_id": "level_2_subsuelo",
   "layout": {
-    "width": 8000,
+    "width": 9800,
     "height": 864,
     "floor_height": 64,
     "environment_profile": "level2_subsuelo",
     "default_spawn": {
-      "x": 140,
+      "x": 180,
       "y": 724
+    },
+    "level_flow": {
+      "canonicalName": "No Way Down - Nivel 2 Canónico",
+      "verticalAscent": {
+        "start": "escaleras_1er_piso_a_1er_subsuelo",
+        "end": "escaleras_4to_piso_a_5to"
+      }
     }
   },
   "spawn_zones": {
     "minPlayerDistance": 220,
-    "maxPlayerDistance": 1350,
+    "maxPlayerDistance": 1300,
     "viewportSafePadding": 100,
     "areas": [
       {
-        "id": "ZL-01",
+        "id": "L2-START-INFECTED",
         "trigger": {
-          "x": 780,
+          "x": 520,
+          "y": 640,
+          "width": 760,
+          "height": 260
+        }
+      },
+      {
+        "id": "L2-F1-LANDING",
+        "trigger": {
+          "x": 1820,
+          "y": 640,
+          "width": 760,
+          "height": 260
+        }
+      },
+      {
+        "id": "L2-F2-LANDING",
+        "trigger": {
+          "x": 3360,
           "y": 640,
           "width": 820,
-          "height": 280
+          "height": 260
         }
       },
       {
-        "id": "ZL-02",
+        "id": "L2-F3-LANDING",
         "trigger": {
-          "x": 2460,
+          "x": 5000,
+          "y": 640,
+          "width": 820,
+          "height": 260
+        }
+      },
+      {
+        "id": "L2-F4-LANDING",
+        "trigger": {
+          "x": 6640,
+          "y": 640,
+          "width": 860,
+          "height": 260
+        }
+      },
+      {
+        "id": "L2-F4-FINAL-PUSH",
+        "trigger": {
+          "x": 8200,
           "y": 640,
           "width": 900,
-          "height": 280
-        }
-      },
-      {
-        "id": "ZL-03",
-        "trigger": {
-          "x": 4180,
-          "y": 640,
-          "width": 940,
-          "height": 280
+          "height": 260
         }
       }
     ],
     "points": [
       {
-        "id": "ZL-01-wave-left",
-        "x": 560,
+        "id": "start-left",
+        "x": 360,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 1000,
+        "spawnCooldown": 900,
         "spawnType": "wave_spawn",
         "spawnDirection": "right",
-        "spawnArea": "ZL-01",
-        "difficultyModifier": 1,
-        "spawnBudget": 7
-      },
-      {
-        "id": "ZL-01-wave-right",
-        "x": 1180,
-        "y": 640,
-        "maxActive": 2,
-        "spawnCooldown": 1000,
-        "spawnType": "wave_spawn",
-        "spawnDirection": "left",
-        "spawnArea": "ZL-01",
-        "difficultyModifier": 1,
-        "spawnBudget": 7
-      },
-      {
-        "id": "ZL-02-wave-left",
-        "x": 2220,
-        "y": 640,
-        "maxActive": 2,
-        "spawnCooldown": 950,
-        "spawnType": "wave_spawn",
-        "spawnDirection": "right",
-        "spawnArea": "ZL-02",
-        "difficultyModifier": 1,
+        "spawnArea": "L2-START-INFECTED",
+        "difficultyModifier": 1.1,
         "spawnBudget": 8
       },
       {
-        "id": "ZL-02-wave-right",
-        "x": 2720,
+        "id": "start-right",
+        "x": 980,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 950,
+        "spawnCooldown": 900,
         "spawnType": "wave_spawn",
         "spawnDirection": "left",
-        "spawnArea": "ZL-02",
-        "difficultyModifier": 1,
+        "spawnArea": "L2-START-INFECTED",
+        "difficultyModifier": 1.1,
         "spawnBudget": 8
       },
       {
-        "id": "ZL-03-wave-left",
+        "id": "f1-left",
+        "x": 1660,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 880,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "L2-F1-LANDING",
+        "difficultyModifier": 1.1,
+        "spawnBudget": 8
+      },
+      {
+        "id": "f1-right",
+        "x": 2300,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 880,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L2-F1-LANDING",
+        "difficultyModifier": 1.1,
+        "spawnBudget": 8
+      },
+      {
+        "id": "f2-left",
+        "x": 3180,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "L2-F2-LANDING",
+        "difficultyModifier": 1.2,
+        "spawnBudget": 9
+      },
+      {
+        "id": "f2-right",
         "x": 3920,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 900,
+        "spawnCooldown": 850,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L2-F2-LANDING",
+        "difficultyModifier": 1.2,
+        "spawnBudget": 9
+      },
+      {
+        "id": "f3-left",
+        "x": 4800,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 820,
         "spawnType": "wave_spawn",
         "spawnDirection": "right",
-        "spawnArea": "ZL-03",
-        "difficultyModifier": 1,
+        "spawnArea": "L2-F3-LANDING",
+        "difficultyModifier": 1.25,
         "spawnBudget": 10
       },
       {
-        "id": "ZL-03-wave-right",
-        "x": 4620,
+        "id": "f3-right",
+        "x": 5560,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 900,
+        "spawnCooldown": 820,
         "spawnType": "wave_spawn",
         "spawnDirection": "left",
-        "spawnArea": "ZL-03",
-        "difficultyModifier": 1,
+        "spawnArea": "L2-F3-LANDING",
+        "difficultyModifier": 1.25,
         "spawnBudget": 10
+      },
+      {
+        "id": "f4-left",
+        "x": 6460,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 800,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "L2-F4-LANDING",
+        "difficultyModifier": 1.3,
+        "spawnBudget": 10
+      },
+      {
+        "id": "f4-right",
+        "x": 7240,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 800,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L2-F4-LANDING",
+        "difficultyModifier": 1.3,
+        "spawnBudget": 10
+      },
+      {
+        "id": "final-left",
+        "x": 7960,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 760,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "L2-F4-FINAL-PUSH",
+        "difficultyModifier": 1.35,
+        "spawnBudget": 11
+      },
+      {
+        "id": "final-right",
+        "x": 8720,
+        "y": 640,
+        "maxActive": 2,
+        "spawnCooldown": 760,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "L2-F4-FINAL-PUSH",
+        "difficultyModifier": 1.35,
+        "spawnBudget": 11
       }
     ]
   },
   "objectives": [
     {
-      "id": "level2_secure_corridor",
-      "label": "Asegurar el corredor del subsuelo y mantener unido al equipo.",
+      "id": "level2_clear_initial_infected",
+      "label": "Eliminar el primer grupo de infectados en la caja de escalera del 1° subsuelo.",
       "completion": [
         {
           "type": "cleanup_completed",
-          "targetId": "ZL-03"
+          "targetId": "L2-START-INFECTED"
         }
       ]
     },
     {
-      "id": "level2_reach_upper_floor",
-      "label": "Subir al hall de Planta Baja para continuar la evacuación.",
+      "id": "level2_secure_floor1_checkpoints",
+      "label": "Asegurar 4 checkpoints del 1° piso y habilitar el ascenso.",
+      "completion": [
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f1-1"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f1-2"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f1-3"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f1-4"
+        }
+      ]
+    },
+    {
+      "id": "level2_secure_floor2_checkpoints",
+      "label": "Asegurar 4 checkpoints del 2° piso.",
+      "completion": [
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f2-1"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f2-2"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f2-3"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f2-4"
+        }
+      ]
+    },
+    {
+      "id": "level2_secure_floor3_checkpoints",
+      "label": "Asegurar 4 checkpoints del 3° piso.",
+      "completion": [
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f3-1"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f3-2"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f3-3"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f3-4"
+        }
+      ]
+    },
+    {
+      "id": "level2_secure_floor4_checkpoints",
+      "label": "Asegurar 4 checkpoints del 4° piso antes del tramo final.",
+      "completion": [
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f4-1"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f4-2"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f4-3"
+        },
+        {
+          "type": "interactable_used",
+          "targetId": "cp-f4-4"
+        }
+      ]
+    },
+    {
+      "id": "level2_reach_stairs_4_to_5",
+      "label": "Llegar a las escaleras del 4° piso que conducen al 5°.",
       "completion": [
         {
           "type": "exit_used",
@@ -142,188 +336,473 @@
   ],
   "interactables": [
     {
-      "id": "subsuelo_door_maintenance",
-      "type": "door",
-      "x": 1980,
+      "id": "cp-f1-1",
+      "type": "switch",
+      "x": 1300,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 1/4 del 1° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f1-1",
+        "checkpoint": {
+          "x": 1300,
+          "y": 724,
+          "label": "P1-CP1"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 1/4 (Piso 1)"
+    },
+    {
+      "id": "cp-f1-2",
+      "type": "switch",
+      "x": 1600,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 2/4 del 1° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f1-2",
+        "checkpoint": {
+          "x": 1600,
+          "y": 724,
+          "label": "P1-CP2"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 2/4 (Piso 1)"
+    },
+    {
+      "id": "cp-f1-3",
+      "type": "switch",
+      "x": 1920,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 3/4 del 1° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f1-3",
+        "checkpoint": {
+          "x": 1920,
+          "y": 724,
+          "label": "P1-CP3"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 3/4 (Piso 1)"
+    },
+    {
+      "id": "cp-f1-4",
+      "type": "switch",
+      "x": 2240,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 4/4 del 1° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f1-4",
+        "checkpoint": {
+          "x": 2240,
+          "y": 724,
+          "label": "P1-CP4"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 4/4 (Piso 1)"
+    },
+    {
+      "id": "cp-f2-1",
+      "type": "switch",
+      "x": 2850,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 1/4 del 2° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f2-1",
+        "checkpoint": {
+          "x": 2850,
+          "y": 724,
+          "label": "P2-CP1"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 1/4 (Piso 2)"
+    },
+    {
+      "id": "cp-f2-2",
+      "type": "switch",
+      "x": 3150,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 2/4 del 2° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f2-2",
+        "checkpoint": {
+          "x": 3150,
+          "y": 724,
+          "label": "P2-CP2"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 2/4 (Piso 2)"
+    },
+    {
+      "id": "cp-f2-3",
+      "type": "switch",
+      "x": 3470,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 3/4 del 2° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f2-3",
+        "checkpoint": {
+          "x": 3470,
+          "y": 724,
+          "label": "P2-CP3"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 3/4 (Piso 2)"
+    },
+    {
+      "id": "cp-f2-4",
+      "type": "switch",
+      "x": 3790,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 4/4 del 2° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f2-4",
+        "checkpoint": {
+          "x": 3790,
+          "y": 724,
+          "label": "P2-CP4"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 4/4 (Piso 2)"
+    },
+    {
+      "id": "cp-f3-1",
+      "type": "switch",
+      "x": 4400,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 1/4 del 3° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f3-1",
+        "checkpoint": {
+          "x": 4400,
+          "y": 724,
+          "label": "P3-CP1"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 1/4 (Piso 3)"
+    },
+    {
+      "id": "cp-f3-2",
+      "type": "switch",
+      "x": 4700,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 2/4 del 3° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f3-2",
+        "checkpoint": {
+          "x": 4700,
+          "y": 724,
+          "label": "P3-CP2"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 2/4 (Piso 3)"
+    },
+    {
+      "id": "cp-f3-3",
+      "type": "switch",
+      "x": 5020,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 3/4 del 3° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f3-3",
+        "checkpoint": {
+          "x": 5020,
+          "y": 724,
+          "label": "P3-CP3"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 3/4 (Piso 3)"
+    },
+    {
+      "id": "cp-f3-4",
+      "type": "switch",
+      "x": 5340,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 4/4 del 3° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f3-4",
+        "checkpoint": {
+          "x": 5340,
+          "y": 724,
+          "label": "P3-CP4"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 4/4 (Piso 3)"
+    },
+    {
+      "id": "cp-f4-1",
+      "type": "switch",
+      "x": 5950,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 1/4 del 4° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f4-1",
+        "checkpoint": {
+          "x": 5950,
+          "y": 724,
+          "label": "P4-CP1"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 1/4 (Piso 4)"
+    },
+    {
+      "id": "cp-f4-2",
+      "type": "switch",
+      "x": 6250,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 2/4 del 4° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f4-2",
+        "checkpoint": {
+          "x": 6250,
+          "y": 724,
+          "label": "P4-CP2"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 2/4 (Piso 4)"
+    },
+    {
+      "id": "cp-f4-3",
+      "type": "switch",
+      "x": 6570,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 3/4 del 4° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f4-3",
+        "checkpoint": {
+          "x": 6570,
+          "y": 724,
+          "label": "P4-CP3"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 3/4 (Piso 4)"
+    },
+    {
+      "id": "cp-f4-4",
+      "type": "switch",
+      "x": 6890,
+      "y": 716,
+      "interactionKey": "E",
+      "interactionRadius": 115,
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Checkpoint 4/4 del 4° piso asegurado.",
+        "objectiveEventType": "interactable_used",
+        "targetId": "cp-f4-4",
+        "checkpoint": {
+          "x": 6890,
+          "y": 724,
+          "label": "P4-CP4"
+        }
+      },
+      "prompt": "E · Asegurar checkpoint 4/4 (Piso 4)"
+    },
+    {
+      "id": "supply-cache-f2",
+      "type": "loot_container",
+      "x": 3860,
       "y": 720,
       "interactionKey": "E",
       "interactionRadius": 120,
       "interactionEffect": {
-        "type": "door",
-        "message": "Puerta de mantenimiento abierta.",
+        "type": "loot",
+        "message": "Encontraste vendas y agua en archivo BNA.",
+        "rewardId": "food_small",
+        "objectiveEventType": "interactable_used"
+      }
+    },
+    {
+      "id": "weapon-locker-f4",
+      "type": "loot_container",
+      "x": 7580,
+      "y": 720,
+      "interactionKey": "E",
+      "interactionRadius": 120,
+      "interactionEffect": {
+        "type": "loot",
+        "message": "Arma reglamentaria recuperada del locker de seguridad.",
+        "rewardId": "ammo_small",
         "objectiveEventType": "interactable_used"
       }
     },
     {
       "id": "subsuelo_stairs_upper_floor",
       "type": "stairs",
-      "x": 4940,
+      "x": 9420,
       "y": 720,
       "interactionKey": "E",
       "interactionRadius": 140,
       "interactionEffect": {
         "type": "stairs",
-        "message": "Escalera disponible para ascender.",
-        "objectiveEventType": "interactable_used"
+        "targetId": "upper-floor-stairs",
+        "message": "Escalera del 4° piso al 5° habilitada.",
+        "objectiveEventType": "exit_used"
       }
-    },
-    {
-      "id": "subsuelo_escape_van",
-      "type": "vehicle",
-      "x": 4280,
-      "y": 740,
-      "interactionKey": "E",
-      "interactionRadius": 140,
-      "interactionEffect": {
-        "type": "vehicle",
-        "message": "Vehículo revisado y listo.",
-        "objectiveEventType": "interactable_used"
-      }
-    },
-    {
-      "id": "subsuelo_recycle_box",
-      "type": "loot_container",
-      "x": 2500,
-      "y": 720,
-      "interactionKey": "E",
-      "interactionRadius": 120,
-      "interactionEffect": {
-        "type": "loot",
-        "message": "Encontraste suministros en el contenedor.",
-        "rewardId": "food_small",
-        "objectiveEventType": "interactable_used"
-      }
-    },
-    {
-      "id": "subsuelo_power_switch",
-      "type": "switch",
-      "x": 3120,
-      "y": 700,
-      "interactionKey": "E",
-      "interactionRadius": 110,
-      "interactionEffect": {
-        "type": "switch",
-        "message": "Switch activado. El pasillo recupera energía.",
-        "objectiveEventType": "interactable_used"
-      },
-      "cinematicTrigger": "level2-checkpoint-first-zone-cleared"
-    },
-    {
-      "id": "subsuelo_ally_rescue",
-      "type": "ally_rescue",
-      "x": 3640,
-      "y": 720,
-      "interactionKey": "E",
-      "interactionRadius": 120,
-      "interactionEffect": {
-        "type": "ally_rescue",
-        "message": "Aliado rescatado y reincorporado al equipo.",
-        "objectiveEventType": "interactable_used"
-      },
-      "cinematicTrigger": "late-rescue-allies-join"
     }
   ],
   "triggers": [
     {
-      "id": "trigger_level2_mid_warning",
+      "id": "t-ambient-fleeing-civilians",
       "type": "narrative_message",
       "bounds": {
-        "x": 3200,
+        "x": 1580,
         "y": 640,
-        "width": 280,
-        "height": 220
+        "width": 220,
+        "height": 200
       },
       "payload": {
-        "message": "Escucho pasos arriba. Mantengan la formación.",
-        "speaker": "Valentina",
+        "speaker": "Sistema",
+        "message": "Dos empleados corren por el ala norte: '¡Suban, suban ya!'",
         "durationMs": 1800
       },
       "once": true,
       "startsEnabled": true
     },
     {
-      "id": "trigger_level2_intro_cinematic",
-      "type": "cinematic",
+      "id": "t-ambient-bite",
+      "type": "narrative_message",
       "bounds": {
-        "x": 520,
+        "x": 2980,
         "y": 640,
         "width": 220,
+        "height": 200
+      },
+      "payload": {
+        "speaker": "Valentina",
+        "message": "¡Infectados mordiendo civiles en la recepción! No se detengan.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    },
+    {
+      "id": "t-ambient-devour",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 4480,
+        "y": 640,
+        "width": 220,
+        "height": 200
+      },
+      "payload": {
+        "speaker": "Lorena",
+        "message": "Hay cuerpos siendo devorados en el pasillo de legajos.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    },
+    {
+      "id": "t-ambient-reanimate",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 6020,
+        "y": 640,
+        "width": 260,
         "height": 220
       },
       "payload": {
-        "cinematicId": "intro_level_3"
+        "speaker": "Alan",
+        "message": "¡Uno de los caídos se está reanimando, cabeza primero!",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    },
+    {
+      "id": "t-ambient-weapon-cache",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 7420,
+        "y": 640,
+        "width": 220,
+        "height": 200
+      },
+      "payload": {
+        "speaker": "Sistema",
+        "message": "Armería de guardia abierta: munición, botiquines y un arma corta utilizable.",
+        "durationMs": 1900
+      },
+      "once": true,
+      "startsEnabled": true
+    },
+    {
+      "id": "t-ambient-variables",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 8560,
+        "y": 640,
+        "width": 260,
+        "height": 220
+      },
+      "payload": {
+        "speaker": "Sistema",
+        "message": "Luces intermitentes, rociadores activos y humo: visibilidad reducida en la última vuelta.",
+        "durationMs": 2200
       },
       "once": true,
       "startsEnabled": true
     }
   ],
-  "cinematics": [
-    {
-      "cinematic_id": "intro_level_3",
-      "cameraPath": [
-        {
-          "x": 520,
-          "y": 620,
-          "zoom": 1.2
-        },
-        {
-          "x": 980,
-          "y": 610,
-          "zoom": 1.35
-        }
-      ],
-      "dialogueSequence": [
-        {
-          "speaker": "Alan",
-          "text": "Mantengan formación. Este sector está tomado.",
-          "durationMs": 2200,
-          "id": "intro_alan_1",
-          "emotion": "calm",
-          "portrait": "alan_default",
-          "choices": [
-            {
-              "id": "push",
-              "text": "Empujar rápido",
-              "nextId": "intro_lorena_fast"
-            },
-            {
-              "id": "safe",
-              "text": "Avanzar con cautela",
-              "nextId": "intro_lorena_safe"
-            }
-          ]
-        },
-        {
-          "speaker": "Lorena",
-          "text": "Recibido. Revisando ruta al siguiente nivel.",
-          "durationMs": 2200,
-          "id": "intro_lorena_fast",
-          "emotion": "tense",
-          "portrait": "lorena_alert",
-          "nextId": "intro_valentina_close"
-        },
-        {
-          "id": "intro_lorena_safe",
-          "speaker": "Lorena",
-          "text": "Avanzo despacio. Cubran ángulos y mantengan silencio.",
-          "emotion": "calm",
-          "portrait": "lorena_default",
-          "durationMs": 2200,
-          "nextId": "intro_valentina_close"
-        },
-        {
-          "id": "intro_valentina_close",
-          "speaker": "Valentina",
-          "text": "Perfecto. Mantengan contacto visual y seguimos.",
-          "emotion": "focused",
-          "portrait": "valentina_default",
-          "durationMs": 2000
-        }
-      ],
-      "duration": 10000,
-      "pauseGameplay": true
-    }
-  ],
+  "cinematics": [],
   "exits": [
     {
       "id": "upper-floor-stairs",
@@ -333,7 +812,7 @@
         "x": 220,
         "y": 724
       },
-      "label": "Escaleras al hall"
+      "label": "Escaleras 4°→5° (preparar transición a Nivel 3)"
     }
   ]
 }

@@ -34,12 +34,22 @@ const VALID_SCENE_KEYS: CampaignFlowNode['sceneKey'][] = [
   'DialogueScene'
 ];
 
+
+const CANONICAL_SCENE_BY_TYPE: Record<CampaignFlowNodeType, CampaignFlowNode['sceneKey']> = {
+  campaignIntro: 'CampaignIntroScene',
+  level: 'LevelScene',
+  cinematic: 'CinematicScene',
+  dialogue: 'DialogueScene'
+};
+
+
 export class SceneFlowManager {
   constructor(private readonly scene: Phaser.Scene) {}
 
   ensureDefinitionLoadedFromCache(): CampaignFlowDefinition | undefined {
     const existing = this.getDefinition();
     if (existing) {
+      console.info('[SceneFlowManager] Definición de campaña reutilizada desde registry.');
       return existing;
     }
 
@@ -52,6 +62,7 @@ export class SceneFlowManager {
       return undefined;
     }
 
+    console.info('[SceneFlowManager] Definición de campaña recuperada de cache JSON.');
     this.loadDefinition(cached);
     return cached;
   }
@@ -74,6 +85,10 @@ export class SceneFlowManager {
 
     this.scene.registry.set(FLOW_REGISTRY_KEY, definition);
     this.scene.registry.set(FLOW_CURSOR_KEY, 0);
+    console.info('[SceneFlowManager] Definición de campaña cargada y cursor reiniciado.', {
+      flowId: definition.flowId,
+      totalNodes: definition.nodes.length
+    });
   }
 
   getCurrentNode(): CampaignFlowNode | undefined {
@@ -277,6 +292,31 @@ export class SceneFlowManager {
         });
         return false;
       }
+
+      const expectedScene = CANONICAL_SCENE_BY_TYPE[node.type];
+      if (node.sceneKey !== expectedScene) {
+        console.error(`[SceneFlowManager] Nodo inválido (${options.source}) en índice ${index}: sceneKey no coincide con tipo canónico.`, {
+          nodeId: node.id,
+          nodeType: node.type,
+          sceneKey: node.sceneKey,
+          expectedScene
+        });
+        return false;
+      }
+    }
+
+    const introIndex = definition.nodes.findIndex((node) => node.id === 'campaign-intro');
+    if (introIndex !== 0) {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): campaign-intro debe ser el primer nodo.`, { introIndex });
+      return false;
+    }
+
+    const firstPlayableNode = definition.nodes[1];
+    if (!firstPlayableNode || !firstPlayableNode.id.startsWith('lvl01-')) {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): el nodo posterior al intro debe iniciar en lvl01-.`, {
+        firstPlayableNodeId: firstPlayableNode?.id
+      });
+      return false;
     }
 
     return true;

@@ -33,6 +33,7 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     const cinematicPath = data.flowNode?.cinematicPath;
+    console.info('[CinematicScene] create() con nodo canónico:', data.flowNode?.id ?? 'sin-flowNode');
     this.renderCinematic(cinematicPath);
 
     this.flowManager = new SceneFlowManager(this);
@@ -76,18 +77,23 @@ export class CinematicScene extends Phaser.Scene {
     };
 
     if (!cinematicPath || !cacheKey) {
+      console.warn('[CinematicScene] cinematicPath ausente; se renderiza fallback.');
       renderFromCache();
       return;
     }
 
     if (this.cache.json.exists(cacheKey)) {
+      console.info('[CinematicScene] Cinemática obtenida desde cache:', cinematicPath);
       renderFromCache();
       return;
     }
 
     this.load.json(cacheKey, cinematicPath);
     this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
-    this.load.once('loaderror', () => renderFromCache());
+    this.load.once('loaderror', () => {
+      console.error('[CinematicScene] Error cargando cinemática. Se usa fallback.', { cinematicPath });
+      renderFromCache();
+    });
     this.load.start();
   }
 
@@ -125,13 +131,19 @@ export class CinematicScene extends Phaser.Scene {
       console.log('[CinematicScene] activeCampaignNode detectado en registry:', currentNode.id);
     }
 
-    const next = manager.advanceFromNodeId(currentNode?.id ?? this.registry.get('flowNodeId'));
+    const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
+    const next = manager.advanceFromNodeId(currentNodeId);
     console.log('[CinematicScene] Nodo siguiente obtenido:', next ?? null);
 
     if (!next) {
       console.error('[CinematicScene] Error: no existe nodo siguiente para avanzar desde CinematicScene.');
       return;
     }
+
+    console.info('[CinematicScene] Avance de flujo validado.', {
+      currentNodeId,
+      nextNodeId: next.id
+    });
 
     this.isTransitioning = true;
     console.log(`[CinematicScene] Transición ejecutada por ${source}.`);

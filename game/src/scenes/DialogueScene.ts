@@ -34,6 +34,7 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     const dialoguePath = data.flowNode?.dialoguePath;
+    console.info('[DialogueScene] create() con nodo canónico:', data.flowNode?.id ?? 'sin-flowNode');
     this.renderDialogue(dialoguePath);
 
     this.flowManager = new SceneFlowManager(this);
@@ -80,18 +81,23 @@ export class DialogueScene extends Phaser.Scene {
     };
 
     if (!dialoguePath || !cacheKey) {
+      console.warn('[DialogueScene] dialoguePath ausente; se renderiza fallback.');
       renderFromCache();
       return;
     }
 
     if (this.cache.json.exists(cacheKey)) {
+      console.info('[DialogueScene] Diálogo obtenido desde cache:', dialoguePath);
       renderFromCache();
       return;
     }
 
     this.load.json(cacheKey, dialoguePath);
     this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
-    this.load.once('loaderror', () => renderFromCache());
+    this.load.once('loaderror', () => {
+      console.error('[DialogueScene] Error cargando diálogo. Se usa fallback.', { dialoguePath });
+      renderFromCache();
+    });
     this.load.start();
   }
 
@@ -129,13 +135,19 @@ export class DialogueScene extends Phaser.Scene {
       console.log('[DialogueScene] activeCampaignNode detectado en registry:', currentNode.id);
     }
 
-    const next = manager.advanceFromNodeId(currentNode?.id ?? this.registry.get('flowNodeId'));
+    const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
+    const next = manager.advanceFromNodeId(currentNodeId);
     console.log('[DialogueScene] Nodo siguiente obtenido:', next ?? null);
 
     if (!next) {
       console.error('[DialogueScene] Error: no existe nodo siguiente para avanzar desde DialogueScene.');
       return;
     }
+
+    console.info('[DialogueScene] Avance de flujo validado.', {
+      currentNodeId,
+      nextNodeId: next.id
+    });
 
     this.isTransitioning = true;
     console.log(`[DialogueScene] Transición ejecutada por ${source}.`);

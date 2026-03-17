@@ -6,8 +6,16 @@ import { Survivor } from './Survivor';
 const DEFAULT_TEXTURE_KEY = 'alan-sheet';
 
 export class CharacterFactory {
+  hasCharacter(characterId: string): characterId is CharacterId {
+    return characterId in CHARACTERS;
+  }
+
+  getCharacterConfig(characterId: CharacterId) {
+    return CHARACTERS[characterId];
+  }
+
   create(scene: Phaser.Scene, characterId: CharacterId, x: number, y: number): Survivor {
-    const config = CHARACTERS[characterId];
+    const config = this.getCharacterConfig(characterId);
 
     if (!config) {
       throw new Error(`Character with id "${characterId}" is not registered.`);

@@ -61,11 +61,37 @@ const PARTY_MEMBER_TINT: Record<PartyCharacterId, number> = {
   yamil: 0x93c5fd
 };
 
-const OPTIONAL_SETUP_TO_CHARACTER: Record<string, Extract<PartyCharacterId, 'celestino' | 'hernan' | 'yamil'>> = {
-  Celestino: 'celestino',
-  Hernán: 'hernan',
-  Yamil: 'yamil'
+const BASE_REQUIRED_PARTY: PartyCharacterId[] = [
+  'alan',
+  'giovanna',
+  'damian',
+  'nahir'
+];
+
+const NORMALIZED_NAME_TO_CHARACTER: Record<string, PartyCharacterId> = {
+  alan: 'alan',
+  'alan nahuel': 'alan',
+  giovanna: 'giovanna',
+  damian: 'damian',
+  nahir: 'nahir',
+  celestino: 'celestino',
+  hernan: 'hernan',
+  yamil: 'yamil',
+  lorena: 'lorena',
+  selene: 'selene'
 };
+
+function normalizePartyName(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase();
+}
+
+function resolvePartyCharacter(name: string): PartyCharacterId | undefined {
+  return NORMALIZED_NAME_TO_CHARACTER[normalizePartyName(name)];
+}
 
 function createMainPlayerConfig(characterId: Extract<PartyCharacterId, 'alan' | 'giovanna'>): PlayerConfig {
   const runtime = getCharacterRuntimeConfig(characterId);
@@ -83,19 +109,28 @@ export function getInitialPartySeed(setup?: InitialRunSetup | null): PartySeedCo
     ? 'giovanna'
     : 'alan';
 
-  const selectedMembers = new Set<PartyCharacterId>([
-    'alan',
-    'giovanna',
-    'damian',
-    'nahir'
-  ]);
+  const selectedMembers = new Set<PartyCharacterId>();
+  const configuredRequired = setup?.party.required ?? [];
+
+  if (configuredRequired.length === 0) {
+    BASE_REQUIRED_PARTY.forEach((characterId) => selectedMembers.add(characterId));
+  } else {
+    configuredRequired.forEach((characterName) => {
+      const characterId = resolvePartyCharacter(characterName);
+      if (characterId) {
+        selectedMembers.add(characterId);
+      }
+    });
+  }
 
   (setup?.party.optional ?? []).forEach((optionalName) => {
-    const optionalId = OPTIONAL_SETUP_TO_CHARACTER[optionalName];
+    const optionalId = resolvePartyCharacter(optionalName);
     if (optionalId) {
       selectedMembers.add(optionalId);
     }
   });
+
+  selectedMembers.add(protagonist);
 
   const activePlayers = [createMainPlayerConfig(protagonist)];
 

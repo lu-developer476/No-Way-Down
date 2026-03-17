@@ -1,145 +1,91 @@
 {
-  "levelId": "level10_b3_estacionamiento",
-  "registryKey": "level10NarrativeState",
+  "levelId": "level9_b3_estacionamiento_canonico",
+  "registryKey": "level9CanonicalNarrativeState",
   "failChainOnObjectiveFailure": true,
   "beats": [
     {
-      "id": "intro_b3_cinematica",
-      "label": "Cinemática inicial en subsuelo 3",
-      "description": "Las hermanas y el grupo llegan al 3° subsuelo e identifican el estacionamiento como única salida posible.",
+      "id": "llegada_subsuelo_3_tranquilo",
+      "label": "Llegada al 3° subsuelo",
+      "description": "Alan Nahuel, Giovanna, Nahir y Selene llegan al 3° subsuelo: parece demasiado tranquilo y hay autos faltantes o inutilizables.",
       "completion": {
         "type": "cinematic-played",
-        "targetId": "intro_b3"
+        "targetId": "level9_intro_b3_silencio"
       },
-      "visualPlaceholders": ["cinematic_intro_b3_placeholder", "parking_b3_wide_placeholder"]
+      "visualPlaceholders": ["b3_silencio_anomalo", "autos_faltantes_y_destruidos"]
     },
     {
-      "id": "explorar_estacionamiento",
-      "label": "Explora el estacionamiento y revisa vehículos",
-      "description": "Reconocer vehículos interactivos y decorativos para detectar rutas y recursos.",
-      "completion": {
-        "type": "parking-explored",
-        "targetId": "zonas_estacionamiento_completas"
-      },
-      "visualPlaceholders": ["parking_lane_a_placeholder", "parking_lane_b_placeholder"]
-    },
-    {
-      "id": "asegurar_recursos_y_llaves",
-      "label": "Asegura recursos, llaves y objetos vehiculares",
-      "description": "Recolectar llaves y componentes para habilitar una opción de escape.",
+      "id": "buscar_vehiculo_con_llaves",
+      "label": "Buscar un vehículo operativo",
+      "description": "Alan Nahuel ordena buscar un vehículo con llaves dentro o con dueños cerca mientras se saquean recursos del estacionamiento.",
       "completion": {
         "type": "resources-secured",
-        "targetId": "kit_escape_listo"
+        "targetId": "kit_supervivencia_b3"
       },
-      "visualPlaceholders": ["pickup_items_ui_placeholder", "veh_inventory_placeholder"]
+      "visualPlaceholders": ["interacciones_loot_b3", "vehiculos_objetivo_b3"]
     },
     {
-      "id": "mordida_en_camioneta",
-      "label": "Evento de mordida cerca de la camioneta",
-      "description": "Una de las gemelas es mordida al aproximarse a la camioneta utilitaria.",
+      "id": "alan_detecta_salida",
+      "label": "Detectar salida al exterior",
+      "description": "Alan Nahuel encuentra una salida potencial al exterior y activa la cinemática de reorganización del grupo.",
+      "completion": {
+        "type": "cinematic-played",
+        "targetId": "level9_alan_reporta_salida"
+      },
+      "visualPlaceholders": ["rampa_exterior_detectada"]
+    },
+    {
+      "id": "cinematica_mordida_selene",
+      "label": "Cinemática de hallazgo, ataque y auto utilizable",
+      "description": "Selene, ya infectada de antes, es mordida en la pierna; Nahir la auxilia, Giovanna remata al infectado y Alan salva a Giovanna cuando aparece otro dueño infectado.",
       "completion": {
         "type": "twin-bitten",
-        "targetId": "camioneta_mordida"
+        "targetId": "level9_selene_bite_under_chassis"
       },
-      "visualPlaceholders": ["bite_event_camioneta_placeholder"]
+      "visualPlaceholders": ["selene_bite_event", "giovanna_vehicle_discovery"]
     },
     {
-      "id": "auto_utilizable_aliada",
-      "label": "Descubrir auto utilizable por la aliada",
-      "description": "Otra aliada confirma que el sedán gris puede ponerse en marcha.",
-      "completion": {
-        "type": "usable-car-discovered",
-        "targetId": "sedan_aliada"
-      },
-      "visualPlaceholders": ["sedan_ready_placeholder", "ally_driver_placeholder"]
-    },
-    {
-      "id": "defensa_principal_10_min",
-      "label": "Resistir 10 minutos junto al auto",
-      "description": "Combate principal de resistencia alrededor del vehículo utilizable.",
+      "id": "resistencia_10_min",
+      "label": "Resistir 10 minutos junto al vehículo",
+      "description": "El grupo debe sostener una defensa de 10 minutos ante una única oleada creciente.",
       "completion": {
         "type": "resistance-completed",
-        "targetId": "defensa_auto_principal",
+        "targetId": "level9_b3_holdout",
         "durationMs": 600000
       },
       "failure": {
         "type": "manual-fail"
       },
-      "visualPlaceholders": ["horde_main_wave_placeholder", "car_defense_zone_placeholder"]
+      "visualPlaceholders": ["holdout_vehicle_ring", "horda_creciente_unica"]
     },
     {
-      "id": "infeccion_en_progreso",
-      "label": "Progresión de la infección durante la defensa",
-      "description": "La gemela mordida empeora mientras el grupo sostiene la posición.",
+      "id": "degradacion_selene_durante_combate",
+      "label": "Asistir a Selene durante la defensa",
+      "description": "La infección de Selene empeora gradualmente y obliga al equipo a asistirla en momentos críticos.",
       "completion": {
         "type": "infection-progressed",
-        "targetId": "gemela_infectada_fase_3"
+        "targetId": "selene_stage_terminal"
       },
-      "visualPlaceholders": ["infection_progress_overlay_placeholder"]
+      "visualPlaceholders": ["selene_infection_progression", "assist_events_overlay"]
     },
     {
-      "id": "cinematica_post_muerte",
-      "label": "Cinemática posterior: muerte entre hermanas",
-      "description": "Se resuelve la tragedia entre hermanas y el suicidio ocurre fuera de cámara directa.",
+      "id": "cinematica_final_traicion",
+      "label": "Cinemática final del nivel",
+      "description": "Tras la defensa, Nahir descubre la herida oculta; Selene le dispara, amenaza al resto y culmina con un suicidio fuera del auto en retirada.",
       "completion": {
         "type": "sister-death-cinematic-played",
-        "targetId": "post_defensa_hermanas"
+        "targetId": "level9_final_selene_betrayal"
       },
-      "visualPlaceholders": ["post_battle_sisters_placeholder", "offscreen_suicide_audio_placeholder"]
+      "visualPlaceholders": ["final_betrayal_standoff", "offscreen_gunshot"]
     },
     {
-      "id": "escape_duo_auto",
-      "label": "Escapar en auto con dos personajes",
-      "description": "Dos personajes logran subir al vehículo y abandonar el estacionamiento.",
+      "id": "escape_duo_canonico",
+      "label": "Escapar con el nuevo dúo",
+      "description": "Alan Nahuel y Giovanna suben al auto y abandonan el estacionamiento como únicos sobrevivientes del grupo.",
       "completion": {
         "type": "duo-escaped",
-        "targetId": "sedan_aliada"
+        "targetId": "sedan_supervivencia_b3"
       },
-      "visualPlaceholders": ["duo_escape_placeholder"]
-    },
-    {
-      "id": "trayecto_hacia_santelmo",
-      "label": "Cinemática de trayecto hacia San Telmo",
-      "description": "Secuencia de conducción nocturna rumbo al barrio.",
-      "completion": {
-        "type": "road-cinematic-played",
-        "targetId": "ruta_san_telmo"
-      },
-      "visualPlaceholders": ["road_trip_to_santelmo_placeholder"]
-    },
-    {
-      "id": "emboscada_dos_cuadras",
-      "label": "Emboscada final a dos cuadras",
-      "description": "El vehículo es detenido por una emboscada antes de entrar al barrio.",
-      "completion": {
-        "type": "ambush-triggered",
-        "targetId": "emboscada_2_cuadras"
-      },
-      "visualPlaceholders": ["ambush_blockade_placeholder"]
-    },
-    {
-      "id": "defensa_final_2_min",
-      "label": "Combate final de resistencia (2 minutos)",
-      "description": "Última defensa para abrir un hueco y continuar el viaje.",
-      "completion": {
-        "type": "resistance-completed",
-        "targetId": "defensa_final_barrio",
-        "durationMs": 120000
-      },
-      "failure": {
-        "type": "manual-fail"
-      },
-      "visualPlaceholders": ["final_holdout_placeholder", "burning_street_placeholder"]
-    },
-    {
-      "id": "final_abierto",
-      "label": "Cinemática final abierta",
-      "description": "La historia cierra con un final abierto al llegar al borde de San Telmo.",
-      "completion": {
-        "type": "open-ending-cinematic-played",
-        "targetId": "ending_open_santelmo"
-      },
-      "visualPlaceholders": ["open_ending_santelmo_placeholder"]
+      "visualPlaceholders": ["alan_giovanna_escape"]
     }
   ]
 }

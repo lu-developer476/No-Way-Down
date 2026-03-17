@@ -1,113 +1,78 @@
 {
-  "levelId": "level10",
-  "survivalId": "parking-last-stand",
+  "levelId": "level9_b3_estacionamiento_canonico",
+  "survivalId": "level9_b3_holdout",
   "durationMs": 600000,
   "carAnchor": {
-    "id": "escape-car-main",
+    "id": "sedan_supervivencia_b3",
     "x": 1420,
     "y": 980,
     "defenseRadius": 280
   },
-  "pressureMode": "hybrid",
+  "pressureMode": "continuous",
   "visibleTimer": {
     "enabled": true,
     "format": "mm:ss",
     "warningThresholdMs": 90000
   },
-  "waves": [
-    {
-      "id": "wave-01-contact",
-      "label": "Primer contacto",
-      "startAtMs": 0,
-      "durationMs": 150000,
-      "spawnIntervalMs": 9500,
-      "enemiesPerSpawn": 3,
-      "spawnPointIds": ["north_ramp", "east_service", "west_gate"]
-    },
-    {
-      "id": "wave-02-pressure",
-      "label": "Presión sostenida",
-      "startAtMs": 150000,
-      "durationMs": 180000,
-      "spawnIntervalMs": 7000,
-      "enemiesPerSpawn": 4,
-      "spawnPointIds": ["north_ramp", "east_service", "west_gate", "south_lane"]
-    },
-    {
-      "id": "wave-03-overrun",
-      "label": "Borde del colapso",
-      "startAtMs": 330000,
-      "durationMs": 270000,
-      "spawnIntervalMs": 5000,
-      "enemiesPerSpawn": 5,
-      "spawnPointIds": ["north_ramp", "east_service", "west_gate", "south_lane"]
-    }
-  ],
+  "waves": [],
   "continuousPressure": {
     "enabled": true,
     "baseSpawnIntervalMs": 12000,
-    "rampEveryMs": 60000,
-    "minSpawnIntervalMs": 5000,
+    "rampEveryMs": 45000,
+    "minSpawnIntervalMs": 3500,
     "enemiesPerSpawn": 2,
     "spawnPointIds": ["north_ramp", "east_service", "west_gate", "south_lane"]
   },
   "narrativeEvents": [
     {
-      "id": "protagonist-single-save",
+      "id": "selene_assist_event_1",
       "triggerAtMs": 120000,
       "oneShot": true,
-      "title": "Rescate bajo presión",
-      "description": "El protagonista se lanza entre los infectados y salva a una compañera por única vez.",
-      "tags": ["hero-moment", "save", "one-shot"]
+      "title": "Selene pierde estabilidad",
+      "description": "Selene se desploma por dolor abdominal y Nahir debe asistirla mientras Alan y Giovanna contienen el frente.",
+      "tags": ["assist", "selene", "phase_1"]
     },
     {
-      "id": "ally-black-hair-struggle",
-      "triggerAtMs": 265000,
+      "id": "selene_assist_event_2",
+      "triggerAtMs": 300000,
       "oneShot": true,
-      "title": "Resistencia al límite",
-      "description": "La aliada de piel clara y pelo negro mantiene la línea, pero apenas puede sostener su posición.",
-      "tags": ["ally", "struggle", "morale"]
+      "title": "Selene compromete la defensa",
+      "description": "La pierna mordida falla; el grupo debe cerrarle el perímetro para evitar que la sobrepasen.",
+      "tags": ["assist", "selene", "phase_2"]
     },
     {
-      "id": "infected-twin-still-fighting",
-      "triggerAtMs": 405000,
+      "id": "selene_assist_event_3",
+      "triggerAtMs": 480000,
       "oneShot": true,
-      "title": "Último acto de la gemela",
-      "description": "La gemela de pelo castaño, ya infectada, sigue ayudando a defender el perímetro del auto.",
-      "tags": ["twin", "infection", "support"]
+      "title": "Selene entra en fase terminal",
+      "description": "Selene sufre confusión severa y dispara fuera de ritmo, obligando al equipo a corregir su posición.",
+      "tags": ["assist", "selene", "phase_3"]
     }
   ],
   "infectionLink": {
     "enabled": true,
-    "infectionId": "level10_twin_progression",
+    "infectionId": "selene_progressive_infection",
     "milestones": [
       {
-        "id": "infection-stage-1",
+        "id": "selene_stage_hidden_wound",
         "triggerAtMs": 90000,
-        "stageId": "bite_shock",
-        "severity": "leve",
-        "hint": "La gemela respira con dificultad pero sigue coordinando disparos cortos."
-      },
-      {
-        "id": "infection-stage-2",
-        "triggerAtMs": 270000,
-        "stageId": "motor_decline",
+        "stageId": "selene_stage_hidden",
         "severity": "moderada",
-        "hint": "Pierde precisión y necesita cobertura intermitente."
+        "hint": "La herida previa del costado derecho empieza a evidenciarse."
       },
       {
-        "id": "infection-stage-3",
-        "triggerAtMs": 420000,
-        "stageId": "critical_push",
+        "id": "selene_stage_leg_bite",
+        "triggerAtMs": 240000,
+        "stageId": "selene_stage_leg_bite",
         "severity": "grave",
-        "hint": "Se nota el deterioro, pero insiste en cubrir el flanco del auto."
+        "hint": "La mordida bajo la rodilla acelera la infección."
       },
       {
-        "id": "infection-stage-4",
-        "triggerAtMs": 570000,
-        "stageId": "terminal_hold",
+        "id": "selene_stage_terminal",
+        "triggerAtMs": 540000,
+        "stageId": "selene_stage_terminal",
         "severity": "critica",
-        "hint": "Últimos segundos de control antes del desenlace de escape."
+        "hint": "Selene casi no distingue aliados de amenazas."
       }
     ]
   }

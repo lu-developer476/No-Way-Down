@@ -3,41 +3,42 @@
   "holdId": "san_telmo_final_street_hold",
   "previousCinematicId": "drive_to_santelmo",
   "previousCinematicTriggerId": "parking_escape_departure",
-  "finalCinematicTriggerId": "start_twin_final_collapse",
-  "objectiveId": "resistir_horda_final_2_min",
-  "objectiveLabel": "Resistan 2 minutos hasta abrir paso hacia San Telmo.",
+  "finalCinematicTriggerId": "level10_last_combat_cleared",
+  "objectiveId": "eliminar_50_zombies_independencia",
+  "objectiveLabel": "Alan y Giovanna deben cubrirse y eliminar 50 zombies para continuar.",
+  "killTarget": 50,
   "survivors": {
     "protagonistId": "protagonist_main",
     "allyId": "ally_black_hair"
   },
   "timer": {
-    "durationMs": 120000,
-    "warningThresholdMs": 30000,
+    "durationMs": 300000,
+    "warningThresholdMs": 60000,
     "format": "mm:ss"
   },
   "spawnPhases": [
     {
       "id": "street_hold_phase_1",
-      "label": "Contacto inicial",
+      "label": "Aproximación lenta",
       "startAtMs": 0,
-      "spawnIntervalMs": 6500,
-      "enemiesPerSpawn": 3,
-      "spawnPointIds": ["street_north", "street_east", "street_west"]
+      "spawnIntervalMs": 7200,
+      "enemiesPerSpawn": 1,
+      "spawnPointIds": ["street_north", "street_east"]
     },
     {
       "id": "street_hold_phase_2",
-      "label": "Cierre de pinza",
-      "startAtMs": 40000,
-      "spawnIntervalMs": 5200,
-      "enemiesPerSpawn": 4,
-      "spawnPointIds": ["street_north", "street_east", "street_west", "street_rear"]
+      "label": "Presión sostenida",
+      "startAtMs": 80000,
+      "spawnIntervalMs": 6200,
+      "enemiesPerSpawn": 1,
+      "spawnPointIds": ["street_north", "street_east", "street_west"]
     },
     {
       "id": "street_hold_phase_3",
-      "label": "Último esfuerzo",
-      "startAtMs": 85000,
-      "spawnIntervalMs": 3900,
-      "enemiesPerSpawn": 5,
+      "label": "Empuje final",
+      "startAtMs": 170000,
+      "spawnIntervalMs": 5000,
+      "enemiesPerSpawn": 2,
       "spawnPointIds": ["street_north", "street_east", "street_west", "street_rear"]
     }
   ]

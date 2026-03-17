@@ -31,6 +31,7 @@ export interface Level10FinalStreetHoldConfig {
   finalCinematicTriggerId: string;
   objectiveId: string;
   objectiveLabel: string;
+  killTarget: number;
   survivors: Level10FinalStreetHoldSurvivorConfig;
   timer: Level10FinalStreetHoldTimerConfig;
   spawnPhases: Level10FinalStreetHoldSpawnPhaseConfig[];
@@ -46,6 +47,9 @@ export interface Level10FinalStreetHoldSnapshot {
   timerLabel: string;
   objectiveId: string;
   objectiveLabel: string;
+  killTarget: number;
+  kills: number;
+  remainingKills: number;
   currentPhaseId?: string;
   survivors: string[];
   startedAt?: number;
@@ -75,6 +79,7 @@ export interface Level10FinalStreetHoldCallbacks {
   onTimerTick?: (snapshot: Level10FinalStreetHoldSnapshot) => void;
   onSpawnRequested?: (request: Level10FinalStreetSpawnRequest, snapshot: Level10FinalStreetHoldSnapshot) => void;
   onCombatEvent?: (event: CombatEvent, snapshot: Level10FinalStreetHoldSnapshot) => void;
+  onKillProgress?: (snapshot: Level10FinalStreetHoldSnapshot) => void;
   onHoldFailed?: (context: { defeatedSurvivorId: string }, snapshot: Level10FinalStreetHoldSnapshot) => void;
   onHoldCompleted?: (
     context: { holdId: string; finalCinematicTriggerId: string },
@@ -83,12 +88,11 @@ export interface Level10FinalStreetHoldCallbacks {
 }
 
 /**
- * Sistema de resistencia final para la calle previa a San Telmo en Nivel 10.
+ * Tramo final en vía pública del Nivel 10.
  *
- * - Se arma cuando termina la cinemática de trayecto (dos cuadras antes del barrio).
- * - Limita participantes a los dos supervivientes definidos en JSON.
- * - Ejecuta una defensa breve e intensa de 2 minutos con fases de presión configurables.
- * - Al completar el temporizador, devuelve un trigger para enganchar la cinemática final.
+ * - Se activa al terminar la cinemática de trayecto por Plaza de Mayo/Paseo Colón.
+ * - Mantiene tensión con spawn espaciado por fases, evitando horda continua.
+ * - Exige un objetivo canónico de 50 bajas para abrir la cinemática de cierre.
  */
 export class Level10FinalStreetHoldSystem {
   private readonly config: Level10FinalStreetHoldConfig;
@@ -101,6 +105,7 @@ export class Level10FinalStreetHoldSystem {
   private failedAt?: number;
   private elapsedMs = 0;
   private currentPhaseId?: string;
+  private kills = 0;
   private startedPhaseIds = new Set<string>();
   private readonly lastSpawnByPhaseId = new Map<string, number>();
 
@@ -147,6 +152,7 @@ export class Level10FinalStreetHoldSystem {
     this.completedAt = undefined;
     this.failedAt = undefined;
     this.elapsedMs = 0;
+    this.kills = 0;
     this.currentPhaseId = undefined;
     this.lastSpawnByPhaseId.clear();
     this.startedPhaseIds.clear();
@@ -170,8 +176,7 @@ export class Level10FinalStreetHoldSystem {
       return;
     }
 
-    this.elapsedMs = Math.min(this.config.timer.durationMs, Math.max(0, now - this.startedAt));
-
+    this.elapsedMs = Math.max(0, now - this.startedAt);
     this.dispatchSpawnRequests();
 
     const snapshot = this.getSnapshot();
@@ -181,25 +186,39 @@ export class Level10FinalStreetHoldSystem {
       waveId: this.currentPhaseId ?? 'hold-start',
       metadata: {
         elapsedMs: this.elapsedMs,
-        remainingMs: snapshot.remainingMs,
+        remainingKills: snapshot.remainingKills,
         warningState: snapshot.warningState
       }
     });
     this.callbacks.onTimerTick?.(snapshot);
+  }
 
-    if (this.elapsedMs >= this.config.timer.durationMs) {
-      this.state = 'completed';
-      this.completedAt = now;
-      const completedSnapshot = this.getSnapshot();
-      this.emitCombatEvent({ type: 'zone-cleared', zoneId: this.config.holdId });
-      this.callbacks.onHoldCompleted?.(
-        {
-          holdId: this.config.holdId,
-          finalCinematicTriggerId: this.config.finalCinematicTriggerId
-        },
-        completedSnapshot
-      );
+  registerZombieKill(count = 1, now = Date.now()): boolean {
+    if (this.state !== 'active' || count <= 0) {
+      return false;
     }
+
+    this.kills = Math.min(this.config.killTarget, this.kills + count);
+    const snapshot = this.getSnapshot();
+    this.callbacks.onKillProgress?.(snapshot);
+
+    if (this.kills < this.config.killTarget) {
+      return true;
+    }
+
+    this.state = 'completed';
+    this.completedAt = now;
+    const completedSnapshot = this.getSnapshot();
+    this.emitCombatEvent({ type: 'zone-cleared', zoneId: this.config.holdId });
+    this.callbacks.onHoldCompleted?.(
+      {
+        holdId: this.config.holdId,
+        finalCinematicTriggerId: this.config.finalCinematicTriggerId
+      },
+      completedSnapshot
+    );
+
+    return true;
   }
 
   markSurvivorDefeated(survivorId: string, now: number): boolean {
@@ -224,6 +243,7 @@ export class Level10FinalStreetHoldSystem {
 
   getSnapshot(): Level10FinalStreetHoldSnapshot {
     const remainingMs = Math.max(0, this.config.timer.durationMs - this.elapsedMs);
+    const remainingKills = Math.max(0, this.config.killTarget - this.kills);
 
     return {
       levelId: this.config.levelId,
@@ -231,10 +251,13 @@ export class Level10FinalStreetHoldSystem {
       state: this.state,
       elapsedMs: this.elapsedMs,
       remainingMs,
-      warningState: remainingMs <= this.config.timer.warningThresholdMs,
+      warningState: remainingMs <= this.config.timer.warningThresholdMs || remainingKills <= 10,
       timerLabel: this.formatTimer(remainingMs),
       objectiveId: this.config.objectiveId,
       objectiveLabel: this.config.objectiveLabel,
+      killTarget: this.config.killTarget,
+      kills: this.kills,
+      remainingKills,
       currentPhaseId: this.currentPhaseId,
       survivors: this.getSurvivorIds(),
       startedAt: this.startedAt,
@@ -325,6 +348,10 @@ export class Level10FinalStreetHoldSystem {
       throw new Error('Level10FinalStreetHoldSystem: objectiveId y objectiveLabel son obligatorios.');
     }
 
+    if (!Number.isInteger(config.killTarget) || config.killTarget <= 0) {
+      throw new Error('Level10FinalStreetHoldSystem: killTarget debe ser un entero mayor a 0.');
+    }
+
     if (!config.survivors.protagonistId.trim() || !config.survivors.allyId.trim()) {
       throw new Error('Level10FinalStreetHoldSystem: survivors requiere protagonistId y allyId.');
     }
@@ -333,8 +360,8 @@ export class Level10FinalStreetHoldSystem {
       throw new Error('Level10FinalStreetHoldSystem: survivors debe contener exactamente dos IDs distintos.');
     }
 
-    if (config.timer.durationMs !== 120000) {
-      throw new Error('Level10FinalStreetHoldSystem: timer.durationMs debe ser exactamente 120000 (2 minutos).');
+    if (config.timer.durationMs <= 0) {
+      throw new Error('Level10FinalStreetHoldSystem: timer.durationMs debe ser mayor a 0.');
     }
 
     if (config.timer.warningThresholdMs < 0 || config.timer.warningThresholdMs >= config.timer.durationMs) {
@@ -356,8 +383,8 @@ export class Level10FinalStreetHoldSystem {
       }
       phaseIds.add(phase.id);
 
-      if (phase.startAtMs < 0 || phase.startAtMs >= config.timer.durationMs) {
-        throw new Error(`Level10FinalStreetHoldSystem: fase "${phase.id}" requiere startAtMs dentro del temporizador.`);
+      if (phase.startAtMs < 0) {
+        throw new Error(`Level10FinalStreetHoldSystem: fase "${phase.id}" requiere startAtMs >= 0.`);
       }
 
       if (phase.spawnIntervalMs <= 0) {

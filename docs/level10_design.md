@@ -14,7 +14,7 @@ El Nivel 10 está implementado como una cadena de sistemas desacoplados que mode
 6. colapso final de las gemelas,
 7. salida en vehículo,
 8. trayecto hacia San Telmo,
-9. combate final de 2 minutos,
+9. combate final en Av. Independencia (50 bajas),
 10. cinemática de final abierto.
 
 La progresión narrativa no depende de una sola clase monolítica: se reparte en `Level10NarrativeSystem`, `Level10ObjectiveChain` y sistemas especializados (cinemáticas, supervivencia, infección y defensa final).
@@ -183,20 +183,18 @@ Archivo principal:
 
 ---
 
-## 9) Combate final de 2 minutos
+## 9) Combate final en Av. Independencia (50 bajas)
 
 Sistema: `Level10FinalStreetHoldSystem`
 
-- Defensa breve en calle con temporizador estricto de **120000 ms**.
-- Limita combatientes válidos a 2 supervivientes (`survivors`).
-- Maneja fases de spawn escaladas (`spawnPhases`).
-- Al completar temporizador dispara trigger de cinemática final.
+- Defensa final en exterior urbano (Paseo Colón/Independencia) con objetivo de **50 bajas** (`killTarget`).
+- Limita combatientes válidos a 2 supervivientes (`survivors`): Alan Nahuel y Giovanna.
+- Maneja fases de spawn de baja frecuencia para sostener suspenso y momentum (`spawnPhases`).
+- Al llegar a 50 bajas dispara el trigger de cinemática final (`level10_last_combat_cleared`).
 
 Archivo principal:
 
 - `assets/levels/level10_final_street_hold.json`
-
-> Nota de mantenimiento: el sistema valida `timer.durationMs === 120000`; no convertir este valor en configurable libre si se quiere conservar el cierre actual.
 
 ---
 
@@ -205,7 +203,7 @@ Archivo principal:
 Sistema: `FinalOpenEndingCinematicSystem`
 
 - Requiere secuencia con al menos un bloque de `silence`.
-- Limita diálogo a máximo 2 líneas para mantener cierre sobrio.
+- Permite diálogo breve de despedida (hasta 6 líneas) sin perder el tono sobrio.
 - Exige estado final de campaña:
   - `campaignState.status = "completed"`
   - `campaignState.endingType = "open"`

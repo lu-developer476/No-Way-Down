@@ -3,60 +3,49 @@
   "cinematicId": "level10_drive_to_santelmo_epilogue",
   "triggerId": "level10_escape_vehicle_departure",
   "movementLocked": true,
-  "cameraShakeOnStartMs": 420,
-  "preDialoguePauseMs": 500,
+  "cameraShakeOnStartMs": 300,
+  "preDialoguePauseMs": 700,
   "routeBeats": [
     {
-      "id": "crossing_9_de_julio",
-      "label": "Cruce por 9 de Julio entre sirenas lejanas",
-      "distanceToBarrioBlocks": 8
+      "id": "plaza_de_mayo_ring",
+      "label": "Bordeando Plaza de Mayo en silencio",
+      "distanceToBarrioBlocks": 7
     },
     {
-      "id": "avenida_independencia",
-      "label": "Avenida Independencia con tránsito abandonado",
+      "id": "paseo_colon_metrobus",
+      "label": "Metrobús de Avda. Paseo Colón con infectados dispersos",
       "distanceToBarrioBlocks": 5
     },
     {
-      "id": "defensa_approach",
-      "label": "Ingreso a calles angostas camino a Defensa",
-      "distanceToBarrioBlocks": 3
-    },
-    {
-      "id": "pre_ambush_two_blocks",
-      "label": "Dos cuadras para San Telmo, visibilidad cortada",
+      "id": "independencia_intersection",
+      "label": "Intersección con Av. Independencia: zombies inmóviles",
       "distanceToBarrioBlocks": 2
     }
   ],
   "dialogue": [
     {
-      "speaker": "Valeria",
-      "text": "No puedo dejar de escuchar los gritos del edificio... cerré la puerta y sentí que los enterraba vivos.",
-      "durationMs": 3000,
-      "mood": "quebrado"
-    },
-    {
-      "speaker": "Rojas",
-      "text": "Nos quedamos sin aire, sin balas y sin tiempo. Si frenábamos ahí, no salía nadie.",
-      "durationMs": 2800,
+      "speaker": "Alan Nahuel",
+      "text": "No pensé ver la ciudad así... ni ruido, ni ayuda, sólo esto.",
+      "durationMs": 2400,
       "mood": "cansancio"
     },
     {
-      "speaker": "Valeria",
-      "text": "San Telmo está cerca... pero cuando cierro los ojos veo el hall cayéndose y a ellos atrás nuestro.",
-      "durationMs": 3000,
+      "speaker": "Giovanna",
+      "text": "Mirá cómo se mueven los infectados... y esos de la esquina ni reaccionan.",
+      "durationMs": 2500,
       "mood": "tension"
     },
     {
-      "speaker": "Rojas",
-      "text": "Dos cuadras. Bajamos listos para pelear. Esto todavía no terminó.",
-      "durationMs": 2600,
+      "speaker": "Alan Nahuel",
+      "text": "Cubro tu flanco. Si esto arranca, no paramos hasta abrirnos paso.",
+      "durationMs": 2200,
       "mood": "determinacion"
     }
   ],
   "ambushTrigger": {
     "id": "level10_final_ambush_two_blocks",
     "distanceToBarrioBlocks": 2,
-    "objectiveId": "survive_final_ambush_santelmo",
-    "objectiveLabel": "Resistí la emboscada final a dos cuadras de San Telmo"
+    "objectiveId": "eliminar_50_zombies_independencia",
+    "objectiveLabel": "Cubrite con Giovanna y eliminá 50 zombies para avanzar"
   }
 }

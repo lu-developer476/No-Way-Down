@@ -97,7 +97,7 @@ const DEFAULT_ACTION_DURATION_MS = 1200;
  *
  * Intención narrativa:
  * 1) Cerrar la campaña como completada sin presentar una victoria total.
- * 2) Sostener el tono de supervivencia amarga con diálogo mínimo y silencios largos.
+ * 2) Sostener el tono de supervivencia amarga con silencios y diálogo corto de despedida.
  * 3) Dejar un gancho explícito para continuación/secuela.
  */
 export class FinalOpenEndingCinematicSystem {
@@ -232,8 +232,8 @@ export class FinalOpenEndingCinematicSystem {
     }
 
     const dialogueSteps = config.sequence.filter((step) => step.type === 'dialogue').length;
-    if (dialogueSteps > 2) {
-      throw new Error('FinalOpenEndingCinematicSystem: el cierre exige diálogo mínimo (máximo 2 líneas).');
+    if (dialogueSteps === 0 || dialogueSteps > 6) {
+      throw new Error('FinalOpenEndingCinematicSystem: el cierre final admite entre 1 y 6 líneas de diálogo.');
     }
 
     if (config.campaignState.status !== 'completed') {

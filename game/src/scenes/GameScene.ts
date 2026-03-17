@@ -437,10 +437,20 @@ export class GameScene extends Phaser.Scene {
       this,
       this.players as unknown as Phaser.Types.Physics.Arcade.GameObjectWithBody[],
       {
-      onNarrativeMessage: (payload) => this.showMissionStatus(`${payload.speaker ?? 'Radio'}: ${payload.message}`),
-      onCinematic: (payload) => {
-        void this.levelCinematicSystem?.playById(payload.cinematicId);
-      }
+        onTriggerActivated: (trigger) => {
+          const objectiveUpdate = this.objectiveSystem?.process({
+            type: 'trigger_entered',
+            targetId: trigger.id
+          });
+
+          if (objectiveUpdate?.status === 'completed') {
+            this.registry.set('currentObjective', this.objectiveSystem?.getActiveObjective()?.label ?? 'Objetivo completado');
+          }
+        },
+        onNarrativeMessage: (payload) => this.showMissionStatus(`${payload.speaker ?? 'Radio'}: ${payload.message}`),
+        onCinematic: (payload) => {
+          void this.levelCinematicSystem?.playById(payload.cinematicId);
+        }
       }
     );
 

@@ -7,6 +7,7 @@ export type IrreversibleLossEventType =
 export interface SquadMember {
   id: string;
   name: string;
+  required?: boolean;
   profile?: {
     gender?: 'masculino' | 'femenino' | 'no_binario';
     skinTone?: string;
@@ -153,6 +154,10 @@ export class IrreversibleLossEventSystem {
     this.status = 'triggered';
 
     this.config.casualties.forEach((member) => {
+      if (!this.initialSquadById.has(member.id)) {
+        return;
+      }
+
       this.removedMemberIds.add(member.id);
     });
 
@@ -231,7 +236,8 @@ export class IrreversibleLossEventSystem {
         throw new Error(`IrreversibleLossEventSystem: casualty "${casualty.id}" requiere name.`);
       }
 
-      if (!initialMemberIds.has(casualty.id)) {
+      const casualtyIsRequired = casualty.required ?? true;
+      if (casualtyIsRequired && !initialMemberIds.has(casualty.id)) {
         throw new Error(`IrreversibleLossEventSystem: casualty "${casualty.id}" no existe en la escuadra inicial.`);
       }
 

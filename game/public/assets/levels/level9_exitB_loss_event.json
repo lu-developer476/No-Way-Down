@@ -1,48 +1,40 @@
 {
-  "levelId": "level9",
-  "eventId": "exit_b_irreversible_loss",
+  "levelId": "level6_canonico",
+  "eventId": "exit_b_lorena_neck_bite",
   "routeId": "exit_b",
-  "title": "Oleada irreversible en salida B",
+  "title": "Muerte de Lorena en salida B",
   "unavoidable": true,
   "trigger": {
     "type": "exit-evaluated",
-    "exitId": "exit_b"
+    "exitId": "B"
   },
   "casualties": [
     {
-      "id": "ally-m-01",
-      "name": "Tomás",
-      "profile": {
-        "gender": "masculino",
-        "skinTone": "morocha",
-        "hairColor": "negro"
-      }
-    },
-    {
-      "id": "ally-f-02",
-      "name": "Lucía",
+      "id": "lorena",
+      "name": "Lorena",
+      "required": true,
       "profile": {
         "gender": "femenino",
-        "skinTone": "morocha",
-        "hairColor": "negro"
+        "skinTone": "clara",
+        "hairColor": "castaño"
       }
     }
   ],
   "narrative": {
-    "objectiveAfterLoss": "Mantén al grupo restante unido y reevalúa una salida viable.",
-    "confirmationLine": "La pérdida en la salida B fue inevitable: nadie pudo alcanzarles entre las oleadas.",
+    "objectiveAfterLoss": "Lorena cayó en salida B. Mantengan formación y continúen con salidas C, D y E.",
+    "confirmationLine": "Lorena fue mordida en el cuello durante la distracción en salida B. La pérdida es irreversible.",
     "statePatch": {
-      "level9": {
+      "level6Canonico": {
         "exitB": {
           "irreversibleLoss": true,
-          "casualties": ["ally-m-01", "ally-f-02"],
-          "reason": "infected_waves_overrun"
+          "casualties": ["lorena"],
+          "reason": "neck_bite_during_locked_exit_distraction"
         }
       }
     }
   },
   "hud": {
-    "bannerText": "Pérdida irreversible confirmada",
-    "logLine": "Tomás y Lucía quedaron aislados en la salida B. El equipo continúa con menos efectivos."
+    "bannerText": "Lorena cayó en salida B",
+    "logLine": "Lorena murió por mordida en el cuello. El grupo continúa con menos integrantes."
   }
 }

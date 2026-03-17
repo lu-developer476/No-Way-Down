@@ -1,141 +1,152 @@
 {
-  "levelId": "level9_planta_baja",
-  "mode": "semi_free",
+  "levelId": "level6_canonico_planta_baja",
+  "mode": "sequential",
   "openAfterBacktrackFromExitId": "A",
   "orderedExitIds": ["B", "C", "D", "E"],
   "exits": [
     {
       "id": "B",
       "label": "Salida B",
-      "description": "Evento trágico: derrumbe secundario durante el intento.",
+      "description": "La salida está cerrada; en la distracción Lorena cae y muere por mordida en el cuello.",
       "outcomes": [
         {
-          "type": "combat",
-          "eventId": "exit_b_crush_wave",
-          "description": "El estruendo atrae infectados hacia la retaguardia.",
+          "type": "narrative",
+          "eventId": "exit_b_locked",
+          "description": "Puerta cerrada desde el otro lado. No hay apertura inmediata.",
           "payload": {
-            "wavePreset": "stairwell_backflow"
+            "status": "cerrada"
+          }
+        },
+        {
+          "type": "combat",
+          "eventId": "exit_b_distraction_infected",
+          "description": "Un infectado irrumpe durante la maniobra sobre la cerradura.",
+          "payload": {
+            "wavePreset": "single_close_quarters_grapple"
           }
         },
         {
           "type": "narrative",
-          "eventId": "exit_b_tragic_loss",
-          "description": "Dos miembros quedan sepultados. La pérdida es irreversible.",
+          "eventId": "exit_b_lorena_neck_bite",
+          "description": "Lorena cae al suelo durante la distracción y recibe una mordida letal en el cuello.",
           "payload": {
-            "irreversibleLoss": 2,
-            "canRecover": false
+            "irreversibleLoss": 1,
+            "victimId": "lorena",
+            "victimRequired": true,
+            "cause": "neck_bite"
           }
         },
         {
           "type": "route_state",
-          "eventId": "exit_b_marked_fatal",
-          "description": "La salida queda marcada como inviable tras la tragedia.",
+          "eventId": "exit_b_marked_closed",
+          "description": "Salida B marcada como no viable por cierre estructural.",
           "payload": {
-            "status": "fatal"
+            "status": "cerrada"
           }
         }
       ],
       "routeState": {
-        "stateId": "fatal",
-        "tags": ["blocked", "high_risk"]
+        "stateId": "cerrada",
+        "tags": ["blocked", "lorena_kia"]
       }
     },
     {
       "id": "C",
       "label": "Salida C",
-      "description": "Intento de flanqueo en zona caótica.",
+      "description": "El paso está tomado por infectados y no se puede cruzar.",
       "outcomes": [
         {
-          "type": "combat",
-          "eventId": "exit_c_flank_scramble",
-          "description": "Se produce una refriega corta mientras el grupo rodea el cuello de botella.",
+          "type": "narrative",
+          "eventId": "exit_c_infected_blockade",
+          "description": "Una barrera de infectados bloquea completamente la salida C.",
           "payload": {
-            "arena": "garage_lateral_pass"
+            "status": "bloqueada_por_infectados"
           }
         },
         {
-          "type": "narrative",
-          "eventId": "exit_c_chaos_but_escape",
-          "description": "Con mucho caos, el equipo logra salir de la situación."
+          "type": "combat",
+          "eventId": "exit_c_hold_position",
+          "description": "El grupo contiene y retrocede para evitar quedar rodeado.",
+          "payload": {
+            "wavePreset": "narrow_doorway_pressure"
+          }
         },
         {
           "type": "route_state",
-          "eventId": "exit_c_flank_success",
-          "description": "La ruta C pasa a estado de escape parcial.",
+          "eventId": "exit_c_marked_blocked",
+          "description": "Salida C marcada como bloqueada por presión infectada.",
           "payload": {
-            "status": "escaped_partial"
+            "status": "bloqueada"
           }
         }
       ],
       "routeState": {
-        "stateId": "escaped_partial",
-        "tags": ["flank", "unstable"]
+        "stateId": "bloqueada",
+        "tags": ["infected", "no_pass"]
       }
     },
     {
       "id": "D",
       "label": "Salida D",
-      "description": "Salida infectada con presión constante.",
+      "description": "La salida está destruida y sin posibilidad de uso.",
       "outcomes": [
         {
-          "type": "combat",
-          "eventId": "exit_d_infected_push",
-          "description": "Oleadas cortas en pasillo estrecho con infectados rápidos.",
+          "type": "narrative",
+          "eventId": "exit_d_destroyed",
+          "description": "La estructura de salida D está rota y colapsada.",
           "payload": {
-            "wavePreset": "infected_tight_corridor"
+            "status": "destruida"
           }
         },
         {
-          "type": "narrative",
-          "eventId": "exit_d_hard_flank_success",
-          "description": "El flanqueo se completa con dificultad, pero el grupo sobrevive."
-        },
-        {
           "type": "route_state",
-          "eventId": "exit_d_flanked",
-          "description": "Ruta D marcada como cruzada bajo amenaza.",
+          "eventId": "exit_d_marked_destroyed",
+          "description": "Salida D declarada no transitable por daño estructural.",
           "payload": {
-            "status": "crossed_with_difficulty"
+            "status": "rota"
           }
         }
       ],
       "routeState": {
-        "stateId": "crossed_with_difficulty",
-        "tags": ["infected", "flank"]
+        "stateId": "destruida",
+        "tags": ["collapsed", "broken"]
       }
     },
     {
       "id": "E",
       "label": "Salida E",
-      "description": "Salida operativa con persianas bajas.",
+      "description": "La salida funciona, pero se dispara una cinemática con el guardia y las persianas.",
       "requiresEvaluated": ["B", "C", "D"],
       "outcomes": [
         {
           "type": "narrative",
-          "eventId": "exit_e_shutters_viable",
-          "description": "La salida funciona, pero exige pasar bajo persianas bajas."
-        },
-        {
-          "type": "route_state",
-          "eventId": "exit_e_primary_route_confirmed",
-          "description": "Se confirma E como ruta principal para evacuar.",
+          "eventId": "exit_e_functional",
+          "description": "La mecánica de la salida E responde y parece funcional.",
           "payload": {
-            "status": "primary"
+            "status": "funcional"
           }
         },
         {
           "type": "narrative",
-          "eventId": "exit_e_new_plan_cinematic",
-          "description": "Se activa la cinemática del nuevo plan de escape.",
+          "eventId": "exit_e_guard_shutters_close",
+          "description": "Un guardia cierra las persianas de las puertas giratorias sin advertir al grupo y es devorado por zombies.",
           "payload": {
-            "cinematicId": "level9_new_plan"
+            "cinematicId": "level9_exit_e_guard_shutters"
+          }
+        },
+        {
+          "type": "route_state",
+          "eventId": "exit_e_marked_functional",
+          "description": "Salida E confirmada y cierre de nivel habilitado.",
+          "payload": {
+            "status": "funcional_confirmada"
           }
         }
       ],
       "routeState": {
-        "stateId": "primary_escape",
+        "stateId": "funcional",
         "isFinal": true,
-        "tags": ["operational", "cinematic"]
+        "tags": ["guard_cinematic", "level_end"]
       }
     }
   ]

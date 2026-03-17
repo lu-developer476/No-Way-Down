@@ -1,0 +1,40 @@
+{
+  "levelId": "level6_canonico",
+  "eventId": "exit_a_celestino_if_present",
+  "routeId": "exit_a",
+  "title": "Muerte opcional de Celestino en el repliegue de salida A",
+  "unavoidable": true,
+  "trigger": {
+    "type": "cinematic-confirmed",
+    "eventId": "level9_exit_a_canonical_retroceso"
+  },
+  "casualties": [
+    {
+      "id": "celestino",
+      "name": "Celestino",
+      "required": false,
+      "profile": {
+        "gender": "masculino",
+        "skinTone": "trigueña",
+        "hairColor": "gris"
+      }
+    }
+  ],
+  "narrative": {
+    "objectiveAfterLoss": "Consolidar al grupo tras el retroceso y continuar con salidas B, C, D y E.",
+    "confirmationLine": "Celestino fue alcanzado durante el ingreso de la horda exterior y murió devorado.",
+    "statePatch": {
+      "level6Canonico": {
+        "exitA": {
+          "optionalLoss": true,
+          "casualties": ["celestino"],
+          "reason": "street_horde_breach_during_fallback"
+        }
+      }
+    }
+  },
+  "hud": {
+    "bannerText": "Celestino no sobrevivió al repliegue",
+    "logLine": "Baja opcional aplicada: Celestino fue devorado durante la cinemática de salida A."
+  }
+}

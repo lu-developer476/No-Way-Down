@@ -45,6 +45,7 @@ import objectiveChainJson from '../../public/assets/levels/level9_objective_chai
 import exitEvaluationJson from '../../public/assets/levels/level9_exit_evaluation.json';
 import exitALogJson from '../../public/assets/levels/level9_exitA_dialogue.json';
 import exitBLossJson from '../../public/assets/levels/level9_exitB_loss_event.json';
+import exitAOptionalLossJson from '../../public/assets/levels/level9_exitA_optional_loss_event.json';
 import exitEDecisionJson from '../../public/assets/levels/level9_exitE_decision_dialogue.json';
 import subsuelo2Json from '../../public/assets/levels/level9_subsuelo2_infection_dialogue.json';
 import finalSacrificeJson from '../../public/assets/levels/level9_final_sacrifice.json';
@@ -54,6 +55,7 @@ export interface Level9ObjectiveChainRuntime {
   objectiveChain: Level9ObjectiveChain;
   exitEvaluationSystem: ExitEvaluationSystem;
   irreversibleLossSystem: IrreversibleLossEventSystem;
+  optionalExitALossSystem: IrreversibleLossEventSystem;
   exitACinematicSystem: ExitACinematicSystem;
   exitECinematicSystem: ExitECinematicDecisionSystem;
   flankCombatSystem: FlankingEscapeCombatSystem;
@@ -84,6 +86,7 @@ export function buildLevel9ObjectiveChainExample(
   const exitEvaluationConfig = exitEvaluationJson as ExitEvaluationConfig;
   const exitAConfig = exitALogJson as ExitADialogueConfig;
   const exitBLossConfig = exitBLossJson as IrreversibleLossEventConfig;
+  const exitAOptionalLossConfig = exitAOptionalLossJson as IrreversibleLossEventConfig;
   const exitEConfig = exitEDecisionJson as ExitECinematicDecisionConfig;
   const subsuelo2Config = subsuelo2Json as Subsuelo2InfectionCinematicConfig;
   const finalSacrificeConfig = finalSacrificeJson as FinalSacrificeConfig;
@@ -125,12 +128,30 @@ export function buildLevel9ObjectiveChainExample(
     }
   });
 
+  const optionalExitALossSystem = IrreversibleLossEventSystem.fromJson(exitAOptionalLossConfig, squad, {
+    onLossTriggered: (snapshot) => {
+      if (snapshot.removedMemberIds.length === 0) {
+        return;
+      }
+
+      emitObjectiveEvent({
+        type: 'permanent-loss-applied',
+        targetId: snapshot.eventId,
+        losses: snapshot.removedMemberIds.length
+      });
+    }
+  });
+
   const exitACinematicSystem = ExitACinematicSystem.fromJson(scene, exitAConfig, exitAPresentation, {
     onCinematicStarted: () => {
       emitObjectiveEvent({ type: 'exit-attempted', targetId: 'A' });
     },
     onCinematicCompleted: ({ cinematicId }) => {
       emitObjectiveEvent({ type: 'cinematic-played', targetId: cinematicId });
+      optionalExitALossSystem.processEvent({
+        type: 'cinematic-confirmed',
+        eventId: cinematicId
+      });
       exitEvaluationSystem.markBacktrackFromExit('A');
       emitObjectiveEvent({ type: 'exit-backtracked', targetId: 'A' });
     }
@@ -179,6 +200,7 @@ export function buildLevel9ObjectiveChainExample(
     objectiveChain,
     exitEvaluationSystem,
     irreversibleLossSystem,
+    optionalExitALossSystem,
     exitACinematicSystem,
     exitECinematicSystem,
     flankCombatSystem,

@@ -27,8 +27,29 @@ export interface EnvironmentProfile {
 
 const levelVariantList = levelVariants.levels as EnvironmentLevelVariant[];
 
+function normalizeProfileId(levelId: string): string {
+  return levelId.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_');
+}
+
+function resolveEnvironmentVariant(levelId: string): EnvironmentLevelVariant | undefined {
+  const normalized = normalizeProfileId(levelId);
+  const direct = levelVariantList.find((entry) => normalizeProfileId(entry.id) === normalized);
+  if (direct) {
+    return direct;
+  }
+
+  // Compatibilidad para runtime ids con formato "level_2_subsuelo".
+  const numericAlias = normalized.match(/^level_(\d+)_(.+)$/);
+  if (!numericAlias) {
+    return undefined;
+  }
+
+  const [, levelNumber, suffix] = numericAlias;
+  return levelVariantList.find((entry) => normalizeProfileId(entry.id) === `level${levelNumber}_${suffix}`);
+}
+
 export function getEnvironmentProfileForLevel(levelId: string): EnvironmentProfile | undefined {
-  const level = levelVariantList.find((entry) => entry.id === levelId);
+  const level = resolveEnvironmentVariant(levelId);
 
   if (!level) {
     return undefined;
@@ -60,6 +81,6 @@ export function getEnvironmentProfileForLevel(levelId: string): EnvironmentProfi
 export function registerEnvironmentProfile(scene: Phaser.Scene, levelId: string): void {
   const profile = getEnvironmentProfileForLevel(levelId);
 
-  scene.registry.set('environmentProfileId', levelId);
+  scene.registry.set('environmentProfileId', profile?.level.id ?? levelId);
   scene.registry.set('environmentProfile', profile ?? null);
 }

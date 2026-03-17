@@ -716,7 +716,12 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.applyInteractionEffect(interaction.definition?.id ?? 'unknown', interaction.effect.type, interaction.effect.message);
+    this.applyInteractionEffect(
+      interaction.definition?.id ?? 'unknown',
+      interaction.effect.type,
+      interaction.effect.message,
+      interaction.effect.checkpoint
+    );
 
     if (interaction.cinematicTrigger) {
       void this.triggerNarrativeCheckpoint(interaction.cinematicTrigger);
@@ -733,7 +738,12 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private applyInteractionEffect(interactableId: string, effectType: string, message?: string): void {
+  private applyInteractionEffect(
+    interactableId: string,
+    effectType: string,
+    message?: string,
+    checkpoint?: { x: number; y: number; label?: string }
+  ): void {
     const fallbackByType: Record<string, string> = {
       door: 'Puerta desbloqueada.',
       stairs: 'Escaleras activadas.',
@@ -748,6 +758,13 @@ export class GameScene extends Phaser.Scene {
     if (effectType === 'ally_rescue') {
       this.integrateLateRescueAllies(LATE_ALLY_JOIN_CHECKPOINT_ID);
     }
+
+    if (checkpoint && this.checkpointSystem) {
+      this.checkpointSystem.setCheckpoint({ x: checkpoint.x, y: checkpoint.y });
+      this.visitedCheckpoints.add(checkpoint.label ?? `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`);
+      this.showMissionStatus(`Checkpoint asegurado: ${checkpoint.label ?? 'progreso guardado'}.`);
+    }
+
   }
 
   private refreshAllyWorldHealthBars(): void {

@@ -15,6 +15,11 @@ export interface InteractableEffect {
   message?: string;
   rewardId?: string;
   objectiveEventType?: string;
+  checkpoint?: {
+    x: number;
+    y: number;
+    label?: string;
+  };
 }
 
 export interface InteractableDefinition {

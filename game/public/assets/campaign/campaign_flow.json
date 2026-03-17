@@ -6,118 +6,281 @@
       "type": "campaignIntro",
       "sceneKey": "CampaignIntroScene"
     },
+
     {
-      "id": "level-2-subsuelo",
+      "id": "lvl01-esc01-comedor-resistencia",
       "type": "level",
       "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level2_subsuelo.json"
-    },
-    {
-      "id": "level-3-planta-baja",
-      "type": "level",
-      "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level3_hall_planta_baja.json"
-    },
-    {
-      "id": "level-4-segundo-piso",
-      "type": "level",
-      "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level4_segundo_piso.json",
+      "levelConfigPath": "assets/levels/level2_subsuelo.json",
       "systems": {
-        "combat": ["Level4CombatSystem"],
+        "combat": ["KitchenDoorSystem"],
         "spawn": ["MixedSpawnSystem"]
       }
     },
     {
-      "id": "level-5-tercer-piso",
+      "id": "lvl01-esc02-pasillos-hacia-escaleras-pb",
       "type": "level",
       "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level5_tercer_piso.json"
-    },
-    {
-      "id": "level-6-comedor",
-      "type": "level",
-      "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level6_cuarto_piso_comedor.json",
+      "levelConfigPath": "assets/levels/level3_hall_planta_baja.json",
       "systems": {
-        "combat": ["Level6CombatSystem"],
-        "spawn": ["MixedSpawnSystem", "VerticalSpawnSystem"]
+        "combat": ["HallCombatSystem"],
+        "environment": ["HallAmbientEvents"]
       }
     },
     {
-      "id": "level-7-quinto-piso",
+      "id": "lvl01-cin01-cierre-contextual",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl01_cierre_contextual.json"
+    },
+
+    {
+      "id": "lvl02-esc01-escaleras-1piso-a-5piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level2_stairs.json",
+      "systems": {
+        "spawn": ["VerticalSpawnSystem"],
+        "environment": ["Level4AmbientEvents"]
+      }
+    },
+    {
+      "id": "lvl02-esc02-cierre-escaleras-4piso-a-5piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level4_stair_segments.json",
+      "systems": {
+        "combat": ["Level5Progression"]
+      }
+    },
+
+    {
+      "id": "lvl03-esc01-pasillos-del-5piso-y-pertenencias",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level7_quinto_piso.json",
       "systems": {
-        "combat": ["Level7CombatSystem"]
+        "mission": ["Level7ObjectiveChain"]
       }
     },
     {
-      "id": "level-8-intro-dialogue",
-      "type": "dialogue",
-      "sceneKey": "DialogueScene",
-      "dialoguePath": "assets/levels/level8_intro_dialogue.json"
+      "id": "lvl03-cin01-llamado-lorena-rescate",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl03_llamado_lorena_rescate.json"
     },
+
     {
-      "id": "level-8-office-422",
+      "id": "lvl04-esc01-retroceso-hacia-oficina-422",
       "type": "level",
       "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level8_office422_rescue.json"
+      "levelConfigPath": "assets/levels/level8_office422_rescue.json",
+      "systems": {
+        "mission": ["Office422RescueSystem"]
+      }
     },
     {
-      "id": "level-8-outro-dialogue",
-      "type": "dialogue",
-      "sceneKey": "DialogueScene",
-      "dialoguePath": "assets/levels/level8_outro_dialogue.json"
+      "id": "lvl04-cin01-rescate-lorena-en-oficina-422",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl04_rescate_lorena_oficina_422.json"
     },
     {
-      "id": "level-9-exit-a-dialogue",
-      "type": "dialogue",
-      "sceneKey": "DialogueScene",
-      "dialoguePath": "assets/levels/level9_exitA_dialogue.json"
-    },
-    {
-      "id": "level-9-descent-pressure",
+      "id": "lvl04-esc02-salida-oficina-rumbo-comedor-4piso",
       "type": "level",
       "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level9_descent_pressure.json"
+      "levelConfigPath": "assets/levels/level6_cuarto_piso_comedor.json",
+      "systems": {
+        "combat": ["Level6CombatSystem"]
+      }
     },
     {
-      "id": "level-10-drive-dialogue",
-      "type": "dialogue",
-      "sceneKey": "DialogueScene",
-      "dialoguePath": "assets/levels/level10_drive_to_santelmo_dialogue.json"
+      "id": "lvl04-cin02-llamada-selene-y-descenso",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl04_llamada_selene_y_descenso.json"
+    },
+
+    {
+      "id": "lvl05-esc01-descenso-con-temporizador-5min",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level9_descent_pressure.json",
+      "systems": {
+        "combat": ["DescentPressureSystem"],
+        "spawn": ["VerticalSpawnSystem"]
+      }
     },
     {
-      "id": "level-10-drive-cinematic",
+      "id": "lvl05-cin01-infectados-por-abrir-puerta",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl05_infectados_sobre_puerta.json"
+    },
+    {
+      "id": "lvl05-esc02-limpieza-final-1piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_final_siege.json",
+      "systems": {
+        "combat": ["FinalSiegeSystem"]
+      }
+    },
+    {
+      "id": "lvl05-cin02-reencuentro-nahir-selene",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl05_reencuentro_nahir_selene.json"
+    },
+
+    {
+      "id": "lvl06-esc01-oficinas-a-planta-baja-salida-a",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level9_exit_evaluation.json",
+      "systems": {
+        "mission": ["ExitEvaluationSystem"]
+      }
+    },
+    {
+      "id": "lvl06-cin01-oleada-callejera-y-retroceso",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl06_oleada_callejera_retroceso.json"
+    },
+    {
+      "id": "lvl06-esc02-verificacion-salidas-b-c-d-e",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level9_exit_evaluation.json",
+      "systems": {
+        "mission": ["ExitEvaluationSystem"],
+        "combat": ["Level9ExitCombatSystem"]
+      }
+    },
+    {
+      "id": "lvl06-cin02-muerte-lorena-y-guardia-en-salida-e",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl06_muerte_lorena_guardia_salida_e.json"
+    },
+
+    {
+      "id": "lvl07-cin01-debate-ruta-hacia-garage",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl07_debate_ruta_hacia_garage.json"
+    },
+    {
+      "id": "lvl07-esc01-inventario-y-descenso-a-3subsuelo",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_descent_route.json",
+      "systems": {
+        "mission": ["ResourceInventorySystem"],
+        "spawn": ["VerticalSpawnSystem"]
+      }
+    },
+    {
+      "id": "lvl07-esc02-cruce-2subsuelo-infectado",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_descent_route.json",
+      "systems": {
+        "combat": ["CorridorCrossingSystem"]
+      }
+    },
+
+    {
+      "id": "lvl08-esc01-matanza-masiva-105-zombies",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_final_siege.json",
+      "systems": {
+        "combat": ["Level8MassHordeSystem"]
+      }
+    },
+    {
+      "id": "lvl08-cin01-damian-infectado-y-suicidio",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl08_damian_infectado_suicidio.json"
+    },
+    {
+      "id": "lvl08-esc02-huida-hacia-escaleras-3subsuelo",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_descent_route.json",
+      "systems": {
+        "combat": ["RearGuardPressureSystem"]
+      }
+    },
+    {
+      "id": "lvl08-cin02-sacrificio-hernan-yamil",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl08_sacrificio_hernan_yamil.json"
+    },
+    {
+      "id": "lvl08-cin03-caida-final-del-duo",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl08_caida_final_duo.json"
+    },
+
+    {
+      "id": "lvl09-esc01-garage-3subsuelo-busqueda-vehiculo",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_vehicle_loot.json",
+      "systems": {
+        "mission": ["VehicleLootSystem"],
+        "environment": ["Level10ParkingExplorationSystem"]
+      }
+    },
+    {
+      "id": "lvl09-cin01-hallazgo-salida-y-mordida-selene",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl09_hallazgo_salida_mordida_selene.json"
+    },
+    {
+      "id": "lvl09-esc02-resistencia-10-minutos-en-garage",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_parking_survival.json",
+      "systems": {
+        "combat": ["ParkingSurvivalSystem"],
+        "mission": ["InfectionStageEscortSystem"]
+      }
+    },
+    {
+      "id": "lvl09-cin02-traicion-de-selene-y-huida",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl09_traicion_selene_y_huida.json"
+    },
+
+    {
+      "id": "lvl10-cin01-traslado-silencioso-plaza-de-mayo",
       "type": "cinematic",
       "sceneKey": "CinematicScene",
       "cinematicPath": "assets/cinematics/drive_to_santelmo.json"
     },
     {
-      "id": "level-10-vehicle-loot",
+      "id": "lvl10-esc01-combate-50-bajas-en-via-publica",
       "type": "level",
       "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level10_vehicle_loot.json",
+      "levelConfigPath": "assets/levels/level10_final_street_hold.json",
       "systems": {
-        "mission": ["VehicleLootSystem"]
+        "combat": ["Level10FinalStreetHoldSystem"]
       }
     },
     {
-      "id": "level-10-parking-survival",
-      "type": "level",
-      "sceneKey": "LevelScene",
-      "levelConfigPath": "assets/levels/level10_parking_survival.json",
-      "systems": {
-        "environment": ["Level10ParkingExplorationSystem"]
-      }
-    },
-    {
-      "id": "level-10-twin-final-dialogue",
-      "type": "dialogue",
-      "sceneKey": "DialogueScene",
-      "dialoguePath": "assets/levels/level10_twin_final_dialogue.json"
+      "id": "lvl10-cin02-cierre-duo-final-en-san-telmo",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/levels/level10_final_ending.json"
     }
   ]
 }

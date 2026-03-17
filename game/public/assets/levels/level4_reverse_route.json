@@ -1,0 +1,70 @@
+{
+  "sourceLevelId": "level3_hall_planta_baja",
+  "targetLevelId": "level4_canonical_422",
+  "sourceSections": [
+    {
+      "id": "pasillo_central",
+      "entry_point": { "x": 1880, "y": 760 },
+      "path_hint": [
+        { "x": 1660, "y": 760 },
+        { "x": 1420, "y": 760 },
+        { "x": 1160, "y": 740 }
+      ]
+    },
+    {
+      "id": "escalera_norte",
+      "entry_point": { "x": 980, "y": 700 },
+      "path_hint": [
+        { "x": 860, "y": 640 },
+        { "x": 760, "y": 560 },
+        { "x": 680, "y": 500 }
+      ]
+    },
+    {
+      "id": "acceso_oficina_422",
+      "entry_point": { "x": 520, "y": 460 },
+      "path_hint": [
+        { "x": 620, "y": 440 },
+        { "x": 760, "y": 430 }
+      ]
+    }
+  ],
+  "sourceForwardFlow": ["pasillo_central", "escalera_norte", "acceso_oficina_422"],
+  "reuse": [
+    {
+      "level8SectionId": "ruta_retorno_422",
+      "level7SectionIds": ["pasillo_central", "escalera_norte", "acceso_oficina_422"]
+    }
+  ],
+  "initialRoutes": [
+    {
+      "id": "main_corridor_reverse",
+      "label": "Retorno principal",
+      "path_points": [
+        { "x": 1930, "y": 790 },
+        { "x": 1620, "y": 770 },
+        { "x": 1240, "y": 740 },
+        { "x": 920, "y": 660 },
+        { "x": 700, "y": 530 }
+      ],
+      "notes": "Vuelta por el mismo corredor y escalera en dirección opuesta al 1° piso."
+    },
+    {
+      "id": "internal_offices_reverse",
+      "label": "Retorno por oficinas internas",
+      "path_points": [
+        { "x": 1880, "y": 840 },
+        { "x": 1540, "y": 860 },
+        { "x": 1260, "y": 820 },
+        { "x": 980, "y": 720 },
+        { "x": 760, "y": 560 }
+      ],
+      "notes": "Alternativa por interiores para evitar presión del corredor principal."
+    }
+  ],
+  "routePair": {
+    "mainCorridorRouteId": "main_corridor_reverse",
+    "internalOfficesRouteId": "internal_offices_reverse"
+  },
+  "anchorSectionId": "acceso_oficina_422"
+}

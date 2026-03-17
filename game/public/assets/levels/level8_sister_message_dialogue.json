@@ -1,29 +1,34 @@
 {
-  "levelId": "level8_rescate_oficina_422",
-  "cinematicId": "level8_post_rescue_sister_message",
-  "triggerId": "rest_area_4f_spiral_stairs",
+  "levelId": "level_04_canon_oficina_422",
+  "cinematicId": "level4_selene_call_spiral_descent",
+  "triggerId": "comedor_4f_spiral_stairs_transition",
   "movementLocked": true,
-  "lockDurationMs": 850,
-  "preDialoguePauseMs": 500,
+  "lockDurationMs": 900,
+  "preDialoguePauseMs": 450,
   "dialogue": [
     {
-      "speaker": "aliada_rescatada_422",
-      "text": "Esperen... recibí un mensaje de mi hermana. Está en una sala del piso 1 con más compañeros.",
-      "durationMs": 2600
+      "speaker": "nahir",
+      "text": "Paren un segundo... me está llamando Selene, mi gemela.",
+      "durationMs": 2200
     },
     {
-      "speaker": "hermana_por_mensaje",
-      "text": "Nos encerramos con muebles, pero los infectados reanimados ya están empujando la puerta. No podremos contenerlos mucho más.",
-      "durationMs": 3000
+      "speaker": "selene",
+      "text": "Nahir, estamos encerrados. No vamos a resistir mucho más, están entrando.",
+      "durationMs": 2800
     },
     {
-      "speaker": "lider_del_grupo",
-      "text": "Cambio de prioridad: descendemos al piso 1 ahora. Mantengan formación frente a los ascensores y avancen.",
+      "speaker": "lorena",
+      "text": "Nos movemos ya. Cruzamos el comedor del 4° piso y bajamos por la escalera en espiral.",
       "durationMs": 2500
+    },
+    {
+      "speaker": "grupo_en_marcha",
+      "text": "El grupo conversa mientras avanza por el comedor y empieza el descenso.",
+      "durationMs": 2200
     }
   ],
   "objectiveAfterCinematic": {
-    "id": "reach_floor_1_sister_room",
-    "label": "Desciende al piso 1 y rescata a la hermana de la aliada"
+    "id": "start_spiral_descent_to_next_level",
+    "label": "Inicia el descenso por la escalera en espiral hacia el siguiente nivel"
   }
 }

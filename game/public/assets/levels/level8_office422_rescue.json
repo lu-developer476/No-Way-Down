@@ -1,66 +1,155 @@
 {
-  "levelId": "level_08_oficina_422",
-  "rescueId": "office_422_critical_rescue",
+  "levelId": "level_04_canon_oficina_422",
+  "rescueId": "level4_oficina_422_lorena_rescue",
   "trigger": {
-    "x": 2048,
-    "y": 1888,
-    "width": 144,
-    "height": 128
+    "x": 1450,
+    "y": 640,
+    "width": 220,
+    "height": 180
+  },
+  "reverseRoute": {
+    "sourceLevelId": "level3_hall_planta_baja",
+    "resumeFrom": "post_lorena_call",
+    "direction": "reverse",
+    "steps": [
+      "pasillos_reversa",
+      "escaleras_hacia_422",
+      "acceso_oficina_422"
+    ],
+    "notes": "El grupo retoma exactamente la ruta inversa al camino que conduce al 1er piso."
+  },
+  "office422Zone": {
+    "id": "office_422",
+    "label": "Oficina 422",
+    "bounds": {
+      "x": 1340,
+      "y": 520,
+      "width": 360,
+      "height": 250
+    }
   },
   "rescueScene": {
     "id": "office_422_rescue_scene",
     "movementLockDuringRescue": true,
-    "preRescueDelayMs": 220,
-    "postRescueDelayMs": 260,
+    "preRescueDelayMs": 240,
+    "postRescueDelayMs": 280,
     "sequence": [
       {
-        "id": "zombie_grapple",
-        "actor": "companera_422",
-        "text": "¡No puedo zafarme!",
-        "durationMs": 1050
+        "id": "infected_about_to_bite",
+        "actor": "infectado_422",
+        "text": "El infectado se abalanza sobre Lorena dentro de la oficina 422.",
+        "durationMs": 1000
       },
       {
-        "id": "player_intervention",
+        "id": "fallback_player_rescue",
         "actor": "protagonista",
-        "text": "¡Atrás! Te cubro.",
+        "text": "¡Lorena, abajo! Te saco de acá.",
         "durationMs": 980
       },
       {
-        "id": "containment_attempt",
+        "id": "contain_lorena",
         "actor": "protagonista",
-        "text": "Respira. Necesito estabilizarte antes de salir.",
-        "durationMs": 1150
-      },
-      {
-        "id": "recover_belongings",
-        "actor": "companera_422",
-        "text": "Tomé mis cosas... puedo moverme.",
+        "text": "Respirá. Estás con nosotros.",
         "durationMs": 980
       },
       {
         "id": "weapon_handover",
         "actor": "protagonista",
-        "text": "Toma este arma. Desde ahora vienes con nosotros.",
-        "durationMs": 1200
+        "text": "Tomá esta arma. Desde ahora te movés con la party.",
+        "durationMs": 1220
+      },
+      {
+        "id": "resume_inside_422",
+        "actor": "lorena",
+        "text": "Estoy lista. Salgamos de la oficina 422.",
+        "durationMs": 1080
+      }
+    ],
+    "rescueVariants": [
+      {
+        "rescuerCharacterId": "alan",
+        "sequence": [
+          {
+            "id": "infected_about_to_bite",
+            "actor": "infectado_422",
+            "text": "El infectado está por morder a Lorena.",
+            "durationMs": 1000
+          },
+          {
+            "id": "alan_rescue",
+            "actor": "alan_nahuel",
+            "text": "¡Lorena, conmigo! Te cubro.",
+            "durationMs": 940
+          },
+          {
+            "id": "alan_contains",
+            "actor": "alan_nahuel",
+            "text": "Tranquila. Te contengo, respirá profundo.",
+            "durationMs": 980
+          },
+          {
+            "id": "alan_handover_weapon",
+            "actor": "alan_nahuel",
+            "text": "Tomá esta pistola. Te integrás al grupo ya.",
+            "durationMs": 1220
+          },
+          {
+            "id": "resume_inside_422",
+            "actor": "lorena",
+            "text": "Estoy armada. Avancemos.",
+            "durationMs": 1040
+          }
+        ]
+      },
+      {
+        "rescuerCharacterId": "giovanna",
+        "sequence": [
+          {
+            "id": "infected_about_to_bite",
+            "actor": "infectado_422",
+            "text": "El infectado está por morder a Lorena.",
+            "durationMs": 1000
+          },
+          {
+            "id": "giovanna_rescue",
+            "actor": "giovanna",
+            "text": "¡Lorena, atrás mío! Te saco ahora.",
+            "durationMs": 940
+          },
+          {
+            "id": "giovanna_contains",
+            "actor": "giovanna",
+            "text": "Ya pasó, te tengo. Recuperá el aire.",
+            "durationMs": 980
+          },
+          {
+            "id": "giovanna_handover_weapon",
+            "actor": "giovanna",
+            "text": "Tomá esta arma y cerrá formación con nosotras.",
+            "durationMs": 1220
+          },
+          {
+            "id": "resume_inside_422",
+            "actor": "lorena",
+            "text": "Lista para moverme con ustedes.",
+            "durationMs": 1040
+          }
+        ]
       }
     ]
   },
   "companion": {
-    "id": "ally_survivor_422",
-    "codename": "compa_422",
+    "id": "ally_lorena",
+    "codename": "lorena",
     "officeCode": "422"
   },
   "weaponReward": {
-    "id": "smg_compacta",
-    "name": "SMG Compacta",
-    "ammo": 90
+    "id": "pistola_servicio_9mm",
+    "name": "Pistola de Servicio 9mm",
+    "ammo": 72
   },
   "groupComposition": {
-    "addMemberIds": [
-      "ally_survivor_422"
-    ],
-    "markAsRescuedIds": [
-      "ally_survivor_422"
-    ]
+    "addMemberIds": ["ally_lorena"],
+    "markAsRescuedIds": ["ally_lorena"]
   }
 }

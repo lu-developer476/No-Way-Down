@@ -12,8 +12,12 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level2_subsuelo.json",
       "systems": {
-        "combat": ["KitchenDoorSystem"],
-        "spawn": ["MixedSpawnSystem"]
+        "combat": [
+          "KitchenDoorSystem"
+        ],
+        "spawn": [
+          "MixedSpawnSystem"
+        ]
       }
     },
     {
@@ -22,8 +26,12 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level3_hall_planta_baja.json",
       "systems": {
-        "combat": ["HallCombatSystem"],
-        "environment": ["HallAmbientEvents"]
+        "combat": [
+          "HallCombatSystem"
+        ],
+        "environment": [
+          "HallAmbientEvents"
+        ]
       }
     },
     {
@@ -32,8 +40,13 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level4_segundo_piso.json",
       "systems": {
-        "spawn": ["VerticalSpawnSystem"],
-        "environment": ["Level4AmbientEvents"]
+        "environment": [
+          "ReverseRouteSystem"
+        ],
+        "mission": [
+          "Office422RescueSystem",
+          "SisterMessageCinematicSystem"
+        ]
       }
     },
     {
@@ -42,7 +55,9 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level5_tercer_piso.json",
       "systems": {
-        "combat": ["Level5Progression"]
+        "combat": [
+          "Level5Progression"
+        ]
       }
     },
     {
@@ -51,7 +66,9 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level6_cuarto_piso_comedor.json",
       "systems": {
-        "combat": ["Level6CombatSystem"]
+        "combat": [
+          "Level6CombatSystem"
+        ]
       }
     },
     {
@@ -60,7 +77,9 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level7_quinto_piso.json",
       "systems": {
-        "mission": ["Level7ObjectiveChain"]
+        "mission": [
+          "Level7ObjectiveChain"
+        ]
       }
     },
     {
@@ -69,7 +88,9 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level8_office422_rescue.json",
       "systems": {
-        "mission": ["Office422RescueSystem"]
+        "mission": [
+          "Office422RescueSystem"
+        ]
       }
     },
     {
@@ -78,8 +99,12 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level9_descent_pressure.json",
       "systems": {
-        "combat": ["DescentPressureSystem"],
-        "spawn": ["VerticalSpawnSystem"]
+        "combat": [
+          "DescentPressureSystem"
+        ],
+        "spawn": [
+          "VerticalSpawnSystem"
+        ]
       }
     },
     {
@@ -88,8 +113,12 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level9_exit_evaluation.json",
       "systems": {
-        "mission": ["ExitEvaluationSystem"],
-        "combat": ["Level9ExitCombatSystem"]
+        "mission": [
+          "ExitEvaluationSystem"
+        ],
+        "combat": [
+          "Level9ExitCombatSystem"
+        ]
       }
     },
     {
@@ -98,8 +127,12 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_vehicle_loot.json",
       "systems": {
-        "mission": ["VehicleLootSystem"],
-        "environment": ["Level10ParkingExplorationSystem"]
+        "mission": [
+          "VehicleLootSystem"
+        ],
+        "environment": [
+          "Level10ParkingExplorationSystem"
+        ]
       }
     },
     {
@@ -108,8 +141,12 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_parking_survival.json",
       "systems": {
-        "combat": ["ParkingSurvivalSystem"],
-        "mission": ["InfectionStageEscortSystem"]
+        "combat": [
+          "ParkingSurvivalSystem"
+        ],
+        "mission": [
+          "InfectionStageEscortSystem"
+        ]
       }
     },
     {
@@ -124,7 +161,9 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_final_street_hold.json",
       "systems": {
-        "combat": ["Level10FinalStreetHoldSystem"]
+        "combat": [
+          "Level10FinalStreetHoldSystem"
+        ]
       }
     },
     {
@@ -133,7 +172,9 @@
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_final_ending.json",
       "systems": {
-        "mission": ["Level10FinalEpilogueSystem"]
+        "mission": [
+          "Level10FinalEpilogueSystem"
+        ]
       }
     }
   ]

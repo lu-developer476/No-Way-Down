@@ -24,3 +24,4 @@
 ## Referencias
 - `docs/local-multiplayer.md`: decisiones de Etapa 11 para 2 jugadores y plan de escalado a 3/4.
 - `docs/backend-render-supabase.md`: guía de despliegue backend en Render + Supabase.
+- `docs/narrative_canon_constraints.md`: reglas para mantener canonicidad narrativa al traducir historia a sistemas Phaser 3.

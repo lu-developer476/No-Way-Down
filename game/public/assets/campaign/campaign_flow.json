@@ -7,40 +7,117 @@
       "sceneKey": "CampaignIntroScene"
     },
     {
-      "id": "level-6-combat",
+      "id": "level-2-subsuelo",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level2_subsuelo.json"
+    },
+    {
+      "id": "level-3-planta-baja",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level3_hall_planta_baja.json"
+    },
+    {
+      "id": "level-4-segundo-piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level4_segundo_piso.json",
+      "systems": {
+        "combat": ["Level4CombatSystem"],
+        "spawn": ["MixedSpawnSystem"]
+      }
+    },
+    {
+      "id": "level-5-tercer-piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level5_tercer_piso.json"
+    },
+    {
+      "id": "level-6-comedor",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level6_cuarto_piso_comedor.json",
       "systems": {
         "combat": ["Level6CombatSystem"],
-        "spawn": ["MixedSpawnSystem", "VerticalSpawnSystem"],
-        "environment": ["Level10ParkingExplorationSystem"]
+        "spawn": ["MixedSpawnSystem", "VerticalSpawnSystem"]
       }
     },
     {
-      "id": "drive-cinematic",
+      "id": "level-7-quinto-piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level7_quinto_piso.json",
+      "systems": {
+        "combat": ["Level7CombatSystem"]
+      }
+    },
+    {
+      "id": "level-8-intro-dialogue",
+      "type": "dialogue",
+      "sceneKey": "DialogueScene",
+      "dialoguePath": "assets/levels/level8_intro_dialogue.json"
+    },
+    {
+      "id": "level-8-office-422",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_office422_rescue.json"
+    },
+    {
+      "id": "level-8-outro-dialogue",
+      "type": "dialogue",
+      "sceneKey": "DialogueScene",
+      "dialoguePath": "assets/levels/level8_outro_dialogue.json"
+    },
+    {
+      "id": "level-9-exit-a-dialogue",
+      "type": "dialogue",
+      "sceneKey": "DialogueScene",
+      "dialoguePath": "assets/levels/level9_exitA_dialogue.json"
+    },
+    {
+      "id": "level-9-descent-pressure",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level9_descent_pressure.json"
+    },
+    {
+      "id": "level-10-drive-dialogue",
+      "type": "dialogue",
+      "sceneKey": "DialogueScene",
+      "dialoguePath": "assets/levels/level10_drive_to_santelmo_dialogue.json"
+    },
+    {
+      "id": "level-10-drive-cinematic",
       "type": "cinematic",
       "sceneKey": "CinematicScene",
       "cinematicPath": "assets/cinematics/drive_to_santelmo.json"
     },
     {
-      "id": "drive-dialogue",
-      "type": "dialogue",
-      "sceneKey": "DialogueScene",
-      "dialoguePath": "assets/dialogues/campaign_intro_dialogue.json"
-    },
-    {
-      "id": "level-10-loot",
+      "id": "level-10-vehicle-loot",
       "type": "level",
       "sceneKey": "LevelScene",
       "levelConfigPath": "assets/levels/level10_vehicle_loot.json",
       "systems": {
-        "campaign": ["DriveToSanTelmoCinematicSystem"],
-        "spawn": ["OfficeSpawnSystem"],
-        "combat": ["Level7CombatSystem"],
-        "environment": ["Level10ParkingExplorationSystem"],
         "mission": ["VehicleLootSystem"]
       }
+    },
+    {
+      "id": "level-10-parking-survival",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_parking_survival.json",
+      "systems": {
+        "environment": ["Level10ParkingExplorationSystem"]
+      }
+    },
+    {
+      "id": "level-10-twin-final-dialogue",
+      "type": "dialogue",
+      "sceneKey": "DialogueScene",
+      "dialoguePath": "assets/levels/level10_twin_final_dialogue.json"
     }
   ]
 }

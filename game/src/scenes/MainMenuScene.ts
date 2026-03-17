@@ -77,6 +77,8 @@ export class MainMenuScene extends Phaser.Scene {
   private menuHintText?: Phaser.GameObjects.Text;
   private selectedIndex = 0;
   private controlsPanel?: Phaser.GameObjects.Container;
+  private controlsBackButtonBg?: Phaser.GameObjects.Rectangle;
+  private controlsBackButtonText?: Phaser.GameObjects.Text;
   private setupPanel?: Phaser.GameObjects.Container;
   private setupHintText?: Phaser.GameObjects.Text;
   private setupStep: SetupStep = 'protagonist';
@@ -173,12 +175,34 @@ export class MainMenuScene extends Phaser.Scene {
   private buildControlsPanel(): void {
     const { width, height } = this.scale;
 
-    const panel = this.add.rectangle(width / 2, height / 2, 520, 280, 0x020617, 0.94)
-      .setStrokeStyle(2, 0x38bdf8, 1);
+    const panelWidth = 620;
+    const panelHeight = 420;
 
-    const title = this.add.text(width / 2, height / 2 - 96, 'OPCIONES', UI_STYLES['font-title']).setOrigin(0.5);
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 0.76);
+    const panelFrame = this.add.rectangle(width / 2, height / 2, panelWidth, panelHeight, 0x020617, 0.96)
+      .setStrokeStyle(3, 0x38bdf8, 1);
+    const panelInner = this.add.rectangle(width / 2, height / 2, panelWidth - 14, panelHeight - 14, 0x020617, 0.78)
+      .setStrokeStyle(1, 0x93c5fd, 0.6);
 
-    const body = this.add.text(width / 2, height / 2 - 6, [
+    const panelArtwork = this.textures.exists('menu_background')
+      ? this.add.image(width / 2, height / 2, 'menu_background').setDisplaySize(panelWidth - 20, panelHeight - 20).setAlpha(0.36)
+      : this.add.rectangle(width / 2, height / 2, panelWidth - 20, panelHeight - 20, 0x0f172a, 0.85);
+
+    const panelTint = this.add.rectangle(width / 2, height / 2, panelWidth - 20, panelHeight - 20, 0x020617, 0.62);
+
+    const title = this.add.text(width / 2, height / 2 - 154, 'OPCIONES', {
+      ...UI_STYLES['font-title'],
+      fontSize: '34px'
+    }).setOrigin(0.5);
+
+    const controlsLabel = this.add.text(width / 2, height / 2 - 114, 'CONTROLES', {
+      ...UI_STYLES['font-subtext'],
+      color: '#bae6fd',
+      fontSize: '18px',
+      letterSpacing: 2
+    }).setOrigin(0.5);
+
+    const body = this.add.text(width / 2, height / 2 - 4, [
       `Movimiento: ${controlManager.getMovementDisplayLabel()}`,
       `Saltar: ${controlManager.getDisplayLabel('jump')}`,
       `Disparar: ${controlManager.getDisplayLabel('shoot')}`,
@@ -189,15 +213,35 @@ export class MainMenuScene extends Phaser.Scene {
       `Abandonar partida: ${controlManager.getDisplayLabel('quit')}`
     ].join('\n'), {
       color: '#cbd5e1',
-      fontSize: '19px',
+      fontSize: '20px',
       align: 'center',
       fontFamily: '"Courier New", monospace',
-      lineSpacing: 10
+      lineSpacing: 8
     }).setOrigin(0.5);
 
-    const closeHint = this.add.text(width / 2, height / 2 + 108, `${controlManager.getDisplayLabel('quit')} o ${controlManager.getDisplayLabel('next_level')} para volver`, UI_STYLES['font-subtext']).setOrigin(0.5);
+    this.controlsBackButtonBg = this.add.rectangle(width / 2, height / 2 + 156, 220, 46, 0x1e293b, 0.95)
+      .setStrokeStyle(2, 0xfde047, 1)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => this.toggleControlsPanel(false));
 
-    this.controlsPanel = this.add.container(0, 0, [panel, title, body, closeHint]).setVisible(false).setDepth(10);
+    this.controlsBackButtonText = this.add.text(width / 2, height / 2 + 156, 'Volver', {
+      color: '#fde047',
+      fontSize: '22px',
+      fontFamily: '"Courier New", monospace'
+    }).setOrigin(0.5);
+
+    this.controlsPanel = this.add.container(0, 0, [
+      overlay,
+      panelFrame,
+      panelArtwork,
+      panelTint,
+      panelInner,
+      title,
+      controlsLabel,
+      body,
+      this.controlsBackButtonBg,
+      this.controlsBackButtonText
+    ]).setVisible(false).setDepth(10);
   }
 
   private buildSetupPanel(): void {
@@ -275,8 +319,6 @@ export class MainMenuScene extends Phaser.Scene {
     });
 
     this.input.keyboard?.on('keydown-ENTER', () => {
-      console.log('ENTER detectado en menú principal');
-
       if (this.controlsPanel?.visible) {
         this.toggleControlsPanel(false);
         return;
@@ -327,6 +369,12 @@ export class MainMenuScene extends Phaser.Scene {
 
       if (this.setupPanel?.visible) {
         this.closeSetupFlow();
+      }
+    });
+
+    this.input.keyboard?.on(controlManager.getPhaserEventName('next_level'), () => {
+      if (this.controlsPanel?.visible) {
+        this.toggleControlsPanel(false);
       }
     });
 
@@ -422,16 +470,31 @@ export class MainMenuScene extends Phaser.Scene {
     this.layoutMenuOptions();
 
     if (this.controlsPanel) {
-      const [panel, title, body, closeHint] = this.controlsPanel.list as [
+      const [overlay, panelFrame, panelArtwork, panelTint, panelInner, title, controlsLabel, body, backButtonBg, backButtonText] = this.controlsPanel.list as [
+        Phaser.GameObjects.Rectangle,
+        Phaser.GameObjects.Rectangle,
+        Phaser.GameObjects.Image | Phaser.GameObjects.Rectangle,
+        Phaser.GameObjects.Rectangle,
         Phaser.GameObjects.Rectangle,
         Phaser.GameObjects.Text,
         Phaser.GameObjects.Text,
+        Phaser.GameObjects.Text,
+        Phaser.GameObjects.Rectangle,
         Phaser.GameObjects.Text
       ];
-      panel.setPosition(width / 2, height / 2);
-      title.setPosition(width / 2, height / 2 - 96);
-      body.setPosition(width / 2, height / 2 - 6);
-      closeHint.setPosition(width / 2, height / 2 + 108);
+      const panelWidth = Math.min(620, width - 84);
+      const panelHeight = Math.min(420, height - 70);
+      overlay.setPosition(width / 2, height / 2).setSize(width, height);
+      panelFrame.setPosition(width / 2, height / 2).setSize(panelWidth, panelHeight);
+      panelInner.setPosition(width / 2, height / 2).setSize(panelWidth - 14, panelHeight - 14);
+      panelArtwork.setPosition(width / 2, height / 2).setDisplaySize(panelWidth - 20, panelHeight - 20);
+      panelTint.setPosition(width / 2, height / 2).setSize(panelWidth - 20, panelHeight - 20);
+
+      title.setPosition(width / 2, height / 2 - panelHeight * 0.37);
+      controlsLabel.setPosition(width / 2, height / 2 - panelHeight * 0.27);
+      body.setPosition(width / 2, height / 2 - panelHeight * 0.02);
+      backButtonBg.setPosition(width / 2, height / 2 + panelHeight * 0.37);
+      backButtonText.setPosition(width / 2, height / 2 + panelHeight * 0.37);
     }
 
     if (this.setupPanel) {
@@ -464,6 +527,10 @@ export class MainMenuScene extends Phaser.Scene {
 
   private toggleControlsPanel(visible: boolean): void {
     this.controlsPanel?.setVisible(visible);
+    this.controlsBackButtonBg
+      ?.setFillStyle(visible ? 0x1e293b : 0x0f172a, 0.95)
+      .setStrokeStyle(2, visible ? 0xfde047 : 0x93c5fd, 1);
+    this.controlsBackButtonText?.setColor(visible ? '#fde047' : '#e2e8f0');
   }
 
   private openSetupFlow(): void {

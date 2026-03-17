@@ -1,0 +1,117 @@
+{
+  "levelId": "level5_canonical_descent",
+  "timerMs": 300000,
+  "startsAtFloor": 3,
+  "doorEventFloor": 1,
+  "stateRegistryKey": "level5CanonicalState",
+  "timerRegistryKey": "level5CanonicalTimer",
+  "checkpointRegistryKey": "level5CanonicalCheckpoint",
+  "failChainOnObjectiveFailure": true,
+  "checkpoints": [
+    {
+      "id": "cp-piso-3",
+      "floor": 3,
+      "label": "Checkpoint 3° piso",
+      "restorePosition": { "x": 640, "y": 516 }
+    },
+    {
+      "id": "cp-piso-2",
+      "floor": 2,
+      "label": "Checkpoint 2° piso",
+      "restorePosition": { "x": 1480, "y": 568 }
+    }
+  ],
+  "waveGroups": [
+    {
+      "id": "oleada-3A",
+      "floor": 3,
+      "label": "Contención inicial en 3° piso",
+      "infectedCount": 14,
+      "spawnAnchors": [
+        { "x": 820, "y": 430 },
+        { "x": 980, "y": 520 },
+        { "x": 1160, "y": 460 }
+      ]
+    },
+    {
+      "id": "oleada-2A",
+      "floor": 2,
+      "label": "Presión cruzada en escalera intermedia",
+      "infectedCount": 18,
+      "spawnAnchors": [
+        { "x": 1620, "y": 540 },
+        { "x": 1770, "y": 500 },
+        { "x": 1940, "y": 560 }
+      ]
+    },
+    {
+      "id": "oleada-1A",
+      "floor": 1,
+      "label": "Asalto final antes de la puerta",
+      "infectedCount": 22,
+      "spawnAnchors": [
+        { "x": 2280, "y": 590 },
+        { "x": 2440, "y": 610 },
+        { "x": 2600, "y": 570 }
+      ]
+    }
+  ],
+  "beats": [
+    {
+      "id": "inicio-tercer-piso",
+      "label": "Retomar descenso en el 3° piso",
+      "description": "El grupo continúa desde el nivel anterior y activa la carrera contrarreloj de 5 minutos.",
+      "completion": { "type": "timer-started" },
+      "visualPlaceholder": "lvl5_start_floor3_timer_placeholder"
+    },
+    {
+      "id": "checkpoint-3p-oleadas",
+      "label": "Aguantar oleadas y asegurar checkpoint del 3° piso",
+      "description": "Varios grupos de infectados se abalanzan mientras la party asegura el primer checkpoint.",
+      "completion": { "type": "checkpoint-activated", "targetId": "cp-piso-3", "floor": 3 },
+      "visualPlaceholder": "lvl5_checkpoint_floor3_wavehold_placeholder"
+    },
+    {
+      "id": "checkpoint-2p-oleadas",
+      "label": "Descender al 2° piso y asegurar checkpoint",
+      "description": "El equipo cae al segundo tramo, resiste otra oleada y habilita el segundo checkpoint.",
+      "completion": { "type": "checkpoint-activated", "targetId": "cp-piso-2", "floor": 2 },
+      "visualPlaceholder": "lvl5_checkpoint_floor2_pressure_placeholder"
+    },
+    {
+      "id": "cinematica-puerta-piso1",
+      "label": "Cinemática de puerta casi abierta en 1° piso",
+      "description": "Al llegar al primer piso, el grupo observa infectados forzando la puerta principal.",
+      "completion": { "type": "cinematic-played", "targetId": "puerta-casi-abierta", "floor": 1 },
+      "visualPlaceholder": "lvl5_floor1_door_about_to_break_placeholder"
+    },
+    {
+      "id": "limpieza-puerta",
+      "label": "Reanudar gameplay y limpiar el acceso",
+      "description": "Se retoma control y la party elimina a la masa infectada antes de que entren refuerzos.",
+      "completion": { "type": "door-defense-cleared", "targetId": "puerta-principal", "floor": 1 },
+      "visualPlaceholder": "lvl5_door_defense_cleanup_placeholder"
+    },
+    {
+      "id": "cinematica-nahir-selene",
+      "label": "Reencuentro: Nahir se abalanza a Selene",
+      "description": "Se dispara la cinemática del choque entre gemelas y se entrega contexto adicional del brote.",
+      "completion": { "type": "cinematic-played", "targetId": "nahir-selene-reencuentro" },
+      "visualPlaceholder": "lvl5_nahir_selene_cinematic_placeholder"
+    },
+    {
+      "id": "oficinistas-huyen",
+      "label": "Compañeros de oficina huyen por su cuenta",
+      "description": "Los compañeros de Selene se dispersan y abandonan la zona sin coordinación.",
+      "completion": { "type": "coworkers-fled", "targetId": "oficina-selene" },
+      "visualPlaceholder": "lvl5_coworkers_scatter_placeholder"
+    },
+    {
+      "id": "loot-y-contexto-final",
+      "label": "Recolectar recursos y cerrar contexto del nivel",
+      "description": "El grupo encuentra suministros útiles, actualiza contexto narrativo y finaliza el nivel.",
+      "completion": { "type": "level-finished", "targetId": "nivel5-cierre" },
+      "visualPlaceholder": "lvl5_loot_context_wrapup_placeholder"
+    }
+  ]
+}

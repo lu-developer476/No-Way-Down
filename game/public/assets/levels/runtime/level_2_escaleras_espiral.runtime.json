@@ -1,0 +1,32 @@
+{
+  "level_id": "level_2_escaleras_espiral",
+  "layout": {
+    "width": 9800,
+    "height": 864,
+    "floor_height": 64,
+    "environment_profile": "level2_escaleras_espiral",
+    "default_spawn": {
+      "x": 180,
+      "y": 724
+    },
+    "level_flow": {
+      "canonicalName": "No Way Down - Nivel 2 Canónico",
+      "verticalAscent": {
+        "start": "escaleras_1er_subsuelo",
+        "end": "escaleras_5to_piso"
+      }
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1300,
+    "viewportSafePadding": 100,
+    "areas": [],
+    "points": []
+  },
+  "objectives": [],
+  "interactables": [],
+  "triggers": [],
+  "cinematics": [],
+  "exits": []
+}

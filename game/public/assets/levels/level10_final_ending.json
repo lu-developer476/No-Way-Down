@@ -63,5 +63,6 @@
     "id": "family_search_split",
     "label": "Búsqueda separada de las familias en la zona sur",
     "uncertainty": "No hay confirmación de zonas seguras ni de supervivientes identificados."
-  }
+  },
+  "runtimeLevelId": "level_10_exterior_urbano"
 }

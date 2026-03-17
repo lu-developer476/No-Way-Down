@@ -23,7 +23,10 @@
       "startAtMs": 0,
       "spawnIntervalMs": 7200,
       "enemiesPerSpawn": 1,
-      "spawnPointIds": ["street_north", "street_east"]
+      "spawnPointIds": [
+        "street_north",
+        "street_east"
+      ]
     },
     {
       "id": "street_hold_phase_2",
@@ -31,7 +34,11 @@
       "startAtMs": 80000,
       "spawnIntervalMs": 6200,
       "enemiesPerSpawn": 1,
-      "spawnPointIds": ["street_north", "street_east", "street_west"]
+      "spawnPointIds": [
+        "street_north",
+        "street_east",
+        "street_west"
+      ]
     },
     {
       "id": "street_hold_phase_3",
@@ -39,7 +46,13 @@
       "startAtMs": 170000,
       "spawnIntervalMs": 5000,
       "enemiesPerSpawn": 2,
-      "spawnPointIds": ["street_north", "street_east", "street_west", "street_rear"]
+      "spawnPointIds": [
+        "street_north",
+        "street_east",
+        "street_west",
+        "street_rear"
+      ]
     }
-  ]
+  ],
+  "runtimeLevelId": "level_10_exterior_urbano"
 }

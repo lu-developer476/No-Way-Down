@@ -1,0 +1,25 @@
+{
+  "level_id": "level_6_pasillos_planta_baja_salidas",
+  "layout": {
+    "width": 7600,
+    "height": 1200,
+    "floor_height": 72,
+    "environment_profile": "level6_pasillos_planta_baja_salidas",
+    "default_spawn": {
+      "x": 220,
+      "y": 1060
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1400,
+    "viewportSafePadding": 100,
+    "areas": [],
+    "points": []
+  },
+  "objectives": [],
+  "interactables": [],
+  "triggers": [],
+  "cinematics": [],
+  "exits": []
+}

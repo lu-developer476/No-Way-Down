@@ -97,18 +97,26 @@ export class BootScene extends Phaser.Scene {
     const { palette } = visualTheme;
 
     graphics.clear();
-    graphics.fillStyle(palette.platformTop, 1);
-    graphics.fillRect(0, 0, 64, 16);
-    graphics.fillStyle(palette.platformEdge, 1);
-    graphics.fillRect(0, 16, 64, 36);
-    graphics.fillStyle(0x202839, 1);
-    for (let x = 2; x < 64; x += 10) {
-      graphics.fillRect(x, 24, 6, 2);
-      graphics.fillRect(x + 3, 34, 4, 2);
+    graphics.fillStyle(0x4f433c, 1);
+    graphics.fillRect(0, 0, 64, 52);
+    graphics.fillStyle(0x754342, 1);
+    graphics.fillRect(0, 0, 64, 34);
+    graphics.fillStyle(0x8f5e55, 0.55);
+    for (let x = 0; x < 64; x += 16) {
+      graphics.fillRect(x, 2, 12, 30);
     }
-    graphics.fillStyle(0x465472, 1);
-    for (let x = 4; x < 64; x += 8) {
-      graphics.fillRect(x, 2, 5, 2);
+    graphics.fillStyle(0x26211f, 1);
+    graphics.fillRect(0, 34, 64, 18);
+    graphics.fillStyle(0xcdbb9b, 1);
+    graphics.fillRect(0, 34, 64, 6);
+    graphics.fillStyle(0xb58b43, 0.9);
+    for (let x = 6; x < 64; x += 13) {
+      graphics.fillRect(x, 37, 4, 1);
+    }
+    graphics.fillStyle(0x1b1715, 0.35);
+    for (let x = 0; x < 64; x += 8) {
+      graphics.fillRect(x, 43, 6, 2);
+      graphics.fillRect(x + 2, 48, 4, 1);
     }
     graphics.generateTexture('ground-placeholder', 64, 52);
 
@@ -122,96 +130,170 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('bullet-placeholder', 12, 12);
 
     graphics.clear();
-    graphics.fillStyle(0x4b5563, 1);
+    graphics.fillStyle(0x82715c, 1);
     graphics.fillRect(0, 0, 32, 48);
-    graphics.fillStyle(0x94a3b8, 1);
-    for (let y = 3; y < 48; y += 8) {
-      graphics.fillRect(5, y, 22, 2);
+    graphics.fillStyle(0xd7ccb8, 1);
+    for (let y = 4; y < 48; y += 8) {
+      graphics.fillRect(3, y, 26, 3);
+      graphics.fillRect(3, y - 2, 26, 1);
     }
-    graphics.fillStyle(0x1f2937, 1);
-    graphics.fillRect(12, 0, 8, 48);
+    graphics.fillStyle(0xa58d6c, 1);
+    graphics.fillRect(0, 0, 4, 48);
+    graphics.fillRect(28, 0, 4, 48);
+    graphics.fillStyle(0xb58b43, 0.9);
+    graphics.fillRect(2, 1, 28, 2);
     graphics.generateTexture('stair-placeholder', 32, 48);
 
     graphics.clear();
-    graphics.fillStyle(0x8c806d, 1);
-    graphics.fillRect(0, 0, 36, 96);
-    graphics.fillStyle(0xb8ab95, 1);
-    graphics.fillRect(4, 8, 28, 84);
-    graphics.fillStyle(0x6b7280, 1);
-    graphics.fillRect(0, 0, 36, 10);
-    graphics.fillRect(0, 86, 36, 10);
-    graphics.generateTexture('prop-stone-column', 36, 96);
+    graphics.fillStyle(0x95836f, 1);
+    graphics.fillRect(0, 0, 40, 108);
+    graphics.fillStyle(0xcdbca3, 1);
+    graphics.fillRect(6, 12, 28, 82);
+    graphics.fillStyle(0xddd0bd, 1);
+    graphics.fillRect(10, 16, 4, 74);
+    graphics.fillRect(18, 16, 3, 74);
+    graphics.fillRect(25, 16, 4, 74);
+    graphics.fillStyle(0x766554, 1);
+    graphics.fillRect(0, 0, 40, 12);
+    graphics.fillRect(2, 92, 36, 16);
+    graphics.fillStyle(0xb58b43, 0.75);
+    graphics.fillRect(4, 4, 32, 2);
+    graphics.generateTexture('prop-stone-column', 40, 108);
 
     graphics.clear();
-    graphics.fillStyle(0x6b3f2a, 1);
-    graphics.fillRect(0, 0, 128, 56);
-    graphics.fillStyle(0xb58b43, 1);
-    graphics.fillRect(0, 0, 128, 8);
-    graphics.fillStyle(0x334155, 1);
-    graphics.fillRect(8, 14, 32, 20);
-    graphics.fillRect(48, 14, 32, 20);
-    graphics.fillRect(88, 14, 32, 20);
-    graphics.generateTexture('prop-bank-counter', 128, 56);
+    graphics.fillStyle(0x7f6250, 1);
+    graphics.fillRect(0, 0, 128, 64);
+    graphics.fillStyle(0xc8b18c, 1);
+    graphics.fillRect(0, 0, 128, 10);
+    graphics.fillStyle(0xdbc8a7, 0.85);
+    graphics.fillRect(10, 14, 108, 34);
+    graphics.fillStyle(0x111827, 0.95);
+    graphics.fillRect(18, 18, 24, 24);
+    graphics.fillRect(52, 18, 24, 24);
+    graphics.fillRect(86, 18, 24, 24);
+    graphics.fillStyle(0x67a7b7, 0.35);
+    graphics.fillRect(20, 20, 20, 18);
+    graphics.fillRect(54, 20, 20, 18);
+    graphics.fillRect(88, 20, 20, 18);
+    graphics.fillStyle(0x4a3428, 1);
+    graphics.fillRect(8, 48, 112, 12);
+    graphics.generateTexture('prop-bank-counter', 128, 64);
 
-    // "Cubículo grillado" del runtime: representa control de acceso (molinete/reja), no una caja gris genérica.
     graphics.clear();
-    graphics.fillStyle(0x374151, 1);
-    graphics.fillRect(0, 0, 72, 82);
-    graphics.fillStyle(0x9ca3af, 1);
-    for (let x = 8; x <= 64; x += 8) {
-      graphics.fillRect(x, 8, 2, 66);
-    }
-    graphics.fillStyle(0x1f2937, 1);
-    graphics.fillRect(0, 0, 72, 8);
-    graphics.fillRect(0, 74, 72, 8);
+    graphics.fillStyle(0x82684d, 1);
+    graphics.fillRect(0, 0, 84, 88);
+    graphics.fillStyle(0xc7a45b, 1);
+    graphics.fillRect(0, 0, 84, 8);
+    graphics.fillStyle(0x1f2937, 0.95);
+    graphics.fillRect(10, 12, 64, 58);
+    graphics.fillStyle(0xa8d4df, 0.35);
+    graphics.fillRect(14, 16, 56, 50);
+    graphics.fillStyle(0xcbd5e1, 1);
+    graphics.fillRect(28, 8, 2, 72);
+    graphics.fillRect(54, 8, 2, 72);
     graphics.fillStyle(0xef4444, 1);
-    graphics.fillRect(6, 4, 8, 4);
-    graphics.generateTexture('prop-turnstile-grille', 72, 82);
+    graphics.fillRect(24, 32, 36, 3);
+    graphics.fillStyle(0x38bdf8, 1);
+    graphics.fillRect(24, 26, 10, 3);
+    graphics.fillRect(50, 26, 10, 3);
+    graphics.generateTexture('prop-turnstile-grille', 84, 88);
 
     graphics.clear();
-    graphics.fillStyle(0x334155, 1);
-    graphics.fillRect(0, 0, 50, 90);
-    graphics.fillStyle(0x86efac, 1);
-    graphics.fillRect(8, 10, 34, 24);
+    graphics.fillStyle(0x51463f, 1);
+    graphics.fillRect(0, 0, 54, 98);
+    graphics.fillStyle(0x152433, 1);
+    graphics.fillRect(8, 8, 38, 28);
+    graphics.fillStyle(0x8fd5e4, 0.6);
+    graphics.fillRect(10, 10, 34, 24);
+    graphics.fillStyle(0xb58b43, 1);
+    graphics.fillRect(12, 46, 30, 10);
     graphics.fillStyle(0x1f2937, 1);
-    graphics.fillRect(10, 44, 30, 34);
-    graphics.generateTexture('prop-atm', 50, 90);
+    graphics.fillRect(12, 58, 30, 28);
+    graphics.fillStyle(0xe2e8f0, 1);
+    graphics.fillRect(18, 64, 18, 4);
+    graphics.generateTexture('prop-atm', 54, 98);
 
     graphics.clear();
-    graphics.fillStyle(0x475569, 1);
-    graphics.fillRect(0, 0, 96, 28);
-    graphics.fillStyle(0x94a3b8, 1);
-    graphics.fillRect(8, 4, 80, 8);
-    graphics.fillStyle(0x334155, 1);
-    graphics.fillRect(8, 22, 10, 10);
-    graphics.fillRect(78, 22, 10, 10);
-    graphics.generateTexture('prop-bench', 96, 32);
+    graphics.fillStyle(0x4d3528, 1);
+    graphics.fillRect(0, 0, 100, 18);
+    graphics.fillStyle(0x7a5a42, 1);
+    graphics.fillRect(6, 3, 88, 10);
+    graphics.fillStyle(0xb58b43, 0.85);
+    graphics.fillRect(10, 1, 80, 2);
+    graphics.fillStyle(0x2a221d, 1);
+    graphics.fillRect(10, 18, 10, 14);
+    graphics.fillRect(80, 18, 10, 14);
+    graphics.generateTexture('prop-bench', 100, 32);
 
     graphics.clear();
-    graphics.fillStyle(0x16a34a, 1);
-    graphics.fillRect(0, 0, 34, 42);
+    graphics.fillStyle(0x8a6a43, 1);
+    graphics.fillRect(0, 0, 40, 54);
+    graphics.fillStyle(0x255f47, 1);
+    graphics.fillRect(4, 6, 32, 16);
+    graphics.fillStyle(0xf8fafc, 1);
+    graphics.fillRect(10, 28, 20, 4);
+    graphics.fillRect(8, 36, 24, 3);
+    graphics.generateTexture('prop-recycling-box', 40, 54);
+
+    graphics.clear();
+    graphics.fillStyle(0x2b2f36, 1);
+    graphics.fillRect(0, 0, 42, 82);
+    graphics.fillStyle(0x86c8da, 1);
+    graphics.fillRect(5, 8, 32, 24);
     graphics.fillStyle(0x0f172a, 1);
-    graphics.fillRect(4, 6, 26, 30);
-    graphics.generateTexture('prop-recycling-box', 34, 42);
+    graphics.fillRect(8, 36, 26, 8);
+    graphics.fillStyle(0xc8b18c, 1);
+    graphics.fillRect(18, 32, 4, 46);
+    graphics.generateTexture('prop-info-screen', 42, 82);
 
     graphics.clear();
-    graphics.fillStyle(0x1e293b, 1);
-    graphics.fillRect(0, 0, 40, 78);
-    graphics.fillStyle(0x60a5fa, 1);
-    graphics.fillRect(5, 8, 30, 20);
-    graphics.fillStyle(0x94a3b8, 1);
-    graphics.fillRect(18, 28, 4, 44);
-    graphics.generateTexture('prop-info-screen', 40, 78);
+    graphics.fillStyle(0x7c6a5b, 1);
+    graphics.fillRect(0, 0, 60, 40);
+    graphics.fillStyle(0xc8d0d9, 1);
+    graphics.fillRect(6, 4, 48, 16);
+    graphics.fillStyle(0x4b5563, 1);
+    graphics.fillRect(8, 24, 44, 6);
+    graphics.fillStyle(0x1f2937, 1);
+    graphics.fillRect(6, 32, 10, 6);
+    graphics.fillRect(44, 32, 10, 6);
+    graphics.generateTexture('prop-utility-cart', 60, 40);
+
 
     graphics.clear();
-    graphics.fillStyle(0x64748b, 1);
-    graphics.fillRect(0, 0, 58, 36);
-    graphics.fillStyle(0x334155, 1);
-    graphics.fillRect(8, 4, 42, 14);
-    graphics.fillStyle(0x9ca3af, 1);
-    graphics.fillRect(4, 30, 10, 6);
-    graphics.fillRect(44, 30, 10, 6);
-    graphics.generateTexture('prop-utility-cart', 58, 36);
+    graphics.fillStyle(0x111827, 1);
+    graphics.fillRect(0, 0, 92, 156);
+    graphics.fillStyle(0x1d4d64, 0.28);
+    graphics.fillRect(8, 10, 76, 136);
+    graphics.fillStyle(0xd8c7ab, 1);
+    graphics.fillRect(0, 0, 92, 10);
+    graphics.fillRect(0, 146, 92, 10);
+    graphics.fillStyle(0x6d5f52, 1);
+    graphics.fillRect(28, 0, 4, 156);
+    graphics.fillRect(60, 0, 4, 156);
+    graphics.generateTexture('prop-tall-window', 92, 156);
+
+    graphics.clear();
+    graphics.fillStyle(0x957447, 1);
+    graphics.fillRect(0, 0, 96, 132);
+    graphics.fillStyle(0xd7b77f, 1);
+    graphics.fillRect(6, 6, 84, 120);
+    graphics.fillStyle(0x4f2d18, 1);
+    graphics.fillRect(12, 16, 32, 96);
+    graphics.fillRect(52, 16, 32, 96);
+    graphics.fillStyle(0xb9894c, 1);
+    graphics.fillRect(46, 8, 4, 112);
+    graphics.generateTexture('prop-bronze-door', 96, 132);
+
+    graphics.clear();
+    graphics.fillStyle(0x7a5a42, 1);
+    graphics.fillRect(0, 0, 112, 52);
+    graphics.fillStyle(0xc9b38c, 1);
+    graphics.fillRect(6, 6, 100, 8);
+    graphics.fillStyle(0x2d3748, 1);
+    graphics.fillRect(10, 14, 92, 6);
+    graphics.fillRect(14, 22, 12, 24);
+    graphics.fillRect(86, 22, 12, 24);
+    graphics.generateTexture('prop-service-table', 112, 52);
 
     graphics.destroy();
 

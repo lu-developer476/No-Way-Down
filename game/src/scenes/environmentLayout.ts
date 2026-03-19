@@ -8,7 +8,10 @@ export type EnvironmentPropKind =
   | 'bench'
   | 'recycling-box'
   | 'info-screen'
-  | 'cart';
+  | 'cart'
+  | 'tall-window'
+  | 'bronze-door'
+  | 'service-table';
 
 interface EnvironmentPropConfig {
   kind: EnvironmentPropKind;
@@ -27,7 +30,10 @@ const PROP_TEXTURES: Record<EnvironmentPropKind, string> = {
   bench: 'prop-bench',
   'recycling-box': 'prop-recycling-box',
   'info-screen': 'prop-info-screen',
-  cart: 'prop-utility-cart'
+  cart: 'prop-utility-cart',
+  'tall-window': 'prop-tall-window',
+  'bronze-door': 'prop-bronze-door',
+  'service-table': 'prop-service-table'
 };
 
 export function addEnvironmentProp(scene: Phaser.Scene, config: EnvironmentPropConfig): Phaser.GameObjects.GameObject {
@@ -39,7 +45,9 @@ export function addEnvironmentProp(scene: Phaser.Scene, config: EnvironmentPropC
       .setScale(config.scale ?? 1);
   }
 
-  return scene.add.rectangle(config.x, config.y, 32, 32, 0x64748b, 0.85)
+  return scene.add.image(config.x, config.y, 'prop-stone-column')
+    .setTint(0x8c806d)
     .setDepth(config.depth ?? 6)
-    .setAlpha(config.alpha ?? 1);
+    .setAlpha((config.alpha ?? 1) * 0.35)
+    .setScale(config.scale ?? 0.8);
 }

@@ -195,31 +195,59 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   private drawUpperFloorBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
-    const { palette } = visualTheme;
     const floorY = this.resolveFloorY(levelHeight);
 
     const backdrop = this.add.graphics();
-    backdrop.fillGradientStyle(0x0b1322, 0x0b1322, 0x111827, 0x111827, 1);
+    backdrop.fillGradientStyle(0xd8c8ab, 0xd8c8ab, 0xb89d78, 0xb89d78, 1);
     backdrop.fillRect(0, 0, levelWidth, levelHeight);
-    backdrop.fillStyle(0x24324a, 1);
-    backdrop.fillRect(0, 80, levelWidth, 320);
-    backdrop.fillStyle(0x334155, 0.9);
-    backdrop.fillRect(0, floorY - floorHeight - 140, levelWidth, 140);
-    backdrop.fillStyle(0x4b5563, 1);
+    backdrop.fillStyle(0xe5d8bf, 1);
+    backdrop.fillRect(0, 0, levelWidth, 170);
+    backdrop.fillStyle(0xcab28f, 1);
+    backdrop.fillRect(0, 170, levelWidth, 190);
+    backdrop.fillStyle(0x754342, 1);
     backdrop.fillRect(0, floorY - 26, levelWidth, 26);
+    backdrop.fillStyle(0x593f34, 1);
+    backdrop.fillRect(0, floorY, levelWidth, floorHeight);
     backdrop.destroy();
 
-    for (let x = 120; x < levelWidth; x += 240) {
-      this.add.rectangle(x, 146, 84, 120, 0x0f172a, 0.45).setDepth(1);
-      this.add.rectangle(x, 146, 74, 108, 0x7dd3fc, 0.06).setDepth(1);
+    for (let x = 150; x < levelWidth; x += 230) {
+      this.add.image(x, 166, 'prop-tall-window')
+        .setDepth(1)
+        .setScrollFactor(0.42, 1)
+        .setDisplaySize(94, 180)
+        .setAlpha(0.95);
     }
 
-    for (let x = 100; x < levelWidth; x += 210) {
-      this.add.rectangle(x, floorY - floorHeight - 72, 128, 22, palette.lamp, 0.2).setDepth(2);
+    for (let x = 112; x < levelWidth; x += 228) {
+      this.add.image(x, 226, 'prop-stone-column')
+        .setDepth(1.2)
+        .setScrollFactor(0.5, 1)
+        .setScale(1.3)
+        .setAlpha(0.45);
     }
 
-    for (let x = 160; x < levelWidth; x += 320) {
-      this.add.rectangle(x, floorY - 12, 120, 10, 0x7a4340, 0.45).setDepth(3);
+    for (let x = 120; x < levelWidth; x += 160) {
+      for (let y = 42; y < 150; y += 54) {
+        this.add.rectangle(x, y, 112, 36, 0xf5efe2, 0.85).setDepth(1.4).setScrollFactor(0.58, 1);
+        this.add.rectangle(x, y + 18, 112, 2, 0xb9a07e, 0.75).setDepth(1.45).setScrollFactor(0.58, 1);
+      }
+    }
+
+    for (let x = 120; x < levelWidth; x += 250) {
+      this.add.circle(x, 92, 22, 0xf3d28f, 0.12).setDepth(1.5).setBlendMode(Phaser.BlendModes.ADD);
+    }
+
+    for (let x = 200; x < levelWidth; x += 440) {
+      this.add.image(x, floorY - 120, 'prop-bank-counter')
+        .setDepth(2.2)
+        .setScrollFactor(0.72, 1)
+        .setAlpha(0.22)
+        .setScale(1.15, 1.25);
+    }
+
+    for (let x = 0; x < levelWidth; x += 116) {
+      this.add.rectangle(x + 58, floorY + 18, 104, 24, 0x8f5e55, x % 232 === 0 ? 0.4 : 0.28).setDepth(3.4);
+      this.add.rectangle(x + 58, floorY + 40, 104, 2, 0x251b18, 0.22).setDepth(3.45);
     }
   }
 
@@ -253,9 +281,9 @@ export class UpperFloorScene extends Phaser.Scene {
       addEnvironmentProp(this, {
         kind: 'stone-column',
         x: column.x,
-        y: column.y - 30,
+        y: column.y - 56,
         depth: 6,
-        scale: 1.05
+        scale: 1.28
       });
 
       environment.create(column.x, floorY - 22, 'ground-placeholder')
@@ -269,9 +297,18 @@ export class UpperFloorScene extends Phaser.Scene {
       addEnvironmentProp(this, {
         kind: 'bank-counter',
         x: counter.x,
-        y: counter.y,
+        y: counter.y - 4,
         depth: 6,
-        scale: 1
+        scale: 1.12
+      });
+
+      addEnvironmentProp(this, {
+        kind: 'tall-window',
+        x: counter.x,
+        y: counter.side === 'north' ? counter.y - 170 : counter.y - 138,
+        depth: 4,
+        alpha: 0.95,
+        scale: 1.08
       });
 
       environment.create(counter.x, counter.y + 10, 'ground-placeholder')
@@ -288,14 +325,16 @@ export class UpperFloorScene extends Phaser.Scene {
         x: lanePoint.x,
         y: lanePoint.y - 34,
         depth: 5,
-        alpha: 0.9,
-        scale: 0.95
+        alpha: 0.96,
+        scale: index % 2 === 0 ? 1.05 : 0.98
       });
     });
   }
 
   private addStairVisual(x: number, y: number, width: number, height: number): void {
-    this.add.tileSprite(x, y + 4, width, height, 'stair-placeholder').setDepth(7).setAlpha(0.9);
+    this.add.tileSprite(x, y + 4, width, height, 'stair-placeholder').setDepth(7).setAlpha(0.98);
+    this.add.rectangle(x, y - height / 2 + 8, width, 8, 0xd9ccb6, 0.95).setDepth(7);
+    this.add.rectangle(x, y + height / 2 - 6, width - 10, 6, 0xb58b43, 0.55).setDepth(7);
   }
 
   private createTransitionUI(): void {

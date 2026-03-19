@@ -13,7 +13,7 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
   private spawnY = 0;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'bullet-placeholder');
+    super(scene, x, y, 'projectile-missing');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -53,7 +53,13 @@ export class Projectile extends Phaser.Physics.Arcade.Image {
     this.spawnY = y;
 
     this.enableBody(true, x, y, true, true);
-    this.setTexture(metadata.projectileTexture ?? 'bullet-placeholder');
+    const textureKey = metadata.projectileTexture ?? 'projectile-missing';
+    if (!this.scene.textures.exists(textureKey)) {
+      console.error(`[Projectile] Missing projectile texture "${textureKey}" for weapon "${metadata.weaponKey}". Using explicit fallback.`);
+      this.setTexture('projectile-missing');
+    } else {
+      this.setTexture(textureKey);
+    }
     this.setScale(metadata.projectileScale ?? 1);
     this.setTint(metadata.projectileTint ?? 0xffffff);
     this.setFlipX(this.direction < 0);

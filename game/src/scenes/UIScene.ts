@@ -2,12 +2,15 @@ import Phaser from 'phaser';
 import { PartyHudMember } from './sceneShared';
 import { controlManager } from '../input/ControlManager';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
+import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { visualTheme } from './visualTheme';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
   nameText: Phaser.GameObjects.Text;
   hpFill: Phaser.GameObjects.Rectangle;
+  activeWeaponIcon: Phaser.GameObjects.Image;
+  secondaryWeaponIcon: Phaser.GameObjects.Image;
   activeWeaponText: Phaser.GameObjects.Text;
   secondaryWeaponText: Phaser.GameObjects.Text;
   ammoText: Phaser.GameObjects.Text;
@@ -101,6 +104,8 @@ export class UIScene extends Phaser.Scene {
 
     this.protagonistHud.nameText.setText(`[${protagonist.name.toUpperCase()}]`);
     this.protagonistHud.hpFill.setSize(122 * hpRatio, 8);
+    this.refreshWeaponHudIcon(this.protagonistHud.activeWeaponIcon, protagonist.activeWeapon);
+    this.refreshWeaponHudIcon(this.protagonistHud.secondaryWeaponIcon, protagonist.secondaryWeapon);
     this.protagonistHud.activeWeaponText.setText(`Activa: ${activeWeaponText}`);
     this.protagonistHud.secondaryWeaponText.setText(`Sec.: ${secondaryWeaponText}`);
     this.protagonistHud.ammoText.setText(ammoText);
@@ -174,6 +179,12 @@ export class UIScene extends Phaser.Scene {
         statusText.setText('').setVisible(false);
       });
     }
+  }
+
+  private refreshWeaponHudIcon(icon: Phaser.GameObjects.Image, weaponKey?: string): void {
+    const visual = getWeaponVisualRuntimeConfig(weaponKey, this);
+    icon.setTexture(visual.hudTexture);
+    icon.setScale(visual.hudScale);
   }
 
   private handleZombiesChanged(_parent: Phaser.Data.DataManager, value: number): void {
@@ -270,10 +281,21 @@ export class UIScene extends Phaser.Scene {
       fontStyle: 'bold'
     }).setScrollFactor(0).setVisible(false);
 
+    const activeWeaponIcon = this.add.image(164, 50, 'weapon-hud-missing')
+      .setOrigin(0.5)
+      .setScrollFactor(0);
+
+    const secondaryWeaponIcon = this.add.image(164, 64, 'weapon-hud-missing')
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setAlpha(0.85);
+
     this.protagonistHud = {
-      container: this.add.container(0, 0, [nameText, hpBg, hpFill, activeWeaponText, secondaryWeaponText, ammoText, statusText]).setVisible(false),
+      container: this.add.container(0, 0, [nameText, hpBg, hpFill, activeWeaponIcon, secondaryWeaponIcon, activeWeaponText, secondaryWeaponText, ammoText, statusText]).setVisible(false),
       nameText,
       hpFill,
+      activeWeaponIcon,
+      secondaryWeaponIcon,
       activeWeaponText,
       secondaryWeaponText,
       ammoText,

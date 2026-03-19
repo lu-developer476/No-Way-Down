@@ -121,6 +121,7 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('ground-placeholder', 64, 52);
 
     this.createWeaponProjectileTextures(graphics);
+    this.createWeaponSilhouetteTextures(graphics);
 
     graphics.clear();
     graphics.fillStyle(palette.bullet, 1);
@@ -548,6 +549,66 @@ export class BootScene extends Phaser.Scene {
     graphics.fillRect(x, y, width, height);
   }
 
+  private createWeaponSilhouetteTextures(graphics: Phaser.GameObjects.Graphics): void {
+    const createdWeaponKeys = new Set<string>();
+
+    const drawWeaponSilhouette = (weaponKey: string, color: number, width: number, height: number, barrel = 0, accent = 0x0f172a): void => {
+      graphics.clear();
+      graphics.fillStyle(color, 1);
+      graphics.fillRect(2, Math.floor(height / 2) - 2, Math.max(6, width - 6), 4);
+      if (barrel > 0) {
+        graphics.fillRect(width - barrel - 1, Math.floor(height / 2) - 1, barrel, 2);
+      }
+      graphics.fillStyle(accent, 1);
+      graphics.fillRect(1, Math.floor(height / 2) + 2, 3, Math.max(2, Math.floor(height / 3)));
+      graphics.generateTexture(`weapon-${weaponKey}`, width, height);
+
+      graphics.clear();
+      graphics.fillStyle(0x0f172a, 0.88);
+      graphics.fillRoundedRect(0, 0, width + 8, height + 8, 4);
+      graphics.fillStyle(color, 1);
+      graphics.fillRect(4, 4 + Math.floor(height / 2) - 2, Math.max(6, width - 6), 4);
+      if (barrel > 0) {
+        graphics.fillRect(width - barrel + 3, 4 + Math.floor(height / 2) - 1, barrel, 2);
+      }
+      graphics.fillStyle(0xe2e8f0, 1);
+      graphics.fillRect(2, 2, width + 4, 1);
+      graphics.generateTexture(`weapon-hud-${weaponKey}`, width + 8, height + 8);
+    };
+
+    getAllWeaponCatalogEntries().forEach((weapon) => {
+      if (createdWeaponKeys.has(weapon.key)) {
+        return;
+      }
+
+      const isLong = weapon.family === 'rifle' || weapon.family === 'shotgun' || weapon.key === 'light_machine_gun';
+      const isMelee = weapon.isMelee || weapon.isDefensive;
+      const width = isLong ? 22 : isMelee ? 18 : 14;
+      const height = isLong ? 8 : 10;
+      const barrel = isLong ? 8 : isMelee ? 4 : 3;
+      drawWeaponSilhouette(weapon.key, weapon.projectileTint ?? 0xcbd5e1, width, height, barrel);
+      createdWeaponKeys.add(weapon.key);
+    });
+
+    graphics.clear();
+    graphics.fillStyle(0x7f1d1d, 1);
+    graphics.fillRoundedRect(0, 0, 22, 12, 4);
+    graphics.fillStyle(0xfde68a, 1);
+    graphics.fillRect(4, 5, 14, 2);
+    graphics.fillRect(10, 2, 2, 8);
+    graphics.generateTexture('weapon-missing', 22, 12);
+
+    graphics.clear();
+    graphics.fillStyle(0x111827, 0.95);
+    graphics.fillRoundedRect(0, 0, 30, 20, 4);
+    graphics.fillStyle(0xf87171, 1);
+    graphics.fillRoundedRect(4, 4, 22, 12, 3);
+    graphics.fillStyle(0xfef3c7, 1);
+    graphics.fillRect(8, 9, 14, 2);
+    graphics.fillRect(14, 6, 2, 8);
+    graphics.generateTexture('weapon-hud-missing', 30, 20);
+  }
+
   private createWeaponProjectileTextures(graphics: Phaser.GameObjects.Graphics): void {
     const uniqueVisualKeys = new Set<string>();
 
@@ -574,6 +635,31 @@ export class BootScene extends Phaser.Scene {
       graphics.generateTexture(weapon.visualKey, template.width, template.height);
       uniqueVisualKeys.add(weapon.visualKey);
     });
+
+    graphics.clear();
+    graphics.fillStyle(0x7f1d1d, 1);
+    graphics.fillRoundedRect(0, 0, 14, 14, 4);
+    graphics.fillStyle(0xfde68a, 1);
+    graphics.fillRect(2, 6, 10, 2);
+    graphics.fillRect(6, 2, 2, 10);
+    graphics.generateTexture('projectile-missing', 14, 14);
+
+    graphics.clear();
+    graphics.fillStyle(0x7f1d1d, 1);
+    graphics.fillRoundedRect(0, 0, CHARACTER_FRAME_WIDTH, CHARACTER_FRAME_HEIGHT, 6);
+    graphics.fillStyle(0xfde68a, 1);
+    graphics.fillRect(14, 8, 4, 24);
+    graphics.fillRect(8, 18, 16, 4);
+    graphics.fillStyle(0xf8fafc, 1);
+    graphics.fillRect(10, 34, 12, 4);
+    graphics.generateTexture('missing-character-sheet-raw', CHARACTER_FRAME_WIDTH, CHARACTER_FRAME_HEIGHT);
+    const missingRawTexture = this.textures.get('missing-character-sheet-raw');
+    this.textures.addSpriteSheet('missing-character-sheet', missingRawTexture, {
+      frameWidth: CHARACTER_FRAME_WIDTH,
+      frameHeight: CHARACTER_FRAME_HEIGHT,
+      endFrame: 0
+    });
+    this.textures.remove('missing-character-sheet-raw');
 
     graphics.clear();
     graphics.fillStyle(0xffe08a, 1);

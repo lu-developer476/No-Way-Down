@@ -41,6 +41,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: AllyProfile;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
+  private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
   private isNameTagVisible = true;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
@@ -95,6 +96,11 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
     this.nameTag.setOrigin(0.5, 1);
     this.nameTag.setDepth(25);
+
+    this.equippedWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
+    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
+    this.equippedWeaponSprite.setOrigin(0.2, 0.5);
+    this.refreshEquippedWeaponVisual();
   }
 
   getId(): string {
@@ -155,6 +161,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.activeWeaponSlot = requestedSlot;
+    this.refreshEquippedWeaponVisual();
     return true;
   }
 
@@ -310,7 +317,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   }
 
   playCombatAttackAnimation(): void {
-    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key);
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     this.spriteAnimationSystem.playShootEffect(this, this.characterVisualId, this.flipX ? -1 : 1, {
       x: weaponVisual.muzzleOffsetX,
       y: weaponVisual.muzzleOffsetY
@@ -342,7 +349,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key);
+    const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key, this.scene);
     const fired = this.projectileSystem.tryFire({
       originX: this.x + direction * weaponVisual.muzzleOffsetX,
       originY: this.y + weaponVisual.muzzleOffsetY,
@@ -546,10 +553,34 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     super.preUpdate(time, delta);
     this.nameTag.setPosition(this.x, this.y - 42);
     this.nameTag.setVisible(this.active && this.isNameTagVisible);
+    this.updateEquippedWeaponSprite();
   }
 
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
+    this.equippedWeaponSprite.destroy();
     super.destroy(fromScene);
+  }
+
+  private refreshEquippedWeaponVisual(): void {
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
+    this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
+    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
+    this.updateEquippedWeaponSprite();
+  }
+
+  private updateEquippedWeaponSprite(): void {
+    if (!this.equippedWeaponSprite.active) {
+      return;
+    }
+
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
+    const direction: 1 | -1 = this.flipX ? -1 : 1;
+    this.equippedWeaponSprite.setPosition(
+      this.x + direction * weaponVisual.carryOffsetX,
+      this.y + weaponVisual.carryOffsetY
+    );
+    this.equippedWeaponSprite.setFlipX(direction < 0);
+    this.equippedWeaponSprite.setVisible(this.active);
   }
 }

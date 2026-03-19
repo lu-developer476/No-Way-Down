@@ -199,6 +199,8 @@ const CHARACTER_VISUAL_OVERRIDES: Record<string, CharacterVisualOverride> = {
   }
 };
 
+const warnedMissingVisualIds = new Set<string>();
+
 const DEFAULT_ZOMBIE_PROFILE: CharacterVisualProfile = {
   id: 'zombie-walker',
   name: 'Walker',
@@ -221,6 +223,32 @@ const DEFAULT_ZOMBIE_PROFILE: CharacterVisualProfile = {
     hair: 0x475569,
     factionBand: 0x7f1d1d,
     weapon: 0x4b5563
+  }
+};
+
+
+const EXPLICIT_MISSING_CHARACTER_PROFILE: CharacterVisualProfile = {
+  id: 'missing-character',
+  name: 'Missing Character',
+  shortName: 'Missing',
+  faction: 'ally',
+  silhouette: 'standard',
+  hairStyle: 'short',
+  weaponStyle: 'pistol',
+  outfitStyle: 'uniform',
+  facialHair: 'none',
+  hasBackpack: false,
+  hasShoulderPads: false,
+  weaponCarry: 'sidearm',
+  palette: {
+    skin: 0xf5d0b5,
+    torso: 0x7f1d1d,
+    pants: 0x111827,
+    accent: 0xfde68a,
+    eye: 0xffffff,
+    hair: 0x111827,
+    factionBand: 0xf97316,
+    weapon: 0xe5e7eb
   }
 };
 
@@ -268,7 +296,12 @@ const VISUAL_BY_ID = new Map(CHARACTER_VISUALS.map((profile) => [profile.id, pro
 export function getCharacterVisualById(id: string): CharacterVisualProfile {
   const profile = VISUAL_BY_ID.get(id);
   if (!profile) {
-    return DEFAULT_ZOMBIE_PROFILE;
+    if (!warnedMissingVisualIds.has(id)) {
+      warnedMissingVisualIds.add(id);
+      console.error(`[characterVisuals] Missing visual profile for character id "${id}". Using explicit missing-character sheet.`);
+    }
+
+    return EXPLICIT_MISSING_CHARACTER_PROFILE;
   }
 
   return profile;

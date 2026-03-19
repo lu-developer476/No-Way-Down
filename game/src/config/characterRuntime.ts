@@ -206,6 +206,8 @@ function resolveBaseWeapon(loadout: CharacterInventoryLoadout): CharacterWeaponK
     : loadout.primaryWeapon;
 }
 
+const warnedMissingRuntimeIds = new Set<string>();
+
 const catalogEntries = characterCatalog.characters as CharacterCatalogEntry[];
 const catalogByName = new Map(catalogEntries.map((entry) => [entry.name, entry]));
 
@@ -252,6 +254,11 @@ export function getCharacterRuntimeConfig(characterId: string): CharacterRuntime
   const runtimeConfig = RUNTIME_CONFIG_BY_ID.get(characterId as RuntimeCharacterId);
   if (runtimeConfig) {
     return runtimeConfig;
+  }
+
+  if (!warnedMissingRuntimeIds.has(characterId)) {
+    warnedMissingRuntimeIds.add(characterId);
+    console.error(`[characterRuntime] Missing runtime config for character id "${characterId}". Using explicit default runtime.`);
   }
 
   return {

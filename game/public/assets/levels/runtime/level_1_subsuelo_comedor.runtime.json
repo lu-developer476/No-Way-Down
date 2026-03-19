@@ -12,8 +12,13 @@
     "level_flow": {
       "resistance": {
         "durationMs": 120000,
-        "holdAreaIds": ["L1-COMEDOR-ENTRY"],
-        "advanceAreaIds": ["L1-PASILLO-A", "L1-PASILLO-B"],
+        "holdAreaIds": [
+          "L1-COMEDOR-ENTRY"
+        ],
+        "advanceAreaIds": [
+          "L1-PASILLO-A",
+          "L1-PASILLO-B"
+        ],
         "holdObjectiveText": "Resiste 2 minutos en el comedor del 1° subsuelo.",
         "advanceObjectiveText": "Avanza por los pasillos del 1° subsuelo y llega a las escaleras.",
         "completionEventType": "phase_completed",
@@ -287,19 +292,19 @@
       "dialogueSequence": [
         {
           "id": "level1_outro_alan",
-          "speaker": "Alan",
+          "speaker": "Alan Nahuel",
           "text": "La entrada del comedor quedó colapsada. No hay vuelta atrás.",
           "emotion": "focused",
           "portrait": "alan_default",
           "durationMs": 2100,
-          "nextId": "level1_outro_valentina"
+          "nextId": "level1_outro_giovanna"
         },
         {
-          "id": "level1_outro_valentina",
-          "speaker": "Valentina",
+          "id": "level1_outro_giovanna",
+          "speaker": "Giovanna",
           "text": "Pasillos despejados. Subimos a Planta Baja y seguimos la extracción.",
           "emotion": "tense",
-          "portrait": "valentina_default",
+          "portrait": "giovanna_default",
           "durationMs": 2200
         }
       ],

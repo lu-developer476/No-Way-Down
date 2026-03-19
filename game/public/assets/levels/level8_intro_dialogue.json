@@ -6,39 +6,39 @@
   "dialogueVariants": {
     "solo": [
       {
-        "speaker": "Protagonista",
+        "speaker": "Alan Nahuel",
         "text": "Ese pedido de rescate no encaja... ¿quién lo envió realmente?",
         "durationMs": 2400
       },
       {
-        "speaker": "Protagonista",
+        "speaker": "Alan Nahuel",
         "text": "No puedo resolverlo ahora. Si hay respuestas, están en la oficina 422.",
         "durationMs": 2600
       },
       {
-        "speaker": "Protagonista",
+        "speaker": "Alan Nahuel",
         "text": "Sin perder tiempo: directo al objetivo.",
         "durationMs": 2100
       }
     ],
     "squad": [
       {
-        "speaker": "Protagonista",
+        "speaker": "Alan Nahuel",
         "text": "Ese pedido de rescate llegó demasiado preciso... algo no cierra.",
         "durationMs": 2300
       },
       {
-        "speaker": "Aliado IA 1",
+        "speaker": "Giovanna",
         "text": "Coincido. El origen del evento parece interno, pero no tenemos margen para investigar aquí.",
         "durationMs": 2800
       },
       {
-        "speaker": "Aliado IA 2",
+        "speaker": "Nahir",
         "text": "Si quieren respuestas, la oficina 422 es la mejor pista. Movámonos ya.",
         "durationMs": 2600
       },
       {
-        "speaker": "Protagonista",
+        "speaker": "Alan Nahuel",
         "text": "Formación cerrada. Objetivo activo: oficina 422.",
         "durationMs": 2100
       }

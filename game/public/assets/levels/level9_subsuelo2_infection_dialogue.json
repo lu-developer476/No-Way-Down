@@ -4,27 +4,30 @@
   "triggerId": "subsuelo2_infection_trigger",
   "movementLocked": true,
   "preDialoguePauseMs": 900,
-  "victimMemberId": "mateo",
-  "victimMustHaveStatus": ["esguince", "infectado"],
+  "victimMemberId": "damian",
+  "victimMustHaveStatus": [
+    "esguince",
+    "infectado"
+  ],
   "dialogue": [
     {
-      "speaker": "Mateo",
+      "speaker": "Damián",
       "text": "No me miren así... ya siento cómo se mueve adentro. Con el tobillo roto no voy a poder correr cuando cambie.",
       "durationMs": 3400
     },
     {
-      "speaker": "Líder",
+      "speaker": "Alan Nahuel",
       "text": "Todavía podemos cargarte. Aguantá, vamos a encontrar otra salida.",
       "durationMs": 2900
     },
     {
-      "speaker": "Mateo",
+      "speaker": "Damián",
       "text": "No. Si me transformo en este pasillo, los arrastro a todos conmigo. No voy a ser otro peso muerto.",
       "durationMs": 3300
     },
     {
-      "speaker": "Compañera",
-      "text": "Mateo, esperá...",
+      "speaker": "Nahir",
+      "text": "Damián, esperá...",
       "durationMs": 1700
     },
     {
@@ -33,7 +36,7 @@
       "durationMs": 3600
     },
     {
-      "speaker": "Líder",
+      "speaker": "Alan Nahuel",
       "text": "Formación. No se detengan. Si nos quedamos, terminamos igual.",
       "durationMs": 2200
     }

@@ -1137,21 +1137,23 @@ export class GameScene extends Phaser.Scene {
 
   private createMissionStatusUI(): void {
     this.missionStatusText = this.add.text(this.scale.width / 2, 98, '', {
-      color: '#bbf7d0',
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '22px',
-      backgroundColor: '#052e16',
-      padding: { x: 12, y: 8 }
+      backgroundColor: '#1d1120',
+      padding: { x: 20, y: 12 },
+      align: 'center'
     })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(10)
       .setVisible(false);
 
-    this.apiStatusText = this.add.text(this.scale.width / 2, 132, '', {
-      color: '#bfdbfe',
-      fontSize: '18px',
-      backgroundColor: '#0b1120',
-      padding: { x: 10, y: 6 }
+    this.apiStatusText = this.add.text(this.scale.width / 2, 140, '', {
+      color: visualTheme.palette.uiTextSecondary,
+      fontSize: '17px',
+      backgroundColor: '#140d18',
+      padding: { x: 16, y: 10 },
+      align: 'center'
     })
       .setOrigin(0.5)
       .setScrollFactor(0)
@@ -1163,17 +1165,19 @@ export class GameScene extends Phaser.Scene {
       this.scale.height / 2,
       this.scale.width,
       this.scale.height,
-      0x020617,
-      0.88
+      visualTheme.palette.uiPanelShadow,
+      0.9
     )
       .setScrollFactor(0)
       .setDepth(20)
       .setVisible(false);
 
     this.transitionText = this.add.text(this.scale.width / 2, this.scale.height / 2, '', {
-      color: '#f8fafc',
-      fontSize: '28px',
-      align: 'center'
+      color: visualTheme.palette.uiTextPrimary,
+      fontSize: '32px',
+      align: 'center',
+      backgroundColor: '#1a0f1f',
+      padding: { x: 26, y: 18 }
     })
       .setOrigin(0.5)
       .setScrollFactor(0)
@@ -1629,18 +1633,23 @@ export class GameScene extends Phaser.Scene {
   private createPauseMenuUI(): void {
     const { width, height } = this.scale;
 
-    this.pauseOverlay = this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 0.7)
+    this.pauseOverlay = this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.uiPanelShadow, 0.78)
       .setScrollFactor(0)
       .setDepth(40)
       .setVisible(false);
 
-    const panel = this.add.rectangle(0, 0, 520, 360, 0x0b1220, 0.94)
+    const panel = this.add.rectangle(0, 0, 560, 392, visualTheme.palette.uiPanelFrame, 0.96)
       .setScrollFactor(0)
-      .setStrokeStyle(2, 0x38bdf8, 1);
+      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1);
+    const panelArtwork = this.textures.exists('menu_background')
+      ? this.add.image(0, 0, 'menu_background').setDisplaySize(560, 392).setAlpha(0.58).setScrollFactor(0)
+      : this.add.rectangle(0, 0, 560, 392, 0x1b1522, 0.92).setScrollFactor(0);
+    const panelTint = this.add.rectangle(0, 0, 560, 392, visualTheme.palette.uiPanelTint, 0.56).setScrollFactor(0);
+    const panelBorder = this.add.rectangle(0, 0, 560, 392, 0x000000, 0).setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1).setScrollFactor(0);
 
-    const title = this.add.text(0, -92, 'PAUSA', {
-      color: '#f8fafc',
-      fontSize: '36px',
+    const title = this.add.text(0, -130, 'PAUSA', {
+      color: visualTheme.palette.uiTextPrimary,
+      fontSize: '38px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5)
       .setScrollFactor(0);
@@ -1651,21 +1660,21 @@ export class GameScene extends Phaser.Scene {
       { label: 'Salir', action: () => this.returnToMainMenu() }
     ];
 
-    this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(0, -18 + index * 52, option.label, {
-      color: '#cbd5e1',
-      fontSize: '27px',
+    this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(0, -40 + index * 58, option.label, {
+      color: visualTheme.palette.uiTextSecondary,
+      fontSize: '28px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5)
       .setScrollFactor(0));
 
-    this.pauseHintText = this.add.text(0, 146, '↑/↓ seleccionar · ENTER confirmar · ESC volver/abandonar', {
-      color: '#93c5fd',
+    this.pauseHintText = this.add.text(0, 164, '↑/↓ seleccionar · ENTER confirmar · ESC volver/abandonar', {
+      color: visualTheme.palette.uiTextMuted,
       fontSize: '14px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5)
       .setScrollFactor(0);
 
-    this.pausePanel = this.add.container(width / 2, height / 2, [panel, title, ...this.pauseMenuTexts, this.pauseHintText])
+    this.pausePanel = this.add.container(width / 2, height / 2, [panel, panelArtwork, panelTint, panelBorder, title, ...this.pauseMenuTexts, this.pauseHintText])
       .setScrollFactor(0)
       .setDepth(41)
       .setVisible(false);
@@ -1811,7 +1820,7 @@ export class GameScene extends Phaser.Scene {
   private updatePauseMenuSelection(): void {
     this.pauseMenuTexts.forEach((text, index) => {
       const selected = this.pauseMenuIndex === index;
-      text.setColor(selected ? '#fde047' : '#cbd5e1');
+      text.setColor(selected ? visualTheme.palette.uiHighlight : visualTheme.palette.uiTextSecondary);
       text.setScale(selected ? 1.03 : 1);
     });
   }

@@ -3,7 +3,7 @@ import { CharacterStats } from './Character';
 import { CHARACTERS, CharacterId } from './CharacterRegistry';
 import { Survivor } from './Survivor';
 
-const DEFAULT_TEXTURE_KEY = 'alan-sheet';
+const DEFAULT_TEXTURE_KEY = 'missing-character-sheet';
 
 export class CharacterFactory {
   hasCharacter(characterId: string): characterId is CharacterId {
@@ -30,6 +30,11 @@ export class CharacterFactory {
       moveSpeed: config.speed
     };
 
-    return new Survivor(scene, characterId, x, y, config.textureKey ?? DEFAULT_TEXTURE_KEY, 0, stats);
+    const textureKey = config.textureKey ?? DEFAULT_TEXTURE_KEY;
+    if (!scene.textures.exists(textureKey)) {
+      console.error(`[CharacterFactory] Missing texture "${textureKey}" for character "${characterId}". Using explicit missing-character sheet.`);
+    }
+
+    return new Survivor(scene, characterId, x, y, scene.textures.exists(textureKey) ? textureKey : DEFAULT_TEXTURE_KEY, 0, stats);
   }
 }

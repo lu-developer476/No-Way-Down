@@ -38,6 +38,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: PlayerConfig;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
+  private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
   private isClimbing = false;
   private climbAnimations: StairAnimationKeys = {};
   private attackRequestedThisFrame = false;
@@ -95,6 +96,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
     this.nameTag.setOrigin(0.5, 1);
     this.nameTag.setDepth(30);
+
+    this.equippedWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
+    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
+    this.equippedWeaponSprite.setOrigin(0.2, 0.5);
+    this.refreshEquippedWeaponVisual();
   }
 
   update(): void {
@@ -133,6 +139,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       const switched = this.switchActiveWeaponSlot();
       if (switched) {
         this.cancelReload();
+        this.refreshEquippedWeaponVisual();
       }
     }
 
@@ -309,6 +316,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.activeWeaponSlot = requestedSlot;
+    this.refreshEquippedWeaponVisual();
     return true;
   }
 
@@ -355,6 +363,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
+    this.equippedWeaponSprite.destroy();
     super.destroy(fromScene);
   }
 
@@ -370,7 +379,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return false;
     }
 
-    const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key);
+    const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key, this.scene);
     const hasFired = this.projectileSystem.tryFire({
       originX: this.x + this.lookDirection * weaponVisual.muzzleOffsetX,
       originY: this.y + weaponVisual.muzzleOffsetY,
@@ -435,6 +444,29 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   private updateNameTagPosition(): void {
     this.nameTag.setPosition(this.x, this.y - 42);
+    this.updateEquippedWeaponSprite();
+  }
+
+  private refreshEquippedWeaponVisual(): void {
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
+    this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
+    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
+    this.updateEquippedWeaponSprite();
+  }
+
+  private updateEquippedWeaponSprite(): void {
+    if (!this.equippedWeaponSprite.active) {
+      return;
+    }
+
+    const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
+    const direction = this.lookDirection;
+    this.equippedWeaponSprite.setPosition(
+      this.x + direction * weaponVisual.carryOffsetX,
+      this.y + weaponVisual.carryOffsetY
+    );
+    this.equippedWeaponSprite.setFlipX(direction < 0);
+    this.equippedWeaponSprite.setVisible(this.active && !this.isDeadState);
   }
 
   private getDefendedDamage(baseDamage: number, context?: { sourceX?: number }): number {

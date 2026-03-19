@@ -192,7 +192,7 @@ export class UIScene extends Phaser.Scene {
   }
 
   private handleObjectiveChanged(_parent: Phaser.Data.DataManager, value: string): void {
-    this.objectiveText?.setText(value ? `OBJETIVO: ${value}` : 'OBJETIVO: ...');
+    this.objectiveText?.setText(value ? `OBJETIVO: ${value}` : 'OBJETIVO: En espera');
   }
 
   private handleInteractionHintChanged(_parent: Phaser.Data.DataManager, value: string): void {
@@ -218,7 +218,7 @@ export class UIScene extends Phaser.Scene {
       : '';
 
     this.dialogueSpeakerText?.setText(value.speaker || '...');
-    this.dialoguePortraitText?.setText(value.portrait ? `Retrato: ${value.portrait}` : 'Retrato: default');
+    this.dialoguePortraitText?.setText(value.portrait ? value.portrait : value.speaker || 'Narrador');
     this.dialogueBodyText?.setText(`${subtitle}${choicesText}`);
     this.dialogueHintText?.setText('SPACE: avanzar · X: saltar diálogo · 1-3: elegir');
     this.dialoguePanel?.setVisible(true);

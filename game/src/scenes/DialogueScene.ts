@@ -34,7 +34,6 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     const dialoguePath = data.flowNode?.dialoguePath;
-    console.info('[DialogueScene] create() con nodo canónico:', data.flowNode?.id ?? 'sin-flowNode');
     this.renderDialogue(dialoguePath);
 
     this.flowManager = new SceneFlowManager(this);
@@ -53,7 +52,6 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     this.input.once('pointerdown', () => {
-      console.log('[DialogueScene] Click detectado.');
       this.advanceToNextNode('click');
     });
   }
@@ -66,7 +64,7 @@ export class DialogueScene extends Phaser.Scene {
       const lines = dialogue?.lines ?? [];
 
       this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a, 1);
-      this.add.text(width / 2, 64, 'DIÁLOGO', { color: '#e2e8f0', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
+      this.add.text(width / 2, 58, 'Conversación', { color: '#e2e8f0', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
 
       const content = lines.map((line) => `${line.speaker}: ${line.text}`).join('\n\n') || 'Sin diálogo cargado';
       this.add.text(width / 2, height / 2, content, {
@@ -77,7 +75,7 @@ export class DialogueScene extends Phaser.Scene {
         wordWrap: { width: width - 120 }
       }).setOrigin(0.5);
 
-      this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+      this.add.text(width / 2, height - 36, 'ENTER o clic para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
     };
 
     if (!dialoguePath || !cacheKey) {
@@ -87,7 +85,6 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     if (this.cache.json.exists(cacheKey)) {
-      console.info('[DialogueScene] Diálogo obtenido desde cache:', dialoguePath);
       renderFromCache();
       return;
     }
@@ -117,7 +114,6 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-      console.log('[DialogueScene] ENTER detectado.');
       this.advanceToNextNode('enter');
     }
   }
@@ -131,13 +127,8 @@ export class DialogueScene extends Phaser.Scene {
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
-    if (currentNode) {
-      console.log('[DialogueScene] activeCampaignNode detectado en registry:', currentNode.id);
-    }
-
     const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
     const next = manager.advanceFromNodeId(currentNodeId);
-    console.log('[DialogueScene] Nodo siguiente obtenido:', next ?? null);
 
     if (!next) {
       console.error('[DialogueScene] Error: no existe nodo siguiente para avanzar desde DialogueScene.');
@@ -150,7 +141,7 @@ export class DialogueScene extends Phaser.Scene {
     });
 
     this.isTransitioning = true;
-    console.log(`[DialogueScene] Transición ejecutada por ${source}.`);
+    void source;
     manager.transitionToNode(next);
   }
 }

@@ -562,12 +562,6 @@ export class GameScene extends Phaser.Scene {
 
   private resolveLevelIdFromCampaignConfig(data: GameSceneData): string {
     const defaultLevelId = 'level_2_subsuelo';
-    const flowNodeLabel = data.flowNodeId ?? 'unknown-flow-node';
-
-    if (data.campaignLevelConfigPath) {
-      console.log(`[LevelScene] flowNode.id recibido: ${flowNodeLabel}`);
-      console.log(`[LevelScene] levelConfigPath solicitado: ${data.campaignLevelConfigPath}`);
-    }
 
     if (!data.campaignLevelConfig) {
       if (data.campaignLevelConfigPath) {
@@ -596,7 +590,6 @@ export class GameScene extends Phaser.Scene {
 
     try {
       levelManager.loadLevel(candidateLevelId);
-      console.log(`[LevelScene] carga de nivel exitosa. runtime level id: ${candidateLevelId}.`);
       return candidateLevelId;
     } catch {
       console.warn(`[LevelScene] fallback activado: runtime level id desconocido (${candidateLevelId}). Se usará ${defaultLevelId}.`);

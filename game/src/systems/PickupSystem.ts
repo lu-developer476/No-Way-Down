@@ -94,7 +94,23 @@ function getDisplayLabel(definition: Pick<PickupDefinition, 'type' | 'label'>): 
     return definition.label;
   }
 
-  return definition.type.replace(/_/g, ' ').toUpperCase();
+  const labelByType: Record<PickupType, string> = {
+    food_small: 'Snack',
+    food_medium: 'Comida',
+    food_large: 'Raciones',
+    medkit_small: 'Botiquín chico',
+    medkit_medium: 'Botiquín',
+    medkit_large: 'Botiquín grande',
+    ammo_pistol: 'Munición 9 mm',
+    ammo_revolver: 'Munición .357',
+    ammo_smg: 'Munición SMG',
+    ammo_shotgun: 'Cartuchos 12 g',
+    ammo_carbine: 'Munición 5.56',
+    ammo_sniper_rifle: 'Munición 7.62',
+    ammo_light_machine_gun: 'Munición ametralladora'
+  };
+
+  return labelByType[definition.type];
 }
 
 export class PickupSystem {
@@ -118,7 +134,7 @@ export class PickupSystem {
         color: '#e2e8f0',
         stroke: '#0f172a',
         strokeThickness: 3
-      }).setOrigin(0.5).setDepth(14);
+      }).setOrigin(0.5).setDepth(14).setAlpha(0.72);
 
       return {
         definition: pickup,

@@ -23,16 +23,25 @@ export class CampaignIntroScene extends Phaser.Scene {
   }
 
   create(_data: CampaignIntroSceneData = {}): void {
-    console.info('[CampaignIntroScene] create() inicializando nodo canónico de intro.');
     this.registry.set('activeCampaignNode', { id: 'campaign-intro', type: 'campaignIntro', sceneKey: 'CampaignIntroScene' });
     this.registry.set('flowNodeId', 'campaign-intro');
 
     const { width, height } = this.scale;
     this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
-    this.add.text(width / 2, height / 2, 'ENTER para iniciar', {
+    this.add.text(width / 2, height / 2 - 44, 'NO WAY DOWN', {
+      color: '#f8fafc',
+      fontFamily: 'monospace',
+      fontSize: '34px'
+    }).setOrigin(0.5);
+    this.add.text(width / 2, height / 2 + 6, 'Comienza la incursión en el subsuelo.', {
+      color: '#cbd5e1',
+      fontFamily: 'monospace',
+      fontSize: '18px'
+    }).setOrigin(0.5);
+    this.add.text(width / 2, height / 2 + 56, 'ENTER o clic para comenzar', {
       color: '#93c5fd',
       fontFamily: 'monospace',
-      fontSize: '24px'
+      fontSize: '20px'
     }).setOrigin(0.5);
 
     this.flowManager = new SceneFlowManager(this);
@@ -51,7 +60,6 @@ export class CampaignIntroScene extends Phaser.Scene {
     }
 
     this.input.on('pointerdown', () => {
-      console.log('[CampaignIntroScene] Click detectado.');
       this.startCampaign('click');
     });
   }
@@ -64,7 +72,6 @@ export class CampaignIntroScene extends Phaser.Scene {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-      console.log('[CampaignIntroScene] ENTER detectado.');
       this.startCampaign('enter');
     }
   }
@@ -78,14 +85,7 @@ export class CampaignIntroScene extends Phaser.Scene {
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
-    if (currentNode) {
-      console.log('[CampaignIntroScene] activeCampaignNode detectado en registry:', currentNode.id);
-    }
-
-    console.log(`[CampaignIntroScene] Iniciando transición por ${source}.`);
-    console.log('[CampaignIntroScene] Llamando a advance().');
     const next = manager.advanceFromNodeId(currentNode?.id ?? 'campaign-intro');
-    console.log('[CampaignIntroScene] advance() devolvió:', next ?? null);
 
     if (next?.id && !next.id.startsWith('lvl01-')) {
       console.error('[CampaignIntroScene] Desvío narrativo detectado: el nodo posterior al intro no es lvl01.', {
@@ -100,7 +100,7 @@ export class CampaignIntroScene extends Phaser.Scene {
     }
 
     this.isTransitioning = true;
-    console.log('[CampaignIntroScene] Llamando a transitionToNode() con nodo:', next);
+    void source;
     manager.transitionToNode(next);
   }
 }

@@ -1,7 +1,13 @@
 {
   "id": "campaign_intro_dialogue",
   "lines": [
-    { "speaker": "Luz", "text": "Salimos del banco, pero la campaña real recién empieza." },
-    { "speaker": "Nico", "text": "San Telmo no está limpio. Necesitamos recursos, ruta y cobertura." }
+    {
+      "speaker": "Giovanna",
+      "text": "Salimos del banco, pero la campaña real recién empieza."
+    },
+    {
+      "speaker": "Alan Nahuel",
+      "text": "San Telmo no está limpio. Necesitamos recursos, ruta y cobertura."
+    }
   ]
 }

@@ -16,7 +16,7 @@
           "durationMs": 4200
         },
         {
-          "speaker": "Alan",
+          "speaker": "Alan Nahuel",
           "text": "Pará... pará. No entiendo nada. Hace un rato estábamos trabajando y ahora hay gritos por todos lados.",
           "durationMs": 2600
         },
@@ -26,7 +26,7 @@
           "durationMs": 2600
         },
         {
-          "speaker": "Alan",
+          "speaker": "Alan Nahuel",
           "text": "Listo. Nos movemos juntos por el pasillo, sin correr de más. Si alguien se queda atrás, volvemos por esa persona.",
           "durationMs": 2800
         }
@@ -43,7 +43,7 @@
       "preDialoguePauseMs": 250,
       "dialogue": [
         {
-          "speaker": "Alan",
+          "speaker": "Alan Nahuel",
           "text": "Bien, esa zona quedó limpia. Escuchen: siguen golpes al fondo del pasillo, así que no aflojemos ahora.",
           "durationMs": 2800
         },
@@ -53,7 +53,7 @@
           "durationMs": 2700
         },
         {
-          "speaker": "Alan",
+          "speaker": "Alan Nahuel",
           "text": "Avanzamos despacio y con munición contada. Todavía no encontramos al resto del equipo.",
           "durationMs": 2800
         }

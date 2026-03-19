@@ -16,12 +16,12 @@
       ],
       "hug": [
         {
-          "speaker": "Lorena",
+          "speaker": "Nahir",
           "text": "Pensé que no saldríamos de esta...",
           "durationMs": 2400
         },
         {
-          "speaker": "Giovanna",
+          "speaker": "Selene",
           "text": "Estoy acá. Respirá... lo logramos por ahora.",
           "durationMs": 2500
         }
@@ -56,12 +56,12 @@
       ],
       "hug": [
         {
-          "speaker": "Lorena",
+          "speaker": "Nahir",
           "text": "No podía dejar de temblar...",
           "durationMs": 2200
         },
         {
-          "speaker": "Nahir",
+          "speaker": "Selene",
           "text": "Llorá tranquila. Estamos juntas y seguimos vivas.",
           "durationMs": 2400
         }

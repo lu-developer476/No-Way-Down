@@ -1,8 +1,53 @@
 {
   "pickups": [
-    { "id": "lvl2-food-01", "type": "food_small", "x": 520, "y": 938, "label": "Comida chica" },
-    { "id": "lvl2-medkit-01", "type": "medkit_medium", "x": 980, "y": 940, "label": "Botiquín mediano" },
-    { "id": "lvl2-ammo-01", "type": "ammo_pistol", "x": 1260, "y": 936, "label": "Munición pistola" },
-    { "id": "lvl2-ammo-02", "type": "ammo_shotgun", "x": 1620, "y": 936, "label": "Munición escopeta" }
+    {
+      "id": "lvl2-food-01",
+      "type": "food_small",
+      "x": 520,
+      "y": 938,
+      "label": "Snack del ingreso"
+    },
+    {
+      "id": "lvl2-ammo-01",
+      "type": "ammo_pistol",
+      "x": 700,
+      "y": 936,
+      "label": "Cargador de guardia"
+    },
+    {
+      "id": "lvl2-medkit-01",
+      "type": "medkit_small",
+      "x": 980,
+      "y": 940,
+      "label": "Vendajes del cajero"
+    },
+    {
+      "id": "lvl2-ammo-02",
+      "type": "ammo_shotgun",
+      "x": 1620,
+      "y": 936,
+      "label": "Cartuchos del bloqueo"
+    },
+    {
+      "id": "lvl2-food-02",
+      "type": "food_medium",
+      "x": 2760,
+      "y": 938,
+      "label": "Vianda del banco"
+    },
+    {
+      "id": "lvl2-ammo-03",
+      "type": "ammo_smg",
+      "x": 3680,
+      "y": 936,
+      "label": "Munición de seguridad"
+    },
+    {
+      "id": "lvl2-medkit-02",
+      "type": "medkit_medium",
+      "x": 4580,
+      "y": 940,
+      "label": "Botiquín solidario"
+    }
   ]
 }

@@ -96,6 +96,54 @@
       "bloquea_movimiento": false,
       "destructible": true,
       "estado": "ensangrentado_roto_usable"
+    },
+    {
+      "tipo": "banco_de_espera",
+      "tamaño_aproximado": {
+        "ancho_m": 1.8,
+        "alto_m": 0.9,
+        "profundidad_m": 0.7
+      },
+      "posición": {
+        "x": 1880,
+        "y": 612,
+        "segmento": 5
+      },
+      "bloquea_movimiento": true,
+      "destructible": true,
+      "estado": "ensangrentado_roto_usable"
+    },
+    {
+      "tipo": "caja_de_reciclaje",
+      "tamaño_aproximado": {
+        "ancho_m": 0.8,
+        "alto_m": 1.1,
+        "profundidad_m": 0.6
+      },
+      "posición": {
+        "x": 3220,
+        "y": 605,
+        "segmento": 8
+      },
+      "bloquea_movimiento": false,
+      "destructible": true,
+      "estado": "ensangrentado_roto_usable"
+    },
+    {
+      "tipo": "pantalla_informativa",
+      "tamaño_aproximado": {
+        "ancho_m": 1.3,
+        "alto_m": 2.0,
+        "profundidad_m": 0.5
+      },
+      "posición": {
+        "x": 5180,
+        "y": 575,
+        "segmento": 12
+      },
+      "bloquea_movimiento": false,
+      "destructible": true,
+      "estado": "ensangrentado_roto_usable"
     }
   ]
 }

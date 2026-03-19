@@ -1,8 +1,39 @@
 {
   "pickups": [
-    { "id": "lvl3-food-01", "type": "food_medium", "x": 680, "y": 1508, "label": "Comida mediana" },
-    { "id": "lvl3-medkit-01", "type": "medkit_small", "x": 1180, "y": 1508, "label": "Botiquín chico" },
-    { "id": "lvl3-ammo-01", "type": "ammo_revolver", "x": 1460, "y": 1508, "label": "Munición revólver" },
-    { "id": "lvl3-ammo-02", "type": "ammo_carbine", "x": 1860, "y": 1508, "label": "Munición carabina" }
+    {
+      "id": "lvl3-food-01",
+      "type": "food_medium",
+      "x": 680,
+      "y": 1508,
+      "label": "Ración del descanso"
+    },
+    {
+      "id": "lvl3-ammo-01",
+      "type": "ammo_revolver",
+      "x": 1180,
+      "y": 1508,
+      "label": "Munición de mostrador"
+    },
+    {
+      "id": "lvl3-medkit-01",
+      "type": "medkit_small",
+      "x": 1460,
+      "y": 1508,
+      "label": "Botiquín de oficina"
+    },
+    {
+      "id": "lvl3-ammo-02",
+      "type": "ammo_carbine",
+      "x": 1860,
+      "y": 1508,
+      "label": "Reserva de carabina"
+    },
+    {
+      "id": "lvl3-food-02",
+      "type": "food_small",
+      "x": 2060,
+      "y": 1508,
+      "label": "Café frío y galletas"
+    }
   ]
 }

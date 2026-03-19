@@ -197,32 +197,17 @@ export class CorridorDecorationSystem {
     blocksMainPath: boolean
   ): CorridorDecorationInstance {
     const body = this.scene.add
-      .rectangle(x, y, template.width, template.height, template.color)
+      .rectangle(x, y, template.width, template.height, template.color, blocksMainPath ? 0.18 : 0.1)
       .setOrigin(0.5, 1)
-      .setStrokeStyle(2, 0xffffff, 0.14);
-
-    const topPanel = this.scene.add
-      .rectangle(x, y - template.height * 0.72, template.width * 0.72, template.height * 0.22, template.accentColor)
-      .setOrigin(0.5, 0.5)
-      .setAlpha(0.8);
+      .setStrokeStyle(0);
 
     const baseShadow = this.scene.add
-      .ellipse(x, this.config.floorY + 3, template.width * 0.92, 12, 0x020617, 0.45)
+      .ellipse(x, this.config.floorY + 3, template.width * 0.92, 12, 0x020617, 0.3)
       .setOrigin(0.5, 0.5);
 
-    this.decorativeParts.push(baseShadow, topPanel);
+    const art = this.buildDecorationArt(template.type, x, y, template.width, template.height);
 
-    const label = this.scene.add
-      .text(x, y - template.height - 12, this.getLabel(template.type), {
-        fontSize: '11px',
-        color: '#cbd5e1',
-        backgroundColor: '#0b1120'
-      })
-      .setPadding(4, 2)
-      .setOrigin(0.5, 1)
-      .setAlpha(0.84);
-
-    this.decorativeParts.push(label);
+    this.decorativeParts.push(baseShadow, ...art);
 
     const instance: CorridorDecorationInstance = {
       id: `corridor-decoration-${this.idSequence++}`,
@@ -235,7 +220,7 @@ export class CorridorDecorationSystem {
       blocksMainPath,
       breakable: template.breakable,
       body,
-      parts: [topPanel, baseShadow, label],
+      parts: [baseShadow, ...art],
       isBroken: false
     };
 
@@ -288,20 +273,27 @@ export class CorridorDecorationSystem {
     return this.rng.frac() > 0.5 ? topLane : bottomLane;
   }
 
-  private getLabel(type: CorridorDecorationType): string {
+  private buildDecorationArt(
+    type: CorridorDecorationType,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ): Phaser.GameObjects.GameObject[] {
     switch (type) {
       case 'cajero_automatico':
-        return 'CAJERO';
+        return [this.scene.add.image(x, y - height / 2, 'prop-atm').setDisplaySize(width + 12, height + 16).setOrigin(0.5, 0.5)];
       case 'columna':
-        return 'COLUMNA';
+        return [this.scene.add.image(x, y - height / 2 + 6, 'prop-stone-column').setDisplaySize(width + 6, height + 16).setOrigin(0.5, 0.5)];
       case 'caja':
-        return 'CAJA';
+        return [this.scene.add.image(x, y - height / 2 + 8, 'prop-recycling-box').setDisplaySize(width + 10, height + 18).setOrigin(0.5, 0.5)];
       case 'pantalla':
-        return 'PANTALLA';
+        return [this.scene.add.image(x, y - height / 2 + 4, 'prop-info-screen').setDisplaySize(width + 10, height + 8).setOrigin(0.5, 0.5)];
       case 'banco':
-        return 'BANCO';
+        return [this.scene.add.image(x, y - height / 2 + 8, 'prop-bench').setDisplaySize(width, height + 10).setOrigin(0.5, 0.5)];
       default:
-        return 'OBJETO';
+        return [];
     }
   }
 }
+

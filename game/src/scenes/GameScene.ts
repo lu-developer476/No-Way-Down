@@ -1235,113 +1235,102 @@ export class GameScene extends Phaser.Scene {
   }
 
   private drawSubsueloBackground(levelWidth: number, levelHeight: number, floorHeight: number, profile: EnvironmentProfile | null): void {
-    const { palette } = visualTheme;
     const usesInstitutionalHall = profile?.level.zones.includes('hall_publico') ?? false;
     const usesVerticalCore = profile?.level.zones.includes('circulacion_vertical') ?? false;
     const usesServiceWing = profile?.level.zones.includes('servicios_comedor_cocina') ?? false;
-
-    const skyTop = usesInstitutionalHall ? 0xd9c6a3 : palette.skyTop;
-    const skyBottom = usesInstitutionalHall ? 0xb79f78 : palette.skyBottom;
-    const farWall = usesInstitutionalHall ? 0xc7b08d : palette.wallFar;
-    const midWall = usesServiceWing ? 0x9e8a6d : palette.wallMid;
-    const nearWall = usesVerticalCore ? 0x6f5a45 : palette.wallNear;
+    const floorTop = levelHeight - floorHeight;
 
     const base = this.add.graphics();
-    base.fillGradientStyle(skyTop, skyTop, skyBottom, skyBottom, 1);
-    base.fillRect(0, 0, levelWidth, levelHeight);
-    base.fillStyle(farWall, 1);
-    base.fillRect(0, 54, levelWidth, 210);
-    base.fillStyle(midWall, 1);
-    base.fillRect(0, 150, levelWidth, 170);
-    base.fillStyle(nearWall, 1);
-    base.fillRect(0, levelHeight - floorHeight - 58, levelWidth, 58);
+    base.fillGradientStyle(0xcdb48d, 0xcdb48d, 0x8c7355, 0x8c7355, 1);
+    base.fillRect(0, 0, levelWidth, floorTop);
+    base.fillStyle(0xd8c4a1, 1);
+    base.fillRect(0, 70, levelWidth, 150);
+    base.fillStyle(0xb9a07e, 1);
+    base.fillRect(0, 220, levelWidth, 120);
+    base.fillStyle(0x3c312b, 1);
+    base.fillRect(0, floorTop - 40, levelWidth, 40);
+    base.fillStyle(0x754342, 1);
+    base.fillRect(0, floorTop, levelWidth, floorHeight);
+    base.fillStyle(0x2f241f, 1);
+    base.fillRect(0, floorTop + floorHeight - 16, levelWidth, 16);
     base.destroy();
 
-    if (profile) {
-      const hasHallGlow = Object.values(profile.zoneLayerPreset).flat().includes('bg_hall_window_glow');
-      const hasStairDepth = Object.values(profile.zoneLayerPreset).flat().includes('bg_staircase_void_depth');
-      const hasServicePipes = Object.values(profile.zoneLayerPreset).flat().includes('bg_service_pipes_and_vents');
+    this.addBnaWindowBand(levelWidth, 84, floorTop - 110, usesInstitutionalHall ? 0.38 : 0.3, 0.28);
+    this.addStoneColumnBand(levelWidth, floorTop - 48, usesVerticalCore ? 176 : 220, 0.46);
 
-      if (hasHallGlow) {
-        for (let x = 140; x < levelWidth; x += 260) {
-          this.add.rectangle(x, 104, 110, 64, 0xf5deb3, 0.08).setDepth(0.8).setScrollFactor(0.35, 1);
-        }
-      }
-
-      if (hasStairDepth) {
-        for (let x = 110; x < levelWidth; x += 320) {
-          this.add.rectangle(x, levelHeight - floorHeight - 130, 42, 170, 0x2f251d, 0.26).setDepth(1.8).setScrollFactor(0.6, 1);
-        }
-      }
-
-      if (hasServicePipes) {
-        for (let x = 60; x < levelWidth; x += 180) {
-          this.add.rectangle(x, 74, 120, 6, 0x6b7280, 0.35).setDepth(1.2).setScrollFactor(0.45, 1);
-          this.add.rectangle(x + 42, 86, 36, 6, 0x9ca3af, 0.22).setDepth(1.2).setScrollFactor(0.45, 1);
-        }
-      }
+    for (let x = 132; x < levelWidth; x += 240) {
+      this.add.image(x, 110, 'prop-tall-window')
+        .setDepth(0.9)
+        .setScrollFactor(0.34, 1)
+        .setAlpha(usesInstitutionalHall ? 0.92 : 0.78)
+        .setScale(1.15);
     }
 
-    this.add.tileSprite(levelWidth / 2, 126, levelWidth, 180, 'ground-placeholder')
-      .setDepth(0.6)
-      .setAlpha(0.1)
-      .setScrollFactor(0.3, 1);
-
-    this.add.tileSprite(levelWidth / 2, levelHeight - floorHeight - 86, levelWidth, 110, 'ground-placeholder')
-      .setDepth(1.4)
-      .setAlpha(0.16)
-      .setScrollFactor(0.65, 1);
-
-    this.add.tileSprite(levelWidth / 2, levelHeight - floorHeight - 34, levelWidth, 48, 'ground-placeholder')
-      .setDepth(2.8)
-      .setAlpha(0.24)
-      .setScrollFactor(0.9, 1);
-
-    for (let x = 90; x < levelWidth; x += 210) {
-      this.add.rectangle(x, 108, 80, 54, 0x111827, 0.75).setDepth(1);
-      this.add.rectangle(x, 108, 72, 46, 0x7dd3fc, 0.08).setDepth(1);
-    }
-
-    for (let x = 120; x < levelWidth; x += 280) {
-      this.add.rectangle(x, 184, 150, 60, 0x0b1220, 0.35).setDepth(1).setScrollFactor(0.5, 1);
-      this.add.rectangle(x + 44, 184, 26, 60, 0x1e293b, 0.4).setDepth(1).setScrollFactor(0.5, 1);
-      this.add.rectangle(x - 40, 184, 18, 54, 0x334155, 0.25).setDepth(1).setScrollFactor(0.5, 1);
-    }
-
-    for (let x = 120; x < levelWidth; x += 180) {
-      this.add.rectangle(x, levelHeight - floorHeight - 120, 16, 160, 0x475569, 0.45).setDepth(2);
-      this.add.rectangle(x + 6, levelHeight - floorHeight - 120, 4, 160, 0x94a3b8, 0.28).setDepth(2);
-      this.add.rectangle(x + 50, levelHeight - floorHeight - 108, 68, 32, 0x111827, 0.34).setDepth(2).setScrollFactor(0.8, 1);
-    }
-
-    for (let x = 70; x < levelWidth; x += 140) {
-      this.add.rectangle(x, levelHeight - floorHeight - 24, 36, 20, palette.hazard, 0.14).setDepth(3);
-    }
-
-    for (let x = 200; x < levelWidth; x += 360) {
-      this.add.rectangle(x, levelHeight - floorHeight - 52, 96, 24, 0x0f172a, 0.5).setDepth(3).setScrollFactor(0.9, 1);
-      this.add.rectangle(x + 40, levelHeight - floorHeight - 54, 26, 8, 0xeab308, 0.24).setDepth(3).setScrollFactor(0.9, 1);
+    for (let x = 96; x < levelWidth; x += 192) {
+      this.add.image(x, floorTop - 68, 'prop-stone-column')
+        .setDepth(1.8)
+        .setScrollFactor(0.6, 1)
+        .setAlpha(0.54)
+        .setScale(1.25);
     }
 
     for (let x = 150; x < levelWidth; x += 260) {
-      this.add.rectangle(x, 34, 64, 9, palette.lamp, 0.3).setDepth(3);
-      this.add.rectangle(x, 42, 42, 4, palette.lamp, 0.2).setDepth(3);
-
-      const lampGlow = this.add.circle(x, 42, 34, palette.lamp, 0.08)
+      const pendant = this.add.circle(x, 46, 13, 0xf6d28b, 0.2)
         .setDepth(2.9)
         .setBlendMode(Phaser.BlendModes.ADD);
-
+      this.add.rectangle(x, 16, 2, 24, 0x715c45, 1).setDepth(3);
+      this.add.circle(x, 42, 8, 0xc08e45, 1).setDepth(3);
       this.tweens.add({
-        targets: lampGlow,
-        alpha: { from: 0.05, to: 0.14 },
-        duration: Phaser.Math.Between(900, 1400),
+        targets: pendant,
+        alpha: { from: 0.1, to: 0.22 },
+        duration: Phaser.Math.Between(1100, 1600),
         repeat: -1,
         yoyo: true,
         ease: 'Sine.InOut'
       });
     }
+
+    if (usesServiceWing) {
+      for (let x = 240; x < levelWidth; x += 620) {
+        this.add.image(x, floorTop - 88, 'prop-service-table')
+          .setDepth(2.2)
+          .setScrollFactor(0.74, 1)
+          .setAlpha(0.34);
+      }
+    }
+
+    for (let x = 0; x < levelWidth; x += 104) {
+      this.add.rectangle(x + 52, floorTop + 18, 92, 24, 0x8f5e55, x % 208 === 0 ? 0.36 : 0.24).setDepth(3.2);
+      this.add.rectangle(x + 52, floorTop + floorHeight - 10, 88, 2, 0x1d1715, 0.35).setDepth(3.25);
+    }
+
+    if (usesVerticalCore) {
+      for (let x = 5100; x < levelWidth; x += 160) {
+        this.add.rectangle(x, floorTop - 110, 72, 148, 0x2b211c, 0.24).setDepth(2.1).setScrollFactor(0.72, 1);
+      }
+    }
   }
 
+  private addBnaWindowBand(levelWidth: number, y: number, bottomY: number, scrollFactor: number, alpha: number): void {
+    const windowHeight = Math.max(96, bottomY - y);
+    for (let x = 124; x < levelWidth; x += 248) {
+      this.add.image(x, y + windowHeight / 2, 'prop-tall-window')
+        .setDepth(0.7)
+        .setScrollFactor(scrollFactor, 1)
+        .setAlpha(alpha)
+        .setDisplaySize(100, windowHeight);
+    }
+  }
+
+  private addStoneColumnBand(levelWidth: number, y: number, spacing: number, alpha: number): void {
+    for (let x = 80; x < levelWidth; x += spacing) {
+      this.add.image(x, y, 'prop-stone-column')
+        .setDepth(1.2)
+        .setScrollFactor(0.48, 1)
+        .setAlpha(alpha)
+        .setScale(1.45);
+    }
+  }
 
   private placeSubsueloProps(environment: Phaser.Physics.Arcade.StaticGroup, tableTopY: number): void {
     const scalePxPerMeter = level2Subsuelo.unidades.escalaPxPorMetro;
@@ -1418,16 +1407,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   private addTableVisual(x: number, y: number, width: number, height: number): void {
-    this.add.rectangle(x, y, width, height, 0x5b4634).setDepth(6);
-    this.add.rectangle(x, y + 10, width - 14, 8, 0x3d2d20, 0.9).setDepth(6);
-    this.add.rectangle(x - width / 2 + 18, y + 18, 10, 22, 0x2d3748).setDepth(6);
-    this.add.rectangle(x + width / 2 - 18, y + 18, 10, 22, 0x2d3748).setDepth(6);
+    this.add.image(x, y + 4, 'prop-service-table')
+      .setDepth(6)
+      .setDisplaySize(width, Math.max(38, height + 18));
   }
 
   private addStairVisual(x: number, y: number, width: number, height: number): void {
-    this.add.tileSprite(x, y + 6, width, height, 'stair-placeholder').setDepth(7).setAlpha(0.9);
-    this.add.rectangle(x - width / 2, y, 6, height, 0x0f172a, 0.8).setDepth(7);
-    this.add.rectangle(x + width / 2, y, 6, height, 0x0f172a, 0.8).setDepth(7);
+    this.add.tileSprite(x, y + 6, width, height, 'stair-placeholder').setDepth(7).setAlpha(0.98);
+    this.add.rectangle(x, y - height / 2 + 8, width, 8, 0xd9ccb6, 0.95).setDepth(7);
+    this.add.rectangle(x - width / 2, y, 8, height, 0x766554, 0.9).setDepth(7);
+    this.add.rectangle(x + width / 2, y, 8, height, 0x766554, 0.9).setDepth(7);
+    this.add.rectangle(x, y + height / 2 - 4, width - 16, 6, 0xb58b43, 0.55).setDepth(7);
   }
 
   private handlePlayerZombieOverlap(player: Player): void {

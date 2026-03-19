@@ -44,6 +44,13 @@ interface PickupSystemConfigRaw {
   pickups?: PickupDefinitionRaw[];
 }
 
+export interface PickupRewardDefinition {
+  type: PickupType;
+  x: number;
+  y: number;
+  label?: string;
+}
+
 interface PickupRuntime {
   definition: PickupDefinition;
   consumed: boolean;
@@ -82,6 +89,14 @@ function isAmmoPickup(type: PickupType): type is Extract<PickupType, `ammo_${str
   return type.startsWith('ammo_');
 }
 
+function getDisplayLabel(definition: Pick<PickupDefinition, 'type' | 'label'>): string {
+  if (definition.label) {
+    return definition.label;
+  }
+
+  return definition.type.replace(/_/g, ' ').toUpperCase();
+}
+
 export class PickupSystem {
   private readonly scene: Phaser.Scene;
   private readonly runtimes: PickupRuntime[];
@@ -98,7 +113,7 @@ export class PickupSystem {
         0.85
       ).setDepth(14);
 
-      const label = this.scene.add.text(pickup.x, pickup.y - 18, this.getDisplayLabel(pickup), {
+      const label = this.scene.add.text(pickup.x, pickup.y - 18, getDisplayLabel(pickup), {
         fontSize: '10px',
         color: '#e2e8f0',
         stroke: '#0f172a',
@@ -171,7 +186,7 @@ export class PickupSystem {
       return;
     }
 
-    this.setInteractionHint(`E · RECOGER ${this.getDisplayLabel(candidate.runtime.definition)}`);
+    this.setInteractionHint(`E · RECOGER ${getDisplayLabel(candidate.runtime.definition)}`);
 
     const interactor = players.find((player) => (
       player.isInteractJustPressed() && this.isPlayerInPickupRange(player, candidate.runtime.definition)
@@ -190,7 +205,7 @@ export class PickupSystem {
     candidate.runtime.consumed = true;
     candidate.runtime.marker.destroy();
     candidate.runtime.label.destroy();
-    this.setInteractionHint(`${this.getDisplayLabel(candidate.runtime.definition)} recogido.`);
+    this.setInteractionHint(`${getDisplayLabel(candidate.runtime.definition)} recogido.`);
   }
 
   destroy(): void {
@@ -205,10 +220,16 @@ export class PickupSystem {
   }
 
   private applyPickup(runtime: PickupRuntime, consumers: PickupConsumer[]): boolean {
-    const { type, x, y } = runtime.definition;
+    return PickupSystem.applyReward(runtime.definition, consumers);
+  }
+
+  static applyReward(definition: PickupRewardDefinition, consumers: PickupConsumer[]): boolean {
+    const { type, x, y } = definition;
 
     if (isHealthPickup(type)) {
-      const target = this.findNearestHealthConsumer(consumers, x, y);
+      const target = consumers
+        .filter((consumer) => consumer.getHealth() < consumer.getMaxHealth())
+        .sort((a, b) => Phaser.Math.Distance.Between(a.x, a.y, x, y) - Phaser.Math.Distance.Between(b.x, b.y, x, y))[0];
       if (!target) {
         return false;
       }
@@ -219,7 +240,9 @@ export class PickupSystem {
 
     if (isAmmoPickup(type)) {
       const reward = AMMO_REWARD_BY_PICKUP[type];
-      const target = this.findNearestAmmoConsumer(consumers, reward.ammoType, x, y);
+      const target = consumers
+        .filter((consumer) => consumer.canReceiveAmmoType(reward.ammoType))
+        .sort((a, b) => Phaser.Math.Distance.Between(a.x, a.y, x, y) - Phaser.Math.Distance.Between(b.x, b.y, x, y))[0];
       if (!target) {
         return false;
       }
@@ -229,6 +252,10 @@ export class PickupSystem {
     }
 
     return false;
+  }
+
+  static describeReward(definition: Pick<PickupRewardDefinition, 'type' | 'label'>): string {
+    return getDisplayLabel(definition);
   }
 
   private findNearestHealthConsumer(consumers: PickupConsumer[], x: number, y: number): PickupConsumer | undefined {
@@ -287,13 +314,6 @@ export class PickupSystem {
     this.ownsInteractionHint = false;
   }
 
-  private getDisplayLabel(definition: PickupDefinition): string {
-    if (definition.label) {
-      return definition.label;
-    }
-
-    return definition.type.replace(/_/g, ' ').toUpperCase();
-  }
 
   private getPickupColor(type: PickupType): number {
     if (type.startsWith('food_')) {

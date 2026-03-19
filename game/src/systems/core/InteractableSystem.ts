@@ -9,11 +9,29 @@ export type InteractableEffectType =
   | 'ally_rescue'
   | 'custom';
 
+export type InteractablePickupType =
+  | 'food_small'
+  | 'food_medium'
+  | 'food_large'
+  | 'medkit_small'
+  | 'medkit_medium'
+  | 'medkit_large'
+  | 'ammo_pistol'
+  | 'ammo_revolver'
+  | 'ammo_smg'
+  | 'ammo_shotgun'
+  | 'ammo_carbine'
+  | 'ammo_sniper_rifle'
+  | 'ammo_light_machine_gun';
+
 export interface InteractableEffect {
   type: InteractableEffectType;
   targetId?: string;
   message?: string;
   rewardId?: string;
+  rewardPickupType?: InteractablePickupType;
+  rewardPickupLabel?: string;
+  consumesOnUse?: boolean;
   objectiveEventType?: string;
   checkpoint?: {
     x: number;
@@ -167,6 +185,10 @@ export class InteractableSystem {
     }
 
     entry.runtime.enabled = enabled;
+  }
+
+  consume(id: string): void {
+    this.setEnabled(id, false);
   }
 
   getSnapshot(): InteractableRuntime[] {

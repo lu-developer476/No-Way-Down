@@ -40,7 +40,7 @@ import { addEnvironmentProp } from './environmentLayout';
 import { getCharacterRuntimeConfig } from '../config/characterRuntime';
 import { controlManager } from '../input/ControlManager';
 import { CombatActionSystem } from '../systems/CombatActionSystem';
-import { PickupSystem } from '../systems/PickupSystem';
+import { PickupSystem, PickupDefinition } from '../systems/PickupSystem';
 import { levelManager } from '../systems/level/levelCatalog';
 import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
 import { InteractableSystem } from '../systems/core/InteractableSystem';
@@ -484,7 +484,8 @@ export class GameScene extends Phaser.Scene {
       this.allySystem.spawnInitialAllies(leadPlayer, partySeed.allies);
     }
 
-    this.pickupSystem = PickupSystem.fromJSON(this, level2PickupConfig);
+    const configuredPickups = (levelConfig.pickups as PickupDefinition[] | undefined) ?? level2PickupConfig.pickups;
+    this.pickupSystem = PickupSystem.fromJSON(this, { pickups: configuredPickups });
     this.interactKey = this.input.keyboard?.addKey(controlManager.getKeyCode('interact'));
 
     this.setupMissionSystem();
@@ -728,9 +729,7 @@ export class GameScene extends Phaser.Scene {
 
     this.applyInteractionEffect(
       interaction.definition?.id ?? 'unknown',
-      interaction.effect.type,
-      interaction.effect.message,
-      interaction.effect.checkpoint
+      interaction.effect
     );
 
     if (interaction.cinematicTrigger) {
@@ -750,9 +749,14 @@ export class GameScene extends Phaser.Scene {
 
   private applyInteractionEffect(
     interactableId: string,
-    effectType: string,
-    message?: string,
-    checkpoint?: { x: number; y: number; label?: string }
+    effect: {
+      type: string;
+      message?: string;
+      rewardPickupType?: PickupDefinition['type'];
+      rewardPickupLabel?: string;
+      consumesOnUse?: boolean;
+      checkpoint?: { x: number; y: number; label?: string };
+    }
   ): void {
     const fallbackByType: Record<string, string> = {
       door: 'Puerta desbloqueada.',
@@ -763,16 +767,42 @@ export class GameScene extends Phaser.Scene {
       ally_rescue: 'Aliado rescatado.'
     };
 
-    this.showMissionStatus(message ?? fallbackByType[effectType] ?? `Interacción ejecutada: ${interactableId}`);
+    let interactionSucceeded = true;
+    let statusMessage = effect.message ?? fallbackByType[effect.type] ?? `Interacción ejecutada: ${interactableId}`;
 
-    if (effectType === 'ally_rescue') {
+    if (effect.rewardPickupType) {
+      const consumers = [
+        ...this.players,
+        ...(this.allySystem?.getActiveAllies() ?? [])
+      ];
+      interactionSucceeded = PickupSystem.applyReward({
+        type: effect.rewardPickupType,
+        label: effect.rewardPickupLabel,
+        x: this.players[0]?.x ?? 0,
+        y: this.players[0]?.y ?? 0
+      }, consumers);
+
+      if (interactionSucceeded) {
+        statusMessage = effect.message ?? `${PickupSystem.describeReward({ type: effect.rewardPickupType, label: effect.rewardPickupLabel })} recuperado del entorno.`;
+      } else {
+        statusMessage = `No se pudo aprovechar ${PickupSystem.describeReward({ type: effect.rewardPickupType, label: effect.rewardPickupLabel })} ahora.`;
+      }
+    }
+
+    this.showMissionStatus(statusMessage);
+
+    if (interactionSucceeded && effect.consumesOnUse) {
+      this.interactableSystem?.consume(interactableId);
+    }
+
+    if (effect.type === 'ally_rescue') {
       this.integrateLateRescueAllies(LATE_ALLY_JOIN_CHECKPOINT_ID);
     }
 
-    if (checkpoint && this.checkpointSystem) {
-      this.checkpointSystem.setCheckpoint({ x: checkpoint.x, y: checkpoint.y });
-      this.visitedCheckpoints.add(checkpoint.label ?? `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`);
-      this.showMissionStatus(`Checkpoint asegurado: ${checkpoint.label ?? 'progreso guardado'}.`);
+    if (interactionSucceeded && effect.checkpoint && this.checkpointSystem) {
+      this.checkpointSystem.setCheckpoint({ x: effect.checkpoint.x, y: effect.checkpoint.y });
+      this.visitedCheckpoints.add(effect.checkpoint.label ?? `${Math.round(effect.checkpoint.x)},${Math.round(effect.checkpoint.y)}`);
+      this.showMissionStatus(`Checkpoint asegurado: ${effect.checkpoint.label ?? 'progreso guardado'}.`);
     }
 
   }

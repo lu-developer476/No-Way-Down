@@ -7,6 +7,7 @@ import { InteractableDefinition, InteractableSystem } from '../core/Interactable
 import { CinematicConfig } from '../core/CinematicSystem';
 import { TriggerDefinition, TriggerSystem, TriggerSystemCallbacks } from '../TriggerSystem';
 import { LevelRestartManager, LevelRestartManagerDependencies } from '../core/LevelRestartManager';
+import { PickupDefinition } from '../PickupSystem';
 
 export interface LevelExitDefinition {
   id: string;
@@ -35,6 +36,7 @@ export interface LevelDefinition {
   triggers: TriggerDefinition[];
   cinematics: CinematicConfig[];
   exits: LevelExitDefinition[];
+  pickups?: PickupDefinition[];
 }
 
 export class LevelManager {

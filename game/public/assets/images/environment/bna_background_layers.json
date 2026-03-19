@@ -14,7 +14,7 @@
     {
       "id": "bg_hall_window_glow",
       "parallax": 0.45,
-      "description": "Grandes ventanales con luz cálida filtrada"
+      "description": "Grandes ventanales con luz cálida filtrada para reconocer el hall"
     },
     {
       "id": "bg_coffered_ceiling_grid",
@@ -24,17 +24,17 @@
     {
       "id": "bg_staircase_void_depth",
       "parallax": 0.62,
-      "description": "Capas de profundidad para núcleo de escalera monumental"
+      "description": "Capas de profundidad para núcleo de escalera monumental y accesos"
     },
     {
       "id": "bg_office_corridor_modules",
       "parallax": 0.58,
-      "description": "Módulos de oficinas técnicas y pasillos administrativos"
+      "description": "Módulos de oficinas técnicas y pasillos administrativos para lectura horizontal"
     },
     {
       "id": "bg_service_pipes_and_vents",
       "parallax": 0.64,
-      "description": "Tuberías y extracción para cocina/comedor"
+      "description": "Tuberías, extracción y mobiliario técnico para comedor / subsuelo"
     },
     {
       "id": "bg_parking_concrete_bays",
@@ -67,5 +67,12 @@
       "bg_parking_concrete_bays",
       "bg_service_pipes_and_vents"
     ]
+  },
+  "zone_composition_notes": {
+    "servicios_comedor_cocina": "Usar masa técnica superior, luminarias cálidas y mesas/mesadas tenues; evitar ventanales nobles.",
+    "pisos_oficina": "Repetición controlada de módulos y paños, con profundidad horizontal y lectura de pasillo.",
+    "hall_publico": "Abrir la silueta con ventanales altos, columnas y brillo cálido institucional.",
+    "circulacion_vertical": "Comprimir el espacio con planos oscuros, vacíos de caja de escalera y acentos de guía.",
+    "subsuelo_estacionamiento": "Enfriar la paleta y marcar naves estructurales para que no se confunda con el comedor."
   }
 }

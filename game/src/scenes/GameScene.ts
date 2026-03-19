@@ -29,7 +29,7 @@ import {
 import { visualTheme } from './visualTheme';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
-import { EnvironmentProfile, registerEnvironmentProfile } from '../config/environmentProfiles';
+import { EnvironmentProfile, getEnvironmentZoneVisual, registerEnvironmentProfile } from '../config/environmentProfiles';
 import { getAudioManager } from '../audio/AudioManager';
 import { getDifficultyRuntimeConfig } from '../config/difficultyRuntime';
 import { CinematicCallSystem, type CinematicCallSystemConfig } from '../systems/CinematicCallSystem';
@@ -292,7 +292,7 @@ export class GameScene extends Phaser.Scene {
       .setZoom(ARCADE_CAMERA_ZOOM)
       .setRoundPixels(true);
 
-    this.drawSubsueloBackground(levelWidth, levelHeight, floorHeight, this.activeEnvironmentProfile);
+    this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
 
     const environment = this.physics.add.staticGroup();
 
@@ -1295,26 +1295,50 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private drawSubsueloBackground(levelWidth: number, levelHeight: number, floorHeight: number, profile: EnvironmentProfile | null): void {
+  private drawSubsueloBackground(
+    layout: { width: number; height: number; background_zones?: Array<{ id: string; zone: string; x: number; y: number; width: number; height: number }> },
+    floorHeight: number,
+    profile: EnvironmentProfile | null
+  ): void {
+    const levelWidth = layout.width;
+    const levelHeight = layout.height;
     const usesInstitutionalHall = profile?.level.zones.includes('hall_publico') ?? false;
     const usesVerticalCore = profile?.level.zones.includes('circulacion_vertical') ?? false;
     const usesServiceWing = profile?.level.zones.includes('servicios_comedor_cocina') ?? false;
     const floorTop = levelHeight - floorHeight;
+    const backgroundZones = layout.background_zones ?? [];
 
     const base = this.add.graphics();
-    base.fillGradientStyle(0xcdb48d, 0xcdb48d, 0x8c7355, 0x8c7355, 1);
+    const fallbackVisual = getEnvironmentZoneVisual(usesServiceWing ? 'servicios_comedor_cocina' : usesInstitutionalHall ? 'hall_publico' : 'circulacion_vertical');
+    base.fillGradientStyle(fallbackVisual.wallTop, fallbackVisual.wallTop, fallbackVisual.wallBottom, fallbackVisual.wallBottom, 1);
     base.fillRect(0, 0, levelWidth, floorTop);
-    base.fillStyle(0xd8c4a1, 1);
-    base.fillRect(0, 70, levelWidth, 150);
-    base.fillStyle(0xb9a07e, 1);
-    base.fillRect(0, 220, levelWidth, 120);
-    base.fillStyle(0x3c312b, 1);
+    backgroundZones.forEach((zone) => {
+      const visual = getEnvironmentZoneVisual(zone.zone);
+      const zoneTop = Math.max(0, zone.y);
+      const zoneBottom = Math.min(floorTop, zone.y + zone.height);
+      const zoneHeight = Math.max(140, zoneBottom - zoneTop);
+      base.fillStyle(visual.wallTop, 1);
+      base.fillRect(zone.x, zoneTop, zone.width, Math.min(160, zoneHeight * 0.32));
+      base.fillStyle(visual.wallMid, 1);
+      base.fillRect(zone.x, zoneTop + Math.min(120, zoneHeight * 0.2), zone.width, Math.max(90, zoneHeight * 0.34));
+      base.fillStyle(visual.wallBottom, 1);
+      base.fillRect(zone.x, zoneBottom - Math.max(140, zoneHeight * 0.28), zone.width, Math.max(140, zoneHeight * 0.28));
+      base.fillStyle(visual.trim, 0.95);
+      base.fillRect(zone.x, floorTop - 40, zone.width, 40);
+      base.fillStyle(visual.floor, 0.12);
+      base.fillRect(zone.x, 0, zone.width, floorTop);
+    });
+    base.fillStyle(fallbackVisual.trim, 1);
     base.fillRect(0, floorTop - 40, levelWidth, 40);
-    base.fillStyle(0x754342, 1);
+    base.fillStyle(fallbackVisual.floor, 1);
     base.fillRect(0, floorTop, levelWidth, floorHeight);
-    base.fillStyle(0x2f241f, 1);
+    base.fillStyle(fallbackVisual.floorShadow, 1);
     base.fillRect(0, floorTop + floorHeight - 16, levelWidth, 16);
     base.destroy();
+
+    backgroundZones.forEach((zone, index) => {
+      this.renderSubsueloZoneBackdrop(zone.zone, zone.x, zone.width, floorTop, index, profile);
+    });
 
     this.addBnaWindowBand(levelWidth, 84, floorTop - 110, usesInstitutionalHall ? 0.38 : 0.3, 0.28);
     this.addStoneColumnBand(levelWidth, floorTop - 48, usesVerticalCore ? 176 : 220, 0.46);
@@ -1368,6 +1392,74 @@ export class GameScene extends Phaser.Scene {
     if (usesVerticalCore) {
       for (let x = 5100; x < levelWidth; x += 160) {
         this.add.rectangle(x, floorTop - 110, 72, 148, 0x2b211c, 0.24).setDepth(2.1).setScrollFactor(0.72, 1);
+      }
+    }
+  }
+
+  private renderSubsueloZoneBackdrop(
+    zoneId: string,
+    zoneX: number,
+    zoneWidth: number,
+    floorTop: number,
+    zoneIndex: number,
+    profile: EnvironmentProfile | null
+  ): void {
+    const visual = getEnvironmentZoneVisual(zoneId);
+    const layerPreset = profile?.zoneLayerPreset?.[zoneId] as string[] | undefined;
+
+    this.add.rectangle(zoneX + zoneWidth / 2, floorTop / 2, zoneWidth, floorTop, visual.wallMid, visual.overlayAlpha)
+      .setDepth(0.2)
+      .setScrollFactor(0.18, 1);
+
+    if (zoneId === 'servicios_comedor_cocina' || zoneId === 'subsuelo_estacionamiento') {
+      for (let x = zoneX + 56; x < zoneX + zoneWidth; x += 168) {
+        this.add.rectangle(x, 74, 132, 14, 0x4c4239, 0.52).setDepth(0.85).setScrollFactor(0.32, 1);
+        this.add.rectangle(x, 112, 104, 8, 0x655a51, 0.38).setDepth(0.82).setScrollFactor(0.36, 1);
+      }
+    }
+
+    if (zoneId === 'servicios_comedor_cocina') {
+      for (let x = zoneX + 110; x < zoneX + zoneWidth; x += 240) {
+        this.add.image(x, floorTop - 126, 'prop-service-table').setDepth(1.65).setScrollFactor(0.68, 1).setAlpha(0.24);
+      }
+    }
+
+    if (zoneId === 'hall_publico') {
+      for (let x = zoneX + 132; x < zoneX + zoneWidth; x += 236) {
+        this.add.image(x, 122, 'prop-tall-window').setDepth(1.1).setScrollFactor(0.34, 1).setAlpha(0.92).setScale(1.08);
+      }
+      for (let x = zoneX + 94; x < zoneX + zoneWidth; x += 220) {
+        this.add.image(x, floorTop - 60, 'prop-stone-column').setDepth(1.75).setScrollFactor(0.54, 1).setAlpha(0.42).setScale(1.2);
+      }
+    }
+
+    if (zoneId === 'circulacion_vertical') {
+      for (let x = zoneX + 70; x < zoneX + zoneWidth; x += 154) {
+        this.add.rectangle(x, floorTop - 120, 78, 164, 0x31251f, 0.24).setDepth(1.54).setScrollFactor(0.7, 1);
+        this.add.rectangle(x, floorTop - 46, 92, 10, 0xb99556, 0.34).setDepth(1.56).setScrollFactor(0.74, 1);
+      }
+    }
+
+    if (zoneId === 'pisos_oficina') {
+      for (let x = zoneX + 100; x < zoneX + zoneWidth; x += 188) {
+        for (let y = 80; y < 188; y += 52) {
+          this.add.rectangle(x, y, 118, 30, 0xefeadb, 0.56).setDepth(1.2).setScrollFactor(0.5, 1);
+          this.add.rectangle(x, y + 14, 118, 2, 0xb39c7f, 0.55).setDepth(1.22).setScrollFactor(0.5, 1);
+        }
+      }
+    }
+
+    const glowY = zoneId === 'subsuelo_estacionamiento' ? 84 : 52;
+    for (let x = zoneX + 140; x < zoneX + zoneWidth; x += 260) {
+      this.add.circle(x, glowY + (zoneIndex % 2) * 16, zoneId === 'subsuelo_estacionamiento' ? 16 : 20, visual.glow, 0.12)
+        .setDepth(1.95)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setScrollFactor(0.58, 1);
+    }
+
+    if (layerPreset?.includes('bg_parking_concrete_bays')) {
+      for (let x = zoneX + 120; x < zoneX + zoneWidth; x += 210) {
+        this.add.rectangle(x, floorTop - 108, 140, 148, 0x2f3135, 0.16).setDepth(1.3).setScrollFactor(0.44, 1);
       }
     }
   }

@@ -13,6 +13,7 @@
     "Mantener paleta pétrea cálida + acentos de bronce + señalización azul en todos los niveles.",
     "Priorizar formas grandes repetibles (columnas, ventanales, mostradores) para lectura a distancia.",
     "Usar degradación progresiva de limpieza: hall limpio -> oficinas tensas -> subsuelo deteriorado.",
-    "Aplicar objetos interactivos en puntos de embudo para reforzar ritmo arcade."
+    "Aplicar objetos interactivos en puntos de embudo para reforzar ritmo arcade.",
+    "La composición del fondo debe responder a la zona jugable actual y no reutilizar un único placeholder en todo el nivel."
   ]
 }

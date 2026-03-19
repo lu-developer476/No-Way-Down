@@ -6,10 +6,10 @@
       "id": "level1_subsuelo_comedor_pasillos",
       "zones": [
         "servicios_comedor_cocina",
-        "hall_publico",
+        "pisos_oficina",
         "circulacion_vertical"
       ],
-      "visual_mood": "comedor institucional conectado al hall del BNA con accesos y salida por escalera monumental",
+      "visual_mood": "comedor institucional del subsuelo conectado a pasillos tensos y salida por caja de escalera",
       "density_profile": "service_high",
       "reuse_from": [
         5
@@ -36,7 +36,7 @@
         "pisos_oficina",
         "circulacion_vertical"
       ],
-      "visual_mood": "hall institucional de planta baja conectado a pasillos técnicos y escalera monumental",
+      "visual_mood": "hall institucional conectado a pasillos técnicos del quinto piso y núcleos de escalera",
       "density_profile": "office_high",
       "reuse_from": [
         5,

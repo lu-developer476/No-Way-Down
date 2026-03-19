@@ -939,6 +939,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.resistancePhaseCompleted = true;
+    this.resistancePhaseConfig.holdAreaIds.forEach((areaId) => {
+      this.spawnManager?.completeArea(areaId, 'level1-resistance-hold-complete');
+    });
     this.resistancePhaseConfig.advanceAreaIds.forEach((areaId) => {
       this.spawnManager?.setAreaEnabled(areaId, true, 'level1-resistance-complete');
     });

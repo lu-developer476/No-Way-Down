@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { PartyHudMember } from './sceneShared';
 import { controlManager } from '../input/ControlManager';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
+import { visualTheme } from './visualTheme';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
@@ -286,12 +287,12 @@ export class UIScene extends Phaser.Scene {
     }).setScrollFactor(0);
 
     this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 18, '', {
-      color: '#fde047',
-      fontSize: '13px',
+      color: visualTheme.palette.uiHighlight,
+      fontSize: '14px',
       fontFamily: pixelFont,
-      backgroundColor: '#0f172a',
-      padding: { x: 10, y: 4 },
-      wordWrap: { width: Math.min(this.scale.width - 44, 700) },
+      backgroundColor: '#1a0f1f',
+      padding: { x: 18, y: 8 },
+      wordWrap: { width: Math.min(this.scale.width - 72, 700) },
       align: 'center'
     })
       .setOrigin(0.5, 1)
@@ -299,55 +300,62 @@ export class UIScene extends Phaser.Scene {
       .setDepth(9)
       .setAlpha(0.96);
 
-    const dialogueBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 120, Math.min(this.scale.width - 32, 740), 110, 0x020617, 0.92)
-      .setStrokeStyle(2, 0x38bdf8, 0.95)
+    const dialogueWidth = Math.min(this.scale.width - 32, 760);
+    const dialogueBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 126, dialogueWidth, 152, visualTheme.palette.uiPanelFrame, 0.95)
+      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1)
       .setScrollFactor(0);
+    const dialogueArtwork = this.textures.exists('menu_background')
+      ? this.add.image(dialogueBg.x, dialogueBg.y, 'menu_background').setDisplaySize(dialogueWidth, 152).setAlpha(0.42).setScrollFactor(0)
+      : this.add.rectangle(dialogueBg.x, dialogueBg.y, dialogueWidth, 152, 0x1b1522, 0.9).setScrollFactor(0);
+    const dialogueTint = this.add.rectangle(dialogueBg.x, dialogueBg.y, dialogueWidth, 152, visualTheme.palette.uiPanelTint, 0.6).setScrollFactor(0);
+    const dialogueBorder = this.add.rectangle(dialogueBg.x, dialogueBg.y, dialogueWidth, 152, 0x000000, 0).setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1).setScrollFactor(0);
 
-    this.dialogueSpeakerText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 16, dialogueBg.y - 42, '', {
-      color: '#93c5fd',
+    this.dialogueSpeakerText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 18, dialogueBg.y - 56, '', {
+      color: visualTheme.palette.uiTextSecondary,
       fontSize: '14px',
       fontFamily: pixelFont,
       fontStyle: 'bold'
     }).setOrigin(0, 0.5).setScrollFactor(0);
 
 
-    this.dialoguePortraitText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 14, dialogueBg.y - 42, '', {
-      color: '#94a3b8',
+    this.dialoguePortraitText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 16, dialogueBg.y - 56, '', {
+      color: visualTheme.palette.uiTextMuted,
       fontSize: '10px',
       fontFamily: pixelFont
     }).setOrigin(1, 0.5).setScrollFactor(0);
 
-    this.dialogueBodyText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 16, dialogueBg.y - 14, '', {
-      color: '#e2e8f0',
+    this.dialogueBodyText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 18, dialogueBg.y - 34, '', {
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '14px',
       fontFamily: pixelFont,
-      wordWrap: { width: dialogueBg.width - 32 }
+      wordWrap: { width: dialogueBg.width - 36 }
     }).setOrigin(0, 0).setScrollFactor(0);
 
-    this.dialogueHintText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 14, dialogueBg.y + 40, '', {
-      color: '#cbd5e1',
+    this.dialogueHintText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 16, dialogueBg.y + 58, '', {
+      color: visualTheme.palette.uiTextMuted,
       fontSize: '11px',
       fontFamily: pixelFont
     }).setOrigin(1, 0.5).setScrollFactor(0);
 
-    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, this.dialogueSpeakerText, this.dialoguePortraitText, this.dialogueBodyText, this.dialogueHintText])
+    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, dialogueArtwork, dialogueTint, dialogueBorder, this.dialogueSpeakerText, this.dialoguePortraitText, this.dialogueBodyText, this.dialogueHintText])
       .setDepth(50)
       .setVisible(false);
 
     this.controlsLegendText = this.add.text(this.scale.width - 12, 12, this.getControlsLegendText(), {
-      color: '#cbd5e1',
+      color: visualTheme.palette.uiTextSecondary,
       fontSize: '11px',
       fontFamily: pixelFont,
-      backgroundColor: '#0f172a',
-      padding: { x: 6, y: 4 }
-    }).setOrigin(1, 0).setScrollFactor(0).setDepth(12).setAlpha(0.9);
+      backgroundColor: '#1a0f1f',
+      padding: { x: 8, y: 6 }
+    }).setOrigin(1, 0).setScrollFactor(0).setDepth(12).setAlpha(0.92);
 
-    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 48, '', {
-      color: '#bbf7d0',
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 52, '', {
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '13px',
       fontFamily: pixelFont,
-      backgroundColor: '#052e16',
-      padding: { x: 8, y: 4 }
+      backgroundColor: '#1d1120',
+      padding: { x: 12, y: 6 },
+      align: 'center'
     })
       .setOrigin(0.5)
       .setScrollFactor(0)

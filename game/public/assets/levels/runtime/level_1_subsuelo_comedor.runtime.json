@@ -179,6 +179,77 @@
         "message": "Escalera asegurada. Preparados para subir a Planta Baja.",
         "objectiveEventType": "interactable_used"
       }
+    },
+    {
+      "id": "level1_entry_recycling_cache",
+      "type": "loot_container",
+      "x": 1010,
+      "y": 605,
+      "interactionKey": "E",
+      "interactionRadius": 92,
+      "prompt": "E · Revisar caja de reciclaje",
+      "interactionEffect": {
+        "type": "loot",
+        "message": "Entre folletos húmedos queda un cargador intacto. Suma algo de aire para el primer empuje.",
+        "rewardPickupType": "ammo_pistol",
+        "rewardPickupLabel": "Munición de pistola",
+        "consumesOnUse": true,
+        "objectiveEventType": "interactable_used"
+      }
+    },
+    {
+      "id": "level1_atm_route_note",
+      "type": "switch",
+      "x": 640,
+      "y": 576,
+      "interactionKey": "E",
+      "interactionRadius": 92,
+      "prompt": "E · Leer aviso improvisado",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Un papel pegado al cajero marca: COMEDOR CLAUSURADO ← / ESCALERAS Y TRIAGE →. Sirve para no perder tiempo mirando atrás.",
+        "objectiveEventType": "interactable_used"
+      }
+    },
+    {
+      "id": "level1_wayfinding_screen",
+      "type": "switch",
+      "x": 3680,
+      "y": 575,
+      "interactionKey": "E",
+      "interactionRadius": 104,
+      "prompt": "E · Consultar señalización",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "La pantalla todavía repite la ruta de evacuación: PASILLO B → ESCALERAS. También advierte saturación y ruido en el comedor del subsuelo.",
+        "objectiveEventType": "interactable_used"
+      }
+    },
+    {
+      "id": "level1_solidarity_box_supplies",
+      "type": "loot_container",
+      "x": 4580,
+      "y": 596,
+      "interactionKey": "E",
+      "interactionRadius": 96,
+      "prompt": "E · Revisar caja solidaria",
+      "interactionEffect": {
+        "type": "loot",
+        "message": "Quedó un botiquín chico entre donaciones abiertas. Alguien lo dejó listo para una retirada apurada.",
+        "rewardPickupType": "medkit_small",
+        "rewardPickupLabel": "Botiquín chico",
+        "consumesOnUse": true,
+        "objectiveEventType": "interactable_used"
+      }
+    }
+  ],
+  "pickups": [
+    {
+      "id": "level1-dining-ration-01",
+      "type": "food_small",
+      "x": 1280,
+      "y": 724,
+      "label": "Ración rápida"
     }
   ],
   "triggers": [

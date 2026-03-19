@@ -13,19 +13,19 @@
       "mood": "sobrio"
     },
     {
-      "speaker": "Sofía",
+      "speaker": "Giovanna",
       "text": "No está tan destruido como arriba... si queda energía acá, quizás todavía podamos abrir una salida.",
       "durationMs": 2700,
       "mood": "tension"
     },
     {
-      "speaker": "Bruno",
+      "speaker": "Nahir",
       "text": "No me saco de la cabeza a los que se quedaron. Bajamos, sí... pero cada piso nos cobró a alguien.",
       "durationMs": 2900,
       "mood": "duelo"
     },
     {
-      "speaker": "Líder",
+      "speaker": "Alan Nahuel",
       "text": "Un minuto. Revisen mochilas, armas, munición y heridas. Nadie avanza sin saber con qué cuenta.",
       "durationMs": 3000,
       "mood": "sobrio"
@@ -37,7 +37,7 @@
       "mood": "sobrio"
     },
     {
-      "speaker": "Líder",
+      "speaker": "Alan Nahuel",
       "text": "¿Listos para continuar? Mantengan formación y síganme. Nos movemos ya.",
       "durationMs": 2300,
       "mood": "determinacion"

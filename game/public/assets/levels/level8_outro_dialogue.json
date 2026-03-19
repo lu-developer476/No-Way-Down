@@ -9,33 +9,33 @@
     "solo": {
       "victory": [
         {
-          "speaker": "Protagonista",
+          "speaker": "Alan Nahuel",
           "text": "Cayó el último. Ya no van a entrar por esta puerta.",
           "durationMs": 2200
         }
       ],
       "hug": [
         {
-          "speaker": "Hermana 1",
+          "speaker": "Lorena",
           "text": "Pensé que no saldríamos de esta...",
           "durationMs": 2400
         },
         {
-          "speaker": "Hermana 2",
+          "speaker": "Giovanna",
           "text": "Estoy acá. Respirá... lo logramos por ahora.",
           "durationMs": 2500
         }
       ],
       "inventory": [
         {
-          "speaker": "Protagonista",
+          "speaker": "Alan Nahuel",
           "text": "Los demás escaparon solos. Nosotros hacemos conteo rápido y seguimos.",
           "durationMs": 2500
         }
       ],
       "transition": [
         {
-          "speaker": "Protagonista",
+          "speaker": "Alan Nahuel",
           "text": "No estamos a salvo todavía. Nivel 9, en marcha.",
           "durationMs": 2200
         }
@@ -44,43 +44,43 @@
     "squad": {
       "victory": [
         {
-          "speaker": "Protagonista",
+          "speaker": "Alan Nahuel",
           "text": "Zona asegurada. El grupo zombie fue neutralizado.",
           "durationMs": 2200
         },
         {
-          "speaker": "Aliado IA 1",
+          "speaker": "Giovanna",
           "text": "Perímetro estable. Tenemos una ventana corta para reagrupar.",
           "durationMs": 2300
         }
       ],
       "hug": [
         {
-          "speaker": "Hermana 1",
+          "speaker": "Lorena",
           "text": "No podía dejar de temblar...",
           "durationMs": 2200
         },
         {
-          "speaker": "Hermana 2",
+          "speaker": "Nahir",
           "text": "Llorá tranquila. Estamos juntas y seguimos vivas.",
           "durationMs": 2400
         }
       ],
       "inventory": [
         {
-          "speaker": "Aliado IA 2",
+          "speaker": "Selene",
           "text": "Los compañeros de oficina ya se retiraron por su cuenta.",
           "durationMs": 2200
         },
         {
-          "speaker": "Protagonista",
+          "speaker": "Alan Nahuel",
           "text": "Equipo principal: inventario exprés de recursos y armas. Después, avanzamos.",
           "durationMs": 2500
         }
       ],
       "transition": [
         {
-          "speaker": "Protagonista",
+          "speaker": "Alan Nahuel",
           "text": "Alivio parcial, no final. Preparen formación: pasamos al Nivel 9.",
           "durationMs": 2400
         }

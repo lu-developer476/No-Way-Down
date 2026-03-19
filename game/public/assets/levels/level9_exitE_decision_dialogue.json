@@ -7,13 +7,13 @@
   "dialogueByGroup": {
     "complete_group": [
       {
-        "speaker": "Explorador",
+        "speaker": "Giovanna",
         "text": "Salida E operativa. ¡Las giratorias responden!",
         "durationMs": 1800
       },
       {
-        "speaker": "Guardia",
-        "text": "¡Nadie sale! ¡Bajo persianas ahora!",
+        "speaker": "Narrador",
+        "text": "Desde la garita, un guardia alcanza a gritar que va a bajar las persianas.",
         "durationMs": 1700
       },
       {
@@ -22,14 +22,14 @@
         "durationMs": 2700
       },
       {
-        "speaker": "Líder",
+        "speaker": "Alan Nahuel",
         "text": "No hay tiempo. Nivel cerrado: nos movemos con los sobrevivientes.",
         "durationMs": 2000
       }
     ],
     "reduced_group": [
       {
-        "speaker": "Explorador",
+        "speaker": "Giovanna",
         "text": "Salida E funciona... pero miren al guardia.",
         "durationMs": 1900
       },
@@ -39,7 +39,7 @@
         "durationMs": 2600
       },
       {
-        "speaker": "Protagonista",
+        "speaker": "Alan Nahuel",
         "text": "Se terminó el margen. Confirmamos E y cerramos este nivel.",
         "durationMs": 2100
       }

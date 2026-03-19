@@ -7,22 +7,22 @@
   "fallbackPauseMs": 700,
   "dialogue": [
     {
-      "speaker": "Líder",
+      "speaker": "Alan Nahuel",
       "text": "Desde estas mismas oficinas del nivel anterior, salimos al pasillo. Planta Baja, salida A, ya.",
       "durationMs": 2400
     },
     {
-      "speaker": "Cobertura",
+      "speaker": "Giovanna",
       "text": "En el 1° piso hay pocos infectados. Los bajamos rápido y seguimos.",
       "durationMs": 2100
     },
     {
-      "speaker": "Explorador",
+      "speaker": "Nahir",
       "text": "¡Contacto en calle! Un grupo de infectados nos detectó y está entrando al edificio.",
       "durationMs": 2300
     },
     {
-      "speaker": "Líder",
+      "speaker": "Alan Nahuel",
       "text": "¡Retrocedan, ahora! Repliegue al interior y cierren distancia.",
       "durationMs": 1800
     },

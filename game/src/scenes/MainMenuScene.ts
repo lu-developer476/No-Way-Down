@@ -9,6 +9,7 @@ import {
 import { getAudioManager } from '../audio/AudioManager';
 import { SceneFlowManager } from './SceneFlowManager';
 import { controlManager } from '../input/ControlManager';
+import { visualTheme } from './visualTheme';
 
 interface MenuOption {
   label: string;
@@ -61,12 +62,12 @@ const UI_STYLES: UiStyles = {
     fontFamily: '"Courier New", monospace'
   },
   'panel-background': {
-    fillColor: 0x020617,
-    fillAlpha: 0.62,
-    strokeColor: 0x0ea5e9,
-    strokeAlpha: 0.34
+    fillColor: visualTheme.palette.uiPanelFill,
+    fillAlpha: 0.74,
+    strokeColor: visualTheme.palette.uiPanelFrame,
+    strokeAlpha: 0.86
   },
-  'highlight-color': '#fde047'
+  'highlight-color': visualTheme.palette.uiHighlight
 };
 
 export class MainMenuScene extends Phaser.Scene {
@@ -175,34 +176,33 @@ export class MainMenuScene extends Phaser.Scene {
   private buildControlsPanel(): void {
     const { width, height } = this.scale;
 
-    const panelWidth = 620;
-    const panelHeight = 420;
+    const panelWidth = 680;
+    const panelHeight = 448;
 
-    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 0.76);
-    const panelFrame = this.add.rectangle(width / 2, height / 2, panelWidth, panelHeight, 0x020617, 0.96)
-      .setStrokeStyle(3, 0x38bdf8, 1);
-    const panelInner = this.add.rectangle(width / 2, height / 2, panelWidth - 14, panelHeight - 14, 0x020617, 0.78)
-      .setStrokeStyle(1, 0x93c5fd, 0.6);
-
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.uiPanelShadow, 0.82);
+    const panelFrame = this.add.rectangle(width / 2, height / 2, panelWidth, panelHeight, visualTheme.palette.uiPanelFrame, 0.96)
+      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1);
     const panelArtwork = this.textures.exists('menu_background')
-      ? this.add.image(width / 2, height / 2, 'menu_background').setDisplaySize(panelWidth - 20, panelHeight - 20).setAlpha(0.36)
-      : this.add.rectangle(width / 2, height / 2, panelWidth - 20, panelHeight - 20, 0x0f172a, 0.85);
+      ? this.add.image(width / 2, height / 2, 'menu_background').setDisplaySize(panelWidth, panelHeight).setAlpha(0.62)
+      : this.add.rectangle(width / 2, height / 2, panelWidth, panelHeight, 0x1b1522, 0.92);
+    const panelTint = this.add.rectangle(width / 2, height / 2, panelWidth, panelHeight, visualTheme.palette.uiPanelTint, 0.58);
+    const panelBorder = this.add.rectangle(width / 2, height / 2, panelWidth, panelHeight, 0x000000, 0)
+      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1);
 
-    const panelTint = this.add.rectangle(width / 2, height / 2, panelWidth - 20, panelHeight - 20, 0x020617, 0.62);
-
-    const title = this.add.text(width / 2, height / 2 - 154, 'OPCIONES', {
+    const title = this.add.text(width / 2, height / 2 - 174, 'OPCIONES', {
       ...UI_STYLES['font-title'],
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '34px'
     }).setOrigin(0.5);
 
-    const controlsLabel = this.add.text(width / 2, height / 2 - 114, 'CONTROLES', {
+    const controlsLabel = this.add.text(width / 2, height / 2 - 136, 'CONTROLES', {
       ...UI_STYLES['font-subtext'],
-      color: '#bae6fd',
-      fontSize: '18px',
+      color: visualTheme.palette.uiTextSecondary,
+      fontSize: '16px',
       letterSpacing: 2
     }).setOrigin(0.5);
 
-    const body = this.add.text(width / 2, height / 2 - 4, [
+    const body = this.add.text(width / 2, height / 2 - 16, [
       `Movimiento: ${controlManager.getMovementDisplayLabel()}`,
       `Saltar: ${controlManager.getDisplayLabel('jump')}`,
       `Disparar: ${controlManager.getDisplayLabel('shoot')}`,
@@ -212,21 +212,21 @@ export class MainMenuScene extends Phaser.Scene {
       `Pausa: ${controlManager.getDisplayLabel('pause')}`,
       `Abandonar partida: ${controlManager.getDisplayLabel('quit')}`
     ].join('\n'), {
-      color: '#cbd5e1',
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '20px',
       align: 'center',
       fontFamily: '"Courier New", monospace',
       lineSpacing: 8
     }).setOrigin(0.5);
 
-    this.controlsBackButtonBg = this.add.rectangle(width / 2, height / 2 + 156, 220, 46, 0x1e293b, 0.95)
-      .setStrokeStyle(2, 0xfde047, 1)
+    this.controlsBackButtonBg = this.add.rectangle(width / 2, height / 2 + 172, 236, 52, 0x261225, 0.96)
+      .setStrokeStyle(2, 0xf6d365, 1)
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => this.toggleControlsPanel(false));
 
-    this.controlsBackButtonText = this.add.text(width / 2, height / 2 + 156, 'Volver', {
-      color: '#fde047',
-      fontSize: '22px',
+    this.controlsBackButtonText = this.add.text(width / 2, height / 2 + 172, 'Volver', {
+      color: visualTheme.palette.uiHighlight,
+      fontSize: '24px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5);
 
@@ -235,7 +235,7 @@ export class MainMenuScene extends Phaser.Scene {
       panelFrame,
       panelArtwork,
       panelTint,
-      panelInner,
+      panelBorder,
       title,
       controlsLabel,
       body,
@@ -247,18 +247,24 @@ export class MainMenuScene extends Phaser.Scene {
   private buildSetupPanel(): void {
     const { width, height } = this.scale;
 
-    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 0.74);
-    const panel = this.add.rectangle(width / 2, height / 2, 760, 420, 0x020617, 0.95)
-      .setStrokeStyle(2, 0x38bdf8, 1);
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.uiPanelShadow, 0.78);
+    const panel = this.add.rectangle(width / 2, height / 2, 760, 420, visualTheme.palette.uiPanelFrame, 0.96)
+      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1);
+    const panelArtwork = this.textures.exists('menu_background')
+      ? this.add.image(width / 2, height / 2, 'menu_background').setDisplaySize(760, 420).setAlpha(0.56)
+      : this.add.rectangle(width / 2, height / 2, 760, 420, 0x1b1522, 0.9);
+    const panelTint = this.add.rectangle(width / 2, height / 2, 760, 420, visualTheme.palette.uiPanelTint, 0.56);
+    const panelBorder = this.add.rectangle(width / 2, height / 2, 760, 420, 0x000000, 0)
+      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1);
 
     const title = this.add.text(width / 2, height / 2 - 176, 'Nueva partida', {
-      color: '#f8fafc',
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '28px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5);
 
     const subtitle = this.add.text(width / 2, height / 2 - 138, '', {
-      color: '#bfdbfe',
+      color: visualTheme.palette.uiTextSecondary,
       fontSize: '18px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5);
@@ -268,19 +274,19 @@ export class MainMenuScene extends Phaser.Scene {
       : this.add.rectangle(width / 2, height / 2 - 52, 320, 140, 0x0f172a, 0.8).setStrokeStyle(1, 0x1d4ed8, 0.7);
 
     this.setupOptionTexts = [0, 1, 2, 3].map((index) => this.add.text(width / 2, height / 2 + 24 + index * 38, '', {
-      color: '#cbd5e1',
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '24px',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5));
 
     this.setupHintText = this.add.text(width / 2, height / 2 + 178, '', {
-      color: '#93c5fd',
+      color: visualTheme.palette.uiTextMuted,
       fontSize: '14px',
       align: 'center',
       fontFamily: '"Courier New", monospace'
     }).setOrigin(0.5);
 
-    this.setupPanel = this.add.container(0, 0, [overlay, panel, title, subtitle, characterArt, ...this.setupOptionTexts, this.setupHintText])
+    this.setupPanel = this.add.container(0, 0, [overlay, panel, panelArtwork, panelTint, panelBorder, title, subtitle, characterArt, ...this.setupOptionTexts, this.setupHintText])
       .setVisible(false)
       .setDepth(20);
 
@@ -470,7 +476,7 @@ export class MainMenuScene extends Phaser.Scene {
     this.layoutMenuOptions();
 
     if (this.controlsPanel) {
-      const [overlay, panelFrame, panelArtwork, panelTint, panelInner, title, controlsLabel, body, backButtonBg, backButtonText] = this.controlsPanel.list as [
+      const [overlay, panelFrame, panelArtwork, panelTint, panelBorder, title, controlsLabel, body, backButtonBg, backButtonText] = this.controlsPanel.list as [
         Phaser.GameObjects.Rectangle,
         Phaser.GameObjects.Rectangle,
         Phaser.GameObjects.Image | Phaser.GameObjects.Rectangle,
@@ -482,25 +488,28 @@ export class MainMenuScene extends Phaser.Scene {
         Phaser.GameObjects.Rectangle,
         Phaser.GameObjects.Text
       ];
-      const panelWidth = Math.min(620, width - 84);
-      const panelHeight = Math.min(420, height - 70);
+      const panelWidth = Math.min(680, width - 84);
+      const panelHeight = Math.min(448, height - 64);
       overlay.setPosition(width / 2, height / 2).setSize(width, height);
       panelFrame.setPosition(width / 2, height / 2).setSize(panelWidth, panelHeight);
-      panelInner.setPosition(width / 2, height / 2).setSize(panelWidth - 14, panelHeight - 14);
-      panelArtwork.setPosition(width / 2, height / 2).setDisplaySize(panelWidth - 20, panelHeight - 20);
-      panelTint.setPosition(width / 2, height / 2).setSize(panelWidth - 20, panelHeight - 20);
+      panelArtwork.setPosition(width / 2, height / 2).setDisplaySize(panelWidth, panelHeight);
+      panelTint.setPosition(width / 2, height / 2).setSize(panelWidth, panelHeight);
+      panelBorder.setPosition(width / 2, height / 2).setSize(panelWidth, panelHeight);
 
-      title.setPosition(width / 2, height / 2 - panelHeight * 0.37);
-      controlsLabel.setPosition(width / 2, height / 2 - panelHeight * 0.27);
-      body.setPosition(width / 2, height / 2 - panelHeight * 0.02);
-      backButtonBg.setPosition(width / 2, height / 2 + panelHeight * 0.37);
-      backButtonText.setPosition(width / 2, height / 2 + panelHeight * 0.37);
+      title.setPosition(width / 2, height / 2 - panelHeight * 0.39);
+      controlsLabel.setPosition(width / 2, height / 2 - panelHeight * 0.31);
+      body.setPosition(width / 2, height / 2 - panelHeight * 0.03);
+      backButtonBg.setPosition(width / 2, height / 2 + panelHeight * 0.39);
+      backButtonText.setPosition(width / 2, height / 2 + panelHeight * 0.39);
     }
 
     if (this.setupPanel) {
-      const [overlay, panel, title, subtitle, characterArt, ...rest] = this.setupPanel.list as Phaser.GameObjects.GameObject[];
+      const [overlay, panel, panelArtwork, panelTint, panelBorder, title, subtitle, characterArt, ...rest] = this.setupPanel.list as Phaser.GameObjects.GameObject[];
       (overlay as Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2).setSize(width, height);
       (panel as Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2);
+      (panelArtwork as Phaser.GameObjects.Image | Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2).setDisplaySize(760, 420);
+      (panelTint as Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2).setSize(760, 420);
+      (panelBorder as Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2).setSize(760, 420);
       (title as Phaser.GameObjects.Text).setPosition(width / 2, height / 2 - 176);
       (subtitle as Phaser.GameObjects.Text).setPosition(width / 2, height / 2 - 138);
       (characterArt as Phaser.GameObjects.Image | Phaser.GameObjects.Rectangle).setPosition(width / 2, height / 2 - 52);

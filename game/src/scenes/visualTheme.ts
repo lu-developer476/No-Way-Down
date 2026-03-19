@@ -17,7 +17,15 @@ export const visualTheme = {
     zombie: 0x7fb069,
     allyA: 0x93c5fd,
     allyB: 0xc4b5fd,
-    bullet: 0xfff3c4
+    bullet: 0xfff3c4,
+    uiPanelShadow: 0x04010a,
+    uiPanelFrame: 0x261225,
+    uiPanelFrameSoft: 0x4a2436,
+    uiPanelFill: 0x100913,
+    uiPanelTint: 0x170b16,
+    uiHighlight: '#f6d365',
+    uiTextPrimary: '#f4f0ff',
+    uiTextSecondary: '#ceb9cf',
+    uiTextMuted: '#9f8ba1'
   }
 } as const;
-

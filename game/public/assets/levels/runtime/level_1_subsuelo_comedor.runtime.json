@@ -256,6 +256,34 @@
       "x": 1280,
       "y": 724,
       "label": "Ración rápida"
+    },
+    {
+      "id": "level1-dining-ammo-01",
+      "type": "ammo_pistol",
+      "x": 1540,
+      "y": 724,
+      "label": "Cargador del comedor"
+    },
+    {
+      "id": "level1-bench-recovery-01",
+      "type": "food_medium",
+      "x": 2860,
+      "y": 724,
+      "label": "Vianda olvidada"
+    },
+    {
+      "id": "level1-screen-cache-01",
+      "type": "ammo_shotgun",
+      "x": 3860,
+      "y": 724,
+      "label": "Cartuchos de seguridad"
+    },
+    {
+      "id": "level1-stairs-medkit-01",
+      "type": "medkit_small",
+      "x": 5480,
+      "y": 724,
+      "label": "Botiquín de evacuación"
     }
   ],
   "triggers": [

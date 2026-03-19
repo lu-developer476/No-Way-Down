@@ -113,6 +113,7 @@ type PauseMenuState = 'root' | 'options';
 
 export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
+  private currentLevelId = 'level_2_subsuelo';
   private projectileSystem?: ProjectileSystem;
   private combatActionSystem?: CombatActionSystem;
   private pickupSystem?: PickupSystem;
@@ -266,6 +267,7 @@ export class GameScene extends Phaser.Scene {
     this.resetRuntimeStateForRestart();
 
     const selectedLevelId = this.resolveLevelIdFromCampaignConfig(data);
+    this.currentLevelId = selectedLevelId;
 
     const setupFromStorage = loadInitialRunSetup();
     if (setupFromStorage && !this.registry.has('initialRunSetup')) {
@@ -751,6 +753,7 @@ export class GameScene extends Phaser.Scene {
     interactableId: string,
     effect: {
       type: string;
+      targetId?: string;
       message?: string;
       rewardPickupType?: PickupDefinition['type'];
       rewardPickupLabel?: string;
@@ -803,6 +806,10 @@ export class GameScene extends Phaser.Scene {
       this.checkpointSystem.setCheckpoint({ x: effect.checkpoint.x, y: effect.checkpoint.y });
       this.visitedCheckpoints.add(effect.checkpoint.label ?? `${Math.round(effect.checkpoint.x)},${Math.round(effect.checkpoint.y)}`);
       this.showMissionStatus(`Checkpoint asegurado: ${effect.checkpoint.label ?? 'progreso guardado'}.`);
+    }
+
+    if (interactionSucceeded && effect.type === 'stairs' && effect.targetId) {
+      this.beginExitTransition(effect.targetId, statusMessage);
     }
 
   }
@@ -1232,9 +1239,14 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.hasTriggeredTransition = true;
+    this.shutdownSpawnSystems('level-transition');
+    this.triggerSystem?.destroy();
+    this.triggerSystem = undefined;
+    this.interactionHintOwnedByInteractables = false;
     this.physics.pause();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.registry.set('interactionHint', '');
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
 
@@ -1242,6 +1254,22 @@ export class GameScene extends Phaser.Scene {
     this.transitionText
       ?.setText(message)
       .setVisible(true);
+  }
+
+  private beginExitTransition(exitId: string, message: string): void {
+    if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
+      return;
+    }
+
+    this.triggerLevelExitTransition(message);
+
+    this.time.delayedCall(500, () => {
+      if (!this.scene.isActive()) {
+        return;
+      }
+
+      levelManager.transitionToLevel(this, this.currentLevelId, exitId);
+    });
   }
 
   private createPlatform(group: Phaser.Physics.Arcade.StaticGroup, config: PlatformConfig): void {

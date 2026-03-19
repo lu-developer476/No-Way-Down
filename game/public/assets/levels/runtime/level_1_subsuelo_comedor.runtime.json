@@ -181,8 +181,9 @@
       "interactionRadius": 140,
       "interactionEffect": {
         "type": "stairs",
+        "targetId": "upper-floor-stairs",
         "message": "Escalera asegurada. Preparados para subir a Planta Baja.",
-        "objectiveEventType": "interactable_used"
+        "objectiveEventType": "exit_used"
       }
     },
     {

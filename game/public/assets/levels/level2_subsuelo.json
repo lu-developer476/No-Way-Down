@@ -1056,7 +1056,8 @@
         "spawnType": "vertical_spawn",
         "spawnDirection": "stairs_down",
         "spawnArea": "ZL-01",
-        "difficultyModifier": 1
+        "difficultyModifier": 1,
+        "spawnBudget": 2
       },
       {
         "id": "VS-ST-02",
@@ -1068,7 +1069,8 @@
         "spawnDirection": "stairs_up",
         "spawnArea": "ZL-01",
         "difficultyModifier": 1,
-        "minPlayerDistance": 310
+        "minPlayerDistance": 310,
+        "spawnBudget": 3
       },
       {
         "id": "VS-DR-03",
@@ -1079,7 +1081,8 @@
         "spawnType": "door_spawn",
         "spawnDirection": "door_left",
         "spawnArea": "ZL-02",
-        "difficultyModifier": 1
+        "difficultyModifier": 1,
+        "spawnBudget": 1
       }
     ]
   },

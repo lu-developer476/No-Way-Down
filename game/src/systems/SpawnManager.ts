@@ -283,6 +283,40 @@ export class SpawnManager {
     return [...this.areas.values()].filter((area) => area.completed).map((area) => area.config.id);
   }
 
+  completeArea(areaId: string, reason = 'scripted-completion'): void {
+    const area = this.areas.get(areaId);
+    if (!area || area.completed) {
+      return;
+    }
+
+    area.completed = true;
+    area.enabled = false;
+    area.active = false;
+    this.setAreaBlockers(area, false);
+
+    if (area.trigger) {
+      area.trigger.setActive(false).setVisible(false);
+      const body = area.trigger.body as Phaser.Physics.Arcade.StaticBody | undefined;
+      if (body) {
+        body.enable = false;
+      }
+    }
+
+    area.pointIds.forEach((pointId) => {
+      const point = this.points.get(pointId);
+      if (!point) {
+        return;
+      }
+
+      point.enabled = false;
+      if (point.config.spawnBudget === undefined) {
+        point.config.spawnBudget = point.spawnedTotal;
+      }
+    });
+
+    console.info(`[SpawnManager] area ${areaId} completed (${reason})`);
+  }
+
   private static normalizeConfig(
     config: Omit<SpawnManagerConfig, 'points'> & {
       points: Array<Omit<SpawnPointConfig, 'spawnType' | 'spawnDirection'> & { spawnType: string; spawnDirection: string }>;
@@ -411,6 +445,7 @@ export class SpawnManager {
         spawnDirection: direction,
         spawnArea: fallbackArea,
         difficultyModifier: 1,
+        spawnBudget: Math.max(1, point.maxActive),
         minPlayerDistance: point.minPlayerDistance,
         maxPlayerDistance: point.maxPlayerDistance
       });

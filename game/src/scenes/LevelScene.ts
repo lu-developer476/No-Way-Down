@@ -41,14 +41,12 @@ export class LevelScene extends GameScene {
 
     const { flowNode } = data;
     this.flowNode = flowNode;
-    console.log(`[LevelScene] flowNode.id recibido: ${flowNode.id}`);
 
     if (!flowNode.levelConfigPath) {
       console.error(`[LevelScene] flowNode ${flowNode.id} no define levelConfigPath. Se aborta la creación del nivel.`);
       return;
     }
 
-    console.log(`[LevelScene] levelConfigPath a cargar: ${flowNode.levelConfigPath}`);
     this.registry.set('activeCampaignNode', flowNode);
     this.registry.set('flowNodeId', flowNode.id);
 
@@ -92,9 +90,6 @@ export class LevelScene extends GameScene {
       }
 
       this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
-        console.info('[LevelScene] Evento de avance manual recibido (next_level).', {
-          currentNodeId: flowNode.id
-        });
         if (this.hasStarted) {
           return;
         }
@@ -102,10 +97,6 @@ export class LevelScene extends GameScene {
         this.hasStarted = true;
         const manager = this.flowManager ?? new SceneFlowManager(this);
         const nextNode = manager.advanceFromNodeId(flowNode.id);
-        console.info('[LevelScene] Resultado de advanceFromNodeId().', {
-          currentNodeId: flowNode.id,
-          nextNodeId: nextNode?.id
-        });
         if (!nextNode) {
           return;
         }
@@ -135,7 +126,6 @@ export class LevelScene extends GameScene {
 
     if (this.cache.json.exists(cacheKey)) {
       const config = this.cache.json.get(cacheKey);
-      console.log(`[LevelScene] carga exitosa desde cache para ${configPath}.`);
       onReady(config, false);
       return;
     }
@@ -144,7 +134,6 @@ export class LevelScene extends GameScene {
 
     this.load.once('filecomplete-json-' + cacheKey, () => {
       const config = this.cache.json.get(cacheKey);
-      console.log(`[LevelScene] carga exitosa de ${configPath}.`);
       onReady(config, false);
     });
 

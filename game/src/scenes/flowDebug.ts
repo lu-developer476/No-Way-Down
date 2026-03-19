@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 
-export const FLOW_DEBUG = true;
+export const FLOW_DEBUG = typeof import.meta !== 'undefined' && Boolean(import.meta.env?.DEV);
 
 interface FlowDebugState {
   flowNode?: CampaignFlowNode;

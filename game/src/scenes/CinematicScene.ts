@@ -33,7 +33,6 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     const cinematicPath = data.flowNode?.cinematicPath;
-    console.info('[CinematicScene] create() con nodo canónico:', data.flowNode?.id ?? 'sin-flowNode');
     this.renderCinematic(cinematicPath);
 
     this.flowManager = new SceneFlowManager(this);
@@ -52,7 +51,6 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     this.input.once('pointerdown', () => {
-      console.log('[CinematicScene] Click detectado.');
       this.advanceToNextNode('click');
     });
   }
@@ -65,7 +63,7 @@ export class CinematicScene extends Phaser.Scene {
       const beats = cinematic?.beats ?? [];
 
       this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
-      this.add.text(width / 2, 64, 'CINEMÁTICA', { color: '#f8fafc', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
+      this.add.text(width / 2, 64, 'Cinemática', { color: '#f8fafc', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
       this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n') || 'Sin cinemática cargada', {
         color: '#cbd5e1',
         fontFamily: 'monospace',
@@ -73,7 +71,7 @@ export class CinematicScene extends Phaser.Scene {
         align: 'center',
         wordWrap: { width: width - 120 }
       }).setOrigin(0.5);
-      this.add.text(width / 2, height - 36, 'ENTER para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+      this.add.text(width / 2, height - 36, 'ENTER o clic para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
     };
 
     if (!cinematicPath || !cacheKey) {
@@ -83,7 +81,6 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     if (this.cache.json.exists(cacheKey)) {
-      console.info('[CinematicScene] Cinemática obtenida desde cache:', cinematicPath);
       renderFromCache();
       return;
     }
@@ -113,7 +110,6 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-      console.log('[CinematicScene] ENTER detectado.');
       this.advanceToNextNode('enter');
     }
   }
@@ -127,13 +123,8 @@ export class CinematicScene extends Phaser.Scene {
     const manager = this.flowManager ?? new SceneFlowManager(this);
 
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
-    if (currentNode) {
-      console.log('[CinematicScene] activeCampaignNode detectado en registry:', currentNode.id);
-    }
-
     const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
     const next = manager.advanceFromNodeId(currentNodeId);
-    console.log('[CinematicScene] Nodo siguiente obtenido:', next ?? null);
 
     if (!next) {
       console.error('[CinematicScene] Error: no existe nodo siguiente para avanzar desde CinematicScene.');
@@ -146,7 +137,7 @@ export class CinematicScene extends Phaser.Scene {
     });
 
     this.isTransitioning = true;
-    console.log(`[CinematicScene] Transición ejecutada por ${source}.`);
+    void source;
     manager.transitionToNode(next);
   }
 }

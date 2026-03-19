@@ -4,7 +4,45 @@
     "width": 9800,
     "height": 864,
     "floor_height": 64,
-    "environment_profile": "level2_escaleras_espiral",
+    "environment_profile": "level1_subsuelo_comedor_pasillos",
+    "background_zones": [
+      {
+        "id": "l2-acceso-subsuelo",
+        "zone": "servicios_comedor_cocina",
+        "label": "Comedor / subsuelo",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 800
+      },
+      {
+        "id": "l2-pasillos-bna",
+        "zone": "pisos_oficina",
+        "label": "Pasillos",
+        "x": 1920,
+        "y": 0,
+        "width": 4620,
+        "height": 800
+      },
+      {
+        "id": "l2-hall-pre-escaleras",
+        "zone": "hall_publico",
+        "label": "Hall",
+        "x": 6540,
+        "y": 0,
+        "width": 1640,
+        "height": 800
+      },
+      {
+        "id": "l2-escaleras-salida",
+        "zone": "circulacion_vertical",
+        "label": "Accesos / escaleras",
+        "x": 8180,
+        "y": 0,
+        "width": 1620,
+        "height": 800
+      }
+    ],
     "default_spawn": {
       "x": 180,
       "y": 724

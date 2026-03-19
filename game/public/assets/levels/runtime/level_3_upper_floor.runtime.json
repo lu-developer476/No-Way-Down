@@ -6,6 +6,44 @@
     "floor_y": 1680,
     "floor_height": 90,
     "environment_profile": "level3_quinto_piso_pasillos",
+    "background_zones": [
+      {
+        "id": "l3-ingreso-escaleras",
+        "zone": "circulacion_vertical",
+        "label": "Accesos / escaleras",
+        "x": 0,
+        "y": 0,
+        "width": 960,
+        "height": 1680
+      },
+      {
+        "id": "l3-hall-central",
+        "zone": "hall_publico",
+        "label": "Hall",
+        "x": 960,
+        "y": 0,
+        "width": 1820,
+        "height": 1680
+      },
+      {
+        "id": "l3-pasillos-oficinas",
+        "zone": "pisos_oficina",
+        "label": "Pasillos",
+        "x": 2780,
+        "y": 0,
+        "width": 2460,
+        "height": 1680
+      },
+      {
+        "id": "l3-retorno-escaleras",
+        "zone": "circulacion_vertical",
+        "label": "Accesos / escaleras",
+        "x": 5240,
+        "y": 0,
+        "width": 960,
+        "height": 1680
+      }
+    ],
     "default_spawn": {
       "x": 300,
       "y": 1640

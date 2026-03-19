@@ -17,7 +17,7 @@ import { visualTheme } from './visualTheme';
 import level3HallLayout from '../../public/assets/levels/level3_hall_planta_baja.json';
 import level3PickupConfig from '../../public/assets/levels/level3_pickups.json';
 import { addEnvironmentProp } from './environmentLayout';
-import { registerEnvironmentProfile } from '../config/environmentProfiles';
+import { getEnvironmentZoneVisual, registerEnvironmentProfile } from '../config/environmentProfiles';
 import { PickupSystem } from '../systems/PickupSystem';
 import { levelManager } from '../systems/level/levelCatalog';
 import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
@@ -64,7 +64,7 @@ export class UpperFloorScene extends Phaser.Scene {
       .setZoom(ARCADE_CAMERA_ZOOM)
       .setRoundPixels(true);
 
-    this.drawUpperFloorBackground(levelWidth, levelHeight, floorHeight);
+    this.drawUpperFloorBackground(levelConfig.layout, floorHeight);
 
     const environment = this.physics.add.staticGroup();
     const floorY = this.resolveFloorY(levelHeight);
@@ -194,21 +194,37 @@ export class UpperFloorScene extends Phaser.Scene {
     }
   }
 
-  private drawUpperFloorBackground(levelWidth: number, levelHeight: number, floorHeight: number): void {
+  private drawUpperFloorBackground(
+    layout: { width: number; height: number; background_zones?: Array<{ id: string; zone: string; x: number; y: number; width: number; height: number }> },
+    floorHeight: number
+  ): void {
+    const levelWidth = layout.width;
+    const levelHeight = layout.height;
     const floorY = this.resolveFloorY(levelHeight);
+    const backgroundZones = layout.background_zones ?? [];
+    const fallbackVisual = getEnvironmentZoneVisual('hall_publico');
 
     const backdrop = this.add.graphics();
-    backdrop.fillGradientStyle(0xd8c8ab, 0xd8c8ab, 0xb89d78, 0xb89d78, 1);
+    backdrop.fillGradientStyle(fallbackVisual.wallTop, fallbackVisual.wallTop, fallbackVisual.wallBottom, fallbackVisual.wallBottom, 1);
     backdrop.fillRect(0, 0, levelWidth, levelHeight);
-    backdrop.fillStyle(0xe5d8bf, 1);
-    backdrop.fillRect(0, 0, levelWidth, 170);
-    backdrop.fillStyle(0xcab28f, 1);
-    backdrop.fillRect(0, 170, levelWidth, 190);
-    backdrop.fillStyle(0x754342, 1);
+    backgroundZones.forEach((zone) => {
+      const visual = getEnvironmentZoneVisual(zone.zone);
+      backdrop.fillStyle(visual.wallTop, 1);
+      backdrop.fillRect(zone.x, zone.y, zone.width, 170);
+      backdrop.fillStyle(visual.wallMid, 1);
+      backdrop.fillRect(zone.x, zone.y + 170, zone.width, 190);
+      backdrop.fillStyle(visual.wallBottom, visual.overlayAlpha);
+      backdrop.fillRect(zone.x, zone.y, zone.width, floorY);
+    });
+    backdrop.fillStyle(fallbackVisual.trim, 1);
     backdrop.fillRect(0, floorY - 26, levelWidth, 26);
-    backdrop.fillStyle(0x593f34, 1);
+    backdrop.fillStyle(fallbackVisual.floor, 1);
     backdrop.fillRect(0, floorY, levelWidth, floorHeight);
     backdrop.destroy();
+
+    backgroundZones.forEach((zone, index) => {
+      this.renderUpperFloorZoneBackdrop(zone.zone, zone.x, zone.width, floorY, index);
+    });
 
     for (let x = 150; x < levelWidth; x += 230) {
       this.add.image(x, 166, 'prop-tall-window')
@@ -248,6 +264,39 @@ export class UpperFloorScene extends Phaser.Scene {
     for (let x = 0; x < levelWidth; x += 116) {
       this.add.rectangle(x + 58, floorY + 18, 104, 24, 0x8f5e55, x % 232 === 0 ? 0.4 : 0.28).setDepth(3.4);
       this.add.rectangle(x + 58, floorY + 40, 104, 2, 0x251b18, 0.22).setDepth(3.45);
+    }
+  }
+
+  private renderUpperFloorZoneBackdrop(zoneId: string, zoneX: number, zoneWidth: number, floorY: number, zoneIndex: number): void {
+    const visual = getEnvironmentZoneVisual(zoneId);
+
+    this.add.rectangle(zoneX + zoneWidth / 2, floorY / 2, zoneWidth, floorY, visual.wallBottom, visual.overlayAlpha)
+      .setDepth(0.3)
+      .setScrollFactor(0.16, 1);
+
+    if (zoneId === 'hall_publico') {
+      for (let x = zoneX + 140; x < zoneX + zoneWidth; x += 236) {
+        this.add.image(x, 168, 'prop-tall-window').setDepth(0.95).setScrollFactor(0.42, 1).setDisplaySize(94, 180).setAlpha(0.95);
+      }
+    }
+
+    if (zoneId === 'pisos_oficina') {
+      for (let x = zoneX + 112; x < zoneX + zoneWidth; x += 172) {
+        for (let y = 40; y < 164; y += 54) {
+          this.add.rectangle(x, y, 116, 34, 0xf4eedf, 0.74).setDepth(1.1).setScrollFactor(0.56, 1);
+          this.add.rectangle(x, y + 17, 116, 2, 0xb7a080, 0.78).setDepth(1.12).setScrollFactor(0.56, 1);
+        }
+      }
+    }
+
+    if (zoneId === 'circulacion_vertical') {
+      for (let x = zoneX + 88; x < zoneX + zoneWidth; x += 176) {
+        this.add.rectangle(x, floorY - 138, 88, 186, 0x2b211c, 0.18).setDepth(1.24).setScrollFactor(0.62, 1);
+      }
+    }
+
+    for (let x = zoneX + 180; x < zoneX + zoneWidth; x += 420) {
+      this.add.circle(x, 92 + (zoneIndex % 2) * 8, 22, visual.glow, 0.12).setDepth(1.5).setBlendMode(Phaser.BlendModes.ADD);
     }
   }
 

@@ -24,6 +24,15 @@ export interface LevelLayoutDefinition {
   floor_height?: number;
   environment_profile?: string;
   default_spawn?: { x: number; y: number };
+  background_zones?: Array<{
+    id: string;
+    zone: string;
+    label?: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }>;
   [key: string]: unknown;
 }
 

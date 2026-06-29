@@ -1,0 +1,38 @@
+{
+  "campaignId": "no_way_down",
+  "title": "No Way Down",
+  "canonStatus": "runtime-guidance",
+  "sourceNote": "Resumen de continuidad construido desde los documentos y assets actuales del proyecto; cada commit narrativo debe preservar estos hitos.",
+  "corePremise": "Un grupo de empleados y sobrevivientes queda atrapado en la Casa Central del Banco Nación durante el brote. La campaña desciende por oficinas, comedores, escaleras, subsuelos y garage hasta una salida ambigua hacia San Telmo.",
+  "protagonists": ["Alan Nahuel", "Giovanna"],
+  "mandatoryPartyAtStart": ["Alan Nahuel", "Giovanna", "Damián", "Nahir"],
+  "lateRescueThreads": ["Lorena", "Selene"],
+  "canonicalBeats": [
+    {
+      "act": 1,
+      "levels": ["lvl01-esc01-subsuelo-inicial", "lvl02-esc01-hall-planta-baja"],
+      "summary": "El equipo entiende que el banco dejó de ser seguro, despeja el subsuelo inicial y busca una ruta vertical sin separarse."
+    },
+    {
+      "act": 2,
+      "levels": ["lvl03-esc01-segundo-piso", "lvl04-esc01-tercer-piso", "lvl05-esc01-cuarto-piso-comedor"],
+      "summary": "La campaña cruza pisos intermedios, rescates y espacios de trabajo colapsados mientras el grupo pierde control de la situación."
+    },
+    {
+      "act": 3,
+      "levels": ["lvl06-esc01-quinto-piso-pertenencias", "lvl07-esc01-oficina-422-rescate", "lvl08-esc01-descenso-con-temporizador"],
+      "summary": "Las pertenencias, las llamadas y el rescate de oficina 422 reencuadran la historia; Damián queda asociado al arco de infección y tragedia."
+    },
+    {
+      "act": 4,
+      "levels": ["lvl09-esc01-verificacion-salidas", "lvl10-esc01-garage-busqueda-vehiculo", "lvl10-esc02-resistencia-en-garage"],
+      "summary": "Las salidas evidentes fallan, el garage se vuelve el cuello de botella y la infección fuerza decisiones irreversibles."
+    },
+    {
+      "act": 5,
+      "levels": ["lvl10-cin01-traslado-silencioso-plaza-de-mayo", "lvl10-esc03-combate-final-en-via-publica", "lvl10-esc04-epilogo-final"],
+      "summary": "Alan y Giovanna llegan a la calle, avanzan hacia San Telmo y cierran la campaña con final abierto, sin convertirlo en una victoria total."
+    }
+  ],
+  "commitRule": "Antes de sumar contenido nuevo, verificar que el beat conserve nombres, pérdidas y destino abierto definidos por los assets actuales."
+}

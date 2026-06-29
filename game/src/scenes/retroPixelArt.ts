@@ -9,8 +9,13 @@ export const RETRO_CHECKPOINTS = [
 
 export function applyRetroRenderer(scene: Phaser.Scene): void {
   scene.cameras.main.setRoundPixels(true);
-  scene.textures.list && Object.values(scene.textures.list).forEach((texture) => {
-    texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+
+  const textureList = (scene.textures as unknown as { list?: Record<string, unknown> }).list ?? {};
+  Object.values(textureList).forEach((texture) => {
+    const maybeFilterable = texture as { setFilter?: (filterMode: number) => void };
+    if (typeof maybeFilterable.setFilter === 'function') {
+      maybeFilterable.setFilter(Phaser.Textures.FilterMode.NEAREST);
+    }
   });
 }
 

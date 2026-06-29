@@ -6,6 +6,7 @@ const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }
   { key: 'menu_background', path: 'assets/images/NWD-menu.png', type: 'image' },
   { key: 'characters_panel', path: 'assets/images/NWD-characters.png', type: 'image' },
   { key: 'campaign_flow', path: 'assets/campaign/campaign_flow.json', type: 'json' },
+  { key: 'story_bible', path: 'assets/campaign/story_bible.json', type: 'json' },
   { key: 'campaign_intro_dialogue', path: 'assets/dialogues/campaign_intro_dialogue.json', type: 'json' },
   { key: 'drive_to_santelmo_cinematic', path: 'assets/cinematics/drive_to_santelmo.json', type: 'json' }
 ];
@@ -30,6 +31,11 @@ export class AssetPreloadScene extends Phaser.Scene {
     this.load.on('filecomplete', (key: string, type: string) => {
       const assetPath = preloadedAssetPaths.get(key);
       console.log(`[AssetLoader] ${type}:${key} cargado`);
+
+      if (key === 'story_bible' && !loggedGroups.has('story_bible')) {
+        console.log('[AssetLoader] story_bible cargado');
+        loggedGroups.add('story_bible');
+      }
 
       if (key === 'campaign_flow' && !loggedGroups.has('campaign_flow')) {
         console.log('[AssetLoader] campaign_flow cargado');
@@ -80,6 +86,7 @@ export class AssetPreloadScene extends Phaser.Scene {
     }
 
     const definition = this.cache.json.get('campaign_flow') as CampaignFlowDefinition;
+    this.registry.set('storyBible', this.cache.json.get('story_bible') ?? null);
 
     manager.loadDefinition(definition);
     this.scene.start('MainMenuScene');

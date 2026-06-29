@@ -59,6 +59,72 @@
         }
       ],
       "objectiveAfterCall": "Sigan avanzando por el subsuelo y mantengan al grupo unido."
+    },
+    {
+      "id": "level2-cinematic-quarter-ambush",
+      "trigger": {
+        "type": "narrative-checkpoint",
+        "checkpointId": "level2-checkpoint-quarter-ambush"
+      },
+      "movementLocked": true,
+      "preDialoguePauseMs": 220,
+      "dialogue": [
+        {
+          "speaker": "Viñeta Pixel",
+          "text": "Las luces parpadean como si el edificio respirara. Un grupo golpea la puerta de servicio: la primera emboscada está cerca.",
+          "durationMs": 2600
+        },
+        {
+          "speaker": "Giovanna",
+          "text": "No se separen. Usen los mostradores como cobertura y crucen cuando el pasillo quede libre.",
+          "durationMs": 2500
+        }
+      ],
+      "objectiveAfterCall": "Checkpoint 25%: sobrevivan a la emboscada y sigan por el pasillo."
+    },
+    {
+      "id": "level2-cinematic-midpoint-elevator",
+      "trigger": {
+        "type": "narrative-checkpoint",
+        "checkpointId": "level2-checkpoint-midpoint-elevator"
+      },
+      "movementLocked": true,
+      "preDialoguePauseMs": 220,
+      "dialogue": [
+        {
+          "speaker": "Cámara de Seguridad",
+          "text": "La pantalla CRT muestra siluetas pixeladas subiendo desde el subsuelo inferior. La salida principal ya no es segura.",
+          "durationMs": 2800
+        },
+        {
+          "speaker": "Alan Nahuel",
+          "text": "Entonces cambiamos el plan: avanzamos al núcleo de escaleras y guardamos munición para abrirnos paso.",
+          "durationMs": 2600
+        }
+      ],
+      "objectiveAfterCall": "Checkpoint 50%: alcancen el núcleo de escaleras antes de quedar rodeados."
+    },
+    {
+      "id": "level2-cinematic-final-corridor",
+      "trigger": {
+        "type": "narrative-checkpoint",
+        "checkpointId": "level2-checkpoint-final-corridor"
+      },
+      "movementLocked": true,
+      "preDialoguePauseMs": 220,
+      "dialogue": [
+        {
+          "speaker": "Viñeta Pixel",
+          "text": "La cámara baja al suelo: casquillos, papeles bancarios y una señal de salida rota señalan el último corredor.",
+          "durationMs": 2800
+        },
+        {
+          "speaker": "Giovanna",
+          "text": "Último empujón. Si la puerta abre, subimos todos; si no, la tiramos abajo.",
+          "durationMs": 2400
+        }
+      ],
+      "objectiveAfterCall": "Checkpoint 75%: despejen el corredor final y busquen la salida."
     }
   ]
 }

@@ -27,6 +27,7 @@ import {
   PartyHudMember
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
+import { addCheckpointCinematicCard, addRetroScreenOverlay, applyRetroRenderer, RETRO_CHECKPOINTS } from './retroPixelArt';
 import { CampaignState } from '../systems/core/CampaignState';
 import { PartyStateSystem } from '../systems/core/PartyStateSystem';
 import { EnvironmentProfile, getEnvironmentZoneVisual, registerEnvironmentProfile } from '../config/environmentProfiles';
@@ -167,6 +168,7 @@ export class GameScene extends Phaser.Scene {
   private resistancePhaseEndsAt?: number;
   private resistancePhaseCompleted = false;
   private readonly allyHealthBars = new Map<string, AllyWorldHealthBar>();
+  private readonly triggeredRetroCheckpoints = new Set<string>();
   private readonly onNarrativeAdvanceKey = () => {
     this.advanceDialogueRequested = true;
   };
@@ -265,6 +267,7 @@ export class GameScene extends Phaser.Scene {
 
   create(data: GameSceneData = {}): void {
     this.resetRuntimeStateForRestart();
+    applyRetroRenderer(this);
 
     const selectedLevelId = this.resolveLevelIdFromCampaignConfig(data);
     this.currentLevelId = selectedLevelId;
@@ -293,6 +296,7 @@ export class GameScene extends Phaser.Scene {
       .setRoundPixels(true);
 
     this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
+    addRetroScreenOverlay(this, 17.5);
 
     const environment = this.physics.add.staticGroup();
 
@@ -617,6 +621,7 @@ export class GameScene extends Phaser.Scene {
     this.resistancePhaseConfig = undefined;
     this.resistancePhaseEndsAt = undefined;
     this.resistancePhaseCompleted = false;
+    this.triggeredRetroCheckpoints.clear();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('interactionHint', '');
@@ -673,8 +678,43 @@ export class GameScene extends Phaser.Scene {
     this.projectileSystem?.update();
 
     this.updateInteractables();
+    this.updateRetroCheckpointCinematics();
   }
 
+
+
+  private updateRetroCheckpointCinematics(): void {
+    if (this.currentLevelId !== 'level_2_subsuelo' || this.movementLockedByNarrative || this.hasTriggeredTransition) {
+      return;
+    }
+
+    const cameraBounds = this.cameras.main.getBounds();
+    const levelWidth = Math.max(1, cameraBounds.width || this.physics.world.bounds.width);
+    const averagePlayerPosition = this.getAveragePlayerPosition();
+    const progressRatio = Phaser.Math.Clamp(averagePlayerPosition.x / levelWidth, 0, 1);
+    const checkpoint = RETRO_CHECKPOINTS.find((candidate) => progressRatio >= candidate.ratio && !this.triggeredRetroCheckpoints.has(candidate.id));
+
+    if (!checkpoint) {
+      return;
+    }
+
+    this.triggeredRetroCheckpoints.add(checkpoint.id);
+    void this.triggerNarrativeCheckpoint(checkpoint.id);
+    this.flashRetroCheckpointCard(checkpoint.label, 'Cinemática de avance desbloqueada');
+  }
+
+  private flashRetroCheckpointCard(title: string, subtitle: string): void {
+    const card = addCheckpointCinematicCard(this, title, subtitle);
+    this.tweens.add({
+      targets: card,
+      alpha: { from: 0, to: 1 },
+      duration: 160,
+      yoyo: true,
+      hold: 1250,
+      ease: 'Stepped',
+      onComplete: () => card.destroy(true)
+    });
+  }
 
   private playFootstepsForMovingPlayers(): void {
     if (this.time.now < this.nextFootstepAt) {

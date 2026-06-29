@@ -11,9 +11,10 @@ import { UpperFloorScene } from './scenes/UpperFloorScene';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
-const MIN_DESKTOP_WIDTH = 1024;
-const MIN_DESKTOP_HEIGHT = 640;
+const MIN_DESKTOP_WIDTH = 960;
+const MIN_DESKTOP_HEIGHT = 540;
 const UNSUPPORTED_MESSAGE = 'No Way Down solo está disponible en desktop o laptop';
+const LOAD_ERROR_MESSAGE = 'No Way Down no pudo iniciar. Recargá la página y, si sigue fallando, revisá la consola del navegador.';
 
 const appContainer = document.getElementById('app');
 const unsupportedScreen = document.getElementById('unsupported-screen');
@@ -29,6 +30,9 @@ const config: Phaser.Types.Core.GameConfig = {
   height: GAME_HEIGHT,
   parent: appContainer,
   backgroundColor: '#111827',
+  pixelArt: true,
+  antialias: false,
+  roundPixels: true,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -65,10 +69,14 @@ const isUnsupportedScreen = (): boolean => {
   return isTouchDevice || isPortrait || tooSmall;
 };
 
-const showUnsupportedScreen = () => {
-  unsupportedScreen.textContent = UNSUPPORTED_MESSAGE;
+const showBlockingMessage = (message: string) => {
+  unsupportedScreen.textContent = message;
   unsupportedScreen.hidden = false;
   appContainer.hidden = true;
+};
+
+const showUnsupportedScreen = () => {
+  showBlockingMessage(UNSUPPORTED_MESSAGE);
   document.body.classList.add('unsupported-device');
 };
 
@@ -84,7 +92,12 @@ const mountGame = () => {
   }
 
   hideUnsupportedScreen();
-  game = new Phaser.Game(config);
+  try {
+    game = new Phaser.Game(config);
+  } catch (error) {
+    console.error('[NoWayDown] Error iniciando Phaser.', error);
+    showBlockingMessage(LOAD_ERROR_MESSAGE);
+  }
 };
 
 const unmountGame = () => {
@@ -106,6 +119,14 @@ const syncGameAvailability = () => {
   mountGame();
 };
 
+window.addEventListener('error', (event) => {
+  console.error('[NoWayDown] Error global de carga.', event.error ?? event.message);
+  showBlockingMessage(LOAD_ERROR_MESSAGE);
+});
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('[NoWayDown] Promesa rechazada durante la carga.', event.reason);
+  showBlockingMessage(LOAD_ERROR_MESSAGE);
+});
 window.addEventListener('resize', syncGameAvailability);
 window.addEventListener('orientationchange', syncGameAvailability);
 

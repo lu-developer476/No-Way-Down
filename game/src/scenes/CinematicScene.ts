@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { controlManager } from '../input/ControlManager';
 import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
+import { addRetroScreenOverlay, applyRetroRenderer, RETRO_PIXEL_FONT } from './retroPixelArt';
 
 interface CinematicBeat {
   beat: string;
@@ -32,6 +33,7 @@ export class CinematicScene extends Phaser.Scene {
       this.registry.set('flowNodeId', data.flowNode.id);
     }
 
+    applyRetroRenderer(this);
     const cinematicPath = data.flowNode?.cinematicPath;
     this.renderCinematic(cinematicPath);
 
@@ -63,15 +65,17 @@ export class CinematicScene extends Phaser.Scene {
       const beats = cinematic?.beats ?? [];
 
       this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
-      this.add.text(width / 2, 64, 'Cinemática', { color: '#f8fafc', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
+      this.add.rectangle(width / 2, 80, width - 96, 82, 0x100913, 0.92).setStrokeStyle(3, 0xf6d365, 1);
+      this.add.text(width / 2, 64, 'CINEMÁTICA // PIXEL CUTSCENE', { color: '#f8fafc', fontFamily: RETRO_PIXEL_FONT, fontSize: '26px', fontStyle: 'bold' }).setOrigin(0.5);
       this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n') || 'Sin cinemática cargada', {
         color: '#cbd5e1',
-        fontFamily: 'monospace',
+        fontFamily: RETRO_PIXEL_FONT,
         fontSize: '18px',
         align: 'center',
         wordWrap: { width: width - 120 }
       }).setOrigin(0.5);
-      this.add.text(width / 2, height - 36, 'ENTER o clic para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+      this.add.text(width / 2, height - 36, 'ENTER o clic para continuar', { color: '#f6d365', fontFamily: RETRO_PIXEL_FONT, fontSize: '14px' }).setOrigin(0.5);
+      addRetroScreenOverlay(this, 3);
     };
 
     if (!cinematicPath || !cacheKey) {

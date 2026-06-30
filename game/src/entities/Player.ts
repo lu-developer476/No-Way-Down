@@ -16,6 +16,7 @@ const JUMP_SPEED = 420;
 const DAMAGE_INVULNERABILITY_MS = 900;
 const CHARACTER_DISPLAY_ORIGIN_X = 16;
 const CHARACTER_DISPLAY_ORIGIN_Y = 42;
+const CHARACTER_RENDER_DEPTH = 20;
 
 const CHARACTER_PHYSICS_BY_SILHOUETTE = {
   slim: { bodyWidth: 16, bodyHeight: 38, offsetX: 8, offsetY: 10, bounce: 0.04, dragX: 850 },
@@ -72,6 +73,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setMaxVelocity(360, 720);
     this.setScale(1.35);
     this.setDisplayOrigin(CHARACTER_DISPLAY_ORIGIN_X, CHARACTER_DISPLAY_ORIGIN_Y);
+    this.setDepth(CHARACTER_RENDER_DEPTH);
 
     this.projectileSystem = projectileSystem;
     this.profile = profile;

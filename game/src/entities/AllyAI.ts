@@ -23,6 +23,7 @@ const ALLY_COMBAT_REPOSITION_DISTANCE = 130;
 const ALLY_MELEE_SWITCH_DISTANCE = 78;
 const ALLY_DEFENSE_SWITCH_DISTANCE = 68;
 const ALLY_SAFE_RELOAD_DISTANCE = 165;
+const ALLY_RENDER_DEPTH = 20;
 const ALLY_LOW_AMMO_RATIO = 0.25;
 const ALLY_PLAYER_BLOCK_RADIUS = 32;
 const ALLY_TARGET_MEMORY_MS = 1200;
@@ -84,6 +85,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.spriteAnimationSystem.rememberDefaultTint(this, profile.tint);
     this.setAlpha(0.92);
     this.setPushable(false);
+    this.setDepth(ALLY_RENDER_DEPTH);
 
     this.spriteAnimationSystem.playState(this, this.characterVisualId, 'idle');
 

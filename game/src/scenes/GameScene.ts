@@ -1680,13 +1680,11 @@ export class GameScene extends Phaser.Scene {
     const fallenPlayer = this.players.find((player) => player.isDead());
     if (fallenPlayer) {
       const fallenId = `player-${fallenPlayer.getProfile().slot}`;
-      this.partyState?.markDead(fallenId);
-      this.campaignState?.applyPatch({
-        markDeadCharacter: fallenId,
-        markIrreversibleEvent: `defeat-${fallenId}`
+      this.registry.set('lastCombatDefeat', {
+        fallenId,
+        levelId: this.currentLevelId,
+        defeatedAt: Date.now()
       });
-      this.registry.set('partyState', this.partyState?.getSnapshot());
-      this.registry.set('campaignState', this.campaignState?.getSnapshot());
     }
     this.physics.pause();
     this.registry.set('isGamePaused', false);
@@ -1700,12 +1698,17 @@ export class GameScene extends Phaser.Scene {
       .setStyle({ color: '#fecaca' })
       .setVisible(true);
 
-    this.time.delayedCall(PLAYER_RESPAWN_DELAY_MS, () => {
+    window.setTimeout(() => {
+      if (!this.scene.isActive()) {
+        return;
+      }
+
+      this.physics.resume();
       this.levelRestartManager?.restartLevel({
         respawnPoint: this.respawnPoint,
         preserveCampaignProgress: true
       });
-    });
+    }, PLAYER_RESPAWN_DELAY_MS);
   }
 
   private createLevel4StairSegmentSystemExample(): StairSegmentSystem {

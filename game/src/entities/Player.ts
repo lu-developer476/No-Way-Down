@@ -14,6 +14,8 @@ import { getMovementSpeedMultiplier, getReloadTimeMultiplier } from '../config/a
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
 const DAMAGE_INVULNERABILITY_MS = 900;
+const CHARACTER_DISPLAY_ORIGIN_X = 16;
+const CHARACTER_DISPLAY_ORIGIN_Y = 42;
 
 const CHARACTER_PHYSICS_BY_SILHOUETTE = {
   slim: { bodyWidth: 16, bodyHeight: 38, offsetX: 8, offsetY: 10, bounce: 0.04, dragX: 850 },
@@ -68,6 +70,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setBounce(0, physicsProfile.bounce);
     this.setDragX(physicsProfile.dragX);
     this.setMaxVelocity(360, 720);
+    this.setScale(1.35);
+    this.setDisplayOrigin(CHARACTER_DISPLAY_ORIGIN_X, CHARACTER_DISPLAY_ORIGIN_Y);
 
     this.projectileSystem = projectileSystem;
     this.profile = profile;
@@ -78,8 +82,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
     this.movementSpeed = MOVE_SPEED * getMovementSpeedMultiplier(this.runtimeConfig.attributes);
     this.healthPoints = this.runtimeConfig.maxHealth;
-    this.setTint(profile.color);
-    this.spriteAnimationSystem.rememberDefaultTint(this, profile.color);
+    this.clearTint();
+    this.spriteAnimationSystem.rememberDefaultTint(this);
 
     const keyboard = scene.input.keyboard;
     if (!keyboard) {
@@ -225,7 +229,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.time.delayedCall(120, () => {
       if (this.active) {
         this.clearTint();
-        this.setTint(this.profile.color);
       }
     });
 

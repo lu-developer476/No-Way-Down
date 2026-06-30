@@ -100,6 +100,7 @@ export class ProjectileSystem {
   createSolidCollider(solidBodies: Phaser.Types.Physics.Arcade.ArcadeColliderType): void {
     this.scene.physics.add.collider(this.projectiles, solidBodies, (projectileGameObject) => {
       const projectile = projectileGameObject as Projectile;
+      getAudioManager(this.scene).play('impact', { x: projectile.x, y: projectile.y, volume: 0.08 });
       projectile.deactivate();
     });
   }
@@ -112,7 +113,8 @@ export class ProjectileSystem {
     this.projectiles.children.each((child) => {
       const projectile = child as Projectile;
       if (projectile.active && projectile.reachedMaxRange()) {
-        projectile.deactivate();
+        getAudioManager(this.scene).play('impact', { x: projectile.x, y: projectile.y, volume: 0.08 });
+      projectile.deactivate();
       }
 
       return true;

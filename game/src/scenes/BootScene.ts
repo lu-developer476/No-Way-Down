@@ -260,6 +260,71 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('prop-utility-cart', 60, 40);
 
 
+
+
+    graphics.clear();
+    graphics.fillStyle(0x5f3b25, 1);
+    graphics.fillRoundedRect(0, 12, 118, 34, 5);
+    graphics.fillStyle(0xc79b5f, 1);
+    graphics.fillRoundedRect(4, 4, 110, 18, 4);
+    graphics.fillStyle(0xf3d7a4, 0.85);
+    graphics.fillRect(12, 8, 22, 5);
+    graphics.fillRect(46, 8, 20, 5);
+    graphics.fillRect(80, 8, 24, 5);
+    graphics.fillStyle(0x2b1a12, 1);
+    graphics.fillRect(12, 42, 8, 18);
+    graphics.fillRect(96, 42, 8, 18);
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRect(24, 28, 18, 12);
+    graphics.fillRect(76, 28, 18, 12);
+    graphics.generateTexture('prop-dining-table', 118, 64);
+
+    graphics.clear();
+    graphics.fillStyle(0x3f2f25, 1);
+    graphics.fillRect(0, 16, 144, 42);
+    graphics.fillStyle(0xd6b680, 1);
+    graphics.fillRect(0, 0, 144, 18);
+    graphics.fillStyle(0x7c2d12, 1);
+    graphics.fillRect(10, 22, 22, 28);
+    graphics.fillStyle(0xe5e7eb, 1);
+    graphics.fillRect(42, 24, 48, 5);
+    graphics.fillRect(98, 24, 34, 5);
+    graphics.fillStyle(0x111827, 0.9);
+    graphics.fillRect(10, 52, 124, 8);
+    graphics.generateTexture('prop-cafeteria-counter', 144, 64);
+
+    graphics.clear();
+    graphics.fillStyle(0x1f2937, 1);
+    graphics.fillRoundedRect(0, 0, 44, 86, 4);
+    graphics.fillStyle(0x7dd3fc, 0.55);
+    graphics.fillRect(8, 10, 28, 38);
+    graphics.fillStyle(0xef4444, 1);
+    graphics.fillRect(10, 54, 24, 5);
+    graphics.fillStyle(0xfacc15, 1);
+    graphics.fillRect(12, 64, 20, 4);
+    graphics.generateTexture('prop-vending-machine', 44, 86);
+
+    graphics.clear();
+    graphics.fillStyle(0x2b211c, 1);
+    graphics.fillRoundedRect(0, 0, 86, 42, 4);
+    graphics.fillStyle(0xfbbf24, 1);
+    graphics.fillRect(8, 8, 52, 4);
+    graphics.fillStyle(0xe5e7eb, 1);
+    graphics.fillRect(8, 18, 68, 2);
+    graphics.fillRect(8, 27, 58, 2);
+    graphics.generateTexture('prop-menu-board', 86, 42);
+
+    graphics.clear();
+    graphics.fillStyle(0x16a34a, 1);
+    graphics.fillRoundedRect(8, 28, 28, 18, 4);
+    graphics.fillStyle(0x94a3b8, 1);
+    graphics.fillRect(20, 4, 4, 28);
+    graphics.fillStyle(0xd1d5db, 1);
+    graphics.fillRect(10, 0, 24, 6);
+    graphics.fillStyle(0x22c55e, 1);
+    graphics.fillRect(2, 42, 40, 12);
+    graphics.generateTexture('prop-mop-bucket', 44, 58);
+
     graphics.clear();
     graphics.fillStyle(0x111827, 1);
     graphics.fillRect(0, 0, 92, 156);

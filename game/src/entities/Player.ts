@@ -15,6 +15,12 @@ const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
 const DAMAGE_INVULNERABILITY_MS = 900;
 
+const CHARACTER_PHYSICS_BY_SILHOUETTE = {
+  slim: { bodyWidth: 16, bodyHeight: 38, offsetX: 8, offsetY: 10, bounce: 0.04, dragX: 850 },
+  standard: { bodyWidth: 18, bodyHeight: 40, offsetX: 7, offsetY: 8, bounce: 0.035, dragX: 900 },
+  broad: { bodyWidth: 22, bodyHeight: 42, offsetX: 5, offsetY: 6, bounce: 0.025, dragX: 980 }
+} as const;
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly leftKey: Phaser.Input.Keyboard.Key;
   private readonly rightKey: Phaser.Input.Keyboard.Key;
@@ -56,8 +62,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setCollideWorldBounds(true);
-    this.setSize(18, 40);
-    this.setOffset(7, 8);
+    const physicsProfile = CHARACTER_PHYSICS_BY_SILHOUETTE[characterVisual.silhouette];
+    this.setSize(physicsProfile.bodyWidth, physicsProfile.bodyHeight);
+    this.setOffset(physicsProfile.offsetX, physicsProfile.offsetY);
+    this.setBounce(0, physicsProfile.bounce);
+    this.setDragX(physicsProfile.dragX);
+    this.setMaxVelocity(360, 720);
 
     this.projectileSystem = projectileSystem;
     this.profile = profile;
@@ -133,6 +143,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (!this.isClimbing && this.jumpKey.isDown && body?.blocked.down) {
       this.setVelocityY(-JUMP_SPEED);
+      getAudioManager(this.scene).play('jump', { x: this.x, y: this.y, volume: 0.08 });
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.switchWeaponKey)) {
@@ -376,6 +387,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const activeWeapon = this.getActiveWeaponRuntime();
     const ammoSnapshot = this.ammoRuntime.getSnapshotForWeapon(activeWeapon.key);
     if (!this.ammoRuntime.canFire(activeWeapon.key)) {
+      getAudioManager(this.scene).play('emptyWeapon', { x: this.x, y: this.y, volume: 0.08 });
       return false;
     }
 

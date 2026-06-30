@@ -66,6 +66,7 @@ export interface DataCinematicCallbacks {
     context: { cinematicId: string; lineIndex: number }
   ) => Promise<number> | number;
   isDialogueInterrupted?: (context: { cinematicId: string }) => boolean;
+  consumeDialogueAdvance?: (context: { cinematicId: string }) => boolean;
 }
 
 export class CinematicSystem {
@@ -202,7 +203,7 @@ export class CinematicSystem {
 
     await this.dialogueSystem.playSequence(lines, {
       context: { cinematicId },
-      onLine: (line) => this.wait(line.durationMs ?? lineDuration),
+      onLine: (line) => this.waitForDialogueLine(line.durationMs ?? lineDuration, cinematicId),
       onChoiceRequested: (line, choices) => this.dataCallbacks.onDialogueChoiceRequested?.(line, choices, {
         cinematicId,
         lineIndex: lines.indexOf(line)
@@ -214,6 +215,34 @@ export class CinematicSystem {
   private wait(durationMs: number): Promise<void> {
     return new Promise((resolve) => {
       this.scene.time.delayedCall(Math.max(0, durationMs), () => resolve());
+    });
+  }
+
+  private waitForDialogueLine(durationMs: number, cinematicId: string): Promise<void> {
+    return new Promise((resolve) => {
+      let resolved = false;
+      const finish = () => {
+        if (resolved) {
+          return;
+        }
+
+        resolved = true;
+        timer.remove(false);
+        poll.remove(false);
+        resolve();
+      };
+
+      const timer = this.scene.time.delayedCall(Math.max(0, durationMs), finish);
+      const poll = this.scene.time.addEvent({
+        delay: 50,
+        loop: true,
+        callback: () => {
+          const context = { cinematicId };
+          if (this.dataCallbacks.isDialogueInterrupted?.(context) || this.dataCallbacks.consumeDialogueAdvance?.(context)) {
+            finish();
+          }
+        }
+      });
     });
   }
 

@@ -411,8 +411,8 @@ export class GameScene extends Phaser.Scene {
           emotion: line.emotion,
           portrait: line.portrait,
           choices: line.choices?.map((choice) => ({ text: choice.text })),
-          canSkip: false,
-          canAdvance: false
+          canSkip: true,
+          canAdvance: true
         });
       },
       clear: () => {
@@ -436,7 +436,15 @@ export class GameScene extends Phaser.Scene {
           this.selectedDialogueChoiceIndex = 0;
           return selected;
         },
-        isDialogueInterrupted: () => this.skipDialogueRequested
+        isDialogueInterrupted: () => this.skipDialogueRequested,
+        consumeDialogueAdvance: () => {
+          if (!this.advanceDialogueRequested) {
+            return false;
+          }
+
+          this.advanceDialogueRequested = false;
+          return true;
+        }
       }
     );
     this.triggerSystem = levelManager.instantiateTriggers(

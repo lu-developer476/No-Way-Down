@@ -18,7 +18,10 @@ const AUDIO_KEYS = {
   menuMusic: 'music-menu',
   gameplayAmbient: 'ambient-gameplay',
   cinematicMusic: 'music-cinematic',
-  ambientZombieDistant: 'ambient-zombie-distant'
+  ambientZombieDistant: 'ambient-zombie-distant',
+  jump: 'sfx-jump',
+  emptyWeapon: 'sfx-empty-weapon',
+  impact: 'sfx-impact'
 } as const;
 
 type ManagedSoundEvent =
@@ -31,7 +34,10 @@ type ManagedSoundEvent =
   | 'zombieDeath'
   | 'uiConfirm'
   | 'uiPause'
-  | 'ambientZombieDistant';
+  | 'ambientZombieDistant'
+  | 'jump'
+  | 'emptyWeapon'
+  | 'impact';
 
 export type ManagedAudioType =
   | 'gunshots'
@@ -70,7 +76,10 @@ const TONE_PRESETS: Record<ManagedSoundEvent, ToneConfig> = {
   zombieDeath: { frequency: 130, frequencyEnd: 70, durationMs: 220, type: 'triangle', volume: 0.032 },
   uiConfirm: { frequency: 660, frequencyEnd: 720, durationMs: 70, type: 'sine', volume: 0.02 },
   uiPause: { frequency: 420, frequencyEnd: 320, durationMs: 110, type: 'sine', volume: 0.02 },
-  ambientZombieDistant: { frequency: 98, frequencyEnd: 78, durationMs: 480, type: 'sawtooth', volume: 0.016 }
+  ambientZombieDistant: { frequency: 98, frequencyEnd: 78, durationMs: 480, type: 'sawtooth', volume: 0.016 },
+  jump: { frequency: 240, frequencyEnd: 360, durationMs: 90, type: 'triangle', volume: 0.012 },
+  emptyWeapon: { frequency: 520, frequencyEnd: 430, durationMs: 55, type: 'square', volume: 0.01 },
+  impact: { frequency: 120, frequencyEnd: 55, durationMs: 120, type: 'sawtooth', volume: 0.018 }
 };
 
 export class AudioManager {
@@ -442,6 +451,7 @@ export class AudioManager {
       case 'ambientZombieDistant':
         return 'ambient';
       case 'footsteps':
+      case 'jump':
         return 'footsteps';
       case 'uiConfirm':
       case 'uiPause':
@@ -499,6 +509,12 @@ export class AudioManager {
         return AUDIO_KEYS.uiPause;
       case 'ambientZombieDistant':
         return AUDIO_KEYS.ambientZombieDistant;
+      case 'jump':
+        return AUDIO_KEYS.jump;
+      case 'emptyWeapon':
+        return AUDIO_KEYS.emptyWeapon;
+      case 'impact':
+        return AUDIO_KEYS.impact;
       default: {
         const exhaustiveCheck: never = event;
         throw new Error(`Evento de audio no soportado: ${String(exhaustiveCheck)}`);

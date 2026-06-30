@@ -23,6 +23,7 @@ export interface WeaponCatalogEntry {
   muzzleOffsetX: number;
   muzzleOffsetY: number;
   headshotChance: number;
+  realLengthCm: number;
 }
 
 const DEFAULT_WEAPON_KEY = 'pistol';
@@ -54,7 +55,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1,
     muzzleOffsetX: 24,
     muzzleOffsetY: -6,
-    headshotChance: 0.1
+    headshotChance: 0.1,
+    realLengthCm: 20
   },
   revolver: {
     key: 'revolver',
@@ -78,7 +80,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1.05,
     muzzleOffsetX: 24,
     muzzleOffsetY: -6,
-    headshotChance: 0.18
+    headshotChance: 0.18,
+    realLengthCm: 29
   },
   smg: {
     key: 'smg',
@@ -102,7 +105,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 0.95,
     muzzleOffsetX: 23,
     muzzleOffsetY: -7,
-    headshotChance: 0.08
+    headshotChance: 0.08,
+    realLengthCm: 48
   },
   shotgun: {
     key: 'shotgun',
@@ -126,7 +130,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1.2,
     muzzleOffsetX: 26,
     muzzleOffsetY: -5,
-    headshotChance: 0.16
+    headshotChance: 0.16,
+    realLengthCm: 101
   },
   carbine: {
     key: 'carbine',
@@ -150,7 +155,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1.1,
     muzzleOffsetX: 27,
     muzzleOffsetY: -7,
-    headshotChance: 0.24
+    headshotChance: 0.24,
+    realLengthCm: 84
   },
   sniper_rifle: {
     key: 'sniper_rifle',
@@ -174,7 +180,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1.2,
     muzzleOffsetX: 29,
     muzzleOffsetY: -9,
-    headshotChance: 0.4
+    headshotChance: 0.4,
+    realLengthCm: 115
   },
   light_machine_gun: {
     key: 'light_machine_gun',
@@ -198,7 +205,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1,
     muzzleOffsetX: 28,
     muzzleOffsetY: -7,
-    headshotChance: 0.12
+    headshotChance: 0.12,
+    realLengthCm: 104
   },
   knife: {
     key: 'knife',
@@ -222,7 +230,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 0.9,
     muzzleOffsetX: 20,
     muzzleOffsetY: -4,
-    headshotChance: 0.05
+    headshotChance: 0.05,
+    realLengthCm: 24
   },
   machete: {
     key: 'machete',
@@ -246,7 +255,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1,
     muzzleOffsetX: 23,
     muzzleOffsetY: -4,
-    headshotChance: 0.06
+    headshotChance: 0.06,
+    realLengthCm: 46
   },
   sword: {
     key: 'sword',
@@ -270,7 +280,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1,
     muzzleOffsetX: 24,
     muzzleOffsetY: -5,
-    headshotChance: 0.08
+    headshotChance: 0.08,
+    realLengthCm: 70
   },
   tray_shield: {
     key: 'tray_shield',
@@ -294,7 +305,8 @@ const WEAPON_CATALOG_BY_KEY: Record<string, WeaponCatalogEntry> = {
     projectileScale: 1,
     muzzleOffsetX: 18,
     muzzleOffsetY: -3,
-    headshotChance: 0.03
+    headshotChance: 0.03,
+    realLengthCm: 46
   }
 };
 

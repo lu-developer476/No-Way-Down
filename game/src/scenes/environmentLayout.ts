@@ -11,7 +11,12 @@ export type EnvironmentPropKind =
   | 'cart'
   | 'tall-window'
   | 'bronze-door'
-  | 'service-table';
+  | 'service-table'
+  | 'dining-table'
+  | 'cafeteria-counter'
+  | 'vending-machine'
+  | 'menu-board'
+  | 'mop-bucket';
 
 interface EnvironmentPropConfig {
   kind: EnvironmentPropKind;
@@ -33,7 +38,12 @@ const PROP_TEXTURES: Record<EnvironmentPropKind, string> = {
   cart: 'prop-utility-cart',
   'tall-window': 'prop-tall-window',
   'bronze-door': 'prop-bronze-door',
-  'service-table': 'prop-service-table'
+  'service-table': 'prop-service-table',
+  'dining-table': 'prop-dining-table',
+  'cafeteria-counter': 'prop-cafeteria-counter',
+  'vending-machine': 'prop-vending-machine',
+  'menu-board': 'prop-menu-board',
+  'mop-bucket': 'prop-mop-bucket'
 };
 
 export function addEnvironmentProp(scene: Phaser.Scene, config: EnvironmentPropConfig): Phaser.GameObjects.GameObject {

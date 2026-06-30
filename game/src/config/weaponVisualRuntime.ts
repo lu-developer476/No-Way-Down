@@ -48,9 +48,9 @@ export function getWeaponVisualRuntimeConfig(weaponKey?: CharacterWeaponKey, sce
     muzzleOffsetY: weapon.muzzleOffsetY,
     heldTexture,
     hudTexture,
-    heldScale: weapon.family === 'rifle' || weapon.family === 'shotgun' || weapon.key === 'light_machine_gun' ? 1 : 0.95,
-    hudScale: weapon.family === 'rifle' || weapon.family === 'shotgun' || weapon.key === 'light_machine_gun' ? 1 : 0.9,
-    carryOffsetX: Math.max(10, Math.round(weapon.muzzleOffsetX - 10)),
+    heldScale: Phaser.Math.Clamp(weapon.realLengthCm / 84, 0.55, 1.38),
+    hudScale: Phaser.Math.Clamp(weapon.realLengthCm / 84, 0.7, 1.28),
+    carryOffsetX: Math.max(10, Math.round(weapon.muzzleOffsetX - 10 + Math.max(0, weapon.realLengthCm - 60) / 10)),
     carryOffsetY: Math.min(-2, Math.round(weapon.muzzleOffsetY + 4))
   };
 }

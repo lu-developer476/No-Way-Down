@@ -1,8 +1,8 @@
 {
   "levelId": "level2_subsuelo",
-  "nombre": "Nivel 2 - Pasillo Subsuelo Institucional",
+  "nombre": "Nivel 2 - Comedor del 1° subsuelo del banco",
   "engine": "Phaser",
-  "descripcion": "Pasillo largo de subsuelo institucional inspirado en el Banco de la Nación Argentina, con atmósfera sobria y elementos de mobiliario realistas.",
+  "descripcion": "Comedor del 1° subsuelo del banco: mesas de empleados, mostradores de servicio, máquinas expendedoras, cartelería de menú, columnas institucionales y objetos de cocina/limpieza usados como cobertura.",
   "unidades": {
     "distancia": "metros",
     "coordenadas": "px",
@@ -19,8 +19,8 @@
   },
   "capasVisuales": {
     "iluminacion": "artificial_fría",
-    "piso": "claro_pulido",
-    "paredes": "piedra_beige_institucional"
+    "piso": "baldosas gastadas de comedor institucional",
+    "paredes": "azulejos beige, piedra institucional y sectores de servicio del banco"
   },
   "segmentos": [
     {

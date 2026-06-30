@@ -308,6 +308,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.placeSubsueloProps(environment, tableTopY);
+    this.placeDiningRoomProps(environment, levelWidth, floorY);
 
     this.projectileSystem = new ProjectileSystem(this, {
       fireCooldownMultiplier: difficultyRuntime.playerFireCooldownMultiplier
@@ -1590,6 +1591,34 @@ export class GameScene extends Phaser.Scene {
     }
 
     addEnvironmentProp(this, { kind: 'cart', x, y: lowerY - 12, depth: 6, scale: 1 });
+  }
+
+
+  private placeDiningRoomProps(environment: Phaser.Physics.Arcade.StaticGroup, levelWidth: number, floorY: number): void {
+    const floorTop = floorY - 48;
+
+    for (let x = 210; x < levelWidth - 120; x += 520) {
+      addEnvironmentProp(this, { kind: 'dining-table', x, y: floorTop - 18, depth: 6.4, scale: 1.05 });
+      this.createPlatform(environment, { x, y: floorTop - 10, width: 116, height: 22 });
+    }
+
+    for (let x = 455; x < levelWidth - 160; x += 1040) {
+      addEnvironmentProp(this, { kind: 'cafeteria-counter', x, y: floorTop - 16, depth: 6.2, scale: 1.05 });
+      this.createPlatform(environment, { x, y: floorTop - 8, width: 138, height: 26 });
+    }
+
+    for (let x = 780; x < levelWidth - 220; x += 1560) {
+      addEnvironmentProp(this, { kind: 'vending-machine', x, y: floorTop - 56, depth: 5.9, scale: 1 });
+      this.createPlatform(environment, { x, y: floorTop - 18, width: 42, height: 26 });
+    }
+
+    for (let x = 330; x < levelWidth; x += 720) {
+      addEnvironmentProp(this, { kind: 'menu-board', x, y: 238, depth: 2.1, scale: 1 });
+    }
+
+    for (let x = 620; x < levelWidth - 100; x += 910) {
+      addEnvironmentProp(this, { kind: 'mop-bucket', x, y: floorTop - 18, depth: 6.5, scale: 0.9 });
+    }
   }
 
   private addTableVisual(x: number, y: number, width: number, height: number): void {

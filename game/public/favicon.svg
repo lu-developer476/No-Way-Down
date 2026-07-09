@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">No Way Down favicon</title>
-  <desc id="desc">Icono minimalista con las letras NWD sobre fondo oscuro.</desc>
-  <rect width="64" height="64" rx="14" fill="#020617"/>
-  <path d="M14 14h36v36H14z" fill="none" stroke="#38bdf8" stroke-width="3"/>
-  <path d="M20 18v28M20 18l12 28M32 18v28M38 18h6c5 0 9 4 9 9v10c0 5-4 9-9 9h-6V18z" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M31 50l6-8h-4V30h-4v12h-4l6 8z" fill="#ef4444"/>
-</svg>

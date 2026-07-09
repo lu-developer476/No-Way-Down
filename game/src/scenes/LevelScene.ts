@@ -8,6 +8,7 @@ import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { MissionRuntimeSystem } from '../systems/MissionRuntimeSystem';
 import { controlManager } from '../input/ControlManager';
 import { Checkpoint } from './sceneShared';
+import { LevelExitTarget } from '../systems/LevelExitSystem';
 import { FlowDebugOverlay } from './flowDebug';
 
 type LevelSceneCreateData = {
@@ -89,20 +90,8 @@ export class LevelScene extends GameScene {
         console.warn(`[LevelScene] fallback activado para ${flowNode.id}.`);
       }
 
-      this.input.keyboard?.once(controlManager.getPhaserEventName('next_level'), () => {
-        if (this.hasStarted) {
-          return;
-        }
-
-        this.hasStarted = true;
-        const manager = this.flowManager ?? new SceneFlowManager(this);
-        const nextNode = manager.advanceFromNodeId(flowNode.id);
-        if (!nextNode) {
-          return;
-        }
-
-        this.isTransitioning = true;
-        manager.transitionToNode(nextNode);
+      this.events.once('level-exit-transition-complete', (target: LevelExitTarget) => {
+        this.transitionToNextFlowNode(flowNode, target);
       });
     });
   }
@@ -110,6 +99,24 @@ export class LevelScene extends GameScene {
   update(): void {
     super.update();
     this.flowDebug?.update();
+  }
+
+
+  private transitionToNextFlowNode(flowNode: CampaignFlowNode, target: LevelExitTarget): void {
+    if (this.hasStarted || this.isTransitioning) {
+      return;
+    }
+
+    this.hasStarted = true;
+    const manager = this.flowManager ?? new SceneFlowManager(this);
+    const nextNode = manager.advanceFromNodeId(flowNode.id);
+    if (!nextNode) {
+      this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });
+      return;
+    }
+
+    this.isTransitioning = true;
+    manager.transitionToNode(nextNode, { respawnPoint: target.spawnPoint });
   }
 
   private ensureCampaignLevelConfigLoaded(

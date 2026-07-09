@@ -486,7 +486,10 @@ export class GameScene extends Phaser.Scene {
         },
         completedMessage: 'Nivel completado: pasillo despejado.',
         transitionMessage: 'Subiendo al siguiente nivel...',
-        transitionDelayMs: 700
+        transitionDelayMs: 700,
+        onTransitionComplete: (target) => {
+          this.events.emit('level-exit-transition-complete', target);
+        }
       },
       () => this.spawnManager?.getCompletedAreasCount() ?? 0,
       (message) => this.showMissionStatus(message),

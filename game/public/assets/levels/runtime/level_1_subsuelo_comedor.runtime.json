@@ -40,7 +40,7 @@
     },
     "level_flow": {
       "resistance": {
-        "durationMs": 120000,
+        "durationMs": 45000,
         "holdAreaIds": [
           "L1-COMEDOR-ENTRY"
         ],
@@ -48,7 +48,7 @@
           "L1-PASILLO-A",
           "L1-PASILLO-B"
         ],
-        "holdObjectiveText": "Resiste 2 minutos en el comedor del 1° subsuelo.",
+        "holdObjectiveText": "Resiste 45 segundos en el comedor del 1° subsuelo.",
         "advanceObjectiveText": "Avanza por los pasillos del 1° subsuelo y llega a las escaleras.",
         "completionEventType": "phase_completed",
         "completionEventTargetId": "level1-resistance"
@@ -68,7 +68,7 @@
           "width": 820,
           "height": 280
         },
-        "maxAlive": 18
+        "maxAlive": 8
       },
       {
         "id": "L1-PASILLO-A",
@@ -78,7 +78,7 @@
           "width": 1280,
           "height": 280
         },
-        "maxAlive": 14
+        "maxAlive": 6
       },
       {
         "id": "L1-PASILLO-B",
@@ -88,7 +88,7 @@
           "width": 1200,
           "height": 280
         },
-        "maxAlive": 16
+        "maxAlive": 6
       }
     ],
     "points": [
@@ -96,85 +96,85 @@
         "id": "L1-COMEDOR-ENTRY-LEFT",
         "x": 980,
         "y": 640,
-        "maxActive": 4,
-        "spawnCooldown": 720,
+        "maxActive": 2,
+        "spawnCooldown": 1100,
         "spawnType": "door_spawn",
         "spawnDirection": "left",
         "spawnArea": "L1-COMEDOR-ENTRY",
         "difficultyModifier": 1.1,
-        "spawnBudget": 46
+        "spawnBudget": 12
       },
       {
         "id": "L1-COMEDOR-ENTRY-RIGHT",
         "x": 1090,
         "y": 640,
-        "maxActive": 4,
-        "spawnCooldown": 760,
+        "maxActive": 2,
+        "spawnCooldown": 1100,
         "spawnType": "door_spawn",
         "spawnDirection": "left",
         "spawnArea": "L1-COMEDOR-ENTRY",
         "difficultyModifier": 1.1,
-        "spawnBudget": 42
+        "spawnBudget": 12
       },
       {
         "id": "L1-COMEDOR-PRESSURE",
         "x": 900,
         "y": 640,
-        "maxActive": 3,
-        "spawnCooldown": 980,
+        "maxActive": 2,
+        "spawnCooldown": 1100,
         "spawnType": "wave_spawn",
         "spawnDirection": "left",
         "spawnArea": "L1-COMEDOR-ENTRY",
         "difficultyModifier": 1,
-        "spawnBudget": 36
+        "spawnBudget": 12
       },
       {
         "id": "L1-PASILLO-A-LEFT",
         "x": 2360,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 980,
+        "spawnCooldown": 1150,
         "spawnType": "wave_spawn",
         "spawnDirection": "right",
         "spawnArea": "L1-PASILLO-A",
         "difficultyModifier": 1,
-        "spawnBudget": 14
+        "spawnBudget": 8
       },
       {
         "id": "L1-PASILLO-A-RIGHT",
         "x": 3420,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 980,
+        "spawnCooldown": 1150,
         "spawnType": "wave_spawn",
         "spawnDirection": "left",
         "spawnArea": "L1-PASILLO-A",
         "difficultyModifier": 1,
-        "spawnBudget": 14
+        "spawnBudget": 8
       },
       {
         "id": "L1-PASILLO-B-LEFT",
         "x": 4460,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 920,
+        "spawnCooldown": 1150,
         "spawnType": "wave_spawn",
         "spawnDirection": "right",
         "spawnArea": "L1-PASILLO-B",
         "difficultyModifier": 1,
-        "spawnBudget": 16
+        "spawnBudget": 8
       },
       {
         "id": "L1-PASILLO-B-RIGHT",
         "x": 5420,
         "y": 640,
         "maxActive": 2,
-        "spawnCooldown": 920,
+        "spawnCooldown": 1150,
         "spawnType": "wave_spawn",
         "spawnDirection": "left",
         "spawnArea": "L1-PASILLO-B",
         "difficultyModifier": 1,
-        "spawnBudget": 16
+        "spawnBudget": 8
       }
     ]
   },

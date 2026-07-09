@@ -207,7 +207,7 @@ export class SceneFlowManager {
     return definition.nodes[0];
   }
 
-  transitionToNode(node: CampaignFlowNode): void {
+  transitionToNode(node: CampaignFlowNode, data: Record<string, unknown> = {}): void {
     if (!node || typeof node !== 'object') {
       console.error('[SceneFlowManager] transitionToNode() recibió un nodo inválido.', { node });
       return;
@@ -230,7 +230,7 @@ export class SceneFlowManager {
       return;
     }
 
-    this.scene.scene.start(node.sceneKey, { flowNode: node });
+    this.scene.scene.start(node.sceneKey, { ...data, flowNode: node });
   }
 
   private getDefinition(): CampaignFlowDefinition | undefined {

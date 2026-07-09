@@ -24,6 +24,7 @@ export interface LevelExitSystemConfig {
   completedMessage?: string;
   transitionMessage?: string;
   transitionDelayMs?: number;
+  onTransitionComplete?: (target: LevelExitTarget) => void;
 }
 
 interface RuntimeState {
@@ -44,11 +45,12 @@ const DEFAULT_TRANSITION_DELAY_MS = 500;
 export class LevelExitSystem {
   private readonly scene: Phaser.Scene;
   private readonly players: Player[];
-  private readonly config: Required<LevelExitSystemConfig>;
+  private readonly config: Omit<Required<LevelExitSystemConfig>, 'onTransitionComplete'>;
   private readonly getCompletedCleanupZones: () => number;
   private readonly onShowMessage: (message: string) => void;
   private readonly onTransitionStart?: (message: string) => void;
   private readonly onExitUnlocked?: () => void;
+  private readonly onTransitionComplete?: (target: LevelExitTarget) => void;
 
   private readonly exitZone: Phaser.GameObjects.Zone;
   private readonly advanceKey: Phaser.Input.Keyboard.Key;
@@ -72,6 +74,7 @@ export class LevelExitSystem {
     this.onShowMessage = onShowMessage;
     this.onTransitionStart = onTransitionStart;
     this.onExitUnlocked = onExitUnlocked;
+    this.onTransitionComplete = config.onTransitionComplete;
 
     this.config = {
       requiredCleanupZones: config.requiredCleanupZones,
@@ -135,6 +138,11 @@ export class LevelExitSystem {
     console.info('[LevelExitSystem] transition started to next scene');
 
     this.scene.time.delayedCall(this.config.transitionDelayMs, () => {
+      if (this.onTransitionComplete) {
+        this.onTransitionComplete(this.config.transitionTarget);
+        return;
+      }
+
       this.scene.scene.start(this.config.transitionTarget.sceneKey, {
         respawnPoint: this.config.transitionTarget.spawnPoint
       });

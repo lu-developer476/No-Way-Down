@@ -837,7 +837,10 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    this.showMissionStatus(statusMessage);
+    const startsImmediateTransition = interactionSucceeded && effect.type === 'stairs' && Boolean(effect.targetId);
+    if (!startsImmediateTransition) {
+      this.showMissionStatus(statusMessage);
+    }
 
     if (interactionSucceeded && effect.consumesOnUse) {
       this.interactableSystem?.consume(interactableId);
@@ -853,7 +856,7 @@ export class GameScene extends Phaser.Scene {
       this.showMissionStatus(`Checkpoint asegurado: ${effect.checkpoint.label ?? 'progreso guardado'}.`);
     }
 
-    if (interactionSucceeded && effect.type === 'stairs' && effect.targetId) {
+    if (startsImmediateTransition && effect.targetId) {
       this.beginExitTransition(effect.targetId, statusMessage);
     }
 
@@ -1226,7 +1229,8 @@ export class GameScene extends Phaser.Scene {
       fontSize: '22px',
       backgroundColor: '#1d1120',
       padding: { x: 20, y: 12 },
-      align: 'center'
+      align: 'center',
+      wordWrap: { width: Math.max(320, this.scale.width - 120), useAdvancedWrap: true }
     })
       .setOrigin(0.5)
       .setScrollFactor(0)
@@ -1259,8 +1263,9 @@ export class GameScene extends Phaser.Scene {
 
     this.transitionText = this.add.text(this.scale.width / 2, this.scale.height / 2, '', {
       color: visualTheme.palette.uiTextPrimary,
-      fontSize: '32px',
+      fontSize: '28px',
       align: 'center',
+      wordWrap: { width: Math.max(360, this.scale.width - 140), useAdvancedWrap: true },
       backgroundColor: '#1a0f1f',
       padding: { x: 26, y: 18 }
     })
@@ -1306,14 +1311,24 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.triggerLevelExitTransition(message);
+    const transitionMessage = `${message}\nAvanzando al siguiente nivel...`;
+    this.triggerLevelExitTransition(transitionMessage);
 
     this.time.delayedCall(500, () => {
-      if (!this.scene.isActive()) {
+      if (!this.scene.isActive(this.scene.key)) {
         return;
       }
 
-      levelManager.transitionToLevel(this, this.currentLevelId, exitId);
+      try {
+        levelManager.transitionToLevel(this, this.currentLevelId, exitId);
+      } catch (error) {
+        console.error('[GameScene] No se pudo completar la transición de nivel', error);
+        this.hasTriggeredTransition = false;
+        this.transitionOverlay?.setVisible(false);
+        this.transitionText?.setVisible(false);
+        this.physics.resume();
+        this.registry.set('interactionHint', 'No se pudo cambiar de nivel. Intentá usar las escaleras otra vez.');
+      }
     });
   }
 

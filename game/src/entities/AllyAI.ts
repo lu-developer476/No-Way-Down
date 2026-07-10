@@ -42,6 +42,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: AllyProfile;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
+  private readonly partyMarker: Phaser.GameObjects.Arc;
   private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
   private isNameTagVisible = true;
   private readonly runtimeConfig: CharacterRuntimeConfig;
@@ -81,9 +82,12 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     this.setSize(18, 40);
     this.setOffset(7, 8);
-    this.setTint(profile.tint);
-    this.spriteAnimationSystem.rememberDefaultTint(this, profile.tint);
-    this.setAlpha(0.92);
+    // Preserve each character's authored sprite palette/skin. The party color is now
+    // rendered as UI chrome instead of tinting the whole sprite, because a
+    // full-sprite tint made allies look skinless.
+    this.clearTint();
+    this.spriteAnimationSystem.rememberDefaultTint(this);
+    this.setAlpha(0.96);
     this.setPushable(false);
     this.setDepth(ALLY_RENDER_DEPTH);
 
@@ -91,13 +95,18 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
       fontSize: '10px',
-      color: '#99f6e4',
+      color: Phaser.Display.Color.ValueToColor(profile.tint).rgba,
       stroke: '#042f2e',
       strokeThickness: 3,
       fontStyle: 'bold'
     });
     this.nameTag.setOrigin(0.5, 1);
     this.nameTag.setDepth(25);
+
+    this.partyMarker = scene.add.circle(this.x, this.y + 4, 10, profile.tint, 0.28);
+    this.partyMarker.setStrokeStyle(2, profile.tint, 0.82);
+    this.partyMarker.setScale(1.35, 0.36);
+    this.partyMarker.setDepth(ALLY_RENDER_DEPTH - 0.2);
 
     this.equippedWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
     this.equippedWeaponSprite.setDepth(this.depth + 0.2);
@@ -555,11 +564,14 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     super.preUpdate(time, delta);
     this.nameTag.setPosition(this.x, this.y - 42);
     this.nameTag.setVisible(this.active && this.isNameTagVisible);
+    this.partyMarker.setPosition(this.x, this.y + 5);
+    this.partyMarker.setVisible(this.active);
     this.updateEquippedWeaponSprite();
   }
 
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
+    this.partyMarker.destroy();
     this.equippedWeaponSprite.destroy();
     super.destroy(fromScene);
   }

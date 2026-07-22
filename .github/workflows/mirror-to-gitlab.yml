@@ -1,0 +1,54 @@
+name: Mirror to GitLab
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: mirror-to-gitlab-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    name: Push GitHub main to GitLab
+    runs-on: ubuntu-latest
+    if: github.repository_owner != ''
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to GitLab mirror
+        env:
+          GITLAB_MIRROR_URL: ${{ secrets.GITLAB_MIRROR_URL }}
+          GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_MIRROR_USERNAME: ${{ secrets.GITLAB_MIRROR_USERNAME }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GITLAB_MIRROR_URL}" ]; then
+            echo "Missing required secret: GITLAB_MIRROR_URL" >&2
+            exit 1
+          fi
+
+          if [ -z "${GITLAB_MIRROR_TOKEN}" ]; then
+            echo "Missing required secret: GITLAB_MIRROR_TOKEN" >&2
+            exit 1
+          fi
+
+          case "${GITLAB_MIRROR_URL}" in
+            https://*) ;;
+            *)
+              echo "GITLAB_MIRROR_URL must be an HTTPS GitLab repository URL" >&2
+              exit 1
+              ;;
+          esac
+
+          username="${GITLAB_MIRROR_USERNAME:-oauth2}"
+          auth_header="AUTHORIZATION: Basic $(printf "%s:%s" "${username}" "${GITLAB_MIRROR_TOKEN}" | base64 -w 0)"
+
+          git remote add gitlab "${GITLAB_MIRROR_URL}"
+          git -c http.extraheader="${auth_header}" push gitlab "HEAD:main" --force-with-lease

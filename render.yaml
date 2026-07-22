@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: no-way-down-backend
+    runtime: python
+    buildCommand: ./scripts/render-build.sh
+    startCommand: cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_ENV
+        value: production
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: 3.11.9

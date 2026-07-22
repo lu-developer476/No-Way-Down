@@ -40,8 +40,13 @@ Configurar el servicio web (Python) con:
 
 ### Build Command
 ```bash
-pip install -r backend/requirements.txt
-python backend/manage.py collectstatic --noinput
+./scripts/render-build.sh
+```
+
+Si preferís pegarlo directamente en el panel de Render, usá un separador de shell entre comandos para que `--noinput` llegue a `manage.py` y no a `pip`:
+
+```bash
+pip install -r backend/requirements.txt && python backend/manage.py collectstatic --noinput
 ```
 
 ### Start Command
@@ -72,7 +77,7 @@ Si esta migración no está aplicada, `/api/progress/` y `/api/progress/<user_id
 1. Crear Web Service apuntando al repo.
 2. Definir root del proyecto en Render (o usar comandos con `cd backend`).
 3. Cargar variables de entorno listadas arriba.
-4. Configurar Build Command y Start Command exactamente como se indica.
+4. Configurar Build Command y Start Command exactamente como se indica, o usar `render.yaml` desde el repo.
 5. Desplegar.
 6. Ejecutar migraciones (`cd backend && python manage.py migrate`) desde Shell de Render.
 7. Verificar:

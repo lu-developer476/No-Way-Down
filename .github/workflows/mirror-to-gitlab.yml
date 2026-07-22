@@ -3,7 +3,9 @@ name: Mirror to GitLab
 on:
   push:
     branches:
-      - main
+      - '**'
+    tags:
+      - '**'
   workflow_dispatch:
 
 concurrency:
@@ -12,48 +14,69 @@ concurrency:
 
 jobs:
   mirror:
-    name: Push GitHub main to GitLab
+    name: Push GitHub ref to GitLab
     runs-on: ubuntu-latest
     steps:
       - name: Checkout full history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          lfs: false
 
-      - name: Push main to existing GitLab repository
+      - name: Mirror ref to existing GitLab repository
         env:
           GITLAB_MIRROR_URL: ${{ secrets.GITLAB_MIRROR_URL }}
           GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_MIRROR_USERNAME: ${{ secrets.GITLAB_MIRROR_USERNAME }}
-          GITLAB_MIRROR_BRANCH: ${{ secrets.GITLAB_MIRROR_BRANCH }}
         run: |
           set -euo pipefail
 
           if [ -z "${GITLAB_MIRROR_URL}" ]; then
-            echo "Missing required secret: GITLAB_MIRROR_URL" >&2
+            echo "Error: el secret GITLAB_MIRROR_URL es obligatorio y no puede estar vacío." >&2
             exit 1
           fi
 
           if [ -z "${GITLAB_MIRROR_TOKEN}" ]; then
-            echo "Missing required secret: GITLAB_MIRROR_TOKEN" >&2
+            echo "Error: el secret GITLAB_MIRROR_TOKEN es obligatorio y no puede estar vacío." >&2
             exit 1
           fi
 
           case "${GITLAB_MIRROR_URL}" in
             https://*) ;;
             *)
-              echo "GITLAB_MIRROR_URL must be an HTTPS GitLab repository URL" >&2
+              echo "Error: GITLAB_MIRROR_URL debe comenzar con https:// y terminar en .git." >&2
               exit 1
               ;;
           esac
 
-          username="${GITLAB_MIRROR_USERNAME:-oauth2}"
-          target_branch="${GITLAB_MIRROR_BRANCH:-main}"
+          username="${GITLAB_MIRROR_USERNAME:-lu-developer476}"
           auth_header="AUTHORIZATION: Basic $(printf "%s:%s" "${username}" "${GITLAB_MIRROR_TOKEN}" | base64 -w 0)"
 
           git remote add gitlab "${GITLAB_MIRROR_URL}"
-          git -c http.extraheader="${auth_header}" ls-remote --exit-code gitlab >/dev/null
 
-          # GitHub is the source of truth. The leading + intentionally updates
-          # the existing GitLab branch even if it has unrelated or older history.
-          git -c http.extraheader="${auth_header}" push gitlab "+HEAD:${target_branch}"
+          if ! git -c http.extraheader="${auth_header}" ls-remote --exit-code gitlab >/dev/null; then
+            echo "Error: no se pudo acceder al repositorio GitLab con GITLAB_MIRROR_URL, GITLAB_MIRROR_USERNAME y GITLAB_MIRROR_TOKEN." >&2
+            echo "Verificá que la URL HTTPS sea la de Clone with HTTPS y que el token tenga permiso write_repository." >&2
+            exit 1
+          fi
+
+          if [ "${GITHUB_REF_TYPE}" = "branch" ]; then
+            branch="${GITHUB_REF_NAME}"
+            echo "Replicando branch '${branch}' hacia GitLab."
+
+            git -c http.extraheader="${auth_header}" fetch gitlab \
+              "+refs/heads/${branch}:refs/remotes/gitlab/${branch}" || true
+
+            git -c http.extraheader="${auth_header}" push gitlab \
+              "HEAD:refs/heads/${branch}" \
+              --force-with-lease
+          elif [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            tag="${GITHUB_REF_NAME}"
+            echo "Replicando tag '${tag}' hacia GitLab."
+
+            git -c http.extraheader="${auth_header}" push gitlab \
+              "refs/tags/${tag}:refs/tags/${tag}"
+          else
+            echo "Error: tipo de referencia no soportado: ${GITHUB_REF_TYPE}." >&2
+            exit 1
+          fi

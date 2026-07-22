@@ -168,3 +168,26 @@ La configuración de producción contempla Render para el backend y Supabase/Pos
 - `docs/maintenance-guide.md`: guía de mantenimiento.
 - `docs/narrative_canon_constraints.md`: restricciones narrativas de canon.
 - `docs/level*_design.md` y `docs/*_ascii_layout.md`: diseño y layouts de niveles.
+
+## Producción full-stack en Render
+
+El despliegue de producción usa **un único Render Web Service** con Django/Gunicorn. Durante el build, Render instala dependencias Python, instala dependencias Node con `npm ci`, compila el frontend Vite de `/game`, valida que exista `game/dist/index.html` y ejecuta `collectstatic`.
+
+- Build Command: `./scripts/render-build.sh`
+- Start Command: `cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT`
+- Runtime: Python 3.11.9
+- `NODE_VERSION`: `20.18.1`
+
+Django usa WhiteNoise para servir el build compilado de Vite desde `game/dist` sin commitear archivos generados. En producción:
+
+- `/` muestra el videojuego compilado.
+- `/assets/...`, favicons y JSON copiados desde `game/public` se sirven desde `game/dist` con sus URLs originales.
+- `/api/` queda reservado para Django REST Framework.
+- `/api/health/` devuelve el health check JSON.
+- `/api/progress/` y `/api/progress/<user_id>/` conservan la persistencia de progreso.
+- `/admin/` sigue apuntando a Django Admin.
+- Rutas frontend desconocidas devuelven `index.html`; rutas `/api/` inexistentes devuelven error API y no se disfrazan como HTML.
+
+Para desarrollo local, mantener Vite en `http://localhost:5173` y Django en `http://127.0.0.1:8000`. Configurar `game/.env` con `VITE_BACKEND_URL=http://127.0.0.1:8000`. En producción, dejar `VITE_BACKEND_URL` vacío o sin definir para que el bundle consuma rutas relativas del mismo dominio, como `/api/health/` y `/api/progress/`.
+
+Variables Render a revisar: `DJANGO_ENV=production`, `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=False`, `DJANGO_ALLOWED_HOSTS`, `GAME_ORIGINS`, `PYTHON_VERSION=3.11.9`, `NODE_VERSION=20.18.1` y las variables `POSTGRES_*`/Supabase.

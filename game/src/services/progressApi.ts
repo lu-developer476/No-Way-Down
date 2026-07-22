@@ -48,7 +48,17 @@ export interface PlayerProgressResponse extends PlayerProgressPayload {
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_URL?.trim() ?? '';
 
-const buildUrl = (path: string): string => `${backendBaseUrl.replace(/\/$/, '')}${path}`;
+const normalizeApiPath = (path: string): string => `/${path.replace(/^\/+/, '')}`;
+
+const buildUrl = (path: string): string => {
+  const normalizedPath = normalizeApiPath(path);
+
+  if (backendBaseUrl.length === 0) {
+    return normalizedPath;
+  }
+
+  return `${backendBaseUrl.replace(/\/+$/, '')}${normalizedPath}`;
+};
 
 const parseErrorMessage = async (response: Response): Promise<string> => {
   try {
@@ -59,8 +69,6 @@ const parseErrorMessage = async (response: Response): Promise<string> => {
   }
 };
 
-const isBackendConfigured = (): boolean => backendBaseUrl.length > 0;
-
 const makeUnavailableError = (context: 'save' | 'load'): Error => {
   const action = context === 'save' ? 'guardar' : 'cargar';
   return new Error(`Servidor no disponible para ${action} progreso.`);
@@ -68,10 +76,6 @@ const makeUnavailableError = (context: 'save' | 'load'): Error => {
 
 export const progressApi = {
   async saveProgress(payload: PlayerProgressPayload): Promise<PlayerProgressResponse> {
-    if (!isBackendConfigured()) {
-      throw makeUnavailableError('save');
-    }
-
     try {
       const response = await fetch(buildUrl('/api/progress/'), {
         method: 'POST',
@@ -95,10 +99,6 @@ export const progressApi = {
   },
 
   async loadProgress(userId: string): Promise<PlayerProgressResponse> {
-    if (!isBackendConfigured()) {
-      throw makeUnavailableError('load');
-    }
-
     try {
       const response = await fetch(buildUrl(`/api/progress/${encodeURIComponent(userId)}/`));
 

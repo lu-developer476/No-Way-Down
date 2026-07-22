@@ -11,3 +11,5 @@ services:
         value: "False"
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: NODE_VERSION
+        value: 20.18.1

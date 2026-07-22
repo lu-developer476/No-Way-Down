@@ -7,6 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+FRONTEND_DIST_DIR = BASE_DIR.parent / 'game' / 'dist'
+WHITENOISE_ROOT = FRONTEND_DIST_DIR
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-unsafe-key')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

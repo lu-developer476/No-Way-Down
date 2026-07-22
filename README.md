@@ -21,6 +21,33 @@
 
 > Nota: el frontend está orientado a desktop/laptop. La app bloquea pantallas táctiles, orientación vertical o resoluciones menores a 960×540.
 
+## Mirror automático GitHub → GitLab
+
+El repo incluye un workflow de GitHub Actions que replica automáticamente los pushes de GitHub hacia GitLab. No cambies ni intentes renombrar el path del proyecto en GitLab: el mirror debe apuntar al repositorio existente mediante la URL HTTPS exacta que GitLab muestra en **Code → Clone with HTTPS**. Esa URL debe copiarse completa, incluyendo el sufijo `.git`.
+
+Configurá los secrets en GitHub desde **Settings → Secrets and variables → Actions**:
+
+- `GITLAB_MIRROR_URL`: URL HTTPS exacta del repositorio GitLab, terminada en `.git`.
+- `GITLAB_MIRROR_TOKEN`: token de GitLab con permiso `write_repository`.
+- `GITLAB_MIRROR_USERNAME`: usuario asociado al token. Es opcional; si queda vacío, el workflow usa `lu-developer476`.
+
+El workflow replica pushes a cualquier branch y a cualquier tag. Cuando se mergea un Pull Request a `main`, GitHub genera un nuevo push sobre `main` y ese push también se replica a GitLab.
+
+El mirror replica tanto las referencias Git como los objetos de Git LFS necesarios para el commit que disparó el workflow. El checkout mantiene `fetch-depth: 0` y `lfs: false` para evitar un smudge automático inicial, pero antes de actualizar el branch o tag en GitLab el workflow ejecuta esta secuencia obligatoria:
+
+1. Comprueba que `git-lfs` esté disponible.
+2. Ejecuta `git lfs install --local`.
+3. Descarga desde `origin` en GitHub los objetos LFS requeridos por `HEAD` con `git lfs fetch origin HEAD`.
+4. Verifica los objetos locales con `git lfs fsck`.
+5. Carga esos objetos a GitLab con `git lfs push gitlab HEAD` usando autenticación por `http.extraheader`.
+6. Recién después empuja la referencia Git del branch o tag hacia GitLab.
+
+Este orden evita que Render detecte un commit nuevo en GitLab y lo clone antes de que las imágenes reales estén disponibles. Si GitHub LFS no entrega los objetos por cuota, disponibilidad o permisos, el mirror se detiene y no empuja la referencia Git. Si GitLab rechaza o no recibe los objetos LFS, también se detiene el mirror. No desactives `git lfs fsck` ni ocultes errores de `git lfs fetch`, `git lfs fsck` o `git lfs push`: esa validación impide que Render reciba commits con punteros LFS sin binarios.
+
+Si una branch está protegida en GitLab, GitLab puede rechazar un push no fast-forward aunque el workflow use `--force-with-lease` para evitar sobrescrituras incondicionales.
+
+Para más detalle operativo, ver `docs/github-to-gitlab-mirror.md`.
+
 ## Stack tecnológico
 
 | Capa | Tecnologías |

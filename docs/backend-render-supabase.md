@@ -1,27 +1,37 @@
 # Backend Django + PostgreSQL (Supabase) en Render
 
-Esta guía deja el backend Django listo para deploy en Render usando PostgreSQL de Supabase, sin cambiar el stack.
+Esta guía describe el despliegue full-stack actual: **un único Render Web Service Python** ejecuta Django/Gunicorn, compila el juego Vite durante el build y sirve el frontend compilado con WhiteNoise desde el mismo dominio.
 
-## 1) Estado esperado de endpoints
+## 1) Rutas esperadas
 
-- `GET /`:
-  - Ahora responde `200` con un JSON simple de health (`status`, `service`, `timestamp`).
-  - Esto evita el `404` raíz en producción y simplifica monitoreo básico.
-- `GET /api/health/`: health explícito de API.
+- `GET /`: devuelve `index.html` del juego compilado en `game/dist`.
+- `GET /assets/...`, favicons y JSON públicos: servidos por WhiteNoise desde `game/dist` conservando las URLs generadas por Vite.
+- `GET /api/health/`: health check JSON del backend.
 - `POST /api/progress/`: crea/actualiza progreso por `user_id`.
 - `GET /api/progress/<user_id>/`: obtiene progreso persistido.
+- `GET /admin/`: Django Admin.
+- Rutas frontend desconocidas: devuelven `index.html` para soportar navegación SPA.
+- Rutas `/api/` inexistentes: devuelven error API; no deben caer al `index.html`.
 
 ## 2) Variables de entorno requeridas en Render
+
+### Runtime
+- `PYTHON_VERSION=3.11.9`
+- `NODE_VERSION=20.18.1`
 
 ### Django
 - `DJANGO_ENV=production`
 - `DJANGO_SECRET_KEY=<valor-seguro>`
 - `DJANGO_DEBUG=False`
 - `DJANGO_ALLOWED_HOSTS=<tu-servicio.onrender.com>` (múltiples hosts separados por coma)
-- `GAME_ORIGINS=<https://tu-frontend.onrender.com>` (múltiples orígenes separados por coma)
+- `GAME_ORIGINS=<orígenes locales o de frontend permitidos>` (múltiples orígenes separados por coma)
 - `DJANGO_LOG_LEVEL=INFO` (recomendado)
-- `DJANGO_SECURE_SSL_REDIRECT=True` (recomendado)
+- `DJANGO_SECURE_SSL_REDIRECT=True` (recomendado si el proxy está configurado para HTTPS)
 - `DJANGO_SECURE_HSTS_SECONDS=3600` (o mayor, según política)
+
+### Frontend
+- En producción, `VITE_BACKEND_URL` debe quedar vacío o no definirse para usar rutas relativas del mismo dominio (`/api/...`).
+- En desarrollo local, usar `VITE_BACKEND_URL=http://127.0.0.1:8000` en `game/.env`.
 
 ### PostgreSQL (Supabase)
 - `POSTGRES_HOST=<host de Supabase>`
@@ -36,61 +46,40 @@ Esta guía deja el backend Django listo para deploy en Render usando PostgreSQL 
 
 ## 3) Build / Start commands en Render
 
-Configurar el servicio web (Python) con:
+Build Command:
 
-### Build Command
 ```bash
 ./scripts/render-build.sh
 ```
 
-Si preferís pegarlo directamente en el panel de Render, usá un separador de shell entre comandos para que `--noinput` llegue a `manage.py` y no a `pip`:
+Start Command:
 
-```bash
-pip install -r backend/requirements.txt && python backend/manage.py collectstatic --noinput
-```
-
-### Start Command
 ```bash
 cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
 ```
 
+El script de build ejecuta `pip`, `npm ci --prefix game`, `npm run build --prefix game`, verifica `game/dist/index.html` y luego corre `python backend/manage.py collectstatic --noinput`.
+
 ## 4) Migraciones (obligatorio)
 
-Después de deploy (o al crear el servicio), correr:
+Después del deploy inicial o cuando cambie el esquema, correr:
 
 ```bash
 cd backend && python manage.py migrate
 ```
 
-Migración mínima esperada del proyecto actual:
-- `api.0001_initial`
+Si las migraciones no están aplicadas, `/api/progress/` y `/api/progress/<user_id>/` pueden fallar por tabla inexistente.
 
-Si esta migración no está aplicada, `/api/progress/` y `/api/progress/<user_id>/` pueden fallar por tabla inexistente (`relation does not exist`), derivando en error server-side.
+## 5) Checklist posterior al deploy
 
-## 5) collectstatic
-
-- Sí aplica en este proyecto (Django `staticfiles` está habilitado).
-- Debe correrse en build (`collectstatic --noinput`).
-
-## 6) Checklist exacto para Render
-
-1. Crear Web Service apuntando al repo.
-2. Definir root del proyecto en Render (o usar comandos con `cd backend`).
-3. Cargar variables de entorno listadas arriba.
-4. Configurar Build Command y Start Command exactamente como se indica, o usar `render.yaml` desde el repo.
-5. Desplegar.
-6. Ejecutar migraciones (`cd backend && python manage.py migrate`) desde Shell de Render.
-7. Verificar:
-   - `GET /` -> `200` con JSON health
-   - `GET /api/health/` -> `200`
-   - `POST /api/progress/` con payload válido -> `201` (nuevo) o `200` (update)
-   - `GET /api/progress/<user_id>/` -> `200`
-
-## 7) Causa más probable del `500` observado
-
-La causa más probable en producción es **base de datos no lista para el esquema esperado**:
-- migraciones no corridas, o
-- variables `POSTGRES_*` incompletas/incorrectas, o
-- SSL mode no configurado (`POSTGRES_SSLMODE=require`) para Supabase.
-
-Como endurecimiento adicional, `POST /api/progress/` ahora controla explícitamente errores de validación de DRF e integridad de DB para devolver respuestas controladas (`400/409/503`) en lugar de error genérico.
+1. Confirmar que Render usa `./scripts/render-build.sh`.
+2. Confirmar que Render usa `cd backend && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT`.
+3. Confirmar `PYTHON_VERSION=3.11.9` y `NODE_VERSION=20.18.1`.
+4. Ejecutar migraciones si corresponde.
+5. Verificar:
+   - `GET /` -> `200` HTML del juego.
+   - `GET /assets/<archivo-generado>` -> `200`.
+   - `GET /api/health/` -> `200` JSON.
+   - `POST /api/progress/` con payload válido -> `201` o `200`.
+   - `GET /api/progress/<user_id>/` -> `200`.
+   - `GET /api/no-existe/` -> error API, no HTML.

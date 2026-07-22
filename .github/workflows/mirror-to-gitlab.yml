@@ -14,18 +14,18 @@ jobs:
   mirror:
     name: Push GitHub main to GitLab
     runs-on: ubuntu-latest
-    if: github.repository_owner != ''
     steps:
       - name: Checkout full history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Push to GitLab mirror
+      - name: Push main to existing GitLab repository
         env:
           GITLAB_MIRROR_URL: ${{ secrets.GITLAB_MIRROR_URL }}
           GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_MIRROR_USERNAME: ${{ secrets.GITLAB_MIRROR_USERNAME }}
+          GITLAB_MIRROR_BRANCH: ${{ secrets.GITLAB_MIRROR_BRANCH }}
         run: |
           set -euo pipefail
 
@@ -48,7 +48,12 @@ jobs:
           esac
 
           username="${GITLAB_MIRROR_USERNAME:-oauth2}"
+          target_branch="${GITLAB_MIRROR_BRANCH:-main}"
           auth_header="AUTHORIZATION: Basic $(printf "%s:%s" "${username}" "${GITLAB_MIRROR_TOKEN}" | base64 -w 0)"
 
           git remote add gitlab "${GITLAB_MIRROR_URL}"
-          git -c http.extraheader="${auth_header}" push gitlab "HEAD:main" --force-with-lease
+          git -c http.extraheader="${auth_header}" ls-remote --exit-code gitlab >/dev/null
+
+          # GitHub is the source of truth. The leading + intentionally updates
+          # the existing GitLab branch even if it has unrelated or older history.
+          git -c http.extraheader="${auth_header}" push gitlab "+HEAD:${target_branch}"

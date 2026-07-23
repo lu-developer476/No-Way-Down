@@ -66,11 +66,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setCollideWorldBounds(true);
     const physicsProfile = CHARACTER_PHYSICS_BY_SILHOUETTE[characterVisual.silhouette];
-    this.setSize(physicsProfile.bodyWidth, physicsProfile.bodyHeight);
-    this.setOffset(physicsProfile.offsetX, physicsProfile.offsetY);
+    this.setBodySize(28, 20);
+    this.setOffset(18, 40);
     this.setBounce(0, physicsProfile.bounce);
     this.setDragX(physicsProfile.dragX);
-    this.setMaxVelocity(360, 720);
+    this.setMaxVelocity(180, 180);
     this.setScale(1.35);
     this.setDisplayOrigin(CHARACTER_DISPLAY_ORIGIN_X, CHARACTER_DISPLAY_ORIGIN_Y);
     this.setDepth(CHARACTER_RENDER_DEPTH);
@@ -173,6 +173,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.spriteAnimationSystem.playMovement(this, this.characterVisualId, isMovingHorizontally);
     }
 
+    this.setDepth(this.y);
     this.updateNameTagPosition();
   }
 

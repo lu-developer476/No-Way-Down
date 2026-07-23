@@ -131,7 +131,7 @@ export class CombatActionSystem {
 
     for (let index = this.activeSwings.length - 1; index >= 0; index -= 1) {
       const swing = this.activeSwings[index];
-      if (now > swing.endsAt || !swing.actor.active) {
+      if (now > swing.endsAt || !swing.actor.active || (swing.actor instanceof Player && swing.actor.isDead())) {
         this.activeSwings.splice(index, 1);
         continue;
       }

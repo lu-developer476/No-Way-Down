@@ -1841,11 +1841,12 @@ export class GameScene extends Phaser.Scene {
     const center = this.getAveragePlayerPosition();
     const camera = this.cameras.main;
     const lerpFactor = 0.08;
-    const velocityLookAhead = this.players.length > 0
-      ? this.players.reduce((acc, player) => {
+    const livingPlayers = this.players.filter((player) => !player.isDead());
+    const velocityLookAhead = livingPlayers.length > 0
+      ? livingPlayers.reduce((acc, player) => {
           const body = player.body as Phaser.Physics.Arcade.Body | null;
           return acc + (body?.velocity.x ?? 0);
-        }, 0) / this.players.length
+        }, 0) / livingPlayers.length
       : 0;
     const lookAheadX = Phaser.Math.Clamp(velocityLookAhead * 0.18, -80, 80);
     const focusYOffset = 34;

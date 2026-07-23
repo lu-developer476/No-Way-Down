@@ -1073,7 +1073,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private syncCleanupNarrativeProgress(): void {
-    if (this.firstCleanupNarrativeTriggered) {
+    if (this.hasPlayerBeenDefeated || this.firstCleanupNarrativeTriggered) {
       return;
     }
 

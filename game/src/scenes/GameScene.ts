@@ -1184,7 +1184,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    const leadPlayer = this.players[0];
+    const leadPlayer = this.players.find((player) => !player.isDead()) ?? this.players[0];
     if (!leadPlayer || !this.allySystem || !this.partyState || !this.campaignState) {
       return;
     }

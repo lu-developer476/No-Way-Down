@@ -1017,7 +1017,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateResistancePhase(): void {
-    if (!this.resistancePhaseConfig || this.resistancePhaseCompleted || this.resistancePhaseEndsAt === undefined) {
+    if (this.hasPlayerBeenDefeated || !this.resistancePhaseConfig || this.resistancePhaseCompleted || this.resistancePhaseEndsAt === undefined) {
       return;
     }
 

@@ -147,7 +147,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     const body = this.body as Phaser.Physics.Arcade.Body | null;
 
-    if (!this.isClimbing && this.jumpKey.isDown && body?.blocked.down) {
+    if (!this.isClimbing && Phaser.Input.Keyboard.JustDown(this.jumpKey) && body?.blocked.down) {
       this.setVelocityY(-JUMP_SPEED);
       getAudioManager(this.scene).play('jump', { x: this.x, y: this.y, volume: 0.08 });
     }

@@ -101,6 +101,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.damage = options.damage ?? this.damage;
     this.nextAttackAt = 0;
     this.isDying = false;
+    this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle', true);
     this.setAlpha(1);
     this.setAngle(0);
     this.setScale(1);

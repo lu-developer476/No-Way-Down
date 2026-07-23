@@ -679,7 +679,9 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('zombiesRemaining', zombiesRemaining);
     this.spawnManager?.update(this.time.now);
     this.syncCleanupNarrativeProgress();
-    this.levelExitSystem?.update();
+    if (!this.hasPlayerBeenDefeated) {
+      this.levelExitSystem?.update();
+    }
 
     this.updateMissionProgress(zombiesRemaining);
 

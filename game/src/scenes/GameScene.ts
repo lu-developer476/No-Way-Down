@@ -1123,7 +1123,7 @@ export class GameScene extends Phaser.Scene {
           this.advanceDialogueRequested = false;
           return true;
         },
-        isSkipRequested: () => this.skipDialogueRequested
+        isSkipRequested: () => this.hasPlayerBeenDefeated || this.skipDialogueRequested
       }
     );
   }

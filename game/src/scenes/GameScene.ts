@@ -696,7 +696,7 @@ export class GameScene extends Phaser.Scene {
 
 
   private updateRetroCheckpointCinematics(): void {
-    if (this.currentLevelId !== 'level_2_subsuelo' || this.movementLockedByNarrative || this.hasTriggeredTransition) {
+    if (this.currentLevelId !== 'level_2_subsuelo' || this.hasPlayerBeenDefeated || this.movementLockedByNarrative || this.hasTriggeredTransition) {
       return;
     }
 

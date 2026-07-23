@@ -70,7 +70,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setOffset(18, 40);
     this.setBounce(0, physicsProfile.bounce);
     this.setDragX(physicsProfile.dragX);
-    this.setMaxVelocity(180, 180);
+    this.setMaxVelocity(180, 720);
     this.setScale(1.35);
     this.setDisplayOrigin(CHARACTER_DISPLAY_ORIGIN_X, CHARACTER_DISPLAY_ORIGIN_Y);
     this.setDepth(CHARACTER_RENDER_DEPTH);

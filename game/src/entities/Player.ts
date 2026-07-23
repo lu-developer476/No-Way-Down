@@ -240,6 +240,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.spriteAnimationSystem.playDeath(this, this.characterVisualId);
       this.nameTag.setVisible(false);
       this.setVelocity(0, 0);
+      this.disableBody();
       this.cancelReload();
       this.attackRequestedThisFrame = false;
       this.updateEquippedWeaponSprite();

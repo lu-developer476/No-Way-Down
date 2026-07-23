@@ -666,10 +666,10 @@ export class GameScene extends Phaser.Scene {
     const pickupConsumers = [...livingPlayers, ...(this.allySystem?.getActiveAllies() ?? [])];
     this.pickupSystem?.update(livingPlayers, pickupConsumers);
 
-    this.players.forEach((player) => {
+    livingPlayers.forEach((player) => {
       this.combatActionSystem?.tryStartPlayerMeleeAction(player);
     });
-    this.combatActionSystem?.update(this.players, this.allySystem?.getActiveAllies() ?? [], activeZombies);
+    this.combatActionSystem?.update(livingPlayers, this.allySystem?.getActiveAllies() ?? [], activeZombies);
 
     this.registry.set('partyHud', this.buildPartyHud());
     this.refreshAllyWorldHealthBars();

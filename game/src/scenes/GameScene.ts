@@ -1833,7 +1833,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   private getAveragePlayerPosition(): Phaser.Math.Vector2 {
-    return getAveragePlayerPosition(this.players);
+    const livingPlayers = this.players.filter((player) => !player.isDead());
+    return getAveragePlayerPosition(livingPlayers.length > 0 ? livingPlayers : this.players);
   }
 
   private updateSharedCamera(): void {

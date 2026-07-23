@@ -662,8 +662,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     const activeZombies = this.zombieSystem?.getActiveZombies() ?? [];
-    const pickupConsumers = [...this.players, ...(this.allySystem?.getActiveAllies() ?? [])];
-    this.pickupSystem?.update(this.players, pickupConsumers);
+    const livingPlayers = this.players.filter((player) => !player.isDead());
+    const pickupConsumers = [...livingPlayers, ...(this.allySystem?.getActiveAllies() ?? [])];
+    this.pickupSystem?.update(livingPlayers, pickupConsumers);
 
     this.players.forEach((player) => {
       this.combatActionSystem?.tryStartPlayerMeleeAction(player);

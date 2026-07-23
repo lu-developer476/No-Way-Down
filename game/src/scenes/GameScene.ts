@@ -669,7 +669,9 @@ export class GameScene extends Phaser.Scene {
     livingPlayers.forEach((player) => {
       this.combatActionSystem?.tryStartPlayerMeleeAction(player);
     });
-    this.combatActionSystem?.update(livingPlayers, this.allySystem?.getActiveAllies() ?? [], activeZombies);
+    if (!this.hasPlayerBeenDefeated) {
+      this.combatActionSystem?.update(livingPlayers, this.allySystem?.getActiveAllies() ?? [], activeZombies);
+    }
 
     this.registry.set('partyHud', this.buildPartyHud());
     this.refreshAllyWorldHealthBars();

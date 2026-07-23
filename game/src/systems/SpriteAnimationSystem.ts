@@ -1,6 +1,11 @@
 import Phaser from 'phaser';
 
-export type SpriteAnimationState = 'idle' | 'run' | 'shoot' | 'hurt';
+export type SpriteAnimationState =
+  | 'idle'
+  | 'run'
+  | 'shoot'
+  | 'hurt'
+  | 'death';
 
 export class SpriteAnimationSystem {
   private readonly scene: Phaser.Scene;
@@ -78,5 +83,12 @@ export class SpriteAnimationSystem {
 
   playHurt(sprite: Phaser.GameObjects.Sprite, characterVisualId: string): void {
     this.playState(sprite, characterVisualId, 'hurt', true);
+  }
+
+  playDeath(
+    sprite: Phaser.GameObjects.Sprite,
+    characterVisualId: string
+  ): void {
+    this.playState(sprite, characterVisualId, 'death', true);
   }
 }

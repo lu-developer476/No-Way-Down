@@ -10,7 +10,7 @@ import { CharacterAnimations } from '../systems/CharacterAnimations';
 
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
-const CHARACTER_FRAME_COUNT = 8;
+const CHARACTER_FRAME_COUNT = 9;
 const CHARACTER_SPRITE_SHEET_SUFFIX = '-sheet';
 
 type HexColor = number;
@@ -412,6 +412,17 @@ export class BootScene extends Phaser.Scene {
 
   private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, profile: CharacterVisualProfile, offsetX = 0): void {
     const { palette } = profile;
+
+    if (frame === 8) {
+      this.fillPixelRect(graphics, offsetX + 3, 33, 7, 2, palette.hair);
+      this.fillPixelRect(graphics, offsetX + 4, 35, 7, 7, palette.skin);
+      this.fillPixelRect(graphics, offsetX + 11, 34, 13, 8, palette.torso);
+      this.fillPixelRect(graphics, offsetX + 14, 39, 10, 2, palette.factionBand);
+      this.fillPixelRect(graphics, offsetX + 24, 35, 6, 5, palette.pants);
+      this.fillPixelRect(graphics, offsetX + 29, 36, 3, 3, palette.accent);
+      return;
+    }
+
     const bob = [1, 3, 5, 7].includes(frame) ? 1 : 0;
     const isRunFrame = [2, 3, 4, 5].includes(frame);
     const isShootFrame = frame === 6;

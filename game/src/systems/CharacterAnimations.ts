@@ -30,7 +30,7 @@ const DEFAULT_ANIMATION_RANGES: CharacterAnimationFrameRange[] = [
   { state: 'run', start: 2, end: 5, frameRate: 9, repeat: -1 },
   { state: 'shoot', start: 6, end: 6, frameRate: 12, repeat: 0 },
   { state: 'hurt', start: 7, end: 7, frameRate: 8, repeat: 0 },
-  { state: 'death', start: 7, end: 7, frameRate: 1, repeat: 0 }
+  { state: 'death', start: 8, end: 8, frameRate: 1, repeat: 0 }
 ];
 
 function buildAnimationKey(characterVisualId: string, state: CharacterAnimationState): string {

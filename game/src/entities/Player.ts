@@ -164,9 +164,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.startReloadActiveWeapon();
     }
 
-    this.attackRequestedThisFrame = Phaser.Input.Keyboard.JustDown(this.shootKey);
-    if (this.attackRequestedThisFrame) {
-      this.tryShootActiveWeapon();
+    this.attackRequestedThisFrame = false;
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
+      this.attackRequestedThisFrame = this.tryShootActiveWeapon();
     }
 
     if (!this.isClimbing && (!this.anims.isPlaying || this.anims.currentAnim?.key === `${this.characterVisualId}-idle` || this.anims.currentAnim?.key === `${this.characterVisualId}-run`)) {

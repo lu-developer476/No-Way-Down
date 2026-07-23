@@ -156,7 +156,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       const switched = this.switchActiveWeaponSlot();
       if (switched) {
         this.cancelReload();
-        this.refreshEquippedWeaponVisual();
       }
     }
 

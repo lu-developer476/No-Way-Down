@@ -10,7 +10,11 @@ const DEFAULT_ZOMBIE_DAMAGE = 8;
 export const DEFAULT_ZOMBIE_HEALTH = 3;
 const ZOMBIE_RENDER_DEPTH = 19;
 
-type Target = Pick<Phaser.GameObjects.GameObject, 'active'> & { x: number; y: number };
+type Target = Pick<Phaser.GameObjects.GameObject, 'active'> & {
+  x: number;
+  y: number;
+  isDead?: () => boolean;
+};
 
 export class Zombie extends Phaser.Physics.Arcade.Sprite {
   public health: number;
@@ -116,7 +120,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     let bestDistanceSq = Number.POSITIVE_INFINITY;
 
     for (const target of targets) {
-      if (!target.active) {
+      if (!target.active || target.isDead?.()) {
         continue;
       }
 

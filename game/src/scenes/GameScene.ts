@@ -695,7 +695,9 @@ export class GameScene extends Phaser.Scene {
       this.stairSegmentSystem?.update(livingPlayers);
     }
 
-    this.projectileSystem?.update();
+    if (!this.hasPlayerBeenDefeated) {
+      this.projectileSystem?.update();
+    }
 
     this.updateInteractables();
     this.updateRetroCheckpointCinematics();

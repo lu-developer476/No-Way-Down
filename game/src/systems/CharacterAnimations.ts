@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-export type CharacterAnimationState = 'idle' | 'run' | 'shoot' | 'hurt';
+export type CharacterAnimationState = 'idle' | 'run' | 'shoot' | 'hurt' | 'death';
 
 export interface CharacterAnimationFrameRange {
   state: CharacterAnimationState;
@@ -29,7 +29,8 @@ const DEFAULT_ANIMATION_RANGES: CharacterAnimationFrameRange[] = [
   { state: 'idle', start: 0, end: 1, frameRate: 4, repeat: -1 },
   { state: 'run', start: 2, end: 5, frameRate: 9, repeat: -1 },
   { state: 'shoot', start: 6, end: 6, frameRate: 1, repeat: 0 },
-  { state: 'hurt', start: 7, end: 7, frameRate: 1, repeat: 0 }
+  { state: 'hurt', start: 7, end: 7, frameRate: 1, repeat: 0 },
+  { state: 'death', start: 7, end: 7, frameRate: 1, repeat: 0 }
 ];
 
 function buildAnimationKey(characterVisualId: string, state: CharacterAnimationState): string {

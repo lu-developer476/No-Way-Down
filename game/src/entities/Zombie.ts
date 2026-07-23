@@ -145,7 +145,6 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
     if (distance <= this.attackRange) {
       this.setVelocity(0, 0);
-      this.spriteAnimationSystem.playState(this, 'zombie-walker', 'hurt', true);
       this.tryAttack(target);
       return;
     }
@@ -171,6 +170,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.nextAttackAt = now + this.attackCooldownMs;
+    this.spriteAnimationSystem.playState(this, 'zombie-walker', 'hurt', true);
     this.scene.events.emit('zombie:attack', {
       zombie: this,
       damage: this.damage,

@@ -656,7 +656,7 @@ export class GameScene extends Phaser.Scene {
 
     this.zombieSystem?.update(this.players);
 
-    const leadPlayer = this.players[0];
+    const leadPlayer = this.players.find((player) => !player.isDead()) ?? this.players[0];
     if (leadPlayer) {
       this.allySystem?.update(leadPlayer, this.zombieSystem?.getActiveZombies() ?? [], this.time.now);
     }

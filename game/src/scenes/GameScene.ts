@@ -684,7 +684,7 @@ export class GameScene extends Phaser.Scene {
     this.updateMissionProgress(zombiesRemaining);
 
     if (!this.hasPlayerBeenDefeated) {
-      this.stairSegmentSystem?.update(this.players);
+      this.stairSegmentSystem?.update(livingPlayers);
     }
 
     this.projectileSystem?.update();

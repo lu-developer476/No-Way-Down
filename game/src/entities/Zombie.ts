@@ -179,6 +179,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.isDying = true;
     this.spriteAnimationSystem.playDeath(this, 'zombie-walker');
     this.setVelocity(0, 0);
+    this.disableBody();
     getAudioManager(this.scene).play('zombieDeath', { x: this.x, y: this.y, volume: 0.25 });
 
     this.scene.tweens.add({

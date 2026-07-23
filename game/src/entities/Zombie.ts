@@ -83,7 +83,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
   }
 
   takeDamage(amount: number): void {
-    if (!this.active || this.isDying) {
+    if (amount <= 0 || !this.active || this.isDying) {
       return;
     }
 

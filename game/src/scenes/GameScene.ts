@@ -751,8 +751,12 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    const leadPlayer = this.players.find((player) => !player.isDead()) ?? this.players[0];
+    const leadPlayer = this.players.find((player) => !player.isDead());
     if (!leadPlayer) {
+      if (this.interactionHintOwnedByInteractables) {
+        this.registry.set('interactionHint', '');
+        this.interactionHintOwnedByInteractables = false;
+      }
       return;
     }
 

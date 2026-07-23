@@ -135,10 +135,16 @@ export class ZombieSystem {
     return activeZombies;
   }
 
-  update(targetX: number): void {
+  update(targetX: number): void;
+  update(targets: readonly Player[]): void;
+  update(targetOrTargets: number | readonly Player[]): void {
     const activeZombies = this.getActiveZombies();
     activeZombies.forEach((zombie) => {
-      zombie.update(targetX);
+      if (typeof targetOrTargets === 'number') {
+        zombie.update(targetOrTargets);
+      } else {
+        zombie.update(targetOrTargets);
+      }
     });
 
     const groanSource = activeZombies[0];

@@ -654,8 +654,7 @@ export class GameScene extends Phaser.Scene {
     getAudioManager(this).setListenerPosition(averagePlayerPosition.x, averagePlayerPosition.y);
     this.playFootstepsForMovingPlayers();
 
-    const leadPlayerX = averagePlayerPosition.x;
-    this.zombieSystem?.update(leadPlayerX);
+    this.zombieSystem?.update(this.players);
 
     const leadPlayer = this.players[0];
     if (leadPlayer) {

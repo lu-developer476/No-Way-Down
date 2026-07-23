@@ -238,6 +238,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.healthPoints <= 0) {
       this.isDeadState = true;
       this.setVelocity(0, 0);
+      this.cancelReload();
+      this.attackRequestedThisFrame = false;
+      this.updateEquippedWeaponSprite();
     }
 
     return true;

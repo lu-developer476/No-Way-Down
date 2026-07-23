@@ -462,6 +462,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   private updateNameTagPosition(): void {
     this.nameTag.setPosition(this.x, this.y - 42);
+    this.nameTag.setDepth(this.depth + 1);
     this.updateEquippedWeaponSprite();
   }
 
@@ -485,6 +486,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     );
     this.equippedWeaponSprite.setFlipX(direction < 0);
     this.equippedWeaponSprite.setVisible(this.active && !this.isDeadState);
+    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
   }
 
   private getDefendedDamage(baseDamage: number, context?: { sourceX?: number }): number {

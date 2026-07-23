@@ -1679,7 +1679,7 @@ export class GameScene extends Phaser.Scene {
     this.refreshAllyWorldHealthBars();
 
     if (player.isDead()) {
-      this.handlePlayerDefeat();
+      this.handlePlayerDefeat(player);
     }
   }
 
@@ -1699,21 +1699,18 @@ export class GameScene extends Phaser.Scene {
     return closestX;
   }
 
-  private handlePlayerDefeat(): void {
+  private handlePlayerDefeat(fallenPlayer: Player): void {
     if (this.hasPlayerBeenDefeated || this.players.some((player) => !player.isDead())) {
       return;
     }
 
     this.hasPlayerBeenDefeated = true;
-    const fallenPlayer = this.players.find((player) => player.isDead());
-    if (fallenPlayer) {
-      const fallenId = `player-${fallenPlayer.getProfile().slot}`;
-      this.registry.set('lastCombatDefeat', {
-        fallenId,
-        levelId: this.currentLevelId,
-        defeatedAt: Date.now()
-      });
-    }
+    const fallenId = `player-${fallenPlayer.getProfile().slot}`;
+    this.registry.set('lastCombatDefeat', {
+      fallenId,
+      levelId: this.currentLevelId,
+      defeatedAt: Date.now()
+    });
     this.physics.pause();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);

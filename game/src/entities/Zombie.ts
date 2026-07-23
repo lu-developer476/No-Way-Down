@@ -145,6 +145,13 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
     if (distance <= this.attackRange) {
       this.setVelocity(0, 0);
+
+      if (target.x < this.x) {
+        this.setFlipX(true);
+      } else if (target.x > this.x) {
+        this.setFlipX(false);
+      }
+
       this.tryAttack(target);
       return;
     }

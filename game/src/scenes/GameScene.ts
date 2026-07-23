@@ -1860,7 +1860,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private enforcePlayerSeparation(): void {
-    enforceMaxPlayerSeparation(this.players);
+    enforceMaxPlayerSeparation(this.players.filter((player) => !player.isDead()));
   }
 
   private createPauseMenuUI(): void {

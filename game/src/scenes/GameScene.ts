@@ -819,15 +819,17 @@ export class GameScene extends Phaser.Scene {
     let statusMessage = effect.message ?? fallbackByType[effect.type] ?? `Interacción ejecutada: ${interactableId}`;
 
     if (effect.rewardPickupType) {
+      const livingPlayers = this.players.filter((player) => !player.isDead());
+      const rewardPlayer = livingPlayers[0] ?? this.players[0];
       const consumers = [
-        ...this.players,
+        ...livingPlayers,
         ...(this.allySystem?.getActiveAllies() ?? [])
       ];
       interactionSucceeded = PickupSystem.applyReward({
         type: effect.rewardPickupType,
         label: effect.rewardPickupLabel,
-        x: this.players[0]?.x ?? 0,
-        y: this.players[0]?.y ?? 0
+        x: rewardPlayer?.x ?? 0,
+        y: rewardPlayer?.y ?? 0
       }, consumers);
 
       if (interactionSucceeded) {

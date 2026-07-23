@@ -126,6 +126,10 @@ export class CinematicCallSystem {
     await this.wait(config.preDialoguePauseMs, false);
 
     for (const line of config.dialogue) {
+      if (this.callbacks.isSkipRequested?.()) {
+        break;
+      }
+
       this.presentation.showDialogueLine(line, config);
       await this.wait(line.durationMs ?? DEFAULT_LINE_DURATION_MS, true);
 

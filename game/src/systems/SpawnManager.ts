@@ -577,6 +577,11 @@ export class SpawnManager {
   }
 
   private isSpawnAllowed(point: SpawnPointConfig): boolean {
+    const livingPlayers = this.players.filter((player) => !player.isDead());
+    if (livingPlayers.length === 0) {
+      return false;
+    }
+
     const minDistance = point.minPlayerDistance ?? this.defaultMinPlayerDistance;
     const maxDistance = point.maxPlayerDistance ?? this.defaultMaxPlayerDistance;
     const minDistanceSquared = minDistance * minDistance;
@@ -584,7 +589,7 @@ export class SpawnManager {
 
     let hasNearbyPlayer = false;
 
-    const farEnough = this.players.every((player) => {
+    const farEnough = livingPlayers.every((player) => {
       const dx = player.x - point.x;
       const dy = player.y - point.y;
       const sqrDistance = dx * dx + dy * dy;
@@ -599,7 +604,7 @@ export class SpawnManager {
       return false;
     }
 
-    return this.players.every((player) => {
+    return livingPlayers.every((player) => {
       const camera = player.scene.cameras.main;
       const view = camera.worldView;
       const immediateViewport = new Phaser.Geom.Rectangle(

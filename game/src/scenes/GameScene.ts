@@ -677,7 +677,9 @@ export class GameScene extends Phaser.Scene {
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
     this.updateResistancePhase();
     this.registry.set('zombiesRemaining', zombiesRemaining);
-    this.spawnManager?.update(this.time.now);
+    if (!this.hasPlayerBeenDefeated) {
+      this.spawnManager?.update(this.time.now);
+    }
     this.syncCleanupNarrativeProgress();
     if (!this.hasPlayerBeenDefeated) {
       this.levelExitSystem?.update();

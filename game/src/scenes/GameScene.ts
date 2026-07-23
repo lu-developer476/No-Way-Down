@@ -1698,7 +1698,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handlePlayerDefeat(): void {
-    if (this.hasPlayerBeenDefeated) {
+    if (this.hasPlayerBeenDefeated || this.players.some((player) => !player.isDead())) {
       return;
     }
 
@@ -1720,7 +1720,7 @@ export class GameScene extends Phaser.Scene {
 
     this.transitionOverlay?.setVisible(true);
     this.transitionText
-      ?.setText('Un jugador ha caído en combate.\nReiniciando...')
+      ?.setText('Todo el grupo ha caído en combate.\nReiniciando...')
       .setStyle({ color: '#fecaca' })
       .setVisible(true);
 

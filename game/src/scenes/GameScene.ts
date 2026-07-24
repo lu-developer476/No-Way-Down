@@ -902,7 +902,7 @@ export class GameScene extends Phaser.Scene {
       bar.fill.width = 44 * ratio;
       bar.nameText.setText(`[${ally.getRuntimeConfig().name.toUpperCase()}]`);
       bar.container.setPosition(ally.x, ally.y - 52);
-      bar.container.setVisible(ally.active);
+      bar.container.setVisible(ally.active && !this.hasPlayerBeenDefeated);
     });
   }
 

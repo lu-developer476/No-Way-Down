@@ -26,6 +26,7 @@ import {
   parseCheckpoint,
   PartyHudMember
 } from './sceneShared';
+import { SceneFlowManager } from './SceneFlowManager';
 import { visualTheme } from './visualTheme';
 import { addCheckpointCinematicCard, addRetroScreenOverlay, applyRetroRenderer, RETRO_CHECKPOINTS } from './retroPixelArt';
 import { CampaignState } from '../systems/core/CampaignState';
@@ -2221,6 +2222,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.registry.set('loadedCampaignSnapshot', snapshot);
+    const flowDefinition = new SceneFlowManager(this).ensureDefinitionLoadedFromCache();
+    const savedFlowNode = flowDefinition?.nodes.find((node) => node.id === snapshot.progress.flow_node_id);
+    if (savedFlowNode?.sceneKey === 'LevelScene' && savedFlowNode.levelConfigPath) {
+      this.registry.set('activeCampaignNode', savedFlowNode);
+      this.registry.set('flowNodeId', savedFlowNode.id);
+    }
 
     if (snapshot.checkpoints?.visited) {
       snapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));

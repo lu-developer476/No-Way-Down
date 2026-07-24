@@ -35,12 +35,14 @@ export class LevelScene extends GameScene {
   }
 
   create(data: LevelSceneCreateData = {}): void {
-    if (!data.flowNode) {
+    const flowNode = data.flowNode
+      ?? (this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined);
+
+    if (!flowNode) {
       console.error('[LevelScene] No se recibió flowNode. No se puede resolver levelConfigPath.');
       return;
     }
 
-    const { flowNode } = data;
     this.flowNode = flowNode;
 
     if (!flowNode.levelConfigPath) {

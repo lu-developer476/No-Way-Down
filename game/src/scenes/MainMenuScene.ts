@@ -683,6 +683,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     saveInitialRunSetup(setup);
     this.registry.remove('checkpoint');
+    this.registry.remove('loadedCampaignSnapshot');
     this.registry.set('initialRunSetup', setup);
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');

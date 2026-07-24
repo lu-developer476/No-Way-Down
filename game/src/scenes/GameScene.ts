@@ -2197,6 +2197,7 @@ export class GameScene extends Phaser.Scene {
       party,
       progress: {
         level: this.scene.key,
+        flow_node_id: this.registry.get('flowNodeId') as string | undefined,
         checkpoint,
         segment: this.registry.get('currentObjective') as string | undefined,
         life: this.players.filter((player) => !player.isDead()).length,

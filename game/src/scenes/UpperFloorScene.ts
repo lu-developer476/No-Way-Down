@@ -9,6 +9,7 @@ import {
   enforceMaxPlayerSeparation,
   getAveragePlayerPosition,
   getScenePlayerId,
+  LOCAL_PROGRESS_STORAGE_KEY,
   InitialRunSetup,
   loadInitialRunSetup,
   parseCheckpoint
@@ -566,11 +567,23 @@ export class UpperFloorScene extends Phaser.Scene {
     snapshot.checkpoints?.visited?.forEach((value) => this.visitedCheckpoints.add(value));
   }
 
+  private saveProgressLocally(payload: PlayerProgressPayload): void {
+    const now = new Date().toISOString();
+    const localProgress = {
+      ...payload,
+      updated_at: now,
+      created_at: now
+    };
+    localStorage.setItem(LOCAL_PROGRESS_STORAGE_KEY, JSON.stringify(localProgress));
+  }
+
   private async saveProgressToApi(): Promise<void> {
     const saveOwner = this.players;
+    const payload = this.buildProgressPayload();
+    this.saveProgressLocally(payload);
 
     try {
-      await progressApi.saveProgress(this.buildProgressPayload());
+      await progressApi.saveProgress(payload);
       if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== saveOwner) {
         return;
       }
@@ -582,7 +595,7 @@ export class UpperFloorScene extends Phaser.Scene {
       }
 
       const message = error instanceof Error ? error.message : 'No se pudo guardar progreso.';
-      this.showApiStatus(`No se pudo guardar: ${message}`, true);
+      this.showApiStatus(`Guardado local activo. ${message}`, true);
     }
   }
 

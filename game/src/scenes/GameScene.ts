@@ -2223,10 +2223,12 @@ export class GameScene extends Phaser.Scene {
 
     this.registry.set('loadedCampaignSnapshot', snapshot);
     const flowDefinition = new SceneFlowManager(this).ensureDefinitionLoadedFromCache();
-    const savedFlowNode = flowDefinition?.nodes.find((node) => node.id === snapshot.progress.flow_node_id);
+    const savedFlowNodeIndex = flowDefinition?.nodes.findIndex((node) => node.id === snapshot.progress.flow_node_id) ?? -1;
+    const savedFlowNode = flowDefinition?.nodes[savedFlowNodeIndex];
     if (savedFlowNode?.sceneKey === 'LevelScene' && savedFlowNode.levelConfigPath) {
       this.registry.set('activeCampaignNode', savedFlowNode);
       this.registry.set('flowNodeId', savedFlowNode.id);
+      this.registry.set('campaignFlowCursor', savedFlowNodeIndex);
     }
 
     if (snapshot.checkpoints?.visited) {

@@ -23,6 +23,7 @@ import { PickupSystem } from '../systems/PickupSystem';
 import { levelManager } from '../systems/level/levelCatalog';
 import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
 import { InteractableSystem } from '../systems/core/InteractableSystem';
+import type { PartyMember } from '../systems/core/PartyStateSystem';
 import { controlManager } from '../input/ControlManager';
 
 const API_MESSAGE_DURATION_MS = 2600;
@@ -519,6 +520,13 @@ export class UpperFloorScene extends Phaser.Scene {
   private buildCampaignSnapshot(checkpoint: string): CampaignSnapshot {
     const setup = this.getInitialSetup();
     const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
+    const partyMembers = (this.registry.get('partyState') as PartyMember[] | undefined) ?? [];
+    const party = loadedSnapshot?.party ?? {
+      active: partyMembers.filter((member) => member.status === 'active').map((member) => member.name),
+      dead: partyMembers.filter((member) => member.status === 'dead').map((member) => member.name),
+      rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
+      infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
+    };
 
     if (loadedSnapshot?.checkpoints?.visited) {
       loadedSnapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));
@@ -533,19 +541,14 @@ export class UpperFloorScene extends Phaser.Scene {
           optional: setup?.party.optional ?? loadedSnapshot?.setup.initial_party.optional ?? []
         }
       },
-      party: loadedSnapshot?.party ?? {
-        active: [],
-        dead: [],
-        rescued: [],
-        infected: []
-      },
+      party,
       progress: {
         level: this.scene.key,
         flow_node_id: (this.registry.get('flowNodeId') as string | undefined) ?? loadedSnapshot?.progress.flow_node_id,
         checkpoint,
         segment: 'upper_floor_exploration',
         life: this.players.filter((player) => !player.isDead()).length,
-        allies_rescued: loadedSnapshot?.party?.rescued.length ?? 0
+        allies_rescued: party.rescued.length
       },
       narrative: loadedSnapshot?.narrative ?? {
         flags: {},

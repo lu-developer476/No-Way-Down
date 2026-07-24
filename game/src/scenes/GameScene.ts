@@ -1187,9 +1187,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   private shouldTriggerIntroCinematic(data: GameSceneData): boolean {
-    const fromNewGameFlow = data.skipLoad === true;
+    const fromNewGameFlow = data.skipLoad === true
+      && data.flowNodeId === 'lvl01-esc01-subsuelo-inicial';
     const hasStoredCheckpoint = Boolean(this.registry.get('checkpoint'));
-    return fromNewGameFlow || !hasStoredCheckpoint;
+    const fromDirectFreshStart = data.skipLoad === undefined
+      && data.flowNodeId === undefined
+      && !hasStoredCheckpoint;
+
+    return fromNewGameFlow || fromDirectFreshStart;
   }
 
   private async triggerNarrativeCheckpoint(checkpointId: string): Promise<void> {

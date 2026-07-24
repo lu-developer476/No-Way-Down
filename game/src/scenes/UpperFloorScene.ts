@@ -541,6 +541,7 @@ export class UpperFloorScene extends Phaser.Scene {
       },
       progress: {
         level: this.scene.key,
+        flow_node_id: (this.registry.get('flowNodeId') as string | undefined) ?? loadedSnapshot?.progress.flow_node_id,
         checkpoint,
         segment: 'upper_floor_exploration',
         life: this.players.filter((player) => !player.isDead()).length,

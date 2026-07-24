@@ -477,6 +477,10 @@ export class UpperFloorScene extends Phaser.Scene {
     });
 
     this.input.keyboard?.on('keydown-O', () => {
+      if (this.hasTriggeredTransition) {
+        return;
+      }
+
       void this.loadProgressFromApi();
     });
   }

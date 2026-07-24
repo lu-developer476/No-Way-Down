@@ -138,19 +138,23 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   update(): void {
+    if (this.hasTriggeredTransition) {
+      return;
+    }
+
     this.players.forEach((player) => player.update());
     this.enforcePlayerSeparation();
     this.updateSharedCamera();
     this.projectileSystem?.update();
     this.pickupSystem?.update(this.players, this.players);
 
-    if (this.hasTriggeredTransition) {
-      return;
-    }
-
     this.staircaseSystem?.update((target) => {
       this.transitionToTarget(target);
     });
+
+    if (this.hasTriggeredTransition) {
+      return;
+    }
 
     this.updateInteractables();
   }

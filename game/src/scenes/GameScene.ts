@@ -2274,13 +2274,23 @@ export class GameScene extends Phaser.Scene {
   }
 
   private async saveProgressToApi(): Promise<void> {
+    const saveOwner = this.levelRestartManager;
+
     const payload = this.buildProgressPayload();
     this.saveProgressLocally(payload);
 
     try {
       await progressApi.saveProgress(payload);
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.levelRestartManager !== saveOwner) {
+        return;
+      }
+
       this.showApiStatus('Progreso guardado en servidor.', false);
     } catch (error) {
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.levelRestartManager !== saveOwner) {
+        return;
+      }
+
       const message = error instanceof Error ? error.message : 'No se pudo guardar progreso.';
       this.showApiStatus(`Guardado local activo. ${message}`, true);
     }

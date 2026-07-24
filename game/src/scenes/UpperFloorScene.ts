@@ -473,6 +473,10 @@ export class UpperFloorScene extends Phaser.Scene {
 
   private registerApiControls(): void {
     this.input.keyboard?.on('keydown-P', () => {
+      if (this.hasTriggeredTransition) {
+        return;
+      }
+
       void this.saveProgressToApi();
     });
 

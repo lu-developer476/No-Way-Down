@@ -28,6 +28,7 @@ export class LevelScene extends GameScene {
   private enterKey?: Phaser.Input.Keyboard.Key;
   private hasStarted = false;
   private isTransitioning = false;
+  private gameplayReady = false;
   private flowNode?: CampaignFlowNode;
 
   constructor() {
@@ -37,6 +38,7 @@ export class LevelScene extends GameScene {
   create(data: LevelSceneCreateData = {}): void {
     this.hasStarted = false;
     this.isTransitioning = false;
+    this.gameplayReady = false;
 
     const flowNode = data.flowNode
       ?? (this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined);
@@ -101,10 +103,15 @@ export class LevelScene extends GameScene {
       this.events.once('level-exit-transition-complete', (target: LevelExitTarget) => {
         this.transitionToNextFlowNode(flowNode, target);
       });
+      this.gameplayReady = true;
     });
   }
 
   update(): void {
+    if (!this.gameplayReady) {
+      return;
+    }
+
     super.update();
     this.flowDebug?.update();
   }

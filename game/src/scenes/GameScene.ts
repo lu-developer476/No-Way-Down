@@ -2287,8 +2287,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   private async loadProgressFromApi(): Promise<void> {
+    const loadOwner = this.levelRestartManager;
+
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.levelRestartManager !== loadOwner) {
+        return;
+      }
+
       const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
       this.applyLoadedSnapshot(progress.campaign_snapshot);
 
@@ -2305,6 +2311,10 @@ export class GameScene extends Phaser.Scene {
 
       this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
     } catch (error) {
+      if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.levelRestartManager !== loadOwner) {
+        return;
+      }
+
       const localProgress = this.loadLocalProgress();
       if (localProgress) {
         const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);

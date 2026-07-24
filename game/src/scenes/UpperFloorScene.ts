@@ -52,6 +52,8 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   create(data: UpperFloorSceneData = {}): void {
+    this.hasTriggeredTransition = false;
+
     const levelConfig = levelManager.loadLevel('level_3_upper_floor');
     const levelWidth = levelConfig.layout.width;
     const levelHeight = levelConfig.layout.height;

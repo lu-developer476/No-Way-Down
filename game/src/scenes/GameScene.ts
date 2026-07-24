@@ -1736,6 +1736,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.pause();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
+    this.scene.stop('UIScene');
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
 

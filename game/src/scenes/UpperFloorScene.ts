@@ -577,6 +577,19 @@ export class UpperFloorScene extends Phaser.Scene {
     localStorage.setItem(LOCAL_PROGRESS_STORAGE_KEY, JSON.stringify(localProgress));
   }
 
+  private loadLocalProgress(): PlayerProgressPayload | null {
+    const raw = localStorage.getItem(LOCAL_PROGRESS_STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw) as PlayerProgressPayload;
+    } catch {
+      return null;
+    }
+  }
+
   private async saveProgressToApi(): Promise<void> {
     const saveOwner = this.players;
     const payload = this.buildProgressPayload();
@@ -620,6 +633,24 @@ export class UpperFloorScene extends Phaser.Scene {
       this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
     } catch (error) {
       if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== loadOwner) {
+        return;
+      }
+
+      const localProgress = this.loadLocalProgress();
+      if (localProgress) {
+        const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);
+        this.applyLoadedSnapshot(localProgress.campaign_snapshot);
+        this.showApiStatus('Servidor no disponible. Partida local cargada.', true);
+
+        if (localProgress.current_level !== this.scene.key) {
+          this.scene.start(localProgress.current_level, {
+            respawnPoint: loadedCheckpoint,
+            skipLoad: true
+          });
+          return;
+        }
+
+        this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
         return;
       }
 

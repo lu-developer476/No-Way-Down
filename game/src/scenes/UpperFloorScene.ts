@@ -529,11 +529,17 @@ export class UpperFloorScene extends Phaser.Scene {
       infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
     };
     const campaignState = this.registry.get('campaignState') as CampaignStateData | undefined;
-    const narrative = loadedSnapshot?.narrative ?? {
-      flags: campaignState?.narrativeProgress ?? {},
-      irreversible_events: campaignState?.irreversibleEvents ?? [],
-      seen_cinematics: campaignState?.seenCinematics ?? []
-    };
+    const narrative = campaignState
+      ? {
+          flags: campaignState.narrativeProgress,
+          irreversible_events: campaignState.irreversibleEvents,
+          seen_cinematics: campaignState.seenCinematics
+        }
+      : loadedSnapshot?.narrative ?? {
+          flags: {},
+          irreversible_events: [],
+          seen_cinematics: []
+        };
 
     if (loadedSnapshot?.checkpoints?.visited) {
       loadedSnapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));

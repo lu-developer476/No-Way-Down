@@ -23,6 +23,7 @@ import { PickupSystem } from '../systems/PickupSystem';
 import { levelManager } from '../systems/level/levelCatalog';
 import { ObjectiveSystem } from '../systems/core/ObjectiveSystem';
 import { InteractableSystem } from '../systems/core/InteractableSystem';
+import type { CampaignStateData } from '../systems/core/CampaignState';
 import type { PartyMember } from '../systems/core/PartyStateSystem';
 import { controlManager } from '../input/ControlManager';
 
@@ -527,6 +528,12 @@ export class UpperFloorScene extends Phaser.Scene {
       rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
       infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
     };
+    const campaignState = this.registry.get('campaignState') as CampaignStateData | undefined;
+    const narrative = loadedSnapshot?.narrative ?? {
+      flags: campaignState?.narrativeProgress ?? {},
+      irreversible_events: campaignState?.irreversibleEvents ?? [],
+      seen_cinematics: campaignState?.seenCinematics ?? []
+    };
 
     if (loadedSnapshot?.checkpoints?.visited) {
       loadedSnapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));
@@ -550,11 +557,7 @@ export class UpperFloorScene extends Phaser.Scene {
         life: this.players.filter((player) => !player.isDead()).length,
         allies_rescued: party.rescued.length
       },
-      narrative: loadedSnapshot?.narrative ?? {
-        flags: {},
-        irreversible_events: [],
-        seen_cinematics: []
-      },
+      narrative,
       checkpoints: {
         last: checkpoint,
         visited: [...this.visitedCheckpoints]

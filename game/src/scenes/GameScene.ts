@@ -129,6 +129,7 @@ export class GameScene extends Phaser.Scene {
   private transitionOverlay?: Phaser.GameObjects.Rectangle;
   private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
+  private apiStatusVersion = 0;
   private campaignState?: CampaignState;
   private partyState?: PartyStateSystem;
   private hasTriggeredTransition = false;
@@ -2355,6 +2356,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   private showApiStatus(message: string, isError: boolean): void {
+    const statusVersion = ++this.apiStatusVersion;
+
     this.apiStatusText
       ?.setText(message)
       .setStyle({
@@ -2364,6 +2367,10 @@ export class GameScene extends Phaser.Scene {
       .setVisible(true);
 
     this.time.delayedCall(API_MESSAGE_DURATION_MS, () => {
+      if (statusVersion !== this.apiStatusVersion) {
+        return;
+      }
+
       this.apiStatusText?.setVisible(false);
     });
   }

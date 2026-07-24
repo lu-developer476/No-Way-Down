@@ -565,10 +565,20 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   private async saveProgressToApi(): Promise<void> {
+    const saveOwner = this.players;
+
     try {
       await progressApi.saveProgress(this.buildProgressPayload());
+      if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== saveOwner) {
+        return;
+      }
+
       this.showApiStatus('Progreso guardado en servidor.', false);
     } catch (error) {
+      if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== saveOwner) {
+        return;
+      }
+
       const message = error instanceof Error ? error.message : 'No se pudo guardar progreso.';
       this.showApiStatus(`No se pudo guardar: ${message}`, true);
     }

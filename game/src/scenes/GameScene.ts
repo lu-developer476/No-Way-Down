@@ -2161,7 +2161,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   private buildProgressPayload(): PlayerProgressPayload {
-    const checkpoint = this.respawnPoint ?? { x: 140, y: this.scale.height - 140 };
+    const checkpoint = this.checkpointSystem?.getCheckpoint()
+      ?? this.respawnPoint
+      ?? { x: 140, y: this.scale.height - 140 };
     const checkpointLabel = `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`;
     this.visitedCheckpoints.add(checkpointLabel);
     const campaignSnapshot = this.buildCampaignSnapshot(checkpointLabel);

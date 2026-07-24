@@ -144,7 +144,8 @@ export class LevelManager {
     }
 
     scene.scene.start(exit.scene_key, {
-      respawnPoint: exit.spawn_point
+      respawnPoint: exit.spawn_point,
+      skipLoad: true
     });
   }
 }

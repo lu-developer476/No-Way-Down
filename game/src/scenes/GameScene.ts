@@ -348,11 +348,15 @@ export class GameScene extends Phaser.Scene {
       config
     ));
 
+    const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
     this.campaignState = new CampaignState('GameScene', {
       activeCharacters: [
         ...activePlayerConfigs.map((config) => `player-${config.slot}`),
         ...partySeed.allies.map((ally) => ally.id)
-      ]
+      ],
+      narrativeProgress: loadedSnapshot?.narrative.flags ?? {},
+      irreversibleEvents: loadedSnapshot?.narrative.irreversible_events ?? [],
+      seenCinematics: loadedSnapshot?.narrative.seen_cinematics ?? []
     });
     this.partyState = new PartyStateSystem([
       ...activePlayerConfigs.map((config) => ({

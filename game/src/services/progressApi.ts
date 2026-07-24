@@ -25,6 +25,7 @@ export interface CampaignSnapshot {
   };
   progress: {
     level: string;
+    flow_node_id?: string;
     checkpoint: string;
     segment?: string;
     life: number;

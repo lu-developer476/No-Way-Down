@@ -65,8 +65,11 @@ export class LevelScene extends GameScene {
     }
 
     this.ensureCampaignLevelConfigLoaded(flowNode, (campaignLevelConfig, usedFallback) => {
+      const shouldResumeProgress = this.registry.get('resumeProgressOnNextLevel') === true;
+      this.registry.remove('resumeProgressOnNextLevel');
+
       super.create({
-        skipLoad: true,
+        skipLoad: !shouldResumeProgress,
         respawnPoint: data.respawnPoint,
         flowNodeId: flowNode.id,
         campaignLevelConfigPath: flowNode.levelConfigPath,

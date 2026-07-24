@@ -126,7 +126,10 @@ export class LevelScene extends GameScene {
     const manager = this.flowManager ?? new SceneFlowManager(this);
     const nextNode = manager.advanceFromNodeId(flowNode.id);
     if (!nextNode) {
-      this.scene.start(target.sceneKey, { respawnPoint: target.spawnPoint });
+      this.scene.start(target.sceneKey, {
+        respawnPoint: target.spawnPoint,
+        skipLoad: true
+      });
       return;
     }
 

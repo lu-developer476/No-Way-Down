@@ -575,8 +575,14 @@ export class UpperFloorScene extends Phaser.Scene {
   }
 
   private async loadProgressFromApi(): Promise<void> {
+    const loadOwner = this.players;
+
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
+      if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== loadOwner) {
+        return;
+      }
+
       const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
       this.applyLoadedSnapshot(progress.campaign_snapshot);
       this.showApiStatus('Partida cargada desde servidor.', false);
@@ -588,6 +594,10 @@ export class UpperFloorScene extends Phaser.Scene {
 
       this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
     } catch (error) {
+      if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== loadOwner) {
+        return;
+      }
+
       const message = error instanceof Error ? error.message : 'No se pudo cargar progreso.';
       this.showApiStatus(`No se pudo cargar: ${message}`, true);
     }

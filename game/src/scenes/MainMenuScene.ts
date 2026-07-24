@@ -684,6 +684,7 @@ export class MainMenuScene extends Phaser.Scene {
     saveInitialRunSetup(setup);
     this.registry.remove('checkpoint');
     this.registry.remove('loadedCampaignSnapshot');
+    this.registry.remove('resumeProgressOnNextLevel');
     this.registry.set('initialRunSetup', setup);
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
@@ -707,6 +708,7 @@ export class MainMenuScene extends Phaser.Scene {
       return;
     }
 
+    this.registry.set('resumeProgressOnNextLevel', true);
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
     const flowManager = new SceneFlowManager(this);

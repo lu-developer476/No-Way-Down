@@ -637,6 +637,7 @@ export class GameScene extends Phaser.Scene {
     this.spawnsShutDown = false;
     this.advanceDialogueRequested = false;
     this.skipDialogueRequested = false;
+    this.selectedDialogueChoiceIndex = 0;
     this.movementLockedByNarrative = false;
     this.firstCleanupNarrativeTriggered = false;
     this.lateRescueAlliesIntegrated = false;

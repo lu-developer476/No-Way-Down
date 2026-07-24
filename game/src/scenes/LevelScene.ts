@@ -35,6 +35,9 @@ export class LevelScene extends GameScene {
   }
 
   create(data: LevelSceneCreateData = {}): void {
+    this.hasStarted = false;
+    this.isTransitioning = false;
+
     const flowNode = data.flowNode
       ?? (this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined);
 

@@ -497,15 +497,16 @@ export class UpperFloorScene extends Phaser.Scene {
     const checkpoint = this.players[0] ? { x: this.players[0].x, y: this.players[0].y } : { x: 140, y: this.scale.height - 130 };
     const checkpointLabel = `${Math.round(checkpoint.x)},${Math.round(checkpoint.y)}`;
     this.visitedCheckpoints.add(checkpointLabel);
+    const campaignSnapshot = this.buildCampaignSnapshot(checkpointLabel);
 
     return {
       user_id: this.getPlayerId(),
       current_level: this.scene.key,
       life: this.players.filter((player) => !player.isDead()).length,
-      allies_rescued: 0,
+      allies_rescued: campaignSnapshot.party.rescued.length,
       checkpoint: checkpointLabel,
       save_version: 2,
-      campaign_snapshot: this.buildCampaignSnapshot(checkpointLabel)
+      campaign_snapshot: campaignSnapshot
     };
   }
 

@@ -255,6 +255,10 @@ export class GameScene extends Phaser.Scene {
     }
   };
   private readonly onSaveApiKey = () => {
+    if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition) {
+      return;
+    }
+
     void this.saveProgressToApi();
   };
   private readonly onLoadApiKey = () => {

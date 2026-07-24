@@ -1746,7 +1746,7 @@ export class GameScene extends Phaser.Scene {
       .setStyle({ color: '#fecaca' })
       .setVisible(true);
 
-    window.setTimeout(() => {
+    this.time.delayedCall(PLAYER_RESPAWN_DELAY_MS, () => {
       if (!this.scene.isActive()) {
         return;
       }
@@ -1756,7 +1756,7 @@ export class GameScene extends Phaser.Scene {
         respawnPoint: this.respawnPoint,
         preserveCampaignProgress: true
       });
-    }, PLAYER_RESPAWN_DELAY_MS);
+    });
   }
 
   private createLevel4StairSegmentSystemExample(): StairSegmentSystem {

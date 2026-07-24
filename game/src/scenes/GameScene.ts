@@ -2347,6 +2347,13 @@ export class GameScene extends Phaser.Scene {
         }
 
         this.showApiStatus('Servidor no disponible. Partida local cargada.', true);
+        if (localProgress.current_level !== this.scene.key) {
+          this.scene.start(localProgress.current_level, {
+            respawnPoint: loadedCheckpoint,
+            skipLoad: true
+          });
+          return;
+        }
         this.scene.restart({ respawnPoint: loadedCheckpoint, skipLoad: true });
         return;
       }

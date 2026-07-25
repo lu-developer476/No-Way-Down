@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { getAudioManager } from '../audio/AudioManager';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
+import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
 
 const DEFAULT_ZOMBIE_SPEED = 80;
 const DEFAULT_DETECTION_RANGE = 260;
@@ -88,17 +89,26 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.walkAndAttackTarget(closestTarget);
   }
 
-  takeDamage(amount: number): void {
+  takeDamage(amount: number, context?: { sourceX?: number }): void {
     if (amount <= 0 || !this.active || this.isDying) {
       return;
     }
 
+    const healthBeforeDamage = this.health;
     this.health -= amount;
+    const killed = healthBeforeDamage > 0 && this.health <= 0;
+    this.getCombatFeedbackSystem()?.playZombieHit({
+      x: this.x, y: this.y, damage: amount, killed, sourceX: context?.sourceX, target: this
+    });
     this.spriteAnimationSystem.playHurt(this, 'zombie-walker');
 
     if (this.health <= 0) {
       this.die();
     }
+  }
+
+  private getCombatFeedbackSystem(): CombatFeedbackSystem | undefined {
+    return this.scene.registry.get('combatFeedbackSystem') as CombatFeedbackSystem | undefined;
   }
 
   resetStats(options: { health?: number; speed?: number; damage?: number } = {}): void {

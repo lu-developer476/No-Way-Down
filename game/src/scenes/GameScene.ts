@@ -54,6 +54,7 @@ import { CinematicSystem } from '../systems/core/CinematicSystem';
 import { DialogueSystem } from '../systems/core/DialogueSystem';
 import { LevelRestartManager } from '../systems/core/LevelRestartManager';
 import { CheckpointSystem } from '../systems/core/CheckpointSystem';
+import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -115,6 +116,7 @@ export class GameScene extends Phaser.Scene {
   private currentLevelId = 'level_2_subsuelo';
   private projectileSystem?: ProjectileSystem;
   private combatActionSystem?: CombatActionSystem;
+  private combatFeedbackSystem?: CombatFeedbackSystem;
   private pickupSystem?: PickupSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
@@ -299,6 +301,9 @@ export class GameScene extends Phaser.Scene {
       .setBounds(0, 0, levelWidth, levelHeight)
       .setZoom(ARCADE_CAMERA_ZOOM)
       .setRoundPixels(true);
+
+    this.combatFeedbackSystem = new CombatFeedbackSystem(this, this.cameras.main);
+    this.registry.set('combatFeedbackSystem', this.combatFeedbackSystem);
 
     this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
     addRetroScreenOverlay(this, 17.5);
@@ -577,6 +582,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.combatFeedbackSystem?.destroy();
+      this.combatFeedbackSystem = undefined;
+      this.registry.remove('combatFeedbackSystem');
       this.unregisterPauseControls();
       this.unregisterApiControls();
       this.unregisterNarrativeControls();

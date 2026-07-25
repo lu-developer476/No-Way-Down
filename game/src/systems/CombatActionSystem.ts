@@ -153,7 +153,7 @@ export class CombatActionSystem {
           return;
         }
 
-        zombie.takeDamage(swing.damage);
+        zombie.takeDamage(swing.damage, { sourceX: swing.actor.x });
         swing.hitTargets.add(zombie);
       });
     }

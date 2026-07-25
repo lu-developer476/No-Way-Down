@@ -7,6 +7,7 @@ import { applyLegacyWeaponOverrides, getWeaponRuntimeConfig, WeaponRuntimeConfig
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { getAudioManager } from '../audio/AudioManager';
 import { getAccuracySpreadMultiplier } from '../config/attributeRuntime';
+import { CombatFeedbackSystem } from './CombatFeedbackSystem';
 
 export interface FireConfig {
   originX: number;
@@ -101,8 +102,16 @@ export class ProjectileSystem {
     this.scene.physics.add.collider(this.projectiles, solidBodies, (projectileGameObject) => {
       const projectile = projectileGameObject as Projectile;
       getAudioManager(this.scene).play('impact', { x: projectile.x, y: projectile.y, volume: 0.08 });
+      const velocityX = (projectile.body as Phaser.Physics.Arcade.Body).velocity.x;
+      this.getCombatFeedbackSystem()?.playEnvironmentImpact({
+        x: projectile.x, y: projectile.y, weaponKey: projectile.getWeaponKey(), direction: velocityX < 0 ? -1 : 1
+      });
       projectile.deactivate();
     });
+  }
+
+  private getCombatFeedbackSystem(): CombatFeedbackSystem | undefined {
+    return this.scene.registry.get('combatFeedbackSystem') as CombatFeedbackSystem | undefined;
   }
 
   getGroup(): Phaser.Physics.Arcade.Group {

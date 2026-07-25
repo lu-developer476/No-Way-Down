@@ -84,18 +84,27 @@ const DEFAULT_INTERACTION_KEY = 'E';
 
 export class InteractableSystem {
   private readonly entries = new Map<string, InteractableEntry>();
+  private readonly interactionKey: string;
 
-  constructor(definitions: InteractableDefinition[]) {
+  constructor(
+    definitions: InteractableDefinition[],
+    interactionKey = DEFAULT_INTERACTION_KEY
+  ) {
+    const normalizedInteractionKey = interactionKey.trim().toUpperCase();
+    this.interactionKey = normalizedInteractionKey || DEFAULT_INTERACTION_KEY;
+
     definitions.forEach((definition) => {
       this.register(definition);
     });
   }
 
   register(definition: InteractableDefinition): void {
+    const normalizedPrompt = this.normalizePrompt(definition.prompt);
     const normalized: InteractableDefinition = {
       ...definition,
-      interactionKey: (definition.interactionKey ?? DEFAULT_INTERACTION_KEY).toUpperCase(),
+      interactionKey: this.interactionKey,
       interactionRadius: Math.max(20, definition.interactionRadius ?? 100),
+      prompt: normalizedPrompt,
       enabled: definition.enabled ?? true
     };
 
@@ -201,6 +210,19 @@ export class InteractableSystem {
       entry.runtime.interactions = 0;
       entry.runtime.lastInteractedAt = undefined;
     });
+  }
+
+  private normalizePrompt(prompt?: string): string | undefined {
+    const trimmedPrompt = prompt?.trim();
+    if (!trimmedPrompt) {
+      return undefined;
+    }
+
+    const description = trimmedPrompt
+      .replace(/^[^·]+·\s*/, '')
+      .trim();
+
+    return `${this.interactionKey} · ${description}`;
   }
 
   private describeType(type: InteractableType): string {

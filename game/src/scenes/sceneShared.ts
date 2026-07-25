@@ -33,6 +33,19 @@ export const INITIAL_SETUP_STORAGE_KEY = 'nwd.setup.initial';
 
 export type PlayableProtagonist = 'alan' | 'giovanna';
 export type GameDifficulty = 'complejo' | 'pesadilla';
+export type ProgressSceneKey = 'LevelScene' | 'UpperFloorScene';
+
+export function normalizeProgressSceneKey(value: unknown): ProgressSceneKey | null {
+  if (value === 'GameScene' || value === 'LevelScene') {
+    return 'LevelScene';
+  }
+
+  if (value === 'UpperFloorScene') {
+    return 'UpperFloorScene';
+  }
+
+  return null;
+}
 
 export interface InitialRunSetup {
   protagonist: PlayableProtagonist;
@@ -145,9 +158,9 @@ export function hasCompatibleLocalProgress(): boolean {
 
   try {
     const parsed = JSON.parse(raw) as LocalProgressLike;
-    const hasLevel = typeof parsed.current_level === 'string' && parsed.current_level.trim().length > 0;
+    const sceneKey = normalizeProgressSceneKey(parsed.current_level);
     const checkpoint = typeof parsed.checkpoint === 'string' ? parseCheckpoint(parsed.checkpoint) : undefined;
-    return hasLevel && Boolean(checkpoint);
+    return Boolean(sceneKey && checkpoint);
   } catch {
     return false;
   }

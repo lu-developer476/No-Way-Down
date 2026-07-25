@@ -117,36 +117,41 @@ export class CinematicCallSystem {
   private async runCinematic(runtimeCinematic: RuntimeCinematic): Promise<void> {
     const { config } = runtimeCinematic;
 
-    this.callbacks.onCinematicStarted?.(config);
+    try {
+      this.callbacks.onCinematicStarted?.(config);
 
-    if (config.movementLocked) {
-      this.callbacks.onMovementLockChanged?.(true, config);
-    }
-
-    await this.wait(config.preDialoguePauseMs, false);
-
-    for (const line of config.dialogue) {
-      if (this.callbacks.isSkipRequested?.()) {
-        break;
+      if (config.movementLocked) {
+        this.callbacks.onMovementLockChanged?.(true, config);
       }
 
-      this.presentation.showDialogueLine(line, config);
-      await this.wait(line.durationMs ?? DEFAULT_LINE_DURATION_MS, true);
+      await this.wait(config.preDialoguePauseMs, false);
 
-      if (this.callbacks.isSkipRequested?.()) {
-        break;
+      for (const line of config.dialogue) {
+        if (this.callbacks.isSkipRequested?.()) {
+          break;
+        }
+
+        this.presentation.showDialogueLine(line, config);
+        await this.wait(line.durationMs ?? DEFAULT_LINE_DURATION_MS, true);
+
+        if (this.callbacks.isSkipRequested?.()) {
+          break;
+        }
       }
+
+      this.callbacks.onObjectiveUpdated?.(config.objectiveAfterCall, config);
+    } catch (error) {
+      console.error(`[CinematicCallSystem] Error en ${config.id}.`, error);
+    } finally {
+      this.presentation.clearDialogue(config);
+
+      if (config.movementLocked) {
+        this.callbacks.onMovementLockChanged?.(false, config);
+      }
+
+      runtimeCinematic.played = true;
+      this.callbacks.onCinematicCompleted?.(config);
     }
-
-    this.presentation.clearDialogue(config);
-    this.callbacks.onObjectiveUpdated?.(config.objectiveAfterCall, config);
-
-    if (config.movementLocked) {
-      this.callbacks.onMovementLockChanged?.(false, config);
-    }
-
-    runtimeCinematic.played = true;
-    this.callbacks.onCinematicCompleted?.(config);
   }
 
   private wait(durationMs: number, allowAdvance: boolean): Promise<void> {

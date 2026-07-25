@@ -154,26 +154,30 @@ export class CinematicSystem {
   }
 
   private async runDataDriven(config: CinematicConfig): Promise<void> {
-    this.dataCallbacks.onCinematicStarted?.(config.cinematic_id);
-
     const shouldPauseGameplay = config.pauseGameplay ?? true;
-    if (shouldPauseGameplay) {
-      this.dataCallbacks.onGameplayPauseChanged?.(true, config.cinematic_id);
+
+    try {
+      this.dataCallbacks.onCinematicStarted?.(config.cinematic_id);
+
+      if (shouldPauseGameplay) {
+        this.dataCallbacks.onGameplayPauseChanged?.(true, config.cinematic_id);
+      }
+
+      const totalDurationMs = Math.max(0, config.duration);
+      const cameraTimeline = this.playCameraPath(config.cameraPath, totalDurationMs);
+      const dialogueTimeline = this.playDialogue(config.dialogueSequence, totalDurationMs, config.cinematic_id);
+
+      await Promise.all([cameraTimeline, dialogueTimeline, this.wait(totalDurationMs)]);
+    } catch (error) {
+      console.error(`[CinematicSystem] Error en ${config.cinematic_id}.`, error);
+    } finally {
+      if (shouldPauseGameplay) {
+        this.dataCallbacks.onGameplayPauseChanged?.(false, config.cinematic_id);
+      }
+
+      this.dialogueSystem?.clear(config.cinematic_id);
+      this.dataCallbacks.onCinematicCompleted?.(config.cinematic_id);
     }
-
-    const totalDurationMs = Math.max(0, config.duration);
-    const cameraTimeline = this.playCameraPath(config.cameraPath, totalDurationMs);
-    const dialogueTimeline = this.playDialogue(config.dialogueSequence, totalDurationMs, config.cinematic_id);
-
-    await Promise.all([cameraTimeline, dialogueTimeline, this.wait(totalDurationMs)]);
-
-    this.dialogueSystem?.clear(config.cinematic_id);
-
-    if (shouldPauseGameplay) {
-      this.dataCallbacks.onGameplayPauseChanged?.(false, config.cinematic_id);
-    }
-
-    this.dataCallbacks.onCinematicCompleted?.(config.cinematic_id);
   }
 
   private async playCameraPath(cameraPath: CameraPathPoint[], totalDurationMs: number): Promise<void> {

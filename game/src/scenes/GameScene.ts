@@ -23,6 +23,7 @@ import {
   LOCAL_PROGRESS_STORAGE_KEY,
   InitialRunSetup,
   loadInitialRunSetup,
+  normalizeProgressSceneKey,
   parseCheckpoint,
   PartyHudMember
 } from './sceneShared';
@@ -672,7 +673,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(): void {
-    if (this.isPauseMenuOpen() || this.movementLockedByNarrative) {
+    if (this.isPauseMenuOpen()) {
+      return;
+    }
+
+    this.updateResistancePhase();
+
+    if (this.movementLockedByNarrative) {
       return;
     }
 
@@ -711,7 +718,6 @@ export class GameScene extends Phaser.Scene {
     this.refreshAllyWorldHealthBars();
 
     const zombiesRemaining = this.zombieSystem?.getActiveCount() ?? 0;
-    this.updateResistancePhase();
     this.registry.set('zombiesRemaining', zombiesRemaining);
     if (!this.hasPlayerBeenDefeated) {
       this.spawnManager?.update(this.time.now);
@@ -2345,6 +2351,11 @@ export class GameScene extends Phaser.Scene {
 
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
+      const loadedSceneKey = normalizeProgressSceneKey(progress.current_level);
+      if (!loadedSceneKey) {
+        throw new Error(`Escena guardada incompatible: ${progress.current_level}`);
+      }
+
       if (this.hasPlayerBeenDefeated || this.hasTriggeredTransition || this.levelRestartManager !== loadOwner) {
         return;
       }
@@ -2358,10 +2369,10 @@ export class GameScene extends Phaser.Scene {
 
       this.showApiStatus('Partida cargada desde servidor.', false);
 
-      if (progress.current_level !== this.scene.key) {
+      if (loadedSceneKey !== this.scene.key) {
         this.registry.remove('campaignState');
         this.registry.remove('partyState');
-        this.scene.start(progress.current_level, { respawnPoint: loadedCheckpoint, skipLoad: true });
+        this.scene.start(loadedSceneKey, { respawnPoint: loadedCheckpoint, skipLoad: true });
         return;
       }
 
@@ -2373,6 +2384,12 @@ export class GameScene extends Phaser.Scene {
 
       const localProgress = this.loadLocalProgress();
       if (localProgress) {
+        const loadedSceneKey = normalizeProgressSceneKey(localProgress.current_level);
+        if (!loadedSceneKey) {
+          this.showApiStatus('Partida local incompatible: escena desconocida.', true);
+          return;
+        }
+
         const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);
         this.applyLoadedSnapshot(localProgress.campaign_snapshot);
         if (loadedCheckpoint) {
@@ -2380,10 +2397,10 @@ export class GameScene extends Phaser.Scene {
         }
 
         this.showApiStatus('Servidor no disponible. Partida local cargada.', true);
-        if (localProgress.current_level !== this.scene.key) {
+        if (loadedSceneKey !== this.scene.key) {
           this.registry.remove('campaignState');
           this.registry.remove('partyState');
-          this.scene.start(localProgress.current_level, {
+          this.scene.start(loadedSceneKey, {
             respawnPoint: loadedCheckpoint,
             skipLoad: true
           });

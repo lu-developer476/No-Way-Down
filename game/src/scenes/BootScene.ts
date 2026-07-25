@@ -5,8 +5,12 @@ import {
   getCharacterVisualsByFaction
 } from '../config/characterVisuals';
 import { getAudioManager } from '../audio/AudioManager';
-import { getAllWeaponCatalogEntries } from '../config/weaponCatalog';
+import {
+  getAllWeaponCatalogEntries,
+  type WeaponCatalogEntry
+} from '../config/weaponCatalog';
 import { CharacterAnimations } from '../systems/CharacterAnimations';
+import type { PickupType } from '../systems/PickupSystem';
 
 const CHARACTER_FRAME_WIDTH = 32;
 const CHARACTER_FRAME_HEIGHT = 48;
@@ -20,6 +24,16 @@ const CHARACTER_DEEP_SHADOW = 0x111318;
 const CHARACTER_HIGHLIGHT = 0xf8fafc;
 const ZOMBIE_WOUND = 0x7f1d1d;
 const ZOMBIE_DRY_BLOOD = 0x450a0a;
+const PICKUP_TYPES: readonly PickupType[] = [
+  'food_small', 'food_medium', 'food_large',
+  'medkit_small', 'medkit_medium', 'medkit_large',
+  'ammo_pistol', 'ammo_revolver', 'ammo_smg', 'ammo_shotgun',
+  'ammo_carbine', 'ammo_sniper_rifle', 'ammo_light_machine_gun'
+];
+
+function getPickupTextureKey(type: PickupType): string {
+  return `pickup-${type.replace(/_/g, '-')}`;
+}
 
 interface CharacterFramePose {
   bodyOffsetX: number;
@@ -145,6 +159,7 @@ export class BootScene extends Phaser.Scene {
 
     this.createWeaponProjectileTextures(graphics);
     this.createWeaponSilhouetteTextures(graphics);
+    this.createPickupTextures(graphics);
 
     graphics.clear();
     graphics.fillStyle(palette.bullet, 1);
@@ -185,22 +200,9 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('prop-stone-column', 40, 108);
 
     graphics.clear();
-    graphics.fillStyle(0x7f6250, 1);
-    graphics.fillRect(0, 0, 128, 64);
-    graphics.fillStyle(0xc8b18c, 1);
-    graphics.fillRect(0, 0, 128, 10);
-    graphics.fillStyle(0xdbc8a7, 0.85);
-    graphics.fillRect(10, 14, 108, 34);
-    graphics.fillStyle(0x111827, 0.95);
-    graphics.fillRect(18, 18, 24, 24);
-    graphics.fillRect(52, 18, 24, 24);
-    graphics.fillRect(86, 18, 24, 24);
-    graphics.fillStyle(0x67a7b7, 0.35);
-    graphics.fillRect(20, 20, 20, 18);
-    graphics.fillRect(54, 20, 20, 18);
-    graphics.fillRect(88, 20, 20, 18);
-    graphics.fillStyle(0x4a3428, 1);
-    graphics.fillRect(8, 48, 112, 12);
+    this.drawShadedRect(graphics, 3, 8, 122, 52, 0x79583f); this.drawOutlinedRect(graphics, 1, 3, 126, 10, 0xc8b18c); this.fillPixelRect(graphics, 6, 4, 116, 2, 0xead8b8);
+    for (let x = 10; x <= 82; x += 36) { this.drawOutlinedRect(graphics, x, 16, 30, 29, 0x18232c); this.fillPixelRect(graphics, x + 2, 18, 26, 18, 0x6096a3); this.fillPixelRect(graphics, x + 4, 19, 4, 14, 0xa8d4df); this.drawOutlinedRect(graphics, x + 7, 47, 16, 8, 0x5c3c2c); }
+    this.fillPixelRect(graphics, 5, 57, 118, 5, 0x2b211d); this.fillPixelRect(graphics, 4, 62, 120, 2, CHARACTER_DEEP_SHADOW);
     graphics.generateTexture('prop-bank-counter', 128, 64);
 
     graphics.clear();
@@ -223,18 +225,8 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('prop-turnstile-grille', 84, 88);
 
     graphics.clear();
-    graphics.fillStyle(0x51463f, 1);
-    graphics.fillRect(0, 0, 54, 98);
-    graphics.fillStyle(0x152433, 1);
-    graphics.fillRect(8, 8, 38, 28);
-    graphics.fillStyle(0x8fd5e4, 0.6);
-    graphics.fillRect(10, 10, 34, 24);
-    graphics.fillStyle(0xb58b43, 1);
-    graphics.fillRect(12, 46, 30, 10);
-    graphics.fillStyle(0x1f2937, 1);
-    graphics.fillRect(12, 58, 30, 28);
-    graphics.fillStyle(0xe2e8f0, 1);
-    graphics.fillRect(18, 64, 18, 4);
+    this.drawShadedRect(graphics, 5, 3, 44, 92, 0x51463f); this.drawOutlinedRect(graphics, 9, 9, 36, 29, 0x152433); this.fillPixelRect(graphics, 12, 12, 30, 20, 0x5596a8); this.fillPixelRect(graphics, 14, 13, 12, 3, 0xb9e5eb);
+    this.drawOutlinedRect(graphics, 12, 44, 30, 13, 0xb58b43); this.fillPixelRect(graphics, 16, 47, 22, 2, 0xead59d); for(let y=61;y<73;y+=4) for(let x=15;x<38;x+=6)this.fillPixelRect(graphics,x,y,3,2,0xcbd5e1); this.drawOutlinedRect(graphics,12,77,30,7,0x202832); this.fillPixelRect(graphics,16,87,22,3,0x111827); this.fillPixelRect(graphics,7,95,40,3,CHARACTER_DEEP_SHADOW);
     graphics.generateTexture('prop-atm', 54, 98);
 
     graphics.clear();
@@ -250,81 +242,30 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('prop-bench', 100, 32);
 
     graphics.clear();
-    graphics.fillStyle(0x8a6a43, 1);
-    graphics.fillRect(0, 0, 40, 54);
-    graphics.fillStyle(0x255f47, 1);
-    graphics.fillRect(4, 6, 32, 16);
-    graphics.fillStyle(0xf8fafc, 1);
-    graphics.fillRect(10, 28, 20, 4);
-    graphics.fillRect(8, 36, 24, 3);
+    this.drawShadedRect(graphics, 4, 7, 32, 44, 0x397357); this.drawOutlinedRect(graphics, 2, 3, 36, 10, 0x6e8b59); this.fillPixelRect(graphics,10,6,20,3,0x17251e); this.drawOutlinedRect(graphics,8,19,24,27,0x2d654b); this.fillPixelRect(graphics,11,22,18,2,0x73a885); this.fillPixelRect(graphics,17,27,6,3,0xf0f4e8); this.fillPixelRect(graphics,13,31,4,8,0xf0f4e8); this.fillPixelRect(graphics,23,31,4,8,0xf0f4e8); this.fillPixelRect(graphics,5,50,30,4,0x183428);
     graphics.generateTexture('prop-recycling-box', 40, 54);
 
     graphics.clear();
-    graphics.fillStyle(0x2b2f36, 1);
-    graphics.fillRect(0, 0, 42, 82);
-    graphics.fillStyle(0x86c8da, 1);
-    graphics.fillRect(5, 8, 32, 24);
-    graphics.fillStyle(0x0f172a, 1);
-    graphics.fillRect(8, 36, 26, 8);
-    graphics.fillStyle(0xc8b18c, 1);
-    graphics.fillRect(18, 32, 4, 46);
+    this.drawOutlinedRect(graphics, 3, 4, 36, 35, 0x2b2f36); this.drawShadedRect(graphics, 6, 7, 30, 27, 0x4d9aae); this.fillPixelRect(graphics,9,9,16,3,0xb7e6ec); this.fillPixelRect(graphics,27,11,5,18,0x83c7d4); this.drawOutlinedRect(graphics,17,38,8,34,0x4b5563); this.fillPixelRect(graphics,19,40,2,27,0xaeb8c4); this.drawOutlinedRect(graphics,8,70,26,9,0x303944); this.fillPixelRect(graphics,5,79,32,3,CHARACTER_DEEP_SHADOW);
     graphics.generateTexture('prop-info-screen', 42, 82);
 
     graphics.clear();
-    graphics.fillStyle(0x7c6a5b, 1);
-    graphics.fillRect(0, 0, 60, 40);
-    graphics.fillStyle(0xc8d0d9, 1);
-    graphics.fillRect(6, 4, 48, 16);
-    graphics.fillStyle(0x4b5563, 1);
-    graphics.fillRect(8, 24, 44, 6);
-    graphics.fillStyle(0x1f2937, 1);
-    graphics.fillRect(6, 32, 10, 6);
-    graphics.fillRect(44, 32, 10, 6);
+    this.fillPixelRect(graphics,4,35,52,3,CHARACTER_DEEP_SHADOW); this.drawOutlinedRect(graphics,4,5,50,8,0xbac3cc); this.fillPixelRect(graphics,7,6,44,2,0xf1f5f9); this.drawShadedRect(graphics,7,14,46,15,0x768391); this.fillPixelRect(graphics,10,17,40,3,0xb8c1c9); this.drawOutlinedRect(graphics,1,2,6,25,0x65717d); this.fillPixelRect(graphics,2,2,10,3,0xd4d9df); this.drawOutlinedRect(graphics,8,28,8,9,0x303944); this.drawOutlinedRect(graphics,44,28,8,9,0x303944);
     graphics.generateTexture('prop-utility-cart', 60, 40);
 
 
 
 
     graphics.clear();
-    graphics.fillStyle(0x5f3b25, 1);
-    graphics.fillRoundedRect(0, 12, 118, 34, 5);
-    graphics.fillStyle(0xc79b5f, 1);
-    graphics.fillRoundedRect(4, 4, 110, 18, 4);
-    graphics.fillStyle(0xf3d7a4, 0.85);
-    graphics.fillRect(12, 8, 22, 5);
-    graphics.fillRect(46, 8, 20, 5);
-    graphics.fillRect(80, 8, 24, 5);
-    graphics.fillStyle(0x2b1a12, 1);
-    graphics.fillRect(12, 42, 8, 18);
-    graphics.fillRect(96, 42, 8, 18);
-    graphics.fillStyle(0x334155, 1);
-    graphics.fillRect(24, 28, 18, 12);
-    graphics.fillRect(76, 28, 18, 12);
+    this.fillPixelRect(graphics,8,60,102,3,CHARACTER_DEEP_SHADOW); this.drawShadedRect(graphics,4,7,110,17,0xb7834f); this.fillPixelRect(graphics,7,5,104,4,0xe1b97e); this.drawOutlinedRect(graphics,8,25,102,25,0x704328); for(let x=12;x<108;x+=32)this.drawOutlinedRect(graphics,x,28,26,15,0x855b39); this.drawOutlinedRect(graphics,11,49,9,12,0x35231b); this.drawOutlinedRect(graphics,98,49,9,12,0x35231b); this.fillPixelRect(graphics,19,55,80,4,0x503522); this.fillPixelRect(graphics,14,10,18,5,0xf0dfbd); this.drawOutlinedRect(graphics,45,10,18,7,0x6b7782); this.drawOutlinedRect(graphics,79,9,23,8,0xd6c9aa);
     graphics.generateTexture('prop-dining-table', 118, 64);
 
     graphics.clear();
-    graphics.fillStyle(0x3f2f25, 1);
-    graphics.fillRect(0, 16, 144, 42);
-    graphics.fillStyle(0xd6b680, 1);
-    graphics.fillRect(0, 0, 144, 18);
-    graphics.fillStyle(0x7c2d12, 1);
-    graphics.fillRect(10, 22, 22, 28);
-    graphics.fillStyle(0xe5e7eb, 1);
-    graphics.fillRect(42, 24, 48, 5);
-    graphics.fillRect(98, 24, 34, 5);
-    graphics.fillStyle(0x111827, 0.9);
-    graphics.fillRect(10, 52, 124, 8);
+    this.fillPixelRect(graphics,5,61,134,3,CHARACTER_DEEP_SHADOW); this.drawOutlinedRect(graphics,2,5,140,13,0xd6b680); this.fillPixelRect(graphics,5,6,134,3,0xf3dfba); this.drawOutlinedRect(graphics,7,18,130,39,0x58402e); for(let x=10;x<134;x+=31)this.drawShadedRect(graphics,x,29,27,24,0x76543a); this.drawOutlinedRect(graphics,10,19,118,11,0xaab4bd); for(let x=14;x<122;x+=27)this.drawOutlinedRect(graphics,x,21,22,7,0x8b5936); this.fillPixelRect(graphics,5,55,134,7,0x292019);
     graphics.generateTexture('prop-cafeteria-counter', 144, 64);
 
     graphics.clear();
-    graphics.fillStyle(0x1f2937, 1);
-    graphics.fillRoundedRect(0, 0, 44, 86, 4);
-    graphics.fillStyle(0x7dd3fc, 0.55);
-    graphics.fillRect(8, 10, 28, 38);
-    graphics.fillStyle(0xef4444, 1);
-    graphics.fillRect(10, 54, 24, 5);
-    graphics.fillStyle(0xfacc15, 1);
-    graphics.fillRect(12, 64, 20, 4);
+    this.drawShadedRect(graphics, 3, 2, 38, 81, 0x273342); this.drawOutlinedRect(graphics, 6, 7, 25, 49, 0x17212c); this.fillPixelRect(graphics,8,9,21,45,0x467e91); this.fillPixelRect(graphics,10,10,4,40,0x93d9e4); for(let y=16;y<48;y+=10){this.fillPixelRect(graphics,9,y,19,2,0xb9dbe1); for(let x=10;x<27;x+=5)this.fillPixelRect(graphics,x,y+3,3,5,[0xef5350,0xf5c451,0x70b96a][(x+y)%3]);} this.drawOutlinedRect(graphics,33,12,6,32,0x171b22); this.fillPixelRect(graphics,35,15,2,11,0x55d5e8); this.drawOutlinedRect(graphics,9,62,25,11,0x141a22); this.fillPixelRect(graphics,13,66,17,3,0x090b10); this.fillPixelRect(graphics,5,82,34,4,CHARACTER_DEEP_SHADOW);
     graphics.generateTexture('prop-vending-machine', 44, 86);
 
     graphics.clear();
@@ -338,14 +279,7 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('prop-menu-board', 86, 42);
 
     graphics.clear();
-    graphics.fillStyle(0x16a34a, 1);
-    graphics.fillRoundedRect(8, 28, 28, 18, 4);
-    graphics.fillStyle(0x94a3b8, 1);
-    graphics.fillRect(20, 4, 4, 28);
-    graphics.fillStyle(0xd1d5db, 1);
-    graphics.fillRect(10, 0, 24, 6);
-    graphics.fillStyle(0x22c55e, 1);
-    graphics.fillRect(2, 42, 40, 12);
+    this.fillPixelRect(graphics,3,53,38,3,CHARACTER_DEEP_SHADOW); this.drawOutlinedRect(graphics,7,32,31,18,0xe3a91b); this.fillPixelRect(graphics,10,34,25,3,0xffcf3d); this.drawOutlinedRect(graphics,12,23,23,13,0x707b83); this.fillPixelRect(graphics,15,25,17,4,0xc8d0d5); this.fillPixelRect(graphics,27,3,3,23,0x9ba6ae); this.fillPixelRect(graphics,29,2,2,22,0xe0e6e9); this.fillPixelRect(graphics,4,44,8,7,0x93a7ad); this.fillPixelRect(graphics,1,48,12,4,0xc9d2d5); this.drawOutlinedRect(graphics,9,48,6,7,0x303944); this.drawOutlinedRect(graphics,31,48,6,7,0x303944);
     graphics.generateTexture('prop-mop-bucket', 44, 58);
 
     graphics.clear();
@@ -374,14 +308,7 @@ export class BootScene extends Phaser.Scene {
     graphics.generateTexture('prop-bronze-door', 96, 132);
 
     graphics.clear();
-    graphics.fillStyle(0x7a5a42, 1);
-    graphics.fillRect(0, 0, 112, 52);
-    graphics.fillStyle(0xc9b38c, 1);
-    graphics.fillRect(6, 6, 100, 8);
-    graphics.fillStyle(0x2d3748, 1);
-    graphics.fillRect(10, 14, 92, 6);
-    graphics.fillRect(14, 22, 12, 24);
-    graphics.fillRect(86, 22, 12, 24);
+    this.fillPixelRect(graphics,5,49,102,3,CHARACTER_DEEP_SHADOW); this.drawOutlinedRect(graphics,3,5,106,12,0xaeb7be); this.fillPixelRect(graphics,6,6,100,3,0xe5e9ec); this.drawOutlinedRect(graphics,10,8,39,7,0x56616b); this.drawOutlinedRect(graphics,62,8,39,7,0x68737d); this.drawOutlinedRect(graphics,11,17,8,31,0x4a5660); this.drawOutlinedRect(graphics,93,17,8,31,0x4a5660); this.fillPixelRect(graphics,18,38,76,5,0x65717b); this.fillPixelRect(graphics,21,39,70,2,0xc1c8ce);
     graphics.generateTexture('prop-service-table', 112, 52);
 
     graphics.destroy();
@@ -637,62 +564,63 @@ export class BootScene extends Phaser.Scene {
 
   private createWeaponSilhouetteTextures(graphics: Phaser.GameObjects.Graphics): void {
     const createdWeaponKeys = new Set<string>();
-
-    const drawWeaponSilhouette = (weaponKey: string, color: number, width: number, height: number, barrel = 0, accent = 0x0f172a): void => {
-      graphics.clear();
-      graphics.fillStyle(color, 1);
-      graphics.fillRect(2, Math.floor(height / 2) - 2, Math.max(6, width - 6), 4);
-      if (barrel > 0) {
-        graphics.fillRect(width - barrel - 1, Math.floor(height / 2) - 1, barrel, 2);
-      }
-      graphics.fillStyle(accent, 1);
-      graphics.fillRect(1, Math.floor(height / 2) + 2, 3, Math.max(2, Math.floor(height / 3)));
-      graphics.generateTexture(`weapon-${weaponKey}`, width, height);
-
-      graphics.clear();
-      graphics.fillStyle(0x0f172a, 0.88);
-      graphics.fillRoundedRect(0, 0, width + 8, height + 8, 4);
-      graphics.fillStyle(color, 1);
-      graphics.fillRect(4, 4 + Math.floor(height / 2) - 2, Math.max(6, width - 6), 4);
-      if (barrel > 0) {
-        graphics.fillRect(width - barrel + 3, 4 + Math.floor(height / 2) - 1, barrel, 2);
-      }
-      graphics.fillStyle(0xe2e8f0, 1);
-      graphics.fillRect(2, 2, width + 4, 1);
-      graphics.generateTexture(`weapon-hud-${weaponKey}`, width + 8, height + 8);
-    };
-
     getAllWeaponCatalogEntries().forEach((weapon) => {
-      if (createdWeaponKeys.has(weapon.key)) {
-        return;
-      }
-
-      const isLong = weapon.family === 'rifle' || weapon.family === 'shotgun' || weapon.key === 'light_machine_gun';
-      const isMelee = weapon.isMelee || weapon.isDefensive;
-      const width = isLong ? 22 : isMelee ? 18 : 14;
-      const height = isLong ? 8 : 10;
-      const barrel = isLong ? 8 : isMelee ? 4 : 3;
-      drawWeaponSilhouette(weapon.key, weapon.projectileTint ?? 0xcbd5e1, width, height, barrel);
+      if (createdWeaponKeys.has(weapon.key)) return;
+      this.createHeldWeaponTexture(graphics, weapon);
+      this.createHudWeaponTexture(graphics, weapon);
       createdWeaponKeys.add(weapon.key);
     });
+    this.createMissingWeaponTextures(graphics);
+  }
 
-    graphics.clear();
-    graphics.fillStyle(0x7f1d1d, 1);
-    graphics.fillRoundedRect(0, 0, 22, 12, 4);
-    graphics.fillStyle(0xfde68a, 1);
-    graphics.fillRect(4, 5, 14, 2);
-    graphics.fillRect(10, 2, 2, 8);
-    graphics.generateTexture('weapon-missing', 22, 12);
+  private getHeldWeaponTextureSize(weapon: WeaponCatalogEntry): { width: number; height: number } {
+    return ({ pistol: { width: 22, height: 14 }, revolver: { width: 24, height: 14 }, smg: { width: 28, height: 16 }, shotgun: { width: 38, height: 16 }, carbine: { width: 36, height: 16 }, sniper_rifle: { width: 44, height: 16 }, light_machine_gun: { width: 42, height: 18 }, knife: { width: 22, height: 14 }, machete: { width: 32, height: 16 }, sword: { width: 40, height: 16 }, tray_shield: { width: 24, height: 28 } } as Record<string, { width: number; height: number }>)[weapon.key] ?? { width: 28, height: 16 };
+  }
 
-    graphics.clear();
-    graphics.fillStyle(0x111827, 0.95);
-    graphics.fillRoundedRect(0, 0, 30, 20, 4);
-    graphics.fillStyle(0xf87171, 1);
-    graphics.fillRoundedRect(4, 4, 22, 12, 3);
-    graphics.fillStyle(0xfef3c7, 1);
-    graphics.fillRect(8, 9, 14, 2);
-    graphics.fillRect(14, 6, 2, 8);
-    graphics.generateTexture('weapon-hud-missing', 30, 20);
+  private createHeldWeaponTexture(g: Phaser.GameObjects.Graphics, weapon: WeaponCatalogEntry): void {
+    const size = this.getHeldWeaponTextureSize(weapon); g.clear(); this.drawWeaponPixelArt(g, weapon, 0, 0); g.generateTexture(`weapon-${weapon.key}`, size.width, size.height);
+  }
+
+  private createHudWeaponTexture(g: Phaser.GameObjects.Graphics, weapon: WeaponCatalogEntry): void {
+    const size = this.getHeldWeaponTextureSize(weapon); g.clear(); g.fillStyle(0x0b1018, 0.94); g.fillRoundedRect(0, 0, size.width + 8, size.height + 8, 4); g.lineStyle(1, 0x64748b, 0.65); g.strokeRoundedRect(1, 1, size.width + 6, size.height + 6, 3); this.drawWeaponPixelArt(g, weapon, 4, 4); g.generateTexture(`weapon-hud-${weapon.key}`, size.width + 8, size.height + 8);
+  }
+
+  private drawWeaponPixelArt(g: Phaser.GameObjects.Graphics, weapon: WeaponCatalogEntry, x: number, y: number): void {
+    const tint = weapon.projectileTint ?? 0xaeb8c4, metal = this.shadeColor(tint, -35), light = this.shadeColor(tint, 48), wood = 0x7a4728;
+    const r = (a:number,b:number,w:number,h:number,c:number) => this.drawOutlinedRect(g,x+a,y+b,w,h,c,CHARACTER_OUTLINE);
+    const q = (a:number,b:number,w:number,h:number,c:number) => this.drawShadedRect(g,x+a,y+b,w,h,c);
+    const p = (a:number,b:number,w:number,h:number,c:number) => this.fillPixelRect(g,x+a,y+b,w,h,c);
+    switch (weapon.key) {
+      case 'pistol': q(4,4,14,5,metal); r(16,5,5,3,tint); r(7,8,5,5,0x59483c); p(3,3,3,2,light); p(12,9,4,2,CHARACTER_OUTLINE); break;
+      case 'revolver': r(3,5,8,4,metal); r(10,4,6,7,0xb77935); q(15,5,8,4,tint); r(7,9,5,5,wood); p(3,3,4,2,CHARACTER_OUTLINE); break;
+      case 'smg': r(2,6,5,4,CHARACTER_OUTLINE); q(6,4,14,7,metal); r(19,6,8,3,tint); r(9,10,5,6,0x303943); r(15,10,4,4,0x4b5563); break;
+      case 'shotgun': r(1,7,10,6,wood); q(10,6,9,6,metal); r(18,8,8,5,wood); r(25,6,13,3,tint); p(35,4,2,2,light); break;
+      case 'carbine': r(1,7,8,5,0x4b5563); q(8,5,14,7,metal); r(21,6,9,5,0x556b46); r(29,6,7,3,tint); r(15,11,6,5,0x263527); p(23,3,3,2,light); break;
+      case 'sniper_rifle': r(1,7,11,5,wood); q(11,6,11,6,metal); r(21,7,23,3,tint); r(12,2,13,4,CHARACTER_OUTLINE); p(14,3,9,1,light); p(19,12,2,4,CHARACTER_OUTLINE); p(28,10,2,5,CHARACTER_OUTLINE); break;
+      case 'light_machine_gun': r(1,8,9,6,0x4b5563); q(9,6,16,8,metal); r(24,8,18,3,tint); r(13,13,9,5,0x7a5b2e); r(8,3,13,4,CHARACTER_OUTLINE); p(18,14,7,2,0xb77935); break;
+      case 'knife': r(2,9,7,4,wood); r(8,7,3,6,0xb77935); p(10,7,9,4,metal); p(13,5,6,2,light); p(19,7,2,2,light); break;
+      case 'machete': r(2,10,8,5,0x3f332d); r(9,8,3,7,0xb77935); p(11,5,17,7,metal); p(27,7,4,4,metal); p(13,10,15,2,light); break;
+      case 'sword': r(1,11,7,4,wood); r(7,8,3,8,0xb77935); p(10,8,26,5,metal); p(15,6,20,2,light); p(35,8,4,3,light); p(2,9,3,2,0xb77935); break;
+      case 'tray_shield': r(3,2,18,24,metal); r(5,4,14,20,tint); p(7,5,3,14,light); p(15,17,3,3,this.shadeColor(metal,-45)); r(9,10,7,4,CHARACTER_OUTLINE); break;
+      default: q(3,5,19,7,tint); r(20,7,7,3,metal); r(6,11,5,5,CHARACTER_OUTLINE);
+    }
+  }
+
+  private createMissingWeaponTextures(g: Phaser.GameObjects.Graphics): void {
+    g.clear(); this.drawOutlinedRect(g,1,1,20,10,0x7f1d1d); this.fillPixelRect(g,5,5,12,2,0xfde68a); this.fillPixelRect(g,10,2,2,8,0xfde68a); g.generateTexture('weapon-missing',22,12);
+    g.clear(); g.fillStyle(0x0b1018,0.96); g.fillRoundedRect(0,0,30,20,4); this.drawOutlinedRect(g,4,4,22,12,0x7f1d1d,0x94a3b8); this.fillPixelRect(g,8,9,14,2,0xfef3c7); this.fillPixelRect(g,14,6,2,8,0xfef3c7); g.generateTexture('weapon-hud-missing',30,20);
+  }
+
+  private createPickupTextures(g: Phaser.GameObjects.Graphics): void {
+    const sizes: Record<PickupType,[number,number]> = { food_small:[18,14], food_medium:[24,18], food_large:[30,22], medkit_small:[20,16], medkit_medium:[26,20], medkit_large:[32,24], ammo_pistol:[22,16], ammo_revolver:[22,16], ammo_smg:[28,18], ammo_shotgun:[28,18], ammo_carbine:[28,18], ammo_sniper_rifle:[28,18], ammo_light_machine_gun:[32,20] };
+    PICKUP_TYPES.forEach(type => { const [w,h]=sizes[type]; g.clear();
+      if (type.startsWith('food_')) { const c=type==='food_small'?0xe3c980:type==='food_medium'?0xb96b3b:0x667f47; this.drawShadedRect(g,2,type==='food_small'?4:5,w-4,h-7,c);
+        if(type==='food_small'){this.fillPixelRect(g,1,6,3,4,0xf8e7ba);this.fillPixelRect(g,w-4,6,3,4,0xf8e7ba);this.fillPixelRect(g,7,5,4,7,0xd34f3f);} else if(type==='food_medium'){this.fillPixelRect(g,5,7,14,3,0xf0d08b);this.fillPixelRect(g,6,11,6,3,0x6c8b45);this.fillPixelRect(g,13,11,5,3,0xa94732);} else {this.drawOutlinedRect(g,10,1,10,5,c);this.fillPixelRect(g,5,9,9,8,0xd6b765);this.fillPixelRect(g,16,9,9,8,0x8ba759);this.fillPixelRect(g,13,10,4,5,0xf3e6bc);}
+      } else if(type.startsWith('medkit_')) { const i=type==='medkit_small'?2:1; this.drawShadedRect(g,i,4,w-i*2,h-6,0xe7dfd0); this.drawOutlinedRect(g,Math.floor(w/2)-4,0,8,5,0x6b7280);this.fillPixelRect(g,Math.floor(w/2)-2,6,4,h-6,0xc53030);this.fillPixelRect(g,Math.floor(w/2)-5,9,10,4,0xc53030);this.fillPixelRect(g,3,h-2,w-6,2,CHARACTER_DEEP_SHADOW);
+      } else { const cs:Record<string,number>={ammo_pistol:0x52769a,ammo_revolver:0x825d3d,ammo_smg:0x596574,ammo_shotgun:0x8f3030,ammo_carbine:0x526340,ammo_sniper_rifle:0x66717d,ammo_light_machine_gun:0x6b5b36}; const c=cs[type]; this.drawShadedRect(g,1,4,w-2,h-5,c);this.fillPixelRect(g,3,5,w-6,2,this.shadeColor(c,45));this.fillPixelRect(g,3,9,w-6,3,0xc7a64b);
+        if(type==='ammo_smg'){this.drawOutlinedRect(g,9,2,4,15,0x303943);this.drawOutlinedRect(g,16,2,4,15,0x303943);} else if(type==='ammo_shotgun'){for(let i=4;i<23;i+=6)this.drawOutlinedRect(g,i,7,4,9,0xb83232);} else if(type==='ammo_light_machine_gun'){for(let i=4;i<28;i+=4)this.fillPixelRect(g,i,13,3,5,0xd5a83d);} else for(let i=5;i<w-4;i+=7)this.fillPixelRect(g,i,7,type==='ammo_sniper_rifle'?5:3,7,type==='ammo_revolver'?0xd6a84b:0xcbd5e1);
+      } g.generateTexture(getPickupTextureKey(type),w,h); });
+    g.clear();this.drawOutlinedRect(g,1,2,22,16,0x651f28,0xfca5a5);this.fillPixelRect(g,10,5,4,8,0xfacc15);this.fillPixelRect(g,10,15,4,2,0xfacc15);g.generateTexture('pickup-missing',24,20);
   }
 
   private createWeaponProjectileTextures(graphics: Phaser.GameObjects.Graphics): void {

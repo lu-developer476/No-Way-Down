@@ -682,6 +682,11 @@ export class UpperFloorScene extends Phaser.Scene {
 
       const loadedCheckpoint = parseCheckpoint(progress.checkpoint);
       this.applyLoadedSnapshot(progress.campaign_snapshot);
+
+      if (loadedCheckpoint) {
+        this.registry.set('checkpoint', loadedCheckpoint);
+      }
+
       this.registry.remove('campaignState');
       this.registry.remove('partyState');
       this.showApiStatus('Partida cargada desde servidor.', false);
@@ -701,6 +706,11 @@ export class UpperFloorScene extends Phaser.Scene {
       if (localProgress) {
         const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);
         this.applyLoadedSnapshot(localProgress.campaign_snapshot);
+
+        if (loadedCheckpoint) {
+          this.registry.set('checkpoint', loadedCheckpoint);
+        }
+
         this.registry.remove('campaignState');
         this.registry.remove('partyState');
         this.showApiStatus('Servidor no disponible. Partida local cargada.', true);

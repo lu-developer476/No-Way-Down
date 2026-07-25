@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { AllyAI } from '../entities/AllyAI';
 import { visualTheme } from '../scenes/visualTheme';
+import { controlManager } from '../input/ControlManager';
 
 export type PickupType =
   | 'food_small'
@@ -54,13 +55,27 @@ export interface PickupRewardDefinition {
 interface PickupRuntime {
   definition: PickupDefinition;
   consumed: boolean;
-  marker: Phaser.GameObjects.Arc;
+  visual: Phaser.GameObjects.Image;
+  glow: Phaser.GameObjects.Ellipse;
   label: Phaser.GameObjects.Text;
+  baseScale: number;
+  bobTween: Phaser.Tweens.Tween;
 }
 
 type PickupConsumer = Player | AllyAI;
 
 const DEFAULT_INTERACTION_RADIUS = 56;
+
+function getPickupTextureKey(type: PickupType): string {
+  return `pickup-${type.replace(/_/g, '-')}`;
+}
+
+function getPickupVisualScale(type: PickupType): number {
+  if (type.endsWith('_small')) return 0.9;
+  if (type.endsWith('_large')) return 1.08;
+  if (type === 'ammo_light_machine_gun') return 1.06;
+  return 1;
+}
 
 const HEALTH_RESTORE_BY_PICKUP: Record<Extract<PickupType, `food_${string}` | `medkit_${string}`>, number> = {
   food_small: 14,
@@ -120,27 +135,40 @@ export class PickupSystem {
 
   constructor(scene: Phaser.Scene, config: PickupSystemConfig) {
     this.scene = scene;
-    this.runtimes = config.pickups.map((pickup) => {
-      const marker = this.scene.add.circle(
-        pickup.x,
-        pickup.y,
-        10,
-        this.getPickupColor(pickup.type),
-        0.85
-      ).setDepth(14);
-
-      const label = this.scene.add.text(pickup.x, pickup.y - 18, getDisplayLabel(pickup), {
-        fontSize: '10px',
-        color: '#e2e8f0',
-        stroke: '#0f172a',
-        strokeThickness: 3
-      }).setOrigin(0.5).setDepth(14).setAlpha(0.72);
+    this.runtimes = config.pickups.map((pickup, index) => {
+      const requestedTexture = getPickupTextureKey(pickup.type);
+      const texture = this.scene.textures.exists(requestedTexture) ? requestedTexture : 'pickup-missing';
+      const baseScale = getPickupVisualScale(pickup.type);
+      const glow = this.scene.add.ellipse(pickup.x, pickup.y + 7, 30, 8, this.getPickupColor(pickup.type), 0.15)
+        .setDepth(13.7)
+        .setBlendMode(Phaser.BlendModes.ADD);
+      const visual = this.scene.add.image(pickup.x, pickup.y - 3, texture).setDepth(14).setScale(baseScale);
+      const label = this.scene.add.text(pickup.x, pickup.y - 28, getDisplayLabel(pickup), {
+        fontSize: '8px',
+        color: '#f8f1df',
+        backgroundColor: 'rgba(9, 7, 11, 0.9)',
+        padding: { x: 4, y: 2 },
+        stroke: '#090b10',
+        strokeThickness: 2,
+        fontStyle: 'bold'
+      }).setOrigin(0.5).setDepth(14.5).setVisible(false);
+      const bobTween = this.scene.tweens.add({
+        targets: visual,
+        y: pickup.y - 6,
+        duration: 950 + (index % 4) * 90,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.InOut'
+      });
 
       return {
         definition: pickup,
         consumed: false,
-        marker,
-        label
+        visual,
+        glow,
+        label,
+        baseScale,
+        bobTween
       };
     });
   }
@@ -195,6 +223,12 @@ export class PickupSystem {
   }
 
   update(players: Player[], consumers: PickupConsumer[]): void {
+    this.runtimes.forEach((runtime) => {
+      if (runtime.consumed) return;
+      runtime.label.setVisible(false);
+      runtime.glow.setAlpha(0.15);
+      runtime.visual.setScale(runtime.baseScale);
+    });
     const candidate = this.findNearestAvailablePickup(players);
 
     if (!candidate) {
@@ -202,7 +236,10 @@ export class PickupSystem {
       return;
     }
 
-    this.setInteractionHint(`E · RECOGER ${getDisplayLabel(candidate.runtime.definition)}`);
+    candidate.runtime.label.setVisible(true);
+    candidate.runtime.glow.setAlpha(0.38);
+    candidate.runtime.visual.setScale(candidate.runtime.baseScale * 1.06);
+    this.setInteractionHint(`${controlManager.getDisplayLabel('interact').toUpperCase()} · RECOGER ${getDisplayLabel(candidate.runtime.definition)}`);
 
     const interactor = players.find((player) => (
       player.isInteractJustPressed() && this.isPlayerInPickupRange(player, candidate.runtime.definition)
@@ -219,7 +256,9 @@ export class PickupSystem {
     }
 
     candidate.runtime.consumed = true;
-    candidate.runtime.marker.destroy();
+    candidate.runtime.bobTween.stop();
+    candidate.runtime.visual.destroy();
+    candidate.runtime.glow.destroy();
     candidate.runtime.label.destroy();
     this.setInteractionHint(`${getDisplayLabel(candidate.runtime.definition)} recogido.`);
   }
@@ -229,7 +268,9 @@ export class PickupSystem {
 
     this.runtimes.forEach((runtime) => {
       if (!runtime.consumed) {
-        runtime.marker.destroy();
+        runtime.bobTween.stop();
+        runtime.visual.destroy();
+        runtime.glow.destroy();
         runtime.label.destroy();
       }
     });

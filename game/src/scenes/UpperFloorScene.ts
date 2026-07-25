@@ -585,6 +585,31 @@ export class UpperFloorScene extends Phaser.Scene {
     }
 
     this.registry.set('loadedCampaignSnapshot', snapshot);
+
+    if (snapshot.setup) {
+      const protagonistRaw = snapshot.setup.protagonist;
+      const protagonist = protagonistRaw === 'alan' || protagonistRaw === 'alan-nahuel' || protagonistRaw === 'alanNahuel'
+        ? 'alan'
+        : protagonistRaw === 'giovanna'
+          ? 'giovanna'
+          : null;
+      const difficulty = snapshot.setup.difficulty;
+      const validDifficulty = difficulty === 'complejo' || difficulty === 'pesadilla';
+
+      if (protagonist && validDifficulty) {
+        this.registry.set('initialRunSetup', {
+          protagonist,
+          difficulty,
+          party: {
+            required: snapshot.setup.initial_party.required,
+            optional: snapshot.setup.initial_party.optional
+          },
+          startedAt: new Date().toISOString(),
+          version: 1
+        });
+      }
+    }
+
     snapshot.checkpoints?.visited?.forEach((value) => this.visitedCheckpoints.add(value));
   }
 

@@ -521,13 +521,21 @@ export class UpperFloorScene extends Phaser.Scene {
   private buildCampaignSnapshot(checkpoint: string): CampaignSnapshot {
     const setup = this.getInitialSetup();
     const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
-    const partyMembers = (this.registry.get('partyState') as PartyMember[] | undefined) ?? [];
-    const party = loadedSnapshot?.party ?? {
-      active: partyMembers.filter((member) => member.status === 'active').map((member) => member.name),
-      dead: partyMembers.filter((member) => member.status === 'dead').map((member) => member.name),
-      rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
-      infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
-    };
+    const partyState = this.registry.get('partyState') as PartyMember[] | undefined;
+    const partyMembers = partyState ?? [];
+    const party = partyState
+      ? {
+          active: partyMembers.filter((member) => member.status === 'active').map((member) => member.name),
+          dead: partyMembers.filter((member) => member.status === 'dead').map((member) => member.name),
+          rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
+          infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
+        }
+      : loadedSnapshot?.party ?? {
+          active: [],
+          dead: [],
+          rescued: [],
+          infected: []
+        };
     const campaignState = this.registry.get('campaignState') as CampaignStateData | undefined;
     const narrative = campaignState
       ? {

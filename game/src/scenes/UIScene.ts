@@ -17,6 +17,13 @@ interface ProtagonistHud {
   ammoText: Phaser.GameObjects.Text;
   statusText: Phaser.GameObjects.Text;
 }
+interface PartyRosterRow {
+  container: Phaser.GameObjects.Container;
+  background: Phaser.GameObjects.Rectangle;
+  nameText: Phaser.GameObjects.Text;
+  hpBackground: Phaser.GameObjects.Rectangle;
+  hpFill: Phaser.GameObjects.Rectangle;
+}
 type CombatHudStatusTone = 'normal' | 'reload' | 'switch' | 'empty';
 type DialogueView = { speaker: string; text: string; emotion?: string; portrait?: string; choices?: { text: string }[] };
 
@@ -35,6 +42,8 @@ export class UIScene extends Phaser.Scene {
   private dialoguePortraitText?: Phaser.GameObjects.Text;
   private controlsLegendText?: Phaser.GameObjects.Text;
   private gameplayHudLayer?: Phaser.GameObjects.Container;
+  private partyRosterContainer?: Phaser.GameObjects.Container;
+  private readonly partyRosterRows: PartyRosterRow[] = [];
   private controlsCard?: Phaser.GameObjects.Container;
   private objectiveCard?: Phaser.GameObjects.Container;
   private threatCard?: Phaser.GameObjects.Container;
@@ -92,7 +101,15 @@ export class UIScene extends Phaser.Scene {
   private handlePartyHudChanged(_parent: Phaser.Data.DataManager, value: PartyHudMember[]): void {
     const members = Array.isArray(value) ? value : [];
     const protagonist = members.find((member) => member.role === 'protagonist') ?? members[0];
-    if (!protagonist || !this.protagonistHud) { this.protagonistHud?.container.setVisible(false); return; }
+    const companions = protagonist
+      ? members.filter((member) => member.id !== protagonist.id).slice(0, 8)
+      : members.slice(0, 8);
+    if (!protagonist || !this.protagonistHud) {
+      this.protagonistHud?.container.setVisible(false);
+      this.previousProtagonistHud = undefined;
+      this.refreshPartyRoster(companions);
+      return;
+    }
     const maxHp = Math.max(1, Math.round(protagonist.maxHealth));
     const hp = Phaser.Math.Clamp(Math.round(protagonist.health), 0, maxHp);
     const ratio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
@@ -120,6 +137,30 @@ export class UIScene extends Phaser.Scene {
     else this.showCombatStatus('', 'normal', 0);
     this.protagonistHud.container.setVisible(Boolean(this.gameplayHudLayer?.visible));
     this.previousProtagonistHud = { ...protagonist };
+    this.refreshPartyRoster(companions);
+  }
+
+  private refreshPartyRoster(members: PartyHudMember[]): void {
+    this.partyRosterRows.forEach((row, index) => {
+      const member = members[index];
+      if (!member) {
+        row.container.setVisible(false);
+        return;
+      }
+
+      const maxHealth = Math.max(1, member.maxHealth);
+      const health = Phaser.Math.Clamp(member.health, 0, maxHealth);
+      const ratio = Phaser.Math.Clamp(health / maxHealth, 0, 1);
+      const color = ratio <= 0.25
+        ? visualTheme.palette.uiHealthDanger
+        : ratio <= 0.5
+          ? visualTheme.palette.uiAmmo
+          : visualTheme.palette.uiHealth;
+      row.container.setVisible(true).setAlpha(health > 0 ? 1 : 0.45);
+      row.nameText.setText(member.name.toUpperCase());
+      row.hpFill.setSize(102 * ratio, 3).setFillStyle(color);
+    });
+    this.partyRosterContainer?.setVisible(members.length > 0);
   }
 
   private getWeaponDisplayLabel(key?: string): string { return key ? getWeaponCatalogEntry(key).displayName : '—'; }
@@ -228,6 +269,7 @@ export class UIScene extends Phaser.Scene {
     const protagonistContainer = this.add.container(0, 0, protagonistObjects).setVisible(false);
     this.gameplayHudLayer.add(protagonistContainer);
     this.protagonistHud = { container: protagonistContainer, nameText, hpFill, hpValueText, activeWeaponIcon, secondaryWeaponIcon, activeWeaponText, secondaryWeaponText, ammoText, statusText };
+    this.createPartyRoster(font);
 
     const threatBg = this.add.rectangle(this.scale.width - 12, 12, 154, 34, visualTheme.palette.uiPanelFill, .94).setOrigin(1, 0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
     this.zombieCountText = this.add.text(this.scale.width - 24, 22, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '12px', fontFamily: font }).setOrigin(1, 0);
@@ -258,6 +300,44 @@ export class UIScene extends Phaser.Scene {
 
     this.createPauseLayer(font);
     this.createTransitionLayer(font);
+  }
+
+  private createPartyRoster(fontFamily: string): void {
+    const objects: Phaser.GameObjects.GameObject[] = [];
+    const panel = this.add.rectangle(12, 130, 246, 112, visualTheme.palette.uiPanelFill, 0.92)
+      .setOrigin(0)
+      .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
+    const header = this.add.rectangle(14, 132, 242, 17, visualTheme.palette.uiPanelRaised).setOrigin(0);
+    const title = this.add.text(20, 135, 'GRUPO', {
+      color: visualTheme.palette.uiTextSecondary,
+      fontSize: '8px',
+      fontFamily,
+      fontStyle: 'bold'
+    });
+    objects.push(panel, header, title);
+
+    for (let index = 0; index < 8; index += 1) {
+      const column = index % 2;
+      const row = Math.floor(index / 2);
+      const background = this.add.rectangle(0, 0, 112, 20, visualTheme.palette.uiPanelRaised, 0.5)
+        .setOrigin(0)
+        .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, 0.35);
+      const nameText = this.add.text(5, 2, '', {
+        color: visualTheme.palette.uiTextPrimary,
+        fontSize: '8px',
+        fontFamily,
+        fontStyle: 'bold'
+      }).setMaxLines(1);
+      const hpBackground = this.add.rectangle(5, 15, 102, 3, visualTheme.palette.uiPanelShadow, 0.95).setOrigin(0);
+      const hpFill = this.add.rectangle(5, 15, 102, 3, visualTheme.palette.uiHealth).setOrigin(0);
+      const container = this.add.container(18 + column * 120, 152 + row * 22, [background, nameText, hpBackground, hpFill])
+        .setVisible(false);
+      this.partyRosterRows.push({ container, background, nameText, hpBackground, hpFill });
+      objects.push(container);
+    }
+
+    this.partyRosterContainer = this.add.container(0, 0, objects).setVisible(false);
+    this.gameplayHudLayer?.add(this.partyRosterContainer);
   }
 
   private createPauseLayer(font: string): void {

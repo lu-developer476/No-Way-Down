@@ -45,7 +45,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly nameTag: Phaser.GameObjects.Text;
   private readonly partyMarker: Phaser.GameObjects.Arc;
   private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
-  private isNameTagVisible = true;
+  private isNameTagVisible = false;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
   private readonly combatActionSystem: CombatActionSystem;
@@ -106,6 +106,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     });
     this.nameTag.setOrigin(0.5, 1);
     this.nameTag.setDepth(25);
+    this.nameTag.setVisible(false);
 
     this.partyMarker = scene.add.circle(this.x, this.y + 4, 10, profile.tint, 0.28);
     this.partyMarker.setStrokeStyle(2, profile.tint, 0.82);

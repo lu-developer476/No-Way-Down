@@ -445,7 +445,11 @@ export class UpperFloorScene extends Phaser.Scene {
 
     this.time.delayedCall(500, () => {
       if (target.sceneKey === 'GameScene') {
-        levelManager.transitionToLevel(this, 'level_3_upper_floor', 'return_dining');
+        this.registry.set('checkpoint', target.spawnPoint);
+        this.scene.start('LevelScene', {
+          respawnPoint: target.spawnPoint,
+          skipLoad: true
+        });
         return;
       }
 

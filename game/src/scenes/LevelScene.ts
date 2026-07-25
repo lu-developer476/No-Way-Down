@@ -122,6 +122,7 @@ export class LevelScene extends GameScene {
       return;
     }
 
+    this.registry.set('checkpoint', target.spawnPoint);
     this.hasStarted = true;
     const manager = this.flowManager ?? new SceneFlowManager(this);
     const nextNode = manager.advanceFromNodeId(flowNode.id);

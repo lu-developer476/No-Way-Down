@@ -7,7 +7,7 @@ import { ZombieSystem } from '../systems/ZombieSystem';
 import { MissionObjective, MissionSystem } from '../systems/MissionSystem';
 import { StairSegmentSystem } from '../systems/StairSegmentSystem';
 import { AllySystem } from '../systems/AllySystem';
-import { LevelExitSystem } from '../systems/LevelExitSystem';
+import { LevelExitSystem, LevelExitTarget } from '../systems/LevelExitSystem';
 import { SpawnManager } from '../systems/SpawnManager';
 import level2Subsuelo from '../../public/assets/levels/level2_subsuelo.json';
 import stairConfigLevel2 from '../../public/assets/levels/level2_stairs.json';
@@ -1379,7 +1379,28 @@ export class GameScene extends Phaser.Scene {
       }
 
       try {
-        levelManager.transitionToLevel(this, this.currentLevelId, exitId);
+        const levelDefinition = levelManager.loadLevel(this.currentLevelId);
+        const exit = levelDefinition.exits.find((entry) => entry.id === exitId);
+
+        if (!exit) {
+          throw new Error(`Exit "${exitId}" no encontrado en "${this.currentLevelId}".`);
+        }
+
+        const target: LevelExitTarget = {
+          sceneKey: exit.scene_key,
+          spawnPoint: exit.spawn_point
+        };
+
+        if (this.scene.key === 'LevelScene') {
+          this.events.emit('level-exit-transition-complete', target);
+          return;
+        }
+
+        this.registry.set('checkpoint', target.spawnPoint);
+        this.scene.start(target.sceneKey, {
+          respawnPoint: target.spawnPoint,
+          skipLoad: true
+        });
       } catch (error) {
         console.error('[GameScene] No se pudo completar la transición de nivel', error);
         this.hasTriggeredTransition = false;

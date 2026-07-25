@@ -645,6 +645,7 @@ export class GameScene extends Phaser.Scene {
     this.movementLockedByNarrative = false;
     this.firstCleanupNarrativeTriggered = false;
     this.lateRescueAlliesIntegrated = false;
+    this.nextFootstepAt = 0;
     this.resistancePhaseConfig = undefined;
     this.resistancePhaseEndsAt = undefined;
     this.resistancePhaseCompleted = false;

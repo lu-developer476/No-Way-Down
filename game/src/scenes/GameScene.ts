@@ -424,7 +424,10 @@ export class GameScene extends Phaser.Scene {
     this.cleanupZonesRequired = this.spawnManager.getTotalAreasCount();
     this.setupResistancePhase(levelConfig.layout.level_flow);
     this.objectiveSystem = levelManager.instantiateObjectives(selectedLevelId);
-    this.interactableSystem = levelManager.instantiateInteractables(selectedLevelId);
+    this.interactableSystem = levelManager.instantiateInteractables(
+      selectedLevelId,
+      controlManager.getDisplayLabel('interact')
+    );
     this.levelRestartManager = levelManager.instantiateRestartManager(this, {
       checkpointSystem,
       resetEnemies: () => this.resetEnemiesForRestart(),

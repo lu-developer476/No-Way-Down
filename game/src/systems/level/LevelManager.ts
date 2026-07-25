@@ -98,13 +98,16 @@ export class LevelManager {
     return new ObjectiveSystem(definition.objectives);
   }
 
-  instantiateInteractables(levelId: string): InteractableSystem | undefined {
+  instantiateInteractables(
+    levelId: string,
+    interactionKey = 'E'
+  ): InteractableSystem | undefined {
     const definition = this.loadLevel(levelId);
     if (definition.interactables.length === 0) {
       return undefined;
     }
 
-    return new InteractableSystem(definition.interactables);
+    return new InteractableSystem(definition.interactables, interactionKey);
   }
 
   instantiateTriggers(

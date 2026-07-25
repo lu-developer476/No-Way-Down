@@ -25,7 +25,9 @@ import {
   loadInitialRunSetup,
   normalizeProgressSceneKey,
   parseCheckpoint,
-  PartyHudMember
+  PartyHudMember,
+  PauseMenuView,
+  TransitionView
 } from './sceneShared';
 import { SceneFlowManager } from './SceneFlowManager';
 import { visualTheme } from './visualTheme';
@@ -127,8 +129,6 @@ export class GameScene extends Phaser.Scene {
   private spawnManager?: SpawnManager;
   private levelExitSystem?: LevelExitSystem;
   private missionStatusText?: Phaser.GameObjects.Text;
-  private transitionOverlay?: Phaser.GameObjects.Rectangle;
-  private transitionText?: Phaser.GameObjects.Text;
   private apiStatusText?: Phaser.GameObjects.Text;
   private apiStatusVersion = 0;
   private campaignState?: CampaignState;
@@ -136,14 +136,12 @@ export class GameScene extends Phaser.Scene {
   private hasTriggeredTransition = false;
   private hasPlayerBeenDefeated = false;
   private respawnPoint?: Checkpoint;
-  private pauseOverlay?: Phaser.GameObjects.Rectangle;
-  private pausePanel?: Phaser.GameObjects.Container;
+  private pauseMenuVisible = false;
+  private pauseMenuHint = '';
   private pauseMenuOptions: Array<{ label: string; action: () => void }> = [];
   private audioToggleOptionIndex = -1;
   private audioVolumeOptionIndex = -1;
-  private pauseMenuTexts: Phaser.GameObjects.Text[] = [];
   private pauseMenuIndex = 0;
-  private pauseHintText?: Phaser.GameObjects.Text;
   private pauseMenuState: PauseMenuState = 'root';
   private cleanupZonesRequired = 0;
   private exitUnlocked = false;
@@ -603,6 +601,9 @@ export class GameScene extends Phaser.Scene {
       this.registry.set('isGamePaused', false);
       this.registry.set('dialogueState', null);
       this.registry.set('interactionHint', '');
+      this.pauseMenuVisible = false;
+      this.publishPauseMenuView();
+      this.setTransitionView(false, '');
       this.setNarrativeMovementLock(false);
       this.physics.resume();
       this.clearAllyWorldHealthBars();
@@ -653,7 +654,8 @@ export class GameScene extends Phaser.Scene {
     this.pauseMenuOptions = [];
     this.audioToggleOptionIndex = -1;
     this.audioVolumeOptionIndex = -1;
-    this.pauseMenuTexts = [];
+    this.pauseMenuVisible = false;
+    this.pauseMenuHint = '';
     this.pauseMenuIndex = 0;
     this.pauseMenuState = 'root';
     this.cleanupZonesRequired = 0;
@@ -1293,11 +1295,7 @@ export class GameScene extends Phaser.Scene {
       padding: { x: 20, y: 12 },
       align: 'center',
       wordWrap: { width: Math.max(320, this.scale.width - 120), useAdvancedWrap: true }
-    })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(10)
-      .setVisible(false);
+    }).setOrigin(0.5).setScrollFactor(0).setDepth(10).setVisible(false);
 
     this.apiStatusText = this.add.text(this.scale.width / 2, 140, '', {
       color: visualTheme.palette.uiTextSecondary,
@@ -1305,36 +1303,18 @@ export class GameScene extends Phaser.Scene {
       backgroundColor: '#140d18',
       padding: { x: 16, y: 10 },
       align: 'center'
-    })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(11)
-      .setVisible(false);
+    }).setOrigin(0.5).setScrollFactor(0).setDepth(11).setVisible(false);
 
-    this.transitionOverlay = this.add.rectangle(
-      this.scale.width / 2,
-      this.scale.height / 2,
-      this.scale.width,
-      this.scale.height,
-      visualTheme.palette.uiPanelShadow,
-      0.9
-    )
-      .setScrollFactor(0)
-      .setDepth(20)
-      .setVisible(false);
+    this.setTransitionView(false, '');
+  }
 
-    this.transitionText = this.add.text(this.scale.width / 2, this.scale.height / 2, '', {
-      color: visualTheme.palette.uiTextPrimary,
-      fontSize: '28px',
-      align: 'center',
-      wordWrap: { width: Math.max(360, this.scale.width - 140), useAdvancedWrap: true },
-      backgroundColor: '#1a0f1f',
-      padding: { x: 26, y: 18 }
-    })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(21)
-      .setVisible(false);
+  private setTransitionView(
+    visible: boolean,
+    message: string,
+    tone: TransitionView['tone'] = 'normal'
+  ): void {
+    const view: TransitionView = { visible, message, tone };
+    this.registry.set('transitionView', view);
   }
 
   private showMissionStatus(message: string): void {
@@ -1362,10 +1342,7 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
 
-    this.transitionOverlay?.setVisible(true);
-    this.transitionText
-      ?.setText(message)
-      .setVisible(true);
+    this.setTransitionView(true, message);
   }
 
   private beginExitTransition(exitId: string, message: string): void {
@@ -1407,8 +1384,7 @@ export class GameScene extends Phaser.Scene {
       } catch (error) {
         console.error('[GameScene] No se pudo completar la transición de nivel', error);
         this.hasTriggeredTransition = false;
-        this.transitionOverlay?.setVisible(false);
-        this.transitionText?.setVisible(false);
+        this.setTransitionView(false, '');
         this.physics.resume();
         this.registry.set('interactionHint', 'No se pudo cambiar de nivel. Intentá usar las escaleras otra vez.');
       }
@@ -1841,15 +1817,14 @@ export class GameScene extends Phaser.Scene {
     this.physics.pause();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
-    this.scene.stop('UIScene');
     this.registry.set('audioMuted', getAudioManager(this).isMuted());
     this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
 
-    this.transitionOverlay?.setVisible(true);
-    this.transitionText
-      ?.setText('Todo el grupo ha caído en combate.\nReiniciando...')
-      .setStyle({ color: '#fecaca' })
-      .setVisible(true);
+    this.setTransitionView(
+      true,
+      'Todo el grupo ha caído en combate.\nReiniciando...',
+      'danger'
+    );
 
     this.time.delayedCall(PLAYER_RESPAWN_DELAY_MS, () => {
       if (!this.scene.isActive()) {
@@ -1994,69 +1969,24 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createPauseMenuUI(): void {
-    const { width, height } = this.scale;
-
-    this.pauseOverlay = this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.uiPanelShadow, 0.78)
-      .setScrollFactor(0)
-      .setDepth(40)
-      .setVisible(false);
-
-    const panel = this.add.rectangle(0, 0, 560, 392, visualTheme.palette.uiPanelFrame, 0.96)
-      .setScrollFactor(0)
-      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1);
-    const panelArtwork = this.textures.exists('menu_background')
-      ? this.add.image(0, 0, 'menu_background').setDisplaySize(560, 392).setAlpha(0.58).setScrollFactor(0)
-      : this.add.rectangle(0, 0, 560, 392, 0x1b1522, 0.92).setScrollFactor(0);
-    const panelTint = this.add.rectangle(0, 0, 560, 392, visualTheme.palette.uiPanelTint, 0.56).setScrollFactor(0);
-    const panelBorder = this.add.rectangle(0, 0, 560, 392, 0x000000, 0).setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1).setScrollFactor(0);
-
-    const title = this.add.text(0, -130, 'PAUSA', {
-      color: visualTheme.palette.uiTextPrimary,
-      fontSize: '38px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5)
-      .setScrollFactor(0);
-
-    this.pauseMenuOptions = [
-      { label: 'Reanudar', action: () => this.resumeGameplay() },
-      { label: 'Opciones', action: () => this.openPauseOptions() },
-      { label: 'Salir', action: () => this.returnToMainMenu() }
-    ];
-
-    this.pauseMenuTexts = this.pauseMenuOptions.map((option, index) => this.add.text(0, -40 + index * 58, option.label, {
-      color: visualTheme.palette.uiTextSecondary,
-      fontSize: '28px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5)
-      .setScrollFactor(0));
-
-    this.pauseHintText = this.add.text(0, 164, '↑/↓ seleccionar · ENTER confirmar · ESC volver/abandonar', {
-      color: visualTheme.palette.uiTextMuted,
-      fontSize: '14px',
-      fontFamily: '"Courier New", monospace'
-    }).setOrigin(0.5)
-      .setScrollFactor(0);
-
-    this.pausePanel = this.add.container(width / 2, height / 2, [panel, panelArtwork, panelTint, panelBorder, title, ...this.pauseMenuTexts, this.pauseHintText])
-      .setScrollFactor(0)
-      .setDepth(41)
-      .setVisible(false);
-
-    this.scale.on(Phaser.Scale.Events.RESIZE, this.handlePauseOverlayResize, this);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.scale.off(Phaser.Scale.Events.RESIZE, this.handlePauseOverlayResize, this);
-    });
-
-    this.updatePauseMenuSelection();
+    this.pauseMenuVisible = false;
+    this.pauseMenuState = 'root';
+    this.pauseMenuIndex = 0;
+    this.pauseMenuHint = '';
+    this.publishPauseMenuView();
   }
 
-  private handlePauseOverlayResize(gameSize: Phaser.Structs.Size): void {
-    const width = gameSize.width;
-    const height = gameSize.height;
-    this.pauseOverlay
-      ?.setPosition(width / 2, height / 2)
-      .setSize(width, height);
-    this.pausePanel?.setPosition(width / 2, height / 2);
+  private publishPauseMenuView(): void {
+    const view: PauseMenuView = {
+      visible: this.pauseMenuVisible,
+      state: this.pauseMenuState,
+      title: this.pauseMenuState === 'options' ? 'OPCIONES' : 'PAUSA',
+      options: this.pauseMenuOptions.map((option) => option.label),
+      selectedIndex: this.pauseMenuIndex,
+      details: this.pauseMenuState === 'options' ? this.getFormattedControlSummary() : '',
+      hint: this.pauseMenuHint
+    };
+    this.registry.set('pauseMenuView', view);
   }
 
   private registerPauseControls(): void {
@@ -2080,24 +2010,21 @@ export class GameScene extends Phaser.Scene {
   }
 
   private isPauseMenuOpen(): boolean {
-    return this.pausePanel?.visible ?? false;
+    return this.pauseMenuVisible;
   }
 
   private pauseGameplay(): void {
     getAudioManager(this).play('uiPause');
     this.physics.pause();
-    this.pauseOverlay?.setVisible(true);
-    this.pausePanel?.setVisible(true);
+    this.pauseMenuVisible = true;
     this.openPauseRoot();
-    this.pauseMenuIndex = 0;
-    this.updatePauseMenuSelection();
     this.registry.set('isGamePaused', true);
   }
 
   private resumeGameplay(): void {
     getAudioManager(this).play('uiConfirm');
-    this.pausePanel?.setVisible(false);
-    this.pauseOverlay?.setVisible(false);
+    this.pauseMenuVisible = false;
+    this.publishPauseMenuView();
     this.physics.resume();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
@@ -2109,6 +2036,9 @@ export class GameScene extends Phaser.Scene {
     const audioManager = getAudioManager(this);
     audioManager.stopGameplayAmbient();
     audioManager.stopCinematicMusic();
+    this.pauseMenuVisible = false;
+    this.publishPauseMenuView();
+    this.setTransitionView(false, '');
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
     this.registry.set('audioMuted', audioManager.isMuted());
@@ -2124,13 +2054,8 @@ export class GameScene extends Phaser.Scene {
     this.refreshVolumePauseOptionLabel();
     this.registry.set('audioMuted', isNowMuted);
     this.registry.set('audioVolume', audioManager.getVolumePercent());
-
-    if (!isNowMuted) {
-      audioManager.play('uiConfirm');
-    }
-
-    const status = isNowMuted ? 'silenciado' : 'activado';
-    this.showMissionStatus(`Audio ${status}.`);
+    if (!isNowMuted) audioManager.play('uiConfirm');
+    this.showMissionStatus(`Audio ${isNowMuted ? 'silenciado' : 'activado'}.`);
   }
 
   private adjustMasterVolume(delta: number): void {
@@ -2138,54 +2063,30 @@ export class GameScene extends Phaser.Scene {
     const volume = audioManager.adjustVolumePercent(delta);
     this.refreshVolumePauseOptionLabel();
     this.registry.set('audioVolume', volume);
-
-    if (!audioManager.isMuted() && volume > 0) {
-      audioManager.play('uiConfirm');
-    }
-
+    if (!audioManager.isMuted() && volume > 0) audioManager.play('uiConfirm');
     this.showMissionStatus(`Volumen ${volume}%.`);
   }
 
   private refreshAudioPauseOptionLabel(): void {
-    if (this.audioToggleOptionIndex < 0) {
-      return;
-    }
-
-    const muted = getAudioManager(this).isMuted();
-    const label = muted ? 'Sonido: Silenciado' : 'Sonido: Activado';
+    if (this.audioToggleOptionIndex < 0) return;
+    const label = getAudioManager(this).isMuted() ? 'Sonido: Silenciado' : 'Sonido: Activado';
     if (this.pauseMenuOptions[this.audioToggleOptionIndex]) {
       this.pauseMenuOptions[this.audioToggleOptionIndex].label = label;
-    }
-
-    const text = this.pauseMenuTexts[this.audioToggleOptionIndex];
-    if (text) {
-      text.setText(label);
+      this.publishPauseMenuView();
     }
   }
 
   private refreshVolumePauseOptionLabel(): void {
-    if (this.audioVolumeOptionIndex < 0) {
-      return;
-    }
-
-    const volume = getAudioManager(this).getVolumePercent();
-    const label = `Volumen: ${volume}%`;
+    if (this.audioVolumeOptionIndex < 0) return;
+    const label = `Volumen: ${getAudioManager(this).getVolumePercent()}%`;
     if (this.pauseMenuOptions[this.audioVolumeOptionIndex]) {
       this.pauseMenuOptions[this.audioVolumeOptionIndex].label = label;
-    }
-
-    const text = this.pauseMenuTexts[this.audioVolumeOptionIndex];
-    if (text) {
-      text.setText(label);
+      this.publishPauseMenuView();
     }
   }
 
   private updatePauseMenuSelection(): void {
-    this.pauseMenuTexts.forEach((text, index) => {
-      const selected = this.pauseMenuIndex === index;
-      text.setColor(selected ? visualTheme.palette.uiHighlight : visualTheme.palette.uiTextSecondary);
-      text.setScale(selected ? 1.03 : 1);
-    });
+    this.publishPauseMenuView();
   }
 
   private openPauseRoot(): void {
@@ -2195,52 +2096,45 @@ export class GameScene extends Phaser.Scene {
     this.pauseMenuOptions = [
       { label: 'Reanudar', action: () => this.resumeGameplay() },
       { label: 'Opciones', action: () => this.openPauseOptions() },
-      { label: 'Salir', action: () => this.returnToMainMenu() }
+      { label: 'Salir al menú', action: () => this.returnToMainMenu() }
     ];
     this.pauseMenuIndex = 0;
-    this.refreshPauseMenuTexts();
-    this.pauseHintText?.setText('↑/↓ seleccionar · ENTER confirmar · ESC volver/abandonar');
+    this.pauseMenuHint = '↑/↓ seleccionar · ENTER confirmar · ESC reanudar';
+    this.publishPauseMenuView();
   }
 
   private openPauseOptions(): void {
     this.pauseMenuState = 'options';
     this.pauseMenuOptions = [
-      { label: this.getFormattedControlSummary(), action: () => undefined },
       { label: 'Sonido: --', action: () => this.toggleAudioMute() },
       { label: 'Volumen: --', action: () => this.adjustMasterVolume(10) },
-      { label: 'Diálogos: SPACE avanzar · X saltar', action: () => undefined },
       { label: 'Volver', action: () => this.openPauseRoot() }
     ];
-    this.audioToggleOptionIndex = 1;
-    this.audioVolumeOptionIndex = 2;
+    this.audioToggleOptionIndex = 0;
+    this.audioVolumeOptionIndex = 1;
+    this.pauseMenuIndex = 0;
+    this.pauseMenuHint = '↑/↓ seleccionar · ←/→ volumen · ENTER confirmar · ESC volver';
     this.refreshAudioPauseOptionLabel();
     this.refreshVolumePauseOptionLabel();
-    this.pauseMenuIndex = 0;
-    this.refreshPauseMenuTexts();
-    this.pauseHintText?.setText('↑/↓ seleccionar · ←/→ ajustar volumen · ESC volver');
+    this.publishPauseMenuView();
   }
 
   private getFormattedControlSummary(): string {
+    const movement = controlManager.getMovementDisplayLabel().toUpperCase();
+    const jump = controlManager.getDisplayLabel('jump').toUpperCase();
+    const shoot = controlManager.getDisplayLabel('shoot').toUpperCase();
+    const reload = controlManager.getDisplayLabel('reload').toUpperCase();
+    const switchWeapon = controlManager.getDisplayLabel('switch_weapon').toUpperCase();
+    const interact = controlManager.getDisplayLabel('interact').toUpperCase();
     return [
-      `Controles: ${controlManager.getMovementDisplayLabel()}`,
-      `Saltar ${controlManager.getDisplayLabel('jump')}`,
-      `Disparar ${controlManager.getDisplayLabel('shoot')}`,
-      `Recargar ${controlManager.getDisplayLabel('reload')}`,
-      `Cambiar arma ${controlManager.getDisplayLabel('switch_weapon')}`,
-      `Interactuar ${controlManager.getDisplayLabel('interact')}`,
-      `Siguiente nivel ${controlManager.getDisplayLabel('next_level')}`,
-      `Pausa ${controlManager.getDisplayLabel('pause')}`,
-      `Abandonar ${controlManager.getDisplayLabel('quit')}`
-    ].join(' / ');
+      `${movement} MOVER · ${jump} SALTAR · ${shoot} DISPARAR`,
+      `${reload} RECARGAR · ${switchWeapon} CAMBIAR ARMA`,
+      `${interact} INTERACTUAR · SPACE DIÁLOGO · X SALTAR`
+    ].join('\n');
   }
 
   private refreshPauseMenuTexts(): void {
-    this.pauseMenuTexts.forEach((text, index) => {
-      const option = this.pauseMenuOptions[index];
-      text.setVisible(Boolean(option));
-      text.setText(option?.label ?? '');
-    });
-    this.updatePauseMenuSelection();
+    this.publishPauseMenuView();
   }
 
   private registerApiControls(): void {

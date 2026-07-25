@@ -2262,8 +2262,7 @@ export class GameScene extends Phaser.Scene {
       const difficulty = snapshot.setup.difficulty;
       const validDifficulty = difficulty === 'complejo' || difficulty === 'pesadilla';
 
-      const existing = this.getInitialSetup();
-      if (!existing && protagonist && validDifficulty) {
+      if (protagonist && validDifficulty) {
         this.registry.set('initialRunSetup', {
           protagonist,
           difficulty,

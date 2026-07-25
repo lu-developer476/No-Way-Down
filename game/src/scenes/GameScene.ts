@@ -277,6 +277,9 @@ export class GameScene extends Phaser.Scene {
 
   create(data: GameSceneData = {}): void {
     this.resetRuntimeStateForRestart();
+    if (this.shouldTriggerIntroCinematic(data)) {
+      this.visitedCheckpoints.clear();
+    }
     applyRetroRenderer(this);
 
     const selectedLevelId = this.resolveLevelIdFromCampaignConfig(data);

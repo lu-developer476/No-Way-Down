@@ -26,10 +26,10 @@ export const DEFAULT_CHARACTER_VISUAL_IDS = [
 const CHARACTER_SPRITESHEET_SUFFIX = '-sheet';
 
 const DEFAULT_ANIMATION_RANGES: CharacterAnimationFrameRange[] = [
-  { state: 'idle', start: 0, end: 1, frameRate: 4, repeat: -1 },
-  { state: 'run', start: 2, end: 5, frameRate: 9, repeat: -1 },
-  { state: 'shoot', start: 6, end: 6, frameRate: 12, repeat: 0 },
-  { state: 'hurt', start: 7, end: 7, frameRate: 8, repeat: 0 },
+  { state: 'idle', start: 0, end: 1, frameRate: 2, repeat: -1 },
+  { state: 'run', start: 2, end: 5, frameRate: 8, repeat: -1 },
+  { state: 'shoot', start: 6, end: 6, frameRate: 10, repeat: 0 },
+  { state: 'hurt', start: 7, end: 7, frameRate: 7, repeat: 0 },
   { state: 'death', start: 8, end: 8, frameRate: 1, repeat: 0 }
 ];
 

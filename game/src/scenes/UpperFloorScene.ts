@@ -15,6 +15,7 @@ import {
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
+import { SceneFlowManager } from './SceneFlowManager';
 import level3HallLayout from '../../public/assets/levels/level3_hall_planta_baja.json';
 import level3PickupConfig from '../../public/assets/levels/level3_pickups.json';
 import { addEnvironmentProp } from './environmentLayout';
@@ -588,6 +589,14 @@ export class UpperFloorScene extends Phaser.Scene {
     }
 
     this.registry.set('loadedCampaignSnapshot', snapshot);
+    const flowDefinition = new SceneFlowManager(this).ensureDefinitionLoadedFromCache();
+    const savedFlowNodeIndex = flowDefinition?.nodes.findIndex((node) => node.id === snapshot.progress.flow_node_id) ?? -1;
+    const savedFlowNode = flowDefinition?.nodes[savedFlowNodeIndex];
+    if (savedFlowNode?.sceneKey === 'LevelScene' && savedFlowNode.levelConfigPath) {
+      this.registry.set('activeCampaignNode', savedFlowNode);
+      this.registry.set('flowNodeId', savedFlowNode.id);
+      this.registry.set('campaignFlowCursor', savedFlowNodeIndex);
+    }
 
     if (snapshot.setup) {
       const protagonistRaw = snapshot.setup.protagonist;

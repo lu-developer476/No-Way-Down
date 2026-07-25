@@ -613,6 +613,7 @@ export class UpperFloorScene extends Phaser.Scene {
       }
     }
 
+    this.visitedCheckpoints.clear();
     snapshot.checkpoints?.visited?.forEach((value) => this.visitedCheckpoints.add(value));
   }
 

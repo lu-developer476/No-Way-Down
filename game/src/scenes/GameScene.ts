@@ -1402,39 +1402,20 @@ export class GameScene extends Phaser.Scene {
       this.renderSubsueloZoneBackdrop(zone.zone, zone.x, zone.width, floorTop, index, profile);
     });
 
-    this.addBnaWindowBand(levelWidth, 84, floorTop - 110, usesInstitutionalHall ? 0.38 : 0.3, 0.86);
-    this.addStoneColumnBand(levelWidth, floorTop - 48, usesVerticalCore ? 176 : 220, 0.58);
-
-    for (let x = 132; x < levelWidth; x += 240) {
-      this.add.image(x, 110, 'prop-tall-window')
-        .setDepth(0.9)
-        .setScrollFactor(0.34, 1)
-        .setAlpha(usesInstitutionalHall ? 0.94 : 0.86)
-        .setScale(1.15);
+    for (let x = 180; x < levelWidth; x += 420) {
+      this.add.image(x, 116, 'prop-tall-window')
+        .setDepth(0.78)
+        .setScrollFactor(0.28, 1)
+        .setAlpha(usesInstitutionalHall ? 0.32 : 0.2)
+        .setScale(1.04);
     }
 
-    for (let x = 96; x < levelWidth; x += 192) {
-      this.add.image(x, floorTop - 68, 'prop-stone-column')
-        .setDepth(1.8)
-        .setScrollFactor(0.6, 1)
-        .setAlpha(0.58)
-        .setScale(1.25);
-    }
-
-    for (let x = 150; x < levelWidth; x += 260) {
-      const pendant = this.add.circle(x, 46, 13, 0xf6d28b, 0.2)
-        .setDepth(2.9)
-        .setBlendMode(Phaser.BlendModes.ADD);
-      this.add.rectangle(x, 16, 2, 24, 0x715c45, 1).setDepth(3);
-      this.add.circle(x, 42, 8, 0xc08e45, 1).setDepth(3);
-      this.tweens.add({
-        targets: pendant,
-        alpha: { from: 0.1, to: 0.22 },
-        duration: Phaser.Math.Between(1100, 1600),
-        repeat: -1,
-        yoyo: true,
-        ease: 'Sine.InOut'
-      });
+    for (let x = 120; x < levelWidth; x += 360) {
+      this.add.image(x, floorTop - 66, 'prop-stone-column')
+        .setDepth(1.7)
+        .setScrollFactor(0.54, 1)
+        .setAlpha(usesVerticalCore ? 0.34 : 0.22)
+        .setScale(1.12);
     }
 
     if (usesServiceWing) {
@@ -1466,28 +1447,133 @@ export class GameScene extends Phaser.Scene {
     usesServiceWing: boolean,
     usesInstitutionalHall: boolean
   ): void {
-    for (let x = 160; x < levelWidth; x += 320) {
-      const width = 18 + (Math.floor(x / 320) % 3) * 5;
-      this.add.rectangle(x, floorTop / 2, width, floorTop, visualTheme.palette.worldShadow, usesServiceWing ? 0.3 : 0.22)
-        .setDepth(2.6)
-        .setScrollFactor(usesInstitutionalHall ? 0.58 : 0.7, 1);
+    for (let x = 210; x < levelWidth; x += 440) {
+      const shadowIndex = Math.floor(x / 440);
+      const shadowWidth = 10 + (shadowIndex % 3) * 5;
+      const shadowAlpha = usesServiceWing
+        ? 0.17
+        : usesInstitutionalHall
+          ? 0.11
+          : 0.14;
+
+      this.add.rectangle(
+        x,
+        floorTop / 2,
+        shadowWidth,
+        floorTop,
+        visualTheme.palette.worldShadow,
+        shadowAlpha
+      )
+        .setDepth(2.42)
+        .setScrollFactor(0.64, 1);
     }
 
-    for (let x = 220; x < levelWidth; x += 520) {
-      const reflectionColor = usesServiceWing
+    for (
+      let x = 150, lightIndex = 0;
+      x < levelWidth;
+      x += 520, lightIndex += 1
+    ) {
+      const useColdLight = usesServiceWing
+        && (!usesInstitutionalHall || lightIndex % 3 === 1);
+
+      const lightColor = useColdLight
         ? visualTheme.palette.worldColdLight
         : visualTheme.palette.worldWarmLight;
-      this.add.ellipse(x, floorTop - 150, 260, 220, visualTheme.palette.worldWarmLight, usesServiceWing ? 0.05 : 0.09)
-        .setDepth(3.1)
-        .setBlendMode(Phaser.BlendModes.ADD)
-        .setScrollFactor(0.82, 1);
-      this.add.ellipse(x, floorTop + 9, 220, 30, reflectionColor, usesInstitutionalHall ? 0.09 : 0.06)
-        .setDepth(4.4)
-        .setBlendMode(Phaser.BlendModes.ADD);
-      if (usesInstitutionalHall) {
-        this.add.rectangle(x, floorTop - 34, 72, 3, visualTheme.palette.worldBrass, 0.22).setDepth(2.75);
-      }
+
+      const intensity = useColdLight ? 0.064 : 0.076;
+      const scrollFactor = useColdLight ? 0.74 : 0.68;
+
+      this.addAtmosphericLightCone(
+        x,
+        floorTop,
+        lightColor,
+        intensity,
+        scrollFactor
+      );
     }
+  }
+
+  private addAtmosphericLightCone(
+    x: number,
+    floorTop: number,
+    color: number,
+    intensity: number,
+    scrollFactor: number
+  ): void {
+    const topY = 52;
+    const bottomY = Math.max(topY + 150, floorTop - 10);
+    const height = bottomY - topY;
+    const centerY = topY + height / 2;
+
+    const layers = [
+      {
+        width: 190,
+        alpha: intensity * 0.32,
+        depth: 2.78
+      },
+      {
+        width: 122,
+        alpha: intensity * 0.46,
+        depth: 2.8
+      },
+      {
+        width: 58,
+        alpha: intensity * 0.6,
+        depth: 2.82
+      }
+    ];
+
+    layers.forEach((layer) => {
+      this.add.triangle(
+        x,
+        centerY,
+        layer.width / 2,
+        0,
+        0,
+        height,
+        layer.width,
+        height,
+        color,
+        layer.alpha
+      )
+        .setDepth(layer.depth)
+        .setScrollFactor(scrollFactor, 1)
+        .setBlendMode(Phaser.BlendModes.ADD);
+    });
+
+    this.add.ellipse(
+      x,
+      floorTop + 6,
+      126,
+      10,
+      color,
+      intensity * 0.72
+    )
+      .setDepth(4.35)
+      .setBlendMode(Phaser.BlendModes.ADD);
+
+    this.add.rectangle(
+      x,
+      topY - 3,
+      22,
+      4,
+      visualTheme.palette.worldBrass,
+      0.74
+    )
+      .setDepth(3.02)
+      .setScrollFactor(scrollFactor, 1);
+
+    this.add.rectangle(
+      x,
+      topY,
+      10,
+      3,
+      color,
+      0.86
+    )
+      .setDepth(3.04)
+      .setScrollFactor(scrollFactor, 1)
+      .setBlendMode(Phaser.BlendModes.ADD);
   }
 
   private renderSubsueloZoneBackdrop(
@@ -1520,10 +1606,10 @@ export class GameScene extends Phaser.Scene {
 
     if (zoneId === 'hall_publico') {
       for (let x = zoneX + 132; x < zoneX + zoneWidth; x += 236) {
-        this.add.image(x, 122, 'prop-tall-window').setDepth(1.1).setScrollFactor(0.34, 1).setAlpha(0.92).setScale(1.08);
+        this.add.image(x, 122, 'prop-tall-window').setDepth(1.1).setScrollFactor(0.34, 1).setAlpha(0.68).setScale(1.08);
       }
       for (let x = zoneX + 94; x < zoneX + zoneWidth; x += 220) {
-        this.add.image(x, floorTop - 60, 'prop-stone-column').setDepth(1.75).setScrollFactor(0.54, 1).setAlpha(0.58).setScale(1.2);
+        this.add.image(x, floorTop - 60, 'prop-stone-column').setDepth(1.75).setScrollFactor(0.54, 1).setAlpha(0.44).setScale(1.2);
       }
     }
 
@@ -1545,7 +1631,14 @@ export class GameScene extends Phaser.Scene {
 
     const glowY = zoneId === 'subsuelo_estacionamiento' ? 84 : 52;
     for (let x = zoneX + 140; x < zoneX + zoneWidth; x += 260) {
-      this.add.circle(x, glowY + (zoneIndex % 2) * 16, zoneId === 'subsuelo_estacionamiento' ? 16 : 20, visual.glow, 0.12)
+      this.add.ellipse(
+        x,
+        glowY + (zoneIndex % 2) * 16,
+        zoneId === 'subsuelo_estacionamiento' ? 40 : 52,
+        zoneId === 'subsuelo_estacionamiento' ? 7 : 9,
+        visual.glow,
+        0.075
+      )
         .setDepth(1.95)
         .setBlendMode(Phaser.BlendModes.ADD)
         .setScrollFactor(0.58, 1);
@@ -1555,27 +1648,6 @@ export class GameScene extends Phaser.Scene {
       for (let x = zoneX + 120; x < zoneX + zoneWidth; x += 210) {
         this.add.rectangle(x, floorTop - 108, 140, 148, 0x2f3135, 0.16).setDepth(1.3).setScrollFactor(0.44, 1);
       }
-    }
-  }
-
-  private addBnaWindowBand(levelWidth: number, y: number, bottomY: number, scrollFactor: number, alpha: number): void {
-    const windowHeight = Math.max(96, bottomY - y);
-    for (let x = 124; x < levelWidth; x += 248) {
-      this.add.image(x, y + windowHeight / 2, 'prop-tall-window')
-        .setDepth(0.7)
-        .setScrollFactor(scrollFactor, 1)
-        .setAlpha(alpha)
-        .setDisplaySize(100, windowHeight);
-    }
-  }
-
-  private addStoneColumnBand(levelWidth: number, y: number, spacing: number, alpha: number): void {
-    for (let x = 80; x < levelWidth; x += spacing) {
-      this.add.image(x, y, 'prop-stone-column')
-        .setDepth(1.2)
-        .setScrollFactor(0.48, 1)
-        .setAlpha(alpha)
-        .setScale(1.45);
     }
   }
 

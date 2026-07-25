@@ -352,10 +352,18 @@ export class GameScene extends Phaser.Scene {
     ));
 
     const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
+    const loadedActivePartyNames = new Set(loadedSnapshot?.party.active ?? []);
+    const runtimePartyAllies = [
+      ...partySeed.allies,
+      ...LATE_RESCUE_ALLIES
+        .filter((ally) => loadedActivePartyNames.has(ally.name)
+          && !partySeed.allies.some((seedAlly) => seedAlly.id === ally.id))
+        .map((ally) => ({ ...ally }))
+    ];
     this.campaignState = new CampaignState('GameScene', {
       activeCharacters: [
         ...activePlayerConfigs.map((config) => `player-${config.slot}`),
-        ...partySeed.allies.map((ally) => ally.id)
+        ...runtimePartyAllies.map((ally) => ally.id)
       ],
       narrativeProgress: loadedSnapshot?.narrative.flags ?? {},
       irreversibleEvents: loadedSnapshot?.narrative.irreversible_events ?? [],
@@ -371,7 +379,7 @@ export class GameScene extends Phaser.Scene {
         permanentlyLost: false,
         narrative: { deathPending: false }
       })),
-      ...partySeed.allies.map((ally) => ({
+      ...runtimePartyAllies.map((ally) => ({
         id: ally.id,
         name: ally.name,
         characterId: ally.characterId,
@@ -516,7 +524,7 @@ export class GameScene extends Phaser.Scene {
 
     const leadPlayer = this.players[0];
     if (leadPlayer) {
-      this.allySystem.spawnInitialAllies(leadPlayer, partySeed.allies);
+      this.allySystem.spawnInitialAllies(leadPlayer, runtimePartyAllies);
     }
 
     const configuredPickups = (levelConfig.pickups as PickupDefinition[] | undefined) ?? level2PickupConfig.pickups;

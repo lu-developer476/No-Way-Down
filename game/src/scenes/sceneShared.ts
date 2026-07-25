@@ -27,6 +27,22 @@ export interface PartyHudMember {
   isReloading?: boolean;
 }
 
+export interface PauseMenuView {
+  visible: boolean;
+  state: 'root' | 'options';
+  title: string;
+  options: string[];
+  selectedIndex: number;
+  details: string;
+  hint: string;
+}
+
+export interface TransitionView {
+  visible: boolean;
+  message: string;
+  tone: 'normal' | 'danger';
+}
+
 export const MAX_PLAYER_SEPARATION_PX = 320;
 export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 export const INITIAL_SETUP_STORAGE_KEY = 'nwd.setup.initial';

@@ -393,21 +393,64 @@ export class BootScene extends Phaser.Scene {
     const frameGraphics = this.add.graphics();
 
     for (let frame = 0; frame < CHARACTER_FRAME_COUNT; frame += 1) {
-      this.drawCharacterFrame(frameGraphics, frame, profile, frame * CHARACTER_FRAME_WIDTH);
+      this.drawCharacterFrame(
+        frameGraphics,
+        frame,
+        profile,
+        frame * CHARACTER_FRAME_WIDTH
+      );
     }
 
     const spriteSheetKey = `${profile.id}${CHARACTER_SPRITE_SHEET_SUFFIX}`;
-    const rawSheetKey = `${spriteSheetKey}-raw`;
-    frameGraphics.generateTexture(rawSheetKey, spriteSheetWidth, CHARACTER_FRAME_HEIGHT);
+    frameGraphics.generateTexture(
+      spriteSheetKey,
+      spriteSheetWidth,
+      CHARACTER_FRAME_HEIGHT
+    );
     frameGraphics.destroy();
 
-    const rawTexture = this.textures.get(rawSheetKey);
-    this.textures.addSpriteSheet(spriteSheetKey, rawTexture, {
-      frameWidth: CHARACTER_FRAME_WIDTH,
-      frameHeight: CHARACTER_FRAME_HEIGHT,
-      endFrame: CHARACTER_FRAME_COUNT - 1
-    });
-    this.textures.remove(rawSheetKey);
+    const spriteSheetTexture = this.textures.get(spriteSheetKey);
+    for (let frame = 0; frame < CHARACTER_FRAME_COUNT; frame += 1) {
+      spriteSheetTexture.add(
+        frame,
+        0,
+        frame * CHARACTER_FRAME_WIDTH,
+        0,
+        CHARACTER_FRAME_WIDTH,
+        CHARACTER_FRAME_HEIGHT
+      );
+    }
+
+    this.validateCharacterSpriteSheet(
+      spriteSheetKey,
+      CHARACTER_FRAME_COUNT
+    );
+  }
+
+  private validateCharacterSpriteSheet(
+    textureKey: string,
+    expectedFrames: number
+  ): void {
+    if (!this.textures.exists(textureKey)) {
+      throw new Error(
+        `[BootScene] No se generó la spritesheet "${textureKey}".`
+      );
+    }
+
+    const texture = this.textures.get(textureKey);
+    const missingFrames: number[] = [];
+
+    for (let frame = 0; frame < expectedFrames; frame += 1) {
+      if (!texture.has(String(frame))) {
+        missingFrames.push(frame);
+      }
+    }
+
+    if (missingFrames.length > 0) {
+      throw new Error(
+        `[BootScene] La spritesheet "${textureKey}" no contiene los frames: ${missingFrames.join(', ')}.`
+      );
+    }
   }
 
   private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, profile: CharacterVisualProfile, offsetX = 0): void {
@@ -728,14 +771,28 @@ export class BootScene extends Phaser.Scene {
     graphics.fillRect(8, 18, 16, 4);
     graphics.fillStyle(0xf8fafc, 1);
     graphics.fillRect(10, 34, 12, 4);
-    graphics.generateTexture('missing-character-sheet-raw', CHARACTER_FRAME_WIDTH, CHARACTER_FRAME_HEIGHT);
-    const missingRawTexture = this.textures.get('missing-character-sheet-raw');
-    this.textures.addSpriteSheet('missing-character-sheet', missingRawTexture, {
-      frameWidth: CHARACTER_FRAME_WIDTH,
-      frameHeight: CHARACTER_FRAME_HEIGHT,
-      endFrame: 0
-    });
-    this.textures.remove('missing-character-sheet-raw');
+    graphics.generateTexture(
+      'missing-character-sheet',
+      CHARACTER_FRAME_WIDTH,
+      CHARACTER_FRAME_HEIGHT
+    );
+
+    const missingCharacterTexture = this.textures.get(
+      'missing-character-sheet'
+    );
+    missingCharacterTexture.add(
+      0,
+      0,
+      0,
+      0,
+      CHARACTER_FRAME_WIDTH,
+      CHARACTER_FRAME_HEIGHT
+    );
+
+    this.validateCharacterSpriteSheet(
+      'missing-character-sheet',
+      1
+    );
 
     graphics.clear();
     graphics.fillStyle(0xffe08a, 1);

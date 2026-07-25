@@ -160,6 +160,7 @@ export class BootScene extends Phaser.Scene {
     this.createWeaponProjectileTextures(graphics);
     this.createWeaponSilhouetteTextures(graphics);
     this.createPickupTextures(graphics);
+    this.createCombatEffectTextures(graphics);
 
     graphics.clear();
     graphics.fillStyle(palette.bullet, 1);
@@ -621,6 +622,28 @@ export class BootScene extends Phaser.Scene {
         if(type==='ammo_smg'){this.drawOutlinedRect(g,9,2,4,15,0x303943);this.drawOutlinedRect(g,16,2,4,15,0x303943);} else if(type==='ammo_shotgun'){for(let i=4;i<23;i+=6)this.drawOutlinedRect(g,i,7,4,9,0xb83232);} else if(type==='ammo_light_machine_gun'){for(let i=4;i<28;i+=4)this.fillPixelRect(g,i,13,3,5,0xd5a83d);} else for(let i=5;i<w-4;i+=7)this.fillPixelRect(g,i,7,type==='ammo_sniper_rifle'?5:3,7,type==='ammo_revolver'?0xd6a84b:0xcbd5e1);
       } g.generateTexture(getPickupTextureKey(type),w,h); });
     g.clear();this.drawOutlinedRect(g,1,2,22,16,0x651f28,0xfca5a5);this.fillPixelRect(g,10,5,4,8,0xfacc15);this.fillPixelRect(g,10,15,4,2,0xfacc15);g.generateTexture('pickup-missing',24,20);
+  }
+
+  private createCombatEffectTextures(g: Phaser.GameObjects.Graphics): void {
+    const rect = (x: number, y: number, width: number, height: number, color: number): void => {
+      g.fillStyle(color, 1); g.fillRect(x, y, width, height);
+    };
+    const texture = (key: string, width: number, height: number, pixels: Array<[number, number, number, number, number]>): void => {
+      g.clear(); pixels.forEach(([x, y, w, h, color]) => rect(x, y, w, h, color)); g.generateTexture(key, width, height);
+    };
+
+    texture('fx-muzzle-pistol', 14, 10, [[0,4,3,2,0xf97316],[3,2,6,6,0xf59e0b],[5,3,7,4,0xfacc15],[6,4,8,2,0xffffff]]);
+    texture('fx-muzzle-rifle', 20, 10, [[0,4,4,2,0xf97316],[3,2,9,6,0xf59e0b],[8,1,7,3,0xfacc15],[8,6,7,3,0xfacc15],[5,4,15,2,0xffffff]]);
+    texture('fx-muzzle-shotgun', 24, 16, [[0,6,5,4,0xea580c],[4,3,9,10,0xf59e0b],[10,1,12,4,0xfacc15],[9,6,15,4,0xfacc15],[10,11,11,4,0xfacc15],[5,7,14,2,0xffffff]]);
+    texture('fx-muzzle-heavy', 28, 14, [[0,6,5,2,0x991b1b],[3,4,8,6,0xea580c],[8,2,13,10,0xf59e0b],[15,4,13,6,0xfacc15],[7,6,18,2,0xffffff]]);
+    texture('fx-shell-small', 5, 3, [[0,0,5,3,0x78350f],[1,0,3,2,0xd6a84b],[2,0,2,1,0xfde68a]]);
+    texture('fx-shell-large', 7, 4, [[0,0,7,4,0x5c3214],[1,0,5,3,0xb77935],[2,0,4,1,0xfde68a],[0,3,7,1,0x3f2716]]);
+    texture('fx-hit-flesh', 10, 10, [[4,4,3,3,0x450a0a],[1,2,2,2,0x991b1b],[7,1,2,2,0xb91c1c],[1,7,2,2,0x7f1d1d],[7,7,2,2,0x991b1b],[4,0,1,2,0xdc2626]]);
+    texture('fx-hit-metal', 10, 10, [[4,0,2,10,0x94a3b8],[0,4,10,2,0x64748b],[2,2,6,6,0xfacc15],[4,3,2,4,0xffffff],[3,4,4,2,0xffffff]]);
+    texture('fx-blood-drop', 4, 6, [[1,0,2,4,0x991b1b],[0,2,4,2,0x7f1d1d],[1,4,2,1,0xb91c1c],[1,5,1,1,0x450a0a]]);
+    texture('fx-blood-mist', 12, 10, [[1,1,2,2,0x7f1d1d],[5,0,1,2,0xb91c1c],[9,2,2,1,0x991b1b],[3,4,2,2,0x991b1b],[7,5,1,2,0x7f1d1d],[10,7,2,2,0xb91c1c],[1,8,1,1,0x450a0a]]);
+    texture('fx-impact-spark', 8, 8, [[3,0,2,8,0xf97316],[0,3,8,2,0xf59e0b],[2,2,4,4,0xfacc15],[3,3,2,2,0xffffff]]);
+    texture('fx-death-shadow', 34, 10, [[7,0,20,2,0x000000],[3,2,28,2,0x000000],[0,4,34,3,0x000000],[4,7,26,2,0x000000],[10,9,14,1,0x000000]]);
   }
 
   private createWeaponProjectileTextures(graphics: Phaser.GameObjects.Graphics): void {

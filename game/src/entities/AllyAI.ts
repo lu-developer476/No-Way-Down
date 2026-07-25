@@ -10,6 +10,7 @@ import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { CombatActionSystem } from '../systems/CombatActionSystem';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 import { getMovementSpeedMultiplier, getReloadTimeMultiplier } from '../config/attributeRuntime';
+import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
 
 const ALLY_FOLLOW_SPEED = 170;
 const ALLY_ATTACK_APPROACH_SPEED = 195;
@@ -385,8 +386,17 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
+    this.getCombatFeedbackSystem()?.playShot({
+      x: this.x, y: this.y, direction: direction < 0 ? -1 : 1,
+      weaponKey: activeWeapon.key, source: this, weaponSprite: this.equippedWeaponSprite,
+      isPlayerControlled: false
+    });
     this.ammoRuntime.consumeForShot(activeWeapon.key);
     this.playCombatAttackAnimation();
+  }
+
+  private getCombatFeedbackSystem(): CombatFeedbackSystem | undefined {
+    return this.scene.registry.get('combatFeedbackSystem') as CombatFeedbackSystem | undefined;
   }
 
   private startReloadActiveWeapon(weaponKey: string): boolean {

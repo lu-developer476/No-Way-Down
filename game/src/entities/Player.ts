@@ -10,6 +10,7 @@ import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 import { getMovementSpeedMultiplier, getReloadTimeMultiplier } from '../config/attributeRuntime';
+import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
@@ -433,9 +434,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       return false;
     }
 
+    this.getCombatFeedbackSystem()?.playShot({
+      x: this.x, y: this.y, direction: this.lookDirection < 0 ? -1 : 1,
+      weaponKey: activeWeapon.key, source: this, weaponSprite: this.equippedWeaponSprite,
+      isPlayerControlled: true
+    });
     this.ammoRuntime.consumeForShot(activeWeapon.key);
     this.play(`${this.characterVisualId}-shoot`, true);
     return true;
+  }
+
+  private getCombatFeedbackSystem(): CombatFeedbackSystem | undefined {
+    return this.scene.registry.get('combatFeedbackSystem') as CombatFeedbackSystem | undefined;
   }
 
   private startReloadActiveWeapon(): boolean {

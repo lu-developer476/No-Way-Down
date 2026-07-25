@@ -353,6 +353,7 @@ export class GameScene extends Phaser.Scene {
 
     const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
     const loadedActivePartyNames = new Set(loadedSnapshot?.party.active ?? []);
+    const loadedRescuedPartyNames = new Set(loadedSnapshot?.party.rescued ?? []);
     const runtimePartyAllies = [
       ...partySeed.allies,
       ...LATE_RESCUE_ALLIES
@@ -365,6 +366,10 @@ export class GameScene extends Phaser.Scene {
         ...activePlayerConfigs.map((config) => `player-${config.slot}`),
         ...runtimePartyAllies.map((ally) => ally.id)
       ],
+      rescuedCharacters: runtimePartyAllies
+        .filter((ally) => loadedRescuedPartyNames.has(ally.name)
+          || LATE_RESCUE_ALLIES.some((lateAlly) => lateAlly.id === ally.id && loadedActivePartyNames.has(ally.name)))
+        .map((ally) => ally.id),
       narrativeProgress: loadedSnapshot?.narrative.flags ?? {},
       irreversibleEvents: loadedSnapshot?.narrative.irreversible_events ?? [],
       seenCinematics: loadedSnapshot?.narrative.seen_cinematics ?? []
@@ -2203,11 +2208,14 @@ export class GameScene extends Phaser.Scene {
     const setup = this.getInitialSetup();
     const campaign = this.campaignState?.getSnapshot();
     const partyMembers = this.partyState?.getSnapshot() ?? [];
+    const rescuedCharacterIds = new Set(campaign?.rescuedCharacters ?? []);
 
     const party = {
       active: partyMembers.filter((member) => member.status === 'active').map((member) => member.name),
       dead: partyMembers.filter((member) => member.status === 'dead').map((member) => member.name),
-      rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
+      rescued: partyMembers
+        .filter((member) => member.status === 'rescued' || rescuedCharacterIds.has(member.id))
+        .map((member) => member.name),
       infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
     };
 

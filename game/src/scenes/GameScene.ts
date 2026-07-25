@@ -2264,6 +2264,7 @@ export class GameScene extends Phaser.Scene {
       this.registry.set('campaignFlowCursor', savedFlowNodeIndex);
     }
 
+    this.visitedCheckpoints.clear();
     if (snapshot.checkpoints?.visited) {
       snapshot.checkpoints.visited.forEach((value) => this.visitedCheckpoints.add(value));
     }

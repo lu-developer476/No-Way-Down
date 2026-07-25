@@ -523,11 +523,15 @@ export class UpperFloorScene extends Phaser.Scene {
     const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
     const partyState = this.registry.get('partyState') as PartyMember[] | undefined;
     const partyMembers = partyState ?? [];
+    const campaignState = this.registry.get('campaignState') as CampaignStateData | undefined;
+    const rescuedCharacterIds = new Set(campaignState?.rescuedCharacters ?? []);
     const party = partyState
       ? {
           active: partyMembers.filter((member) => member.status === 'active').map((member) => member.name),
           dead: partyMembers.filter((member) => member.status === 'dead').map((member) => member.name),
-          rescued: partyMembers.filter((member) => member.status === 'rescued').map((member) => member.name),
+          rescued: partyMembers
+            .filter((member) => member.status === 'rescued' || rescuedCharacterIds.has(member.id))
+            .map((member) => member.name),
           infected: partyMembers.filter((member) => member.status === 'infected').map((member) => member.name)
         }
       : loadedSnapshot?.party ?? {
@@ -536,7 +540,6 @@ export class UpperFloorScene extends Phaser.Scene {
           rescued: [],
           infected: []
         };
-    const campaignState = this.registry.get('campaignState') as CampaignStateData | undefined;
     const narrative = campaignState
       ? {
           flags: campaignState.narrativeProgress,

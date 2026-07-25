@@ -2340,6 +2340,8 @@ export class GameScene extends Phaser.Scene {
       this.showApiStatus('Partida cargada desde servidor.', false);
 
       if (progress.current_level !== this.scene.key) {
+        this.registry.remove('campaignState');
+        this.registry.remove('partyState');
         this.scene.start(progress.current_level, { respawnPoint: loadedCheckpoint, skipLoad: true });
         return;
       }
@@ -2360,6 +2362,8 @@ export class GameScene extends Phaser.Scene {
 
         this.showApiStatus('Servidor no disponible. Partida local cargada.', true);
         if (localProgress.current_level !== this.scene.key) {
+          this.registry.remove('campaignState');
+          this.registry.remove('partyState');
           this.scene.start(localProgress.current_level, {
             respawnPoint: loadedCheckpoint,
             skipLoad: true

@@ -24,6 +24,7 @@ const ALLY_MELEE_SWITCH_DISTANCE = 78;
 const ALLY_DEFENSE_SWITCH_DISTANCE = 68;
 const ALLY_SAFE_RELOAD_DISTANCE = 165;
 const ALLY_RENDER_DEPTH = 20;
+const ALLY_VISUAL_SCALE = 1.54;
 const ALLY_LOW_AMMO_RATIO = 0.25;
 const ALLY_PLAYER_BLOCK_RADIUS = 32;
 const ALLY_TARGET_MEMORY_MS = 1200;
@@ -82,6 +83,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     this.setSize(18, 40);
     this.setOffset(7, 8);
+    this.setScale(ALLY_VISUAL_SCALE);
     // Preserve each character's authored sprite palette/skin. The party color is now
     // rendered as UI chrome instead of tinting the whole sprite, because a
     // full-sprite tint made allies look skinless.
@@ -93,11 +95,13 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.spriteAnimationSystem.playState(this, this.characterVisualId, 'idle');
 
-    this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
-      fontSize: '10px',
+    this.nameTag = scene.add.text(this.x, this.y - 52, this.runtimeConfig.name, {
+      fontSize: '9px',
       color: Phaser.Display.Color.ValueToColor(profile.tint).rgba,
-      stroke: '#042f2e',
-      strokeThickness: 3,
+      backgroundColor: 'rgba(5, 12, 15, 0.76)',
+      padding: { x: 4, y: 2 },
+      stroke: '#031014',
+      strokeThickness: 2,
       fontStyle: 'bold'
     });
     this.nameTag.setOrigin(0.5, 1);
@@ -105,7 +109,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.partyMarker = scene.add.circle(this.x, this.y + 4, 10, profile.tint, 0.28);
     this.partyMarker.setStrokeStyle(2, profile.tint, 0.82);
-    this.partyMarker.setScale(1.35, 0.36);
+    this.partyMarker.setAlpha(0.18);
+    this.partyMarker.setScale(1.55, 0.32);
     this.partyMarker.setDepth(ALLY_RENDER_DEPTH - 0.2);
 
     this.equippedWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
@@ -562,10 +567,14 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta);
-    this.nameTag.setPosition(this.x, this.y - 42);
+    this.setDepth(this.y);
+    this.nameTag.setPosition(this.x, this.y - 52);
+    this.nameTag.setDepth(this.depth + 2);
     this.nameTag.setVisible(this.active && this.isNameTagVisible);
-    this.partyMarker.setPosition(this.x, this.y + 5);
+    this.partyMarker.setPosition(this.x, this.y + 18);
+    this.partyMarker.setDepth(this.depth - 1);
     this.partyMarker.setVisible(this.active);
+    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
     this.updateEquippedWeaponSprite();
   }
 
@@ -579,7 +588,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private refreshEquippedWeaponVisual(): void {
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
-    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
+    this.equippedWeaponSprite.setScale(weaponVisual.heldScale * 1.14);
     this.updateEquippedWeaponSprite();
   }
 

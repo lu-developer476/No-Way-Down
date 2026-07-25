@@ -55,7 +55,7 @@ import { CheckpointSystem } from '../systems/core/CheckpointSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
-const ARCADE_CAMERA_ZOOM = 1.25;
+const ARCADE_CAMERA_ZOOM = 1.34;
 // Este checkpoint queda reservado para una futura integración narrativa.
 // En nivel 1 no debe incorporar a Lorena/Selene.
 const LATE_ALLY_JOIN_CHECKPOINT_ID = 'late-rescue-allies-join';
@@ -1423,6 +1423,20 @@ export class GameScene extends Phaser.Scene {
 
     const topY = config.y - config.height / 2 + 6;
     this.add.rectangle(config.x, topY, config.width, 8, visualTheme.palette.platformTop).setDepth(5);
+    this.add.rectangle(config.x, topY + 6, config.width, 5, visualTheme.palette.worldShadow, 0.82).setDepth(5.1);
+
+    for (let jointX = config.x - config.width / 2 + 64; jointX < config.x + config.width / 2; jointX += 128) {
+      this.add.rectangle(jointX, topY + 1, 5, 3, visualTheme.palette.worldBrass, 0.78).setDepth(5.2);
+    }
+
+    this.add.rectangle(
+      config.x,
+      config.y + config.height / 2 - 2,
+      config.width,
+      3,
+      visualTheme.palette.platformEdge,
+      0.95
+    ).setDepth(5.2);
 
     const panelCount = Math.max(2, Math.floor(config.width / 96));
     const panelWidth = config.width / panelCount;
@@ -1483,14 +1497,14 @@ export class GameScene extends Phaser.Scene {
       this.renderSubsueloZoneBackdrop(zone.zone, zone.x, zone.width, floorTop, index, profile);
     });
 
-    this.addBnaWindowBand(levelWidth, 84, floorTop - 110, usesInstitutionalHall ? 0.38 : 0.3, 0.28);
-    this.addStoneColumnBand(levelWidth, floorTop - 48, usesVerticalCore ? 176 : 220, 0.46);
+    this.addBnaWindowBand(levelWidth, 84, floorTop - 110, usesInstitutionalHall ? 0.38 : 0.3, 0.86);
+    this.addStoneColumnBand(levelWidth, floorTop - 48, usesVerticalCore ? 176 : 220, 0.58);
 
     for (let x = 132; x < levelWidth; x += 240) {
       this.add.image(x, 110, 'prop-tall-window')
         .setDepth(0.9)
         .setScrollFactor(0.34, 1)
-        .setAlpha(usesInstitutionalHall ? 0.92 : 0.78)
+        .setAlpha(usesInstitutionalHall ? 0.94 : 0.86)
         .setScale(1.15);
     }
 
@@ -1498,7 +1512,7 @@ export class GameScene extends Phaser.Scene {
       this.add.image(x, floorTop - 68, 'prop-stone-column')
         .setDepth(1.8)
         .setScrollFactor(0.6, 1)
-        .setAlpha(0.54)
+        .setAlpha(0.58)
         .setScale(1.25);
     }
 
@@ -1537,6 +1551,38 @@ export class GameScene extends Phaser.Scene {
         this.add.rectangle(x, floorTop - 110, 72, 148, 0x2b211c, 0.24).setDepth(2.1).setScrollFactor(0.72, 1);
       }
     }
+
+    this.createAtmosphericLighting(levelWidth, floorTop, usesServiceWing, usesInstitutionalHall);
+  }
+
+  private createAtmosphericLighting(
+    levelWidth: number,
+    floorTop: number,
+    usesServiceWing: boolean,
+    usesInstitutionalHall: boolean
+  ): void {
+    for (let x = 160; x < levelWidth; x += 320) {
+      const width = 18 + (Math.floor(x / 320) % 3) * 5;
+      this.add.rectangle(x, floorTop / 2, width, floorTop, visualTheme.palette.worldShadow, usesServiceWing ? 0.3 : 0.22)
+        .setDepth(2.6)
+        .setScrollFactor(usesInstitutionalHall ? 0.58 : 0.7, 1);
+    }
+
+    for (let x = 220; x < levelWidth; x += 520) {
+      const reflectionColor = usesServiceWing
+        ? visualTheme.palette.worldColdLight
+        : visualTheme.palette.worldWarmLight;
+      this.add.ellipse(x, floorTop - 150, 260, 220, visualTheme.palette.worldWarmLight, usesServiceWing ? 0.05 : 0.09)
+        .setDepth(3.1)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setScrollFactor(0.82, 1);
+      this.add.ellipse(x, floorTop + 9, 220, 30, reflectionColor, usesInstitutionalHall ? 0.09 : 0.06)
+        .setDepth(4.4)
+        .setBlendMode(Phaser.BlendModes.ADD);
+      if (usesInstitutionalHall) {
+        this.add.rectangle(x, floorTop - 34, 72, 3, visualTheme.palette.worldBrass, 0.22).setDepth(2.75);
+      }
+    }
   }
 
   private renderSubsueloZoneBackdrop(
@@ -1572,7 +1618,7 @@ export class GameScene extends Phaser.Scene {
         this.add.image(x, 122, 'prop-tall-window').setDepth(1.1).setScrollFactor(0.34, 1).setAlpha(0.92).setScale(1.08);
       }
       for (let x = zoneX + 94; x < zoneX + zoneWidth; x += 220) {
-        this.add.image(x, floorTop - 60, 'prop-stone-column').setDepth(1.75).setScrollFactor(0.54, 1).setAlpha(0.42).setScale(1.2);
+        this.add.image(x, floorTop - 60, 'prop-stone-column').setDepth(1.75).setScrollFactor(0.54, 1).setAlpha(0.58).setScale(1.2);
       }
     }
 

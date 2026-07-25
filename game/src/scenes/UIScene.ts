@@ -9,6 +9,7 @@ interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
   nameText: Phaser.GameObjects.Text;
   hpFill: Phaser.GameObjects.Rectangle;
+  hpValueText: Phaser.GameObjects.Text;
   activeWeaponIcon: Phaser.GameObjects.Image;
   secondaryWeaponIcon: Phaser.GameObjects.Image;
   activeWeaponText: Phaser.GameObjects.Text;
@@ -26,6 +27,7 @@ export class UIScene extends Phaser.Scene {
   private zombieCountText?: Phaser.GameObjects.Text;
   private objectiveText?: Phaser.GameObjects.Text;
   private interactionText?: Phaser.GameObjects.Text;
+  private interactionCard?: Phaser.GameObjects.Rectangle;
   private dialoguePanel?: Phaser.GameObjects.Container;
   private dialogueSpeakerText?: Phaser.GameObjects.Text;
   private dialogueBodyText?: Phaser.GameObjects.Text;
@@ -102,8 +104,11 @@ export class UIScene extends Phaser.Scene {
       && ((prev?.ammoCurrent ?? 0) > 0 || (prev?.ammoReserve ?? 0) > 0);
     const shouldClearStatus = !protagonist.isReloading && !specialStateText;
 
-    this.protagonistHud.nameText.setText(`[${protagonist.name.toUpperCase()}]`);
-    this.protagonistHud.hpFill.setSize(122 * hpRatio, 8);
+    this.protagonistHud.nameText.setText(protagonist.name.toUpperCase());
+    this.protagonistHud.hpFill
+      .setSize(214 * hpRatio, 8)
+      .setFillStyle(hpRatio <= 0.25 ? visualTheme.palette.uiHealthDanger : visualTheme.palette.uiHealth);
+    this.protagonistHud.hpValueText.setText(`HP ${hp} / ${maxHp}`);
     this.refreshWeaponHudIcon(this.protagonistHud.activeWeaponIcon, protagonist.activeWeapon);
     this.refreshWeaponHudIcon(this.protagonistHud.secondaryWeaponIcon, protagonist.secondaryWeapon);
     this.protagonistHud.activeWeaponText.setText(`Activa: ${activeWeaponText}`);
@@ -188,11 +193,11 @@ export class UIScene extends Phaser.Scene {
   }
 
   private handleZombiesChanged(_parent: Phaser.Data.DataManager, value: number): void {
-    this.zombieCountText?.setText(`Zombies restantes: ${value}`);
+    this.zombieCountText?.setText(value > 0 ? `AMENAZAS  ${value}` : 'ÁREA LIMPIA');
   }
 
   private handleObjectiveChanged(_parent: Phaser.Data.DataManager, value: string): void {
-    this.objectiveText?.setText(value ? `OBJETIVO: ${value}` : 'OBJETIVO: En espera');
+    this.objectiveText?.setText(value || 'En espera');
   }
 
   private handleInteractionHintChanged(_parent: Phaser.Data.DataManager, value: string): void {
@@ -200,6 +205,7 @@ export class UIScene extends Phaser.Scene {
     this.interactionText
       ?.setText(hint || '')
       .setVisible(Boolean(hint));
+    this.interactionCard?.setVisible(Boolean(hint));
   }
 
   private handlePauseStateChanged(_parent: Phaser.Data.DataManager, isPaused: boolean): void {
@@ -225,19 +231,18 @@ export class UIScene extends Phaser.Scene {
   }
 
   private getControlsLegendText(): string {
-    return [
-      `${controlManager.getMovementDisplayLabel()}` ,
-      `${controlManager.getDisplayLabel('jump')} saltar`,
-      `${controlManager.getDisplayLabel('shoot')} disparar`,
-      `${controlManager.getDisplayLabel('reload')} recargar`,
-      `${controlManager.getDisplayLabel('interact')} interactuar`,
-      `${controlManager.getDisplayLabel('pause')} pausa`,
-      `${controlManager.getDisplayLabel('quit')} salir`
-    ].join(' · ');
+    return `${controlManager.getMovementDisplayLabel().toUpperCase()} MOVER · ${controlManager.getDisplayLabel('jump').toUpperCase()} SALTAR · ${controlManager.getDisplayLabel('shoot').toUpperCase()} DISPARAR\n`
+      + `${controlManager.getDisplayLabel('reload').toUpperCase()} RECARGAR · ${controlManager.getDisplayLabel('interact').toUpperCase()} INTERACTUAR · ${controlManager.getDisplayLabel('pause').toUpperCase()} PAUSA`;
   }
 
   private createHudFrame(): void {
+    this.createScreenVignette();
     const pixelFont = '"Courier New", monospace';
+
+    const protagonistPanel = this.add.rectangle(12, 12, 246, 112, visualTheme.palette.uiPanelFill, 0.94)
+      .setOrigin(0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder, 1).setScrollFactor(0);
+    const protagonistHeader = this.add.rectangle(14, 14, 242, 22, visualTheme.palette.uiPanelRaised, 1)
+      .setOrigin(0).setScrollFactor(0);
 
     const nameText = this.add.text(16, 14, '', {
       color: '#f8fafc',
@@ -246,14 +251,21 @@ export class UIScene extends Phaser.Scene {
       fontStyle: 'bold'
     }).setScrollFactor(0);
 
-    const hpBg = this.add.rectangle(16, 30, 122, 8, 0x1f2937, 0.95)
+    const hpBg = this.add.rectangle(16, 38, 214, 8, visualTheme.palette.uiPanelShadow, 0.95)
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setStrokeStyle(1, 0x334155, 1);
 
-    const hpFill = this.add.rectangle(16, 30, 0, 8, 0x38bdf8, 1)
+    const hpFill = this.add.rectangle(16, 38, 0, 8, visualTheme.palette.uiHealth, 1)
       .setOrigin(0, 0)
       .setScrollFactor(0);
+
+    const hpValueText = this.add.text(246, 27, '', {
+      color: visualTheme.palette.uiTextSecondary,
+      fontSize: '9px',
+      fontFamily: pixelFont,
+      fontStyle: 'bold'
+    }).setOrigin(1, 0).setScrollFactor(0);
 
     const activeWeaponText = this.add.text(16, 44, '', {
       color: '#e2e8f0',
@@ -268,7 +280,7 @@ export class UIScene extends Phaser.Scene {
     }).setScrollFactor(0);
 
     const ammoText = this.add.text(16, 72, '', {
-      color: '#f8fafc',
+      color: Phaser.Display.Color.ValueToColor(visualTheme.palette.uiAmmo).rgba,
       fontSize: '11px',
       fontFamily: pixelFont,
       fontStyle: 'bold'
@@ -291,9 +303,10 @@ export class UIScene extends Phaser.Scene {
       .setAlpha(0.85);
 
     this.protagonistHud = {
-      container: this.add.container(0, 0, [nameText, hpBg, hpFill, activeWeaponIcon, secondaryWeaponIcon, activeWeaponText, secondaryWeaponText, ammoText, statusText]).setVisible(false),
+      container: this.add.container(0, 0, [protagonistPanel, protagonistHeader, nameText, hpBg, hpFill, hpValueText, activeWeaponIcon, secondaryWeaponIcon, activeWeaponText, secondaryWeaponText, ammoText, statusText]).setDepth(20).setVisible(false),
       nameText,
       hpFill,
+      hpValueText,
       activeWeaponIcon,
       secondaryWeaponIcon,
       activeWeaponText,
@@ -302,18 +315,25 @@ export class UIScene extends Phaser.Scene {
       statusText
     };
 
-    this.zombieCountText = this.add.text(18, 106, '', {
-      color: '#fca5a5',
+    this.add.rectangle(this.scale.width - 12, 12, 154, 34, visualTheme.palette.uiPanelFill, 0.94)
+      .setOrigin(1, 0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder, 1).setScrollFactor(0).setDepth(19);
+    this.zombieCountText = this.add.text(this.scale.width - 24, 22, '', {
+      color: visualTheme.palette.uiTextPrimary,
       fontSize: '12px',
       fontFamily: pixelFont
-    }).setScrollFactor(0);
+    }).setOrigin(1, 0).setScrollFactor(0).setDepth(20);
 
-    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 18, '', {
+    this.add.rectangle(this.scale.width / 2, this.scale.height - 64, 640, 52, visualTheme.palette.uiObjectiveFill, 0.96)
+      .setOrigin(0.5, 0).setStrokeStyle(2, visualTheme.palette.uiObjectiveBorder, 1).setScrollFactor(0).setDepth(9);
+    this.add.text(this.scale.width / 2 - 306, this.scale.height - 57, 'MISIÓN', {
+      color: visualTheme.palette.uiHighlight, fontSize: '9px', fontFamily: pixelFont, fontStyle: 'bold'
+    }).setScrollFactor(0).setDepth(10);
+
+    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 35, '', {
       color: visualTheme.palette.uiHighlight,
       fontSize: '14px',
       fontFamily: pixelFont,
-      backgroundColor: '#1a0f1f',
-      padding: { x: 18, y: 8 },
+      padding: { x: 18, y: 4 },
       wordWrap: { width: Math.min(this.scale.width - 72, 700) },
       align: 'center'
     })
@@ -322,9 +342,9 @@ export class UIScene extends Phaser.Scene {
       .setDepth(9)
       .setAlpha(0.96);
 
-    const dialogueWidth = Math.min(this.scale.width - 32, 760);
-    const dialogueBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 126, dialogueWidth, 152, visualTheme.palette.uiPanelFrame, 0.95)
-      .setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1)
+    const dialogueWidth = Math.min(this.scale.width - 32, 780);
+    const dialogueBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 126, dialogueWidth, 152, visualTheme.palette.uiPanelFill, 0.97)
+      .setStrokeStyle(3, visualTheme.palette.uiPanelBorder, 1)
       .setScrollFactor(0);
     const dialogueArtwork = this.textures.exists('menu_background')
       ? this.add.image(dialogueBg.x, dialogueBg.y, 'menu_background').setDisplaySize(dialogueWidth, 152).setAlpha(0.42).setScrollFactor(0)
@@ -332,7 +352,10 @@ export class UIScene extends Phaser.Scene {
     const dialogueTint = this.add.rectangle(dialogueBg.x, dialogueBg.y, dialogueWidth, 152, visualTheme.palette.uiPanelTint, 0.6).setScrollFactor(0);
     const dialogueBorder = this.add.rectangle(dialogueBg.x, dialogueBg.y, dialogueWidth, 152, 0x000000, 0).setStrokeStyle(3, visualTheme.palette.uiPanelFrameSoft, 1).setScrollFactor(0);
 
-    this.dialogueSpeakerText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 18, dialogueBg.y - 56, '', {
+    const portraitBlock = this.add.rectangle(dialogueBg.x - dialogueBg.width / 2 + 58, dialogueBg.y, 108, 140, visualTheme.palette.uiPanelRaised, 0.95)
+      .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, 1).setScrollFactor(0);
+
+    this.dialogueSpeakerText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 128, dialogueBg.y - 56, '', {
       color: visualTheme.palette.uiTextSecondary,
       fontSize: '14px',
       fontFamily: pixelFont,
@@ -340,47 +363,60 @@ export class UIScene extends Phaser.Scene {
     }).setOrigin(0, 0.5).setScrollFactor(0);
 
 
-    this.dialoguePortraitText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 16, dialogueBg.y - 56, '', {
+    this.dialoguePortraitText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 58, dialogueBg.y, '', {
       color: visualTheme.palette.uiTextMuted,
       fontSize: '10px',
       fontFamily: pixelFont
-    }).setOrigin(1, 0.5).setScrollFactor(0);
+    }).setOrigin(0.5).setScrollFactor(0);
 
-    this.dialogueBodyText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 18, dialogueBg.y - 34, '', {
+    this.dialogueBodyText = this.add.text(dialogueBg.x - dialogueBg.width / 2 + 128, dialogueBg.y - 34, '', {
       color: visualTheme.palette.uiTextPrimary,
       fontSize: '14px',
       fontFamily: pixelFont,
-      wordWrap: { width: dialogueBg.width - 36 }
+      wordWrap: { width: dialogueBg.width - 154 }
     }).setOrigin(0, 0).setScrollFactor(0);
 
     this.dialogueHintText = this.add.text(dialogueBg.x + dialogueBg.width / 2 - 16, dialogueBg.y + 58, '', {
       color: visualTheme.palette.uiTextMuted,
-      fontSize: '11px',
+      fontSize: '9px',
       fontFamily: pixelFont
     }).setOrigin(1, 0.5).setScrollFactor(0);
 
-    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, dialogueArtwork, dialogueTint, dialogueBorder, this.dialogueSpeakerText, this.dialoguePortraitText, this.dialogueBodyText, this.dialogueHintText])
+    this.dialoguePanel = this.add.container(0, 0, [dialogueBg, dialogueArtwork, dialogueTint, dialogueBorder, portraitBlock, this.dialogueSpeakerText, this.dialoguePortraitText, this.dialogueBodyText, this.dialogueHintText])
       .setDepth(50)
       .setVisible(false);
 
-    this.controlsLegendText = this.add.text(this.scale.width - 12, 12, this.getControlsLegendText(), {
+    this.add.rectangle(this.scale.width - 12, 54, 440, 42, visualTheme.palette.uiPanelRaised, 0.84)
+      .setOrigin(1, 0).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, 0.9).setScrollFactor(0).setDepth(11);
+    this.controlsLegendText = this.add.text(this.scale.width - 22, 60, this.getControlsLegendText(), {
       color: visualTheme.palette.uiTextSecondary,
-      fontSize: '11px',
+      fontSize: '9px',
       fontFamily: pixelFont,
-      backgroundColor: '#1a0f1f',
-      padding: { x: 8, y: 6 }
+      align: 'right',
+      lineSpacing: 3,
+      wordWrap: { width: 420 }
     }).setOrigin(1, 0).setScrollFactor(0).setDepth(12).setAlpha(0.92);
+    this.time.delayedCall(8000, () => this.controlsLegendText?.setAlpha(0.58));
 
-    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 52, '', {
+    this.interactionCard = this.add.rectangle(this.scale.width / 2, this.scale.height - 72, 520, 34, visualTheme.palette.uiInteractionFill, 0.96)
+      .setOrigin(0.5, 1).setStrokeStyle(2, visualTheme.palette.uiPanelAccent, 1).setScrollFactor(0).setDepth(20).setVisible(false);
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 89, '', {
       color: visualTheme.palette.uiTextPrimary,
-      fontSize: '13px',
+      fontSize: '12px',
       fontFamily: pixelFont,
-      backgroundColor: '#1d1120',
-      padding: { x: 12, y: 6 },
+      padding: { x: 16, y: 6 },
       align: 'center'
     })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setVisible(false);
+  }
+
+  private createScreenVignette(): void {
+    const { width, height } = this.scale;
+    this.add.rectangle(width / 2, 0, width, 36, visualTheme.palette.worldInk, 0.16).setOrigin(0.5, 0).setScrollFactor(0).setDepth(7);
+    this.add.rectangle(width / 2, height, width, 36, visualTheme.palette.worldInk, 0.18).setOrigin(0.5, 1).setScrollFactor(0).setDepth(7);
+    this.add.rectangle(0, height / 2, 28, height, visualTheme.palette.worldInk, 0.14).setOrigin(0, 0.5).setScrollFactor(0).setDepth(7);
+    this.add.rectangle(width, height / 2, 28, height, visualTheme.palette.worldInk, 0.14).setOrigin(1, 0.5).setScrollFactor(0).setDepth(7);
   }
 }

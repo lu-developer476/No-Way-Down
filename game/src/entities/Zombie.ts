@@ -9,6 +9,7 @@ const DEFAULT_ATTACK_COOLDOWN_MS = 900;
 const DEFAULT_ZOMBIE_DAMAGE = 8;
 export const DEFAULT_ZOMBIE_HEALTH = 3;
 const ZOMBIE_RENDER_DEPTH = 19;
+const ZOMBIE_VISUAL_SCALE = 1.48;
 
 type Target = Pick<Phaser.GameObjects.GameObject, 'active'> & {
   x: number;
@@ -59,6 +60,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     this.setSize(18, 40);
     this.setOffset(7, 8);
+    this.setScale(ZOMBIE_VISUAL_SCALE);
     this.setDepth(ZOMBIE_RENDER_DEPTH);
 
     this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle');
@@ -108,7 +110,12 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle', true);
     this.setAlpha(1);
     this.setAngle(0);
-    this.setScale(1);
+    this.setScale(ZOMBIE_VISUAL_SCALE);
+  }
+
+  preUpdate(time: number, delta: number): void {
+    super.preUpdate(time, delta);
+    this.setDepth(this.y);
   }
 
   getHealth(): number {

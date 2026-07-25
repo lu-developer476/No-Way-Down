@@ -17,6 +17,9 @@ const DAMAGE_INVULNERABILITY_MS = 900;
 const CHARACTER_DISPLAY_ORIGIN_X = 16;
 const CHARACTER_DISPLAY_ORIGIN_Y = 42;
 const CHARACTER_RENDER_DEPTH = 20;
+const PLAYER_VISUAL_SCALE = 1.62;
+const PLAYER_SHADOW_WIDTH = 38;
+const PLAYER_SHADOW_HEIGHT = 10;
 
 const CHARACTER_PHYSICS_BY_SILHOUETTE = {
   slim: { bodyWidth: 16, bodyHeight: 38, offsetX: 8, offsetY: 10, bounce: 0.04, dragX: 850 },
@@ -47,6 +50,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly profile: PlayerConfig;
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
+  private readonly groundShadow: Phaser.GameObjects.Ellipse;
   private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
   private isClimbing = false;
   private climbAnimations: StairAnimationKeys = {};
@@ -71,7 +75,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setBounce(0, physicsProfile.bounce);
     this.setDragX(physicsProfile.dragX);
     this.setMaxVelocity(180, 720);
-    this.setScale(1.35);
+    this.setScale(PLAYER_VISUAL_SCALE);
     this.setDisplayOrigin(CHARACTER_DISPLAY_ORIGIN_X, CHARACTER_DISPLAY_ORIGIN_Y);
     this.setDepth(CHARACTER_RENDER_DEPTH);
 
@@ -103,11 +107,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.spriteAnimationSystem.playState(this, this.characterVisualId, 'idle');
 
-    this.nameTag = scene.add.text(this.x, this.y - 42, this.runtimeConfig.name, {
-      fontSize: '10px',
-      color: '#f8fafc',
-      stroke: '#0f172a',
-      strokeThickness: 3,
+    this.groundShadow = scene.add.ellipse(this.x, this.y + 19, PLAYER_SHADOW_WIDTH, PLAYER_SHADOW_HEIGHT, 0x000000, 0.32)
+      .setDepth(CHARACTER_RENDER_DEPTH - 1)
+      .setBlendMode(Phaser.BlendModes.MULTIPLY);
+
+    this.nameTag = scene.add.text(this.x, this.y - 54, this.runtimeConfig.name, {
+      fontSize: '9px',
+      color: characterVisual.faction === 'protagonist' ? '#f2cf87' : '#d9f4ff',
+      backgroundColor: 'rgba(7, 9, 13, 0.78)',
+      padding: { x: 4, y: 2 },
+      stroke: '#07090d',
+      strokeThickness: 2,
       fontStyle: 'bold'
     });
     this.nameTag.setOrigin(0.5, 1);
@@ -386,6 +396,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
+    this.groundShadow.destroy();
     this.equippedWeaponSprite.destroy();
     super.destroy(fromScene);
   }
@@ -467,15 +478,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private updateNameTagPosition(): void {
-    this.nameTag.setPosition(this.x, this.y - 42);
+    this.nameTag.setPosition(this.x, this.y - 54);
     this.nameTag.setDepth(this.depth + 1);
+    this.groundShadow
+      .setPosition(this.x, this.y + 19)
+      .setDepth(this.depth - 1)
+      .setVisible(this.active && !this.isDeadState && !this.isClimbing);
     this.updateEquippedWeaponSprite();
   }
 
   private refreshEquippedWeaponVisual(): void {
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
-    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
+    this.equippedWeaponSprite.setScale(weaponVisual.heldScale * 1.18);
     this.updateEquippedWeaponSprite();
   }
 

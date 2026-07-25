@@ -12,6 +12,7 @@ import {
   LOCAL_PROGRESS_STORAGE_KEY,
   InitialRunSetup,
   loadInitialRunSetup,
+  normalizeProgressSceneKey,
   parseCheckpoint
 } from './sceneShared';
 import { visualTheme } from './visualTheme';
@@ -680,6 +681,11 @@ export class UpperFloorScene extends Phaser.Scene {
 
     try {
       const progress = await progressApi.loadProgress(this.getPlayerId());
+      const loadedSceneKey = normalizeProgressSceneKey(progress.current_level);
+      if (!loadedSceneKey) {
+        throw new Error(`Escena guardada incompatible: ${progress.current_level}`);
+      }
+
       if (this.hasTriggeredTransition || !this.scene.isActive() || this.players !== loadOwner) {
         return;
       }
@@ -695,8 +701,8 @@ export class UpperFloorScene extends Phaser.Scene {
       this.registry.remove('partyState');
       this.showApiStatus('Partida cargada desde servidor.', false);
 
-      if (progress.current_level !== this.scene.key) {
-        this.scene.start(progress.current_level, { respawnPoint: loadedCheckpoint, skipLoad: true });
+      if (loadedSceneKey !== this.scene.key) {
+        this.scene.start(loadedSceneKey, { respawnPoint: loadedCheckpoint, skipLoad: true });
         return;
       }
 
@@ -708,6 +714,12 @@ export class UpperFloorScene extends Phaser.Scene {
 
       const localProgress = this.loadLocalProgress();
       if (localProgress) {
+        const loadedSceneKey = normalizeProgressSceneKey(localProgress.current_level);
+        if (!loadedSceneKey) {
+          this.showApiStatus('Partida local incompatible: escena desconocida.', true);
+          return;
+        }
+
         const loadedCheckpoint = parseCheckpoint(localProgress.checkpoint);
         this.applyLoadedSnapshot(localProgress.campaign_snapshot);
 
@@ -719,8 +731,8 @@ export class UpperFloorScene extends Phaser.Scene {
         this.registry.remove('partyState');
         this.showApiStatus('Servidor no disponible. Partida local cargada.', true);
 
-        if (localProgress.current_level !== this.scene.key) {
-          this.scene.start(localProgress.current_level, {
+        if (loadedSceneKey !== this.scene.key) {
+          this.scene.start(loadedSceneKey, {
             respawnPoint: loadedCheckpoint,
             skipLoad: true
           });

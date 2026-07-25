@@ -15,6 +15,29 @@ const CHARACTER_SPRITE_SHEET_SUFFIX = '-sheet';
 
 type HexColor = number;
 
+const CHARACTER_OUTLINE = 0x090b10;
+const CHARACTER_DEEP_SHADOW = 0x111318;
+const CHARACTER_HIGHLIGHT = 0xf8fafc;
+const ZOMBIE_WOUND = 0x7f1d1d;
+const ZOMBIE_DRY_BLOOD = 0x450a0a;
+
+interface CharacterFramePose {
+  bodyOffsetX: number;
+  bodyOffsetY: number;
+  headOffsetX: number;
+  headOffsetY: number;
+  leftArmOffsetX: number;
+  leftArmOffsetY: number;
+  rightArmOffsetX: number;
+  rightArmOffsetY: number;
+  leftLegOffsetX: number;
+  leftLegOffsetY: number;
+  rightLegOffsetX: number;
+  rightLegOffsetY: number;
+  lean: -1 | 0 | 1;
+  aiming: boolean;
+  hurt: boolean;
+}
 
 interface ProjectileSpriteRect {
   x: number;
@@ -453,207 +476,151 @@ export class BootScene extends Phaser.Scene {
     }
   }
 
+  private getCharacterFramePose(frame: number, isZombie: boolean): CharacterFramePose {
+    const base: CharacterFramePose = { bodyOffsetX: 0, bodyOffsetY: 0, headOffsetX: 0, headOffsetY: 0, leftArmOffsetX: 0, leftArmOffsetY: 0, rightArmOffsetX: 0, rightArmOffsetY: 0, leftLegOffsetX: 0, leftLegOffsetY: 0, rightLegOffsetX: 0, rightLegOffsetY: 0, lean: 0, aiming: false, hurt: false };
+    switch (frame) {
+      case 1: return { ...base, bodyOffsetY: 1, headOffsetY: 1, leftArmOffsetY: 1, rightArmOffsetY: 1 };
+      case 2: return { ...base, bodyOffsetY: 1, leftArmOffsetX: 1, leftArmOffsetY: -1, rightArmOffsetX: -1, rightArmOffsetY: 2, leftLegOffsetX: -2, rightLegOffsetX: 2, rightLegOffsetY: 2 };
+      case 3: return { ...base, bodyOffsetX: 1, leftArmOffsetX: -1, leftArmOffsetY: 2, rightArmOffsetX: 1, rightArmOffsetY: -1, leftLegOffsetX: 1, leftLegOffsetY: 2, rightLegOffsetX: -1 };
+      case 4: return { ...base, bodyOffsetY: 1, leftArmOffsetX: -1, leftArmOffsetY: -1, rightArmOffsetX: 1, rightArmOffsetY: 2, leftLegOffsetX: 2, leftLegOffsetY: 2, rightLegOffsetX: -2 };
+      case 5: return { ...base, bodyOffsetX: -1, leftArmOffsetX: 1, leftArmOffsetY: 2, rightArmOffsetX: -1, rightArmOffsetY: -1, leftLegOffsetX: -1, rightLegOffsetX: 1, rightLegOffsetY: 2 };
+      case 6: return { ...base, bodyOffsetX: -1, rightArmOffsetX: 3, rightArmOffsetY: -1, leftArmOffsetX: 2, aiming: true, lean: -1 };
+      case 7: return { ...base, bodyOffsetX: 2, headOffsetX: 2, headOffsetY: 1, leftArmOffsetX: -2, leftArmOffsetY: 2, rightArmOffsetX: 2, rightArmOffsetY: -1, leftLegOffsetX: 1, rightLegOffsetX: -1, lean: 1, hurt: true };
+      default: return isZombie ? { ...base, bodyOffsetX: 1, headOffsetX: 2, headOffsetY: 2, leftArmOffsetX: -1, leftArmOffsetY: 2, rightArmOffsetX: 2, rightArmOffsetY: 3, lean: 1 } : base;
+    }
+  }
+
   private drawCharacterFrame(graphics: Phaser.GameObjects.Graphics, frame: number, profile: CharacterVisualProfile, offsetX = 0): void {
-    const { palette } = profile;
-
-    if (frame === 8) {
-      this.fillPixelRect(graphics, offsetX + 3, 33, 7, 2, palette.hair);
-      this.fillPixelRect(graphics, offsetX + 4, 35, 7, 7, palette.skin);
-      this.fillPixelRect(graphics, offsetX + 11, 34, 13, 8, palette.torso);
-      this.fillPixelRect(graphics, offsetX + 14, 39, 10, 2, palette.factionBand);
-      this.fillPixelRect(graphics, offsetX + 24, 35, 6, 5, palette.pants);
-      this.fillPixelRect(graphics, offsetX + 29, 36, 3, 3, palette.accent);
-      return;
-    }
-
-    const bob = [1, 3, 5, 7].includes(frame) ? 1 : 0;
-    const isRunFrame = [2, 3, 4, 5].includes(frame);
-    const isShootFrame = frame === 6;
-    const isHurtFrame = frame === 7;
     const isZombie = profile.faction === 'zombie';
-    const silhouetteScale = profile.silhouette === 'broad' ? 1 : profile.silhouette === 'slim' ? -1 : 0;
-    const torsoX = 10 - silhouetteScale;
-    const torsoWidth = 12 + silhouetteScale * 2;
-    const bodyY = 15 + bob;
-    const legY = 27 + bob;
+    if (frame === 8) { this.drawDeathFrame(graphics, profile, offsetX); return; }
+    const base = this.getCharacterFramePose(frame, isZombie);
+    const pose = isZombie && frame >= 2 && frame <= 5 ? { ...base, headOffsetX: base.headOffsetX + frame % 2, headOffsetY: base.headOffsetY + (frame === 3 ? 1 : 0), rightArmOffsetY: base.rightArmOffsetY + frame % 2 } : base;
+    this.drawCharacterLegs(graphics, profile, pose, offsetX);
+    this.drawCharacterTorso(graphics, profile, pose, offsetX);
+    this.drawCharacterArms(graphics, profile, pose, offsetX);
+    this.drawCharacterHead(graphics, profile, pose, offsetX);
+    this.drawCharacterFrameDetails(graphics, profile, pose, frame, offsetX);
+  }
 
-    this.fillPixelRect(graphics, offsetX + 12, 6 + bob, 8, 8, palette.skin);
-    this.drawHair(graphics, profile, bob, offsetX);
-    this.drawFacialHair(graphics, profile, bob, offsetX);
-    this.fillPixelRect(graphics, offsetX + 13, 9 + bob, 1, 1, palette.eye);
-    this.fillPixelRect(graphics, offsetX + 18, 9 + bob, 1, 1, palette.eye);
+  private shadeColor(color: number, amount: number): number {
+    const red = Phaser.Math.Clamp(((color >> 16) & 0xff) + amount, 0, 255);
+    const green = Phaser.Math.Clamp(((color >> 8) & 0xff) + amount, 0, 255);
+    const blue = Phaser.Math.Clamp((color & 0xff) + amount, 0, 255);
+    return (red << 16) | (green << 8) | blue;
+  }
 
-    this.fillPixelRect(graphics, offsetX + torsoX, bodyY, torsoWidth, 12, palette.torso);
-    this.fillPixelRect(graphics, offsetX + torsoX, bodyY + 8, torsoWidth, 2, palette.factionBand);
-    this.fillPixelRect(graphics, offsetX + torsoX, bodyY + 10, torsoWidth, 2, palette.accent);
-    this.drawOutfitDetails(graphics, profile, torsoX + offsetX, bodyY, torsoWidth);
-    this.drawGearDetails(graphics, profile, torsoX + offsetX, bodyY, torsoWidth);
+  private drawOutlinedRect(graphics: Phaser.GameObjects.Graphics, x: number, y: number, width: number, height: number, fillColor: number, outlineColor = CHARACTER_OUTLINE): void {
+    this.fillPixelRect(graphics, x, y, width, height, outlineColor);
+    if (width <= 2 || height <= 2) return;
+    this.fillPixelRect(graphics, x + 1, y + 1, width - 2, height - 2, fillColor);
+  }
 
-    if (isShootFrame) {
-      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 3, true, offsetX);
-      this.fillPixelRect(graphics, offsetX + torsoX - 2, bodyY + 4, 2, 7, palette.torso);
-    } else if (isHurtFrame) {
-      this.fillPixelRect(graphics, offsetX + torsoX - 2, bodyY + 5, 2, 6, palette.accent);
-      this.fillPixelRect(graphics, offsetX + torsoX + torsoWidth, bodyY + 5, 2, 6, palette.accent);
-      this.fillPixelRect(graphics, offsetX + torsoX - 1, bodyY + 1, torsoWidth + 2, 2, isZombie ? 0x7f1d1d : 0xdc2626);
-    } else {
-      this.fillPixelRect(graphics, offsetX + torsoX - 2, bodyY + 4, 2, 7, palette.torso);
-      this.fillPixelRect(graphics, offsetX + torsoX + torsoWidth, bodyY + 4, 2, 7, palette.torso);
-      this.drawWeapon(graphics, profile, palette.weapon, bodyY + 4, false, offsetX);
-    }
-
-    if (isRunFrame) {
-      if (frame === 2 || frame === 4) {
-        this.fillPixelRect(graphics, offsetX + 11, legY, 4, 12, palette.pants);
-        this.fillPixelRect(graphics, offsetX + 17, legY + 2, 4, 10, palette.pants);
-      } else {
-        this.fillPixelRect(graphics, offsetX + 11, legY + 2, 4, 10, palette.pants);
-        this.fillPixelRect(graphics, offsetX + 17, legY, 4, 12, palette.pants);
-      }
-    } else {
-      this.fillPixelRect(graphics, offsetX + 11, legY, 4, 11, palette.pants);
-      this.fillPixelRect(graphics, offsetX + 17, legY, 4, 11, palette.pants);
-    }
-
-    this.fillPixelRect(graphics, offsetX + 10, 39 + bob, 6, 2, palette.accent);
-    this.fillPixelRect(graphics, offsetX + 16, 39 + bob, 6, 2, palette.accent);
-
-    if (isZombie) {
-      this.fillPixelRect(graphics, offsetX + 9, 21 + bob, 2, 2, 0x7f1d1d);
-      this.fillPixelRect(graphics, offsetX + 20, 30 + bob, 2, 2, 0x7f1d1d);
+  private drawShadedRect(graphics: Phaser.GameObjects.Graphics, x: number, y: number, width: number, height: number, color: number): void {
+    this.drawOutlinedRect(graphics, x, y, width, height, color);
+    if (width >= 4 && height >= 4) {
+      this.fillPixelRect(graphics, x + 1, y + 1, Math.max(1, width - 3), 1, this.shadeColor(color, 28));
+      this.fillPixelRect(graphics, x + width - 2, y + 2, 1, Math.max(1, height - 3), this.shadeColor(color, -32));
     }
   }
 
-  private drawHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number, offsetX = 0): void {
-    const hairY = 3 + bob;
-
-    if (profile.hairStyle === 'afro') {
-      this.fillPixelRect(graphics, offsetX + 10, hairY, 12, 5, profile.palette.hair);
-      return;
-    }
-
-    if (profile.hairStyle === 'long') {
-      this.fillPixelRect(graphics, offsetX + 11, hairY, 10, 3, profile.palette.hair);
-      this.fillPixelRect(graphics, offsetX + 10, hairY + 2, 2, 10, profile.palette.hair);
-      this.fillPixelRect(graphics, offsetX + 20, hairY + 2, 2, 10, profile.palette.hair);
-      return;
-    }
-
-    this.fillPixelRect(graphics, offsetX + 11, hairY, 10, 3, profile.palette.hair);
+  private drawCharacterLegs(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, pose: CharacterFramePose, offsetX: number): void {
+    const legWidth = profile.silhouette === 'broad' ? 5 : 4;
+    const leftBaseX = profile.silhouette === 'slim' ? 11 : 10;
+    const rightBaseX = profile.silhouette === 'broad' ? 18 : 17;
+    const legY = 28 + pose.bodyOffsetY;
+    const shoe = profile.faction === 'zombie' ? CHARACTER_DEEP_SHADOW : this.shadeColor(profile.palette.pants, -48);
+    const lx = offsetX + leftBaseX + pose.bodyOffsetX + pose.leftLegOffsetX;
+    const rx = offsetX + rightBaseX + pose.bodyOffsetX + pose.rightLegOffsetX;
+    this.drawShadedRect(graphics, lx, legY + pose.leftLegOffsetY, legWidth, 10, profile.palette.pants);
+    this.drawShadedRect(graphics, rx, legY + pose.rightLegOffsetY, legWidth, 10, profile.palette.pants);
+    this.drawOutlinedRect(graphics, lx + (pose.leftLegOffsetX < 0 ? -1 : 0), legY + 9 + pose.leftLegOffsetY, legWidth + 2, 3, shoe);
+    this.drawOutlinedRect(graphics, rx + (pose.rightLegOffsetX > 0 ? 1 : 0), legY + 9 + pose.rightLegOffsetY, legWidth + 2, 3, shoe);
   }
 
-  private drawFacialHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, bob: number, offsetX = 0): void {
-    if (profile.facialHair === 'beard') {
-      this.fillPixelRect(graphics, offsetX + 12, 12 + bob, 8, 2, 0x3f3f46);
-      this.fillPixelRect(graphics, offsetX + 13, 14 + bob, 6, 1, 0x52525b);
-      return;
-    }
-
-    if (profile.facialHair === 'stubble') {
-      this.fillPixelRect(graphics, offsetX + 13, 13 + bob, 6, 1, 0x57534e);
-    }
+  private torsoMetrics(profile: CharacterVisualProfile, pose: CharacterFramePose, offsetX: number): { x: number; y: number; width: number } {
+    const x = profile.silhouette === 'broad' ? 8 : profile.silhouette === 'slim' ? 11 : 10;
+    const width = profile.silhouette === 'broad' ? 16 : profile.silhouette === 'slim' ? 10 : 12;
+    return { x: offsetX + x + pose.bodyOffsetX, y: 15 + pose.bodyOffsetY, width };
   }
 
-  private drawOutfitDetails(
-    graphics: Phaser.GameObjects.Graphics,
-    profile: CharacterVisualProfile,
-    torsoX: number,
-    bodyY: number,
-    torsoWidth: number
-  ): void {
-    if (profile.outfitStyle === 'shirt_tie') {
-      this.fillPixelRect(graphics, torsoX + 4, bodyY + 2, 2, 7, 0x111827);
-      this.fillPixelRect(graphics, torsoX, bodyY, torsoWidth, 2, 0xe5e7eb);
-      return;
-    }
-
-    if (profile.outfitStyle === 'dress') {
-      this.fillPixelRect(graphics, torsoX - 1, bodyY + 9, torsoWidth + 2, 3, profile.palette.torso);
-      this.fillPixelRect(graphics, torsoX + 1, bodyY + 1, torsoWidth - 2, 2, 0xf8fafc);
-      return;
-    }
-
-    if (profile.outfitStyle === 'uniform') {
-      this.fillPixelRect(graphics, torsoX + 1, bodyY + 2, torsoWidth - 2, 2, 0x1f2937);
-      this.fillPixelRect(graphics, torsoX + torsoWidth - 3, bodyY + 3, 2, 2, profile.palette.accent);
-      return;
-    }
-
-    if (profile.outfitStyle === 'tactical') {
-      this.fillPixelRect(graphics, torsoX + 1, bodyY + 1, torsoWidth - 2, 7, 0x1f2937);
-      this.fillPixelRect(graphics, torsoX + 2, bodyY + 3, 2, 3, profile.palette.accent);
-      this.fillPixelRect(graphics, torsoX + torsoWidth - 4, bodyY + 3, 2, 3, profile.palette.accent);
-      return;
-    }
-
-    if (profile.outfitStyle === 'jacket') {
-      this.fillPixelRect(graphics, torsoX + 1, bodyY + 2, 2, 9, 0x111827);
-      this.fillPixelRect(graphics, torsoX + torsoWidth - 3, bodyY + 2, 2, 9, 0x111827);
-      this.fillPixelRect(graphics, torsoX + 3, bodyY + 2, torsoWidth - 6, 1, profile.palette.accent);
-    }
+  private drawCharacterTorso(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, pose: CharacterFramePose, offsetX: number): void {
+    const { x, y, width } = this.torsoMetrics(profile, pose, offsetX);
+    const shoulder = profile.silhouette === 'broad' ? 1 : 0;
+    this.drawShadedRect(graphics, x - shoulder, y, width + shoulder * 2, 13, profile.palette.torso);
+    this.drawOutlinedRect(graphics, offsetX + 14 + pose.bodyOffsetX, y - 2, 4, 3, profile.palette.skin);
+    this.fillPixelRect(graphics, x + 1, y + 2, 1, 5, this.shadeColor(profile.palette.torso, 42));
+    this.fillPixelRect(graphics, x + width - 2, y + 3, 1, 6, this.shadeColor(profile.palette.torso, -45));
+    this.fillPixelRect(graphics, x, y + 9, width, 2, profile.palette.factionBand);
+    this.fillPixelRect(graphics, x, y + 11, width, 2, this.shadeColor(profile.palette.pants, -24));
+    if (profile.silhouette === 'slim') { this.fillPixelRect(graphics, x, y + 10, 1, 2, CHARACTER_OUTLINE); this.fillPixelRect(graphics, x + width - 1, y + 10, 1, 2, CHARACTER_OUTLINE); }
+    this.drawOutfitDetails(graphics, profile, x, y, width);
+    this.drawGearDetails(graphics, profile, x, y, width);
   }
 
-  private drawGearDetails(
-    graphics: Phaser.GameObjects.Graphics,
-    profile: CharacterVisualProfile,
-    torsoX: number,
-    bodyY: number,
-    torsoWidth: number
-  ): void {
-    if (profile.hasShoulderPads) {
-      this.fillPixelRect(graphics, torsoX - 1, bodyY, 3, 2, 0x111827);
-      this.fillPixelRect(graphics, torsoX + torsoWidth - 2, bodyY, 3, 2, 0x111827);
+  private drawCharacterArms(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, pose: CharacterFramePose, offsetX: number): void {
+    const { x, y: torsoY, width } = this.torsoMetrics(profile, pose, offsetX); const y = torsoY + 2; const skin = profile.palette.skin;
+    if (pose.aiming) {
+      this.drawShadedRect(graphics, offsetX + 19, y + pose.rightArmOffsetY, 6, 4, profile.palette.torso);
+      this.drawShadedRect(graphics, offsetX + 23, y + pose.rightArmOffsetY, 4, 3, profile.palette.torso);
+      this.drawOutlinedRect(graphics, offsetX + 26, y + pose.rightArmOffsetY, 3, 3, skin);
+      this.drawShadedRect(graphics, x + 4, y + 3, 7, 3, profile.palette.torso); this.drawOutlinedRect(graphics, x + 10, y + 3, 3, 3, skin); return;
     }
-
-    if (profile.hasBackpack) {
-      this.fillPixelRect(graphics, torsoX + torsoWidth + 1, bodyY + 2, 3, 9, 0x374151);
-      this.fillPixelRect(graphics, torsoX + torsoWidth, bodyY + 4, 1, 6, 0x9ca3af);
+    if (pose.hurt) {
+      this.drawShadedRect(graphics, x - 5 + pose.leftArmOffsetX, y + pose.leftArmOffsetY, 5, 3, profile.palette.torso); this.drawOutlinedRect(graphics, x - 7 + pose.leftArmOffsetX, y + pose.leftArmOffsetY, 3, 3, skin);
+      this.drawShadedRect(graphics, offsetX + 24, y + pose.rightArmOffsetY, 5, 3, profile.palette.torso); this.drawOutlinedRect(graphics, offsetX + 28, y + pose.rightArmOffsetY, 3, 3, skin); return;
     }
+    const close = profile.silhouette === 'slim' ? 1 : 0; const drop = profile.faction === 'zombie' ? 2 : 0;
+    const lx = x - 3 + close + pose.leftArmOffsetX; const rx = x + width - close + pose.rightArmOffsetX;
+    this.drawShadedRect(graphics, lx, y + pose.leftArmOffsetY + drop, 4, 6, profile.palette.torso); this.drawShadedRect(graphics, lx - 1, y + 5 + pose.leftArmOffsetY + drop, 3, 5, profile.palette.torso); this.drawOutlinedRect(graphics, lx - 1, y + 9 + pose.leftArmOffsetY + drop, 3, 3, profile.faction === 'zombie' ? ZOMBIE_DRY_BLOOD : skin);
+    this.drawShadedRect(graphics, rx, y + 1 + pose.rightArmOffsetY + drop, 4, 5, profile.palette.torso); this.drawShadedRect(graphics, rx + 2, y + 5 + pose.rightArmOffsetY + drop, 3, 5, profile.palette.torso); this.drawOutlinedRect(graphics, rx + 2, y + 9 + pose.rightArmOffsetY + drop, 3, 3, skin);
   }
 
-  private drawWeapon(
-    graphics: Phaser.GameObjects.Graphics,
-    profile: CharacterVisualProfile,
-    color: HexColor,
-    y: number,
-    isAiming: boolean,
-    offsetX = 0
-  ): void {
-    const anchorY = isAiming ? y : y + 1;
-    const weaponStyle = profile.weaponStyle;
-    const anchorX = profile.weaponCarry === 'shoulder' ? 19 : 22;
+  private drawCharacterHead(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, pose: CharacterFramePose, offsetX: number): void {
+    const x = offsetX + 11 + pose.bodyOffsetX + pose.headOffsetX + pose.lean; const y = 4 + pose.headOffsetY; const zombie = profile.faction === 'zombie';
+    this.drawOutlinedRect(graphics, x, y, 10, 11, profile.palette.skin); this.fillPixelRect(graphics, x + 1, y + 2, 1, 5, this.shadeColor(profile.palette.skin, 30)); this.fillPixelRect(graphics, x + 8, y + 2, 1, 7, this.shadeColor(profile.palette.skin, zombie ? -55 : -32));
+    this.fillPixelRect(graphics, x - 1, y + 5, 2, 3, profile.palette.skin); this.fillPixelRect(graphics, x + 2, y + 5, 1, 1, zombie ? 0xfef3c7 : profile.palette.eye); this.fillPixelRect(graphics, x + 6, y + 5, 1, 1, zombie ? CHARACTER_HIGHLIGHT : profile.palette.eye);
+    this.fillPixelRect(graphics, x + 5, y + 7, 1, 1, this.shadeColor(profile.palette.skin, -38)); this.fillPixelRect(graphics, x + 3, y + 9, 4, 1, zombie ? CHARACTER_DEEP_SHADOW : this.shadeColor(profile.palette.skin, -55)); this.fillPixelRect(graphics, x + 2, y + 2, 2, 1, CHARACTER_HIGHLIGHT); this.fillPixelRect(graphics, x + 1, y + 10, 8, 1, this.shadeColor(profile.palette.skin, -52));
+    if (zombie) this.fillPixelRect(graphics, x + 7, y + 3, 2, 2, ZOMBIE_WOUND); this.drawHair(graphics, profile, x, y); this.drawFacialHair(graphics, profile, x, y);
+  }
 
-    if (weaponStyle === 'rifle') {
-      this.fillPixelRect(graphics, offsetX + anchorX, anchorY, 10, 2, color);
-      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 4, 1, 0x0f172a);
-      this.fillPixelRect(graphics, offsetX + anchorX + 8, anchorY - 1, 2, 4, 0x111827);
-      return;
-    }
+  private drawHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, x: number, y: number): void {
+    const hair = profile.palette.hair;
+    if (profile.hairStyle === 'afro') { this.fillPixelRect(graphics, x - 2, y - 2, 14, 3, CHARACTER_OUTLINE); this.fillPixelRect(graphics, x - 1, y - 3, 12, 4, hair); this.fillPixelRect(graphics, x - 2, y, 3, 4, hair); this.fillPixelRect(graphics, x + 9, y - 1, 3, 4, hair); }
+    else if (profile.hairStyle === 'long') { this.fillPixelRect(graphics, x, y - 1, 10, 3, hair); this.fillPixelRect(graphics, x - 1, y + 1, 3, 11, hair); this.fillPixelRect(graphics, x + 8, y + 2, 3, 9, hair); this.fillPixelRect(graphics, x + 1, y + 10, 2, 3, hair); }
+    else { this.fillPixelRect(graphics, x, y - 1, 10, 3, hair); this.fillPixelRect(graphics, x, y + 1, 2, 4, hair); this.fillPixelRect(graphics, x + 7, y + 1, 3, 1, hair); }
+  }
 
-    if (weaponStyle === 'shotgun') {
-      this.fillPixelRect(graphics, offsetX + anchorX, anchorY, 8, 3, color);
-      this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY + 3, 3, 1, 0x78350f);
-      this.fillPixelRect(graphics, offsetX + anchorX + 7, anchorY - 1, 1, 5, 0x111827);
-      return;
-    }
+  private drawFacialHair(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, x: number, y: number): void {
+    if (profile.facialHair === 'beard') { this.fillPixelRect(graphics, x + 1, y + 8, 8, 3, 0x3f3f46); this.fillPixelRect(graphics, x + 3, y + 11, 4, 1, 0x52525b); }
+    else if (profile.facialHair === 'stubble') this.fillPixelRect(graphics, x + 2, y + 9, 6, 1, 0x57534e);
+  }
 
-    if (weaponStyle === 'smg') {
-      this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY, 6, 2, color);
-      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 2, 2, 0x0f172a);
-      this.fillPixelRect(graphics, offsetX + anchorX + 6, anchorY + 1, 1, 1, 0xe2e8f0);
-      return;
-    }
+  private drawOutfitDetails(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, x: number, y: number, width: number): void {
+    const center = x + Math.floor(width / 2);
+    if (profile.outfitStyle === 'shirt_tie') { this.fillPixelRect(graphics, x + 1, y + 1, width - 2, 3, 0xe5e7eb); this.fillPixelRect(graphics, center - 1, y + 2, 2, 7, CHARACTER_DEEP_SHADOW); this.fillPixelRect(graphics, x + 1, y + 10, width - 2, 1, CHARACTER_OUTLINE); }
+    else if (profile.outfitStyle === 'dress') { this.fillPixelRect(graphics, x - 1, y + 9, width + 2, 3, profile.palette.torso); this.fillPixelRect(graphics, x, y + 11, width, 1, CHARACTER_HIGHLIGHT); }
+    else if (profile.outfitStyle === 'uniform') { this.fillPixelRect(graphics, x + 1, y + 2, width - 2, 2, 0x1f2937); this.fillPixelRect(graphics, x + width - 3, y + 3, 2, 2, profile.palette.accent); this.fillPixelRect(graphics, center, y + 5, 1, 4, CHARACTER_HIGHLIGHT); }
+    else if (profile.outfitStyle === 'tactical') { this.fillPixelRect(graphics, x + 1, y + 1, width - 2, 7, 0x1f2937); this.fillPixelRect(graphics, x + 2, y + 4, 3, 3, profile.palette.accent); this.fillPixelRect(graphics, x + width - 5, y + 4, 3, 3, profile.palette.accent); }
+    else { this.fillPixelRect(graphics, x + 1, y + 2, 2, 8, CHARACTER_DEEP_SHADOW); this.fillPixelRect(graphics, x + width - 3, y + 2, 2, 8, CHARACTER_DEEP_SHADOW); this.fillPixelRect(graphics, x + 3, y + 2, width - 6, 2, profile.palette.accent); this.fillPixelRect(graphics, center, y + 4, 1, 6, CHARACTER_HIGHLIGHT); }
+  }
 
-    if (weaponStyle === 'revolver') {
-      this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY, 5, 2, color);
-      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY - 1, 2, 1, 0xe2e8f0);
-      this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 1, 2, 0x111827);
-      return;
-    }
+  private drawGearDetails(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, x: number, y: number, width: number): void {
+    if (profile.hasShoulderPads) { this.drawOutlinedRect(graphics, x - 1, y, 4, 3, 0x374151); this.drawOutlinedRect(graphics, x + width - 3, y, 4, 3, 0x374151); }
+    if (profile.hasBackpack) { const gap = profile.silhouette === 'broad' ? 2 : 1; this.drawShadedRect(graphics, x + width + gap, y + 2, 4, 10, 0x374151); this.fillPixelRect(graphics, x + width, y + 4, gap + 1, 6, 0x9ca3af); }
+  }
 
-    this.fillPixelRect(graphics, offsetX + anchorX + 1, anchorY, 4, 2, color);
-    this.fillPixelRect(graphics, offsetX + anchorX + 2, anchorY + 2, 1, 2, 0x111827);
-    this.fillPixelRect(graphics, offsetX + anchorX + 4, anchorY + 1, 1, 1, 0xe2e8f0);
+  private drawCharacterFrameDetails(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, pose: CharacterFramePose, frame: number, offsetX: number): void {
+    this.fillPixelRect(graphics, offsetX + 8 + pose.bodyOffsetX, 42 + pose.bodyOffsetY, profile.silhouette === 'broad' ? 17 : 16, 1, CHARACTER_DEEP_SHADOW);
+    if (frame === 7) { this.fillPixelRect(graphics, offsetX + 11 + pose.bodyOffsetX, 17 + pose.bodyOffsetY, 3, 2, ZOMBIE_WOUND); this.fillPixelRect(graphics, offsetX + 8, 20, 1, 1, ZOMBIE_WOUND); this.fillPixelRect(graphics, offsetX + 27, 16, 1, 1, ZOMBIE_WOUND); }
+    if (frame === 6) this.fillPixelRect(graphics, offsetX + 26, 17 + pose.rightArmOffsetY, 2, 1, CHARACTER_HIGHLIGHT);
+    if (profile.faction === 'zombie') { this.fillPixelRect(graphics, offsetX + 12 + pose.bodyOffsetX, 21 + pose.bodyOffsetY, 2, 1, CHARACTER_OUTLINE); this.fillPixelRect(graphics, offsetX + 19 + pose.bodyOffsetX, 24 + pose.bodyOffsetY, 1, 2, ZOMBIE_DRY_BLOOD); this.fillPixelRect(graphics, offsetX + 11 + pose.leftLegOffsetX, 33 + pose.bodyOffsetY, 2, 1, ZOMBIE_DRY_BLOOD); this.fillPixelRect(graphics, offsetX + 20 + pose.rightLegOffsetX, 30 + pose.bodyOffsetY, 1, 1, CHARACTER_OUTLINE); }
+  }
+
+  private drawDeathFrame(graphics: Phaser.GameObjects.Graphics, profile: CharacterVisualProfile, offsetX: number): void {
+    const y = 35; this.fillPixelRect(graphics, offsetX + 2, 44, 29, 1, CHARACTER_DEEP_SHADOW); this.drawOutlinedRect(graphics, offsetX + 3, y, 9, 9, profile.palette.skin); this.fillPixelRect(graphics, offsetX + 3, y - 1, 8, 3, profile.palette.hair); this.fillPixelRect(graphics, offsetX + 4, y + 4, 1, 1, profile.palette.eye);
+    this.drawShadedRect(graphics, offsetX + 10, y - 1, 13, 9, profile.palette.torso); this.fillPixelRect(graphics, offsetX + 11, y + 4, 12, 2, profile.palette.factionBand); this.drawOutlinedRect(graphics, offsetX + 8, y + 7, 10, 3, profile.palette.torso);
+    this.drawOutlinedRect(graphics, offsetX + 21, y, 8, 4, profile.palette.pants); this.drawOutlinedRect(graphics, offsetX + 22, y + 5, 8, 4, profile.palette.pants); this.drawOutlinedRect(graphics, offsetX + 28, y - 1, 4, 4, this.shadeColor(profile.palette.pants, -48)); this.drawOutlinedRect(graphics, offsetX + 29, y + 5, 3, 4, this.shadeColor(profile.palette.pants, -48));
+    if (profile.faction === 'zombie') this.fillPixelRect(graphics, offsetX + 13, y + 1, 3, 2, ZOMBIE_DRY_BLOOD);
   }
 
   private fillPixelRect(

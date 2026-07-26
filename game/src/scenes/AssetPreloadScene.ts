@@ -1,13 +1,14 @@
 import Phaser from 'phaser';
 import { visualTheme } from './visualTheme';
-import { CampaignFlowDefinition, SceneFlowManager } from './SceneFlowManager';
+import { SceneFlowManager } from './SceneFlowManager';
+import { definitionFromManifest, type CanonicalManifest } from '../campaign/campaignCore';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
   { key: 'menu_background', path: 'assets/images/NWD-menu.png', type: 'image' },
   { key: 'characters_panel', path: 'assets/images/NWD-characters.png', type: 'image' },
-  { key: 'campaign_flow', path: 'assets/campaign/campaign_flow.json', type: 'json' },
   { key: 'story_bible', path: 'assets/campaign/story_bible.json', type: 'json' },
   { key: 'canonical_campaign_manifest', path: 'assets/campaign/canonical_campaign_manifest.json', type: 'json' },
+  { key: 'campaign_implementation_registry', path: 'assets/campaign/campaign_implementation_registry.json', type: 'json' },
   { key: 'campaign_intro_dialogue', path: 'assets/dialogues/campaign_intro_dialogue.json', type: 'json' },
   { key: 'drive_to_santelmo_cinematic', path: 'assets/cinematics/drive_to_santelmo.json', type: 'json' }
 ];
@@ -44,11 +45,6 @@ export class AssetPreloadScene extends Phaser.Scene {
       ) {
         console.log('[AssetLoader] canonical_campaign_manifest cargado');
         loggedGroups.add('canonical_campaign_manifest');
-      }
-
-      if (key === 'campaign_flow' && !loggedGroups.has('campaign_flow')) {
-        console.log('[AssetLoader] campaign_flow cargado');
-        loggedGroups.add('campaign_flow');
       }
 
       if (assetPath?.includes('/dialogues/') && !loggedGroups.has('dialogues')) {
@@ -110,12 +106,12 @@ export class AssetPreloadScene extends Phaser.Scene {
 
     const manager = new SceneFlowManager(this);
     if (!manager.validateCampaignFlow()) {
-      console.error('campaign_flow.json no pasó la validación');
+      console.error('canonical_campaign_manifest.json no pasó la validación');
 
       this.add.text(
         this.scale.width / 2,
         this.scale.height / 2,
-        'Error: campaign_flow.json inválido',
+        'Error: manifiesto canónico inválido',
         {
           fontSize: '18px',
           color: '#ff6666'
@@ -125,7 +121,7 @@ export class AssetPreloadScene extends Phaser.Scene {
       return;
     }
 
-    const definition = this.cache.json.get('campaign_flow') as CampaignFlowDefinition;
+    const definition = definitionFromManifest(canonicalManifest as CanonicalManifest);
     this.registry.set('canonicalCampaignManifest', canonicalManifest);
     this.registry.set('storyBible', this.cache.json.get('story_bible') ?? null);
 

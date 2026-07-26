@@ -1,0 +1,110 @@
+{
+  "registryVersion": 1,
+  "nodes": {
+    "campaign-intro": {
+      "implemented": true
+    },
+    "lvl01-esc01-comedor-resistencia": {
+      "implemented": false
+    },
+    "lvl01-esc02-pasillos-hacia-escaleras-pb": {
+      "implemented": false
+    },
+    "lvl01-cin01-cierre-contextual": {
+      "implemented": false
+    },
+    "lvl02-esc01-hall-planta-baja": {
+      "implemented": false
+    },
+    "lvl02-cin01-ascenso-al-segundo-piso": {
+      "implemented": false
+    },
+    "lvl03-esc01-segundo-piso": {
+      "implemented": false
+    },
+    "lvl03-cin01-llamado-lorena-rescate": {
+      "implemented": false
+    },
+    "lvl04-esc01-tercer-piso": {
+      "implemented": false
+    },
+    "lvl04-cin01-rescate-lorena-en-oficina-422": {
+      "implemented": false
+    },
+    "lvl04-cin02-llamada-selene-y-descenso": {
+      "implemented": false
+    },
+    "lvl05-esc01-cuarto-piso-comedor": {
+      "implemented": false
+    },
+    "lvl05-cin01-descenso-al-quinto-piso": {
+      "implemented": false
+    },
+    "lvl06-esc01-quinto-piso-pertenencias": {
+      "implemented": false
+    },
+    "lvl06-cin01-reencuentro-y-salida-e": {
+      "implemented": false
+    },
+    "lvl06-cin02-muerte-lorena-y-guardia-en-salida-e": {
+      "implemented": false
+    },
+    "lvl07-esc01-oficina-422-rescate": {
+      "implemented": false
+    },
+    "lvl07-cin01-inicio-del-descenso": {
+      "implemented": false
+    },
+    "lvl08-esc01-descenso-con-temporizador": {
+      "implemented": false
+    },
+    "lvl08-cin01-damian-infectado-y-suicidio": {
+      "implemented": false
+    },
+    "lvl08-cin02-sacrificio-hernan-yamil": {
+      "implemented": false
+    },
+    "lvl08-cin03-caida-final-del-duo": {
+      "implemented": false
+    },
+    "lvl09-esc01-verificacion-salidas": {
+      "implemented": false
+    },
+    "lvl09-cin01-hallazgo-salida-y-mordida-selene": {
+      "implemented": false
+    },
+    "lvl09-cin02-traicion-de-selene-y-huida": {
+      "implemented": false
+    },
+    "lvl10-esc01-garage-busqueda-vehiculo": {
+      "implemented": true
+    },
+    "lvl10-cin01-hallazgo-del-vehiculo": {
+      "implemented": false
+    },
+    "lvl10-esc02-resistencia-en-garage": {
+      "implemented": true
+    },
+    "lvl10-cin02-salida-del-garage": {
+      "implemented": false
+    },
+    "lvl10-cin01-traslado-silencioso-plaza-de-mayo": {
+      "implemented": true
+    },
+    "lvl10-esc01-combate-50-bajas-en-via-publica": {
+      "implemented": true
+    },
+    "lvl10-cin02-cierre-duo-final-en-san-telmo": {
+      "implemented": false
+    },
+    "lvl10-esc03-llegada-a-san-telmo": {
+      "implemented": false
+    },
+    "lvl10-cin03-desenlace-abierto": {
+      "implemented": false
+    },
+    "campaign-end": {
+      "implemented": false
+    }
+  }
+}

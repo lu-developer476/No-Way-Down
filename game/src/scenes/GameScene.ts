@@ -1291,7 +1291,7 @@ export class GameScene extends Phaser.Scene {
 
   private shouldTriggerIntroCinematic(data: GameSceneData): boolean {
     const fromNewGameFlow = data.skipLoad === true
-      && data.flowNodeId === 'lvl01-esc01-subsuelo-inicial';
+      && data.flowNodeId === 'lvl01-esc01-comedor-resistencia';
     const hasStoredCheckpoint = Boolean(this.registry.get('checkpoint'));
     const fromDirectFreshStart = data.skipLoad === undefined
       && data.flowNodeId === undefined
@@ -2500,7 +2500,7 @@ export class GameScene extends Phaser.Scene {
       party,
       progress: {
         level: this.scene.key,
-        flow_node_id: this.registry.get('flowNodeId') as string | undefined,
+        flow_node_id: new SceneFlowManager(this).migrateProgressNodeId(this.registry.get('flowNodeId') as string | undefined),
         checkpoint,
         segment: this.registry.get('currentObjective') as string | undefined,
         life: this.players.filter((player) => !player.isDead()).length,
@@ -2525,7 +2525,10 @@ export class GameScene extends Phaser.Scene {
 
     this.registry.set('loadedCampaignSnapshot', snapshot);
     const flowDefinition = new SceneFlowManager(this).ensureDefinitionLoadedFromCache();
-    const savedFlowNodeIndex = flowDefinition?.nodes.findIndex((node) => node.id === snapshot.progress.flow_node_id) ?? -1;
+    const manager = new SceneFlowManager(this);
+    const canonicalSavedId = manager.migrateProgressNodeId(snapshot.progress.flow_node_id);
+    if (canonicalSavedId) snapshot.progress.flow_node_id = canonicalSavedId;
+    const savedFlowNodeIndex = flowDefinition?.nodes.findIndex((node) => node.id === canonicalSavedId) ?? -1;
     const savedFlowNode = flowDefinition?.nodes[savedFlowNodeIndex];
     if (savedFlowNode?.sceneKey === 'LevelScene' && savedFlowNode.levelConfigPath) {
       this.registry.set('activeCampaignNode', savedFlowNode);

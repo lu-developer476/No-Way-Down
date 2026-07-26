@@ -62,12 +62,16 @@ export class CinematicScene extends Phaser.Scene {
     const cacheKey = this.toFlowAssetCacheKey(cinematicPath);
     const renderFromCache = () => {
       const cinematic = (cacheKey ? this.cache.json.get(cacheKey) : undefined) as { beats: CinematicBeat[] } | undefined;
-      const beats = cinematic?.beats ?? [];
+      if (!cinematic?.beats) {
+        this.showDevelopmentError(cinematicPath, 'El contenido de la cinemática es inválido.');
+        return;
+      }
+      const beats = cinematic.beats;
 
       this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
       this.add.rectangle(width / 2, 80, width - 96, 82, 0x100913, 0.92).setStrokeStyle(3, 0xf6d365, 1);
       this.add.text(width / 2, 64, 'CINEMÁTICA // PIXEL CUTSCENE', { color: '#f8fafc', fontFamily: RETRO_PIXEL_FONT, fontSize: '26px', fontStyle: 'bold' }).setOrigin(0.5);
-      this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n') || 'Sin cinemática cargada', {
+      this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n'), {
         color: '#cbd5e1',
         fontFamily: RETRO_PIXEL_FONT,
         fontSize: '18px',
@@ -79,8 +83,7 @@ export class CinematicScene extends Phaser.Scene {
     };
 
     if (!cinematicPath || !cacheKey) {
-      console.warn('[CinematicScene] cinematicPath ausente; se renderiza fallback.');
-      renderFromCache();
+      this.showDevelopmentError(cinematicPath, 'El nodo canónico no define cinematicPath.');
       return;
     }
 
@@ -92,10 +95,20 @@ export class CinematicScene extends Phaser.Scene {
     this.load.json(cacheKey, cinematicPath);
     this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
     this.load.once('loaderror', () => {
-      console.error('[CinematicScene] Error cargando cinemática. Se usa fallback.', { cinematicPath });
-      renderFromCache();
+      this.showDevelopmentError(cinematicPath, 'No se pudo cargar el asset canónico.');
     });
     this.load.start();
+  }
+
+  private showDevelopmentError(cinematicPath: string | undefined, reason: string): void {
+    this.hasStarted = true;
+    console.error('[CinematicScene] ERROR DE DESARROLLO', { cinematicPath, reason });
+    const { width, height } = this.scale;
+    this.add.rectangle(width / 2, height / 2, width, height, 0x09070b, 1);
+    this.add.text(width / 2, height / 2, [
+      'ERROR EXPLÍCITO DE DESARROLLO', '', `Asset: ${cinematicPath ?? 'sin ruta'}`, reason,
+      '', 'La campaña fue detenida; no existe fallback.'
+    ].join('\n'), { color: '#f87171', fontFamily: 'monospace', fontSize: '18px', align: 'center' }).setOrigin(0.5);
   }
 
   private toFlowAssetCacheKey(path?: string): string | undefined {

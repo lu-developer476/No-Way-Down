@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import FileResponse, HttpResponse
+from django.http import FileResponse, HttpResponse, JsonResponse
 from django.views import View
 
 
@@ -22,3 +22,8 @@ class FrontendIndexView(View):
             return HttpResponse('Invalid frontend build path.', status=500, content_type='text/plain; charset=utf-8')
 
         return FileResponse(resolved_index.open('rb'), content_type='text/html')
+
+
+def api_not_found(request, path=''):
+    """Keep unknown API URLs JSON-only instead of leaking into Django's HTML 404."""
+    return JsonResponse({'detail': 'API route not found.'}, status=404)

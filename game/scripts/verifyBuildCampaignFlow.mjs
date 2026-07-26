@@ -5,8 +5,6 @@ import { fileURLToPath } from 'node:url';
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
 
-const nestedCampaignFlowPath = path.join(projectRoot, 'dist', 'assets', 'campaign', 'campaign_flow.json');
-const flatCampaignFlowPath = path.join(projectRoot, 'dist', 'assets', 'campaign_flow.json');
 const canonicalManifestPath = path.join(
   projectRoot,
   'dist',
@@ -14,18 +12,7 @@ const canonicalManifestPath = path.join(
   'campaign',
   'canonical_campaign_manifest.json'
 );
-
-if (!fs.existsSync(flatCampaignFlowPath) && fs.existsSync(nestedCampaignFlowPath)) {
-  fs.copyFileSync(nestedCampaignFlowPath, flatCampaignFlowPath);
-  console.log('campaign_flow.json copiado a dist/assets/campaign_flow.json');
-}
-
-if (!fs.existsSync(flatCampaignFlowPath)) {
-  console.error('Error: no se encontró dist/assets/campaign_flow.json después del build.');
-  process.exit(1);
-}
-
-console.log('Verificación OK: dist/assets/campaign_flow.json existe.');
+const implementationRegistryPath = path.join(projectRoot, 'dist', 'assets', 'campaign', 'campaign_implementation_registry.json');
 
 if (!fs.existsSync(canonicalManifestPath)) {
   console.error('Error: no se encontró dist/assets/campaign/canonical_campaign_manifest.json después del build.');
@@ -55,3 +42,13 @@ if (
 }
 
 console.log('Verificación OK: manifiesto canónico generado con 35 nodos.');
+
+if (!fs.existsSync(implementationRegistryPath)) {
+  console.error('Error: no se encontró el registro de implementación en dist.');
+  process.exit(1);
+}
+if (fs.existsSync(path.join(projectRoot, 'dist', 'assets', 'campaign', 'campaign_flow.json'))) {
+  console.error('Error: el build contiene el flujo legacy independiente.');
+  process.exit(1);
+}
+console.log('Verificación OK: registro de implementación presente y flujo legacy ausente.');

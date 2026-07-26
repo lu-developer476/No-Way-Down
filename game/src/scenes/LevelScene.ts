@@ -298,7 +298,6 @@ export class LevelScene extends GameScene {
       return false;
     }
     const requiredRuntimeIds: Record<string, string> = {
-      'lvl01-esc01-subsuelo-inicial': 'level_1_subsuelo_comedor',
       'lvl02-esc01-hall-planta-baja': 'level_2_escaleras_espiral'
     };
     return !requiredRuntimeIds[flowNode.id] || runtimeLevelId === requiredRuntimeIds[flowNode.id];

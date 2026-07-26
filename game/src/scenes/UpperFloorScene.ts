@@ -574,7 +574,9 @@ export class UpperFloorScene extends Phaser.Scene {
       party,
       progress: {
         level: this.scene.key,
-        flow_node_id: (this.registry.get('flowNodeId') as string | undefined) ?? loadedSnapshot?.progress.flow_node_id,
+        flow_node_id: new SceneFlowManager(this).migrateProgressNodeId(
+          (this.registry.get('flowNodeId') as string | undefined) ?? loadedSnapshot?.progress.flow_node_id
+        ),
         checkpoint,
         segment: 'upper_floor_exploration',
         life: this.players.filter((player) => !player.isDead()).length,
@@ -595,7 +597,10 @@ export class UpperFloorScene extends Phaser.Scene {
 
     this.registry.set('loadedCampaignSnapshot', snapshot);
     const flowDefinition = new SceneFlowManager(this).ensureDefinitionLoadedFromCache();
-    const savedFlowNodeIndex = flowDefinition?.nodes.findIndex((node) => node.id === snapshot.progress.flow_node_id) ?? -1;
+    const manager = new SceneFlowManager(this);
+    const canonicalSavedId = manager.migrateProgressNodeId(snapshot.progress.flow_node_id);
+    if (canonicalSavedId) snapshot.progress.flow_node_id = canonicalSavedId;
+    const savedFlowNodeIndex = flowDefinition?.nodes.findIndex((node) => node.id === canonicalSavedId) ?? -1;
     const savedFlowNode = flowDefinition?.nodes[savedFlowNodeIndex];
     if (savedFlowNode?.sceneKey === 'LevelScene' && savedFlowNode.levelConfigPath) {
       this.registry.set('activeCampaignNode', savedFlowNode);

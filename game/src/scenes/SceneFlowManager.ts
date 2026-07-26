@@ -1,4 +1,13 @@
 import Phaser from 'phaser';
+import {
+  CANONICAL_NODE_COUNT,
+  definitionFromManifest,
+  isNodeImplemented,
+  migrateLegacyNodeId,
+  resolveNodeNeighbours,
+  type CanonicalManifest,
+  type ImplementationRegistry
+} from '../campaign/campaignCore';
 
 export type CampaignFlowNodeType = 'campaignIntro' | 'level' | 'cinematic' | 'dialogue';
 
@@ -32,7 +41,8 @@ export interface PendingCampaignTransition {
 
 const FLOW_REGISTRY_KEY = 'campaignFlowDefinition';
 const FLOW_CURSOR_KEY = 'campaignFlowCursor';
-const CAMPAIGN_FLOW_CACHE_KEY = 'campaign_flow';
+const CAMPAIGN_MANIFEST_CACHE_KEY = 'canonical_campaign_manifest';
+const IMPLEMENTATION_REGISTRY_CACHE_KEY = 'campaign_implementation_registry';
 
 const VALID_SCENE_KEYS: CampaignFlowNode['sceneKey'][] = [
   'CampaignIntroScene',
@@ -60,11 +70,12 @@ export class SceneFlowManager {
       return existing;
     }
 
-    if (!this.scene.cache.json.exists(CAMPAIGN_FLOW_CACHE_KEY)) {
+    if (!this.scene.cache.json.exists(CAMPAIGN_MANIFEST_CACHE_KEY)) {
       return undefined;
     }
 
-    const cached = this.scene.cache.json.get(CAMPAIGN_FLOW_CACHE_KEY) as CampaignFlowDefinition | undefined;
+    const manifest = this.scene.cache.json.get(CAMPAIGN_MANIFEST_CACHE_KEY) as CanonicalManifest | undefined;
+    const cached = manifest ? definitionFromManifest(manifest) : undefined;
     if (!this.isValidDefinition(cached, { checkSceneAvailability: false, source: 'cache' })) {
       return undefined;
     }
@@ -75,13 +86,13 @@ export class SceneFlowManager {
   }
 
   validateCampaignFlow(): boolean {
-    if (!this.scene.cache.json.exists(CAMPAIGN_FLOW_CACHE_KEY)) {
-      console.error('[SceneFlowManager] campaign_flow.json no existe en cache');
+    if (!this.scene.cache.json.exists(CAMPAIGN_MANIFEST_CACHE_KEY)) {
+      console.error('[SceneFlowManager] canonical_campaign_manifest.json no existe en cache');
       return false;
     }
 
-    const definition = this.scene.cache.json.get(CAMPAIGN_FLOW_CACHE_KEY) as CampaignFlowDefinition;
-    return this.isValidDefinition(definition, { checkSceneAvailability: true, source: 'campaign_flow.json' });
+    const manifest = this.scene.cache.json.get(CAMPAIGN_MANIFEST_CACHE_KEY) as CanonicalManifest;
+    return this.isValidDefinition(definitionFromManifest(manifest), { checkSceneAvailability: true, source: 'canonical_campaign_manifest.json' });
   }
 
   loadDefinition(definition: CampaignFlowDefinition): void {
@@ -134,7 +145,6 @@ export class SceneFlowManager {
       return undefined;
     }
 
-    this.scene.registry.set(FLOW_CURSOR_KEY, nextCursor);
     return nextNode;
   }
 
@@ -151,8 +161,8 @@ export class SceneFlowManager {
 
     const currentIndex = definition.nodes.findIndex((node) => node.id === nodeId);
     if (currentIndex < 0) {
-      console.warn(`[SceneFlowManager] nodeId no encontrado en flow: ${nodeId}. Se usará cursor actual.`);
-      return this.advance();
+      console.error(`[SceneFlowManager] nodeId no canónico: ${nodeId}. Avance detenido.`);
+      return undefined;
     }
 
     const nextCursor = currentIndex + 1;
@@ -178,7 +188,6 @@ export class SceneFlowManager {
       return undefined;
     }
 
-    this.scene.registry.set(FLOW_CURSOR_KEY, nextCursor);
     return nextNode;
   }
 
@@ -189,12 +198,12 @@ export class SceneFlowManager {
     }
 
     if (!nodeId) {
-      return definition.nodes[this.getCursor() + 1];
+      return undefined;
     }
 
     const currentIndex = definition.nodes.findIndex((node) => node.id === nodeId);
     if (currentIndex < 0) {
-      return definition.nodes[this.getCursor() + 1];
+      return undefined;
     }
 
     return definition.nodes[currentIndex + 1];
@@ -228,6 +237,16 @@ export class SceneFlowManager {
       return false;
     }
 
+    const definition = this.ensureDefinitionLoadedFromCache();
+    const canonicalNode = definition?.nodes.find((candidate) => candidate.id === node.id);
+    if (!canonicalNode || JSON.stringify(canonicalNode) !== JSON.stringify(node)) {
+      return this.stopForDevelopmentError(node, 'El nodo no coincide exactamente con el manifiesto canónico.');
+    }
+    const implementation = this.scene.cache.json.get(IMPLEMENTATION_REGISTRY_CACHE_KEY) as ImplementationRegistry | undefined;
+    if (!isNodeImplemented(implementation, node.id)) {
+      return this.stopForDevelopmentError(node, 'El asset de este nodo todavía no está implementado.');
+    }
+
     const availableScenes = this.scene.scene.manager.keys as Record<string, Phaser.Scene | undefined>;
     if (!availableScenes[node.sceneKey]) {
       console.error('[SceneFlowManager] transitionToNode() no puede iniciar una escena inexistente.', {
@@ -251,6 +270,7 @@ export class SceneFlowManager {
     };
 
     this.scene.registry.set('pendingCampaignTransition', pendingTransition);
+    this.scene.registry.set(FLOW_CURSOR_KEY, definition!.nodes.findIndex((candidate) => candidate.id === node.id));
     this.scene.registry.set('activeCampaignNode', node);
     this.scene.registry.set('flowNodeId', node.id);
     this.scene.registry.set('pendingCampaignNodeId', node.id);
@@ -288,6 +308,33 @@ export class SceneFlowManager {
     return true;
   }
 
+  migrateProgressNodeId(nodeId?: string): string | undefined {
+    const definition = this.ensureDefinitionLoadedFromCache();
+    if (!definition) return undefined;
+    return migrateLegacyNodeId(nodeId, new Set(definition.nodes.map((node) => node.id)));
+  }
+
+  resolveNode(nodeId: string): { previous?: CampaignFlowNode; current?: CampaignFlowNode; next?: CampaignFlowNode } {
+    return resolveNodeNeighbours(this.ensureDefinitionLoadedFromCache()?.nodes ?? [], nodeId);
+  }
+
+  private stopForDevelopmentError(node: CampaignFlowNode, reason: string): false {
+    const error = { nodeId: node.id, assetPath: node.levelConfigPath ?? node.cinematicPath ?? null, reason };
+    this.scene.registry.set('campaignDevelopmentError', error);
+    console.error('[SceneFlowManager] ERROR DE DESARROLLO: avance detenido.', error);
+    const { width, height } = this.scene.scale;
+    this.scene.add.rectangle(width / 2, height / 2, width, height, 0x09070b, 0.97).setDepth(10000);
+    this.scene.add.text(width / 2, height / 2, [
+      'ERROR EXPLÍCITO DE DESARROLLO', '', `Nodo: ${node.id}`,
+      `Asset: ${error.assetPath ?? 'sin asset'}`, '', reason, '',
+      'El avance fue detenido. No se omitirá ni reemplazará este nodo.'
+    ].join('\n'), {
+      color: '#f87171', fontFamily: 'monospace', fontSize: '18px', align: 'center',
+      wordWrap: { width: Math.min(width - 80, 760) }
+    }).setOrigin(0.5).setDepth(10001);
+    return false;
+  }
+
   private getDefinition(): CampaignFlowDefinition | undefined {
     return this.scene.registry.get(FLOW_REGISTRY_KEY) as CampaignFlowDefinition | undefined;
   }
@@ -310,8 +357,13 @@ export class SceneFlowManager {
       return false;
     }
 
-    if (!Array.isArray(definition.nodes) || definition.nodes.length === 0) {
-      console.error(`[SceneFlowManager] Definición inválida (${options.source}): no contiene nodos válidos.`);
+    if (!Array.isArray(definition.nodes) || definition.nodes.length !== CANONICAL_NODE_COUNT) {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): debe contener exactamente ${CANONICAL_NODE_COUNT} nodos.`);
+      return false;
+    }
+
+    if (new Set(definition.nodes.map((node) => node.id)).size !== definition.nodes.length) {
+      console.error(`[SceneFlowManager] Definición inválida (${options.source}): contiene IDs duplicados.`);
       return false;
     }
 

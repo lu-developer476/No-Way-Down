@@ -17,7 +17,8 @@
     "generate:stairs-spritesheet": "node scripts/generateInstitutionalStairsSpritesheet.mjs",
     "generate:zombie-damage-tilesheet": "node scripts/generateZombieDamageTileset.mjs",
     "audit:asset-routes": "node scripts/auditAssetRoutes.mjs",
-    "fix:asset-routes": "node scripts/auditAssetRoutes.mjs --fix"
+    "fix:asset-routes": "node scripts/auditAssetRoutes.mjs --fix",
+    "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {
     "phaser": "^3.90.0"

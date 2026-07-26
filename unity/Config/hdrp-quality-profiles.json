@@ -1,0 +1,75 @@
+{
+  "$schema": "./hdrp-quality-profiles.schema.json",
+  "version": 1,
+  "status": "implementation-target",
+  "platform": "Windows x64",
+  "renderPipeline": "HDRP",
+  "baseline": {
+    "profile": "High",
+    "resolution": { "width": 1920, "height": 1080 },
+    "targetFps": 60,
+    "frameBudgetMs": 16.67,
+    "targetGpuBudgetMs": 13.5
+  },
+  "profiles": {
+    "Low": {
+      "volumetricFog": { "enabled": true, "quality": "low", "distanceM": 32 },
+      "ssr": "off",
+      "reflectionProbes": true,
+      "shadowCascades": 1,
+      "shadowDistanceM": 40,
+      "ambientOcclusion": "low",
+      "bloom": false,
+      "filmGrain": false,
+      "vignette": false,
+      "motionBlurDefault": false
+    },
+    "Medium": {
+      "volumetricFog": { "enabled": true, "quality": "medium", "distanceM": 48 },
+      "ssr": "medium",
+      "reflectionProbes": true,
+      "shadowCascades": 2,
+      "shadowDistanceM": 60,
+      "ambientOcclusion": "medium",
+      "bloom": true,
+      "filmGrain": false,
+      "vignette": true,
+      "motionBlurDefault": false
+    },
+    "High": {
+      "volumetricFog": { "enabled": true, "quality": "high", "distanceM": 64 },
+      "ssr": "high",
+      "reflectionProbes": true,
+      "shadowCascades": 3,
+      "shadowDistanceM": 80,
+      "ambientOcclusion": "high",
+      "bloom": true,
+      "filmGrain": true,
+      "vignette": true,
+      "motionBlurDefault": false
+    },
+    "Ultra": {
+      "volumetricFog": { "enabled": true, "quality": "high", "distanceM": 80 },
+      "ssr": "ultra",
+      "reflectionProbes": true,
+      "shadowCascades": 4,
+      "shadowDistanceM": 100,
+      "ambientOcclusion": "ultra",
+      "bloom": true,
+      "filmGrain": true,
+      "vignette": true,
+      "motionBlurDefault": false
+    }
+  },
+  "globalRules": {
+    "depthOfField": "cinematics-only",
+    "dynamicFlashlight": true,
+    "localVolumetricFog": true,
+    "decalProjectors": true,
+    "lightProbes": true,
+    "adaptiveProbeVolumes": "when-appropriate",
+    "bakedLighting": true,
+    "mixedLighting": true,
+    "futureUpscaling": ["DLSS", "FSR", "equivalent"]
+  }
+}

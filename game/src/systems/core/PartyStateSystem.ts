@@ -20,10 +20,31 @@ export class PartyStateSystem {
   private readonly members = new Map<string, PartyMember>();
 
   constructor(seed: PartyMember[] = []) {
-    seed.forEach((member) => this.members.set(member.id, this.normalizeMember(member)));
+    seed.forEach((member) => {
+      const normalized = this.normalizeMember(member);
+      if (!this.members.has(normalized.id)) this.members.set(normalized.id, normalized);
+    });
+  }
+
+  /** Restores a JSON snapshot without allowing duplicate or resurrected members. */
+  static restore(snapshot: readonly PartyMember[]): PartyStateSystem {
+    const lost = new Set(snapshot.filter((member) => member.permanentlyLost).map((member) => member.id));
+    return new PartyStateSystem(snapshot.filter((member) => !lost.has(member.id) || member.permanentlyLost));
+  }
+
+  serialize(): string {
+    return JSON.stringify(this.getSnapshot());
+  }
+
+  static deserialize(serialized: string): PartyStateSystem {
+    const value: unknown = JSON.parse(serialized);
+    if (!Array.isArray(value)) throw new Error('PartyStateSystem: snapshot inválido.');
+    return PartyStateSystem.restore(value as PartyMember[]);
   }
 
   upsertMember(member: PartyMember): void {
+    const current = this.members.get(member.id);
+    if (current?.permanentlyLost) return;
     this.members.set(member.id, this.normalizeMember(member));
   }
 

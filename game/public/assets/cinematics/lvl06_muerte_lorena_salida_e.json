@@ -1,0 +1,36 @@
+{
+  "cinematic_id": "lvl06_muerte_lorena_salida_e",
+  "title": "Muerte de Lorena y guardia en salida E",
+  "characters": [
+    "Lorena",
+    "Selene",
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Lorena",
+      "beat": "La salida E queda comprometida y Lorena muere durante la huida."
+    },
+    {
+      "order": 2,
+      "speaker": "Selene",
+      "beat": "El grupo continúa sin Lorena; su pérdida es irreversible."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  },
+  "canonicalEffect": "death_lorena"
+}

@@ -29,31 +29,31 @@
       "implemented": true
     },
     "lvl04-cin01-rescate-lorena-en-oficina-422": {
-      "implemented": false
+      "implemented": true
     },
     "lvl04-cin02-llamada-selene-y-descenso": {
-      "implemented": false
+      "implemented": true
     },
     "lvl05-esc01-cuarto-piso-comedor": {
-      "implemented": false
+      "implemented": true
     },
     "lvl05-cin01-descenso-al-quinto-piso": {
-      "implemented": false
+      "implemented": true
     },
     "lvl06-esc01-quinto-piso-pertenencias": {
-      "implemented": false
+      "implemented": true
     },
     "lvl06-cin01-reencuentro-y-salida-e": {
-      "implemented": false
+      "implemented": true
     },
     "lvl06-cin02-muerte-lorena-y-guardia-en-salida-e": {
-      "implemented": false
+      "implemented": true
     },
     "lvl07-esc01-oficina-422-rescate": {
-      "implemented": false
+      "implemented": true
     },
     "lvl07-cin01-inicio-del-descenso": {
-      "implemented": false
+      "implemented": true
     },
     "lvl08-esc01-descenso-con-temporizador": {
       "implemented": false

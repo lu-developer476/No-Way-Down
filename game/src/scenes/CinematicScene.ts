@@ -4,6 +4,9 @@ import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 import { addRetroScreenOverlay, applyRetroRenderer, RETRO_PIXEL_FONT } from './retroPixelArt';
 import { getAudioManager } from '../audio/AudioManager';
+import { commitCanonicalNode } from '../campaign/canonicalPartyProgression';
+import type { CampaignStateData } from '../systems/core/CampaignState';
+import type { PartyMember } from '../systems/core/PartyStateSystem';
 
 interface CinematicBeat {
   beat: string;
@@ -43,6 +46,8 @@ export class CinematicScene extends Phaser.Scene {
       return;
     }
 
+    this.commitNarrativeState(flowNode.id);
+
     applyRetroRenderer(this);
     const cinematicPath = flowNode.cinematicPath;
     this.renderCinematic(cinematicPath);
@@ -71,6 +76,31 @@ export class CinematicScene extends Phaser.Scene {
       this.registry.set('interactionHint', '');
       this.registry.set('transitionView', { visible: false, message: '', tone: 'normal' });
       this.input.keyboard?.removeKey(this.enterKey!);
+    });
+  }
+
+  private commitNarrativeState(nodeId: string): void {
+    const campaign = this.registry.get('campaignState') as CampaignStateData | undefined;
+    if (!campaign) return;
+    const result = commitCanonicalNode(nodeId, (this.registry.get('partyState') as PartyMember[] | undefined) ?? [], campaign);
+    this.registry.set('campaignState', result.campaign);
+    this.registry.set('partyState', result.party);
+    // Cinematics do not render combat HUD; the next level rebuilds it from this party snapshot.
+    this.registry.set('partyHud', []);
+    const saved = this.registry.get('campaignSnapshot') as Record<string, unknown> | undefined;
+    if (saved) this.registry.set('campaignSnapshot', {
+      ...saved,
+      party: {
+        active: result.party.filter((member) => member.status === 'active').map((member) => member.name),
+        dead: result.party.filter((member) => member.status === 'dead').map((member) => member.name),
+        rescued: result.party.filter((member) => result.campaign.rescuedCharacters.includes(member.id)).map((member) => member.name),
+        infected: result.party.filter((member) => member.status === 'infected').map((member) => member.name)
+      },
+      narrative: {
+        flags: result.campaign.narrativeProgress,
+        irreversible_events: result.campaign.irreversibleEvents,
+        seen_cinematics: result.campaign.seenCinematics
+      }
     });
   }
 

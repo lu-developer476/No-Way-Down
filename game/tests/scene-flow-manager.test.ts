@@ -21,9 +21,9 @@ test('SceneFlowManager resuelve anterior, actual y siguiente por orden canónico
   assert.deepEqual(resolveNodeNeighbours(flow.nodes, 'legacy-inexistente'), {});
 });
 
-test('SceneFlowManager bloquea un nodo cuyo asset no está implementado', () => {
+test('SceneFlowManager distingue nodos implementados y pendientes', () => {
   assert.equal(isNodeImplemented(registry, 'lvl01-esc01-comedor-resistencia'), true);
-  assert.equal(isNodeImplemented(registry, 'lvl04-cin01-rescate-lorena-en-oficina-422'), false);
+  assert.equal(isNodeImplemented(registry, 'lvl04-cin01-rescate-lorena-en-oficina-422'), true);
   assert.equal(isNodeImplemented(registry, 'lvl10-esc01-garage-busqueda-vehiculo'), true);
   assert.equal(isNodeImplemented(registry, 'id-desconocido'), false);
 });

@@ -1,0 +1,34 @@
+{
+  "cinematic_id": "lvl07_inicio_descenso",
+  "title": "Inicio del descenso",
+  "characters": [
+    "Selene",
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Selene",
+      "beat": "Tras completar el nuevo paso por la oficina 422, el grupo se reagrupa."
+    },
+    {
+      "order": 2,
+      "speaker": "Alan Nahuel",
+      "beat": "El descenso comienza sin alterar ni omitir la secuencia canónica."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

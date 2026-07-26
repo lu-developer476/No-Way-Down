@@ -8,18 +8,105 @@
     "default_spawn": {
       "x": 260,
       "y": 1060
-    }
+    },
+    "background_zones": [
+      {
+        "id": "lvl05-esc01-cuarto-piso-comedor-zone",
+        "zone": "pisos_oficina",
+        "label": "Atravesar el comedor del cuarto piso.",
+        "x": 0,
+        "y": 0,
+        "width": 6400,
+        "height": 1128
+      }
+    ]
   },
   "spawn_zones": {
-    "minPlayerDistance": 220,
-    "maxPlayerDistance": 1250,
+    "minPlayerDistance": 240,
+    "maxPlayerDistance": 1200,
     "viewportSafePadding": 100,
     "areas": [],
     "points": []
   },
-  "objectives": [],
-  "interactables": [],
-  "triggers": [],
+  "objectives": [
+    {
+      "id": "lvl05-esc01-cuarto-piso-comedor-objective",
+      "label": "Atravesar el comedor del cuarto piso.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "salida-cuarto"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "lvl05-esc01-cuarto-piso-comedor-checkpoint",
+      "type": "switch",
+      "x": 3200,
+      "y": 1060,
+      "interactionKey": "E",
+      "interactionRadius": 110,
+      "prompt": "E · Asegurar checkpoint",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Punto asegurado.",
+        "objectiveEventType": "interactable_used",
+        "checkpoint": {
+          "x": 3200,
+          "y": 1060,
+          "label": "Checkpoint canónico"
+        }
+      }
+    },
+    {
+      "id": "lvl05-esc01-cuarto-piso-comedor-exit",
+      "type": "stairs",
+      "x": 6100,
+      "y": 1060,
+      "interactionKey": "E",
+      "interactionRadius": 150,
+      "prompt": "E · Continuar",
+      "interactionEffect": {
+        "type": "stairs",
+        "targetId": "salida-cuarto",
+        "message": "Continuar.",
+        "objectiveEventType": "exit_used"
+      }
+    }
+  ],
+  "pickups": [],
+  "triggers": [
+    {
+      "id": "lvl05-esc01-cuarto-piso-comedor-narrative",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 700,
+        "y": 940,
+        "width": 500,
+        "height": 280
+      },
+      "payload": {
+        "speaker": "Giovanna",
+        "message": "Atravesar el comedor del cuarto piso.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
   "cinematics": [],
-  "exits": []
+  "exits": [
+    {
+      "id": "salida-cuarto",
+      "target_level_id": "canonical-next-node",
+      "scene_key": "CinematicScene",
+      "spawn_point": {
+        "x": 260,
+        "y": 1060
+      },
+      "label": "Continuar"
+    }
+  ]
 }

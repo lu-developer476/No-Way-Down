@@ -1,0 +1,33 @@
+{
+  "cinematic_id": "lvl05_descenso_quinto_piso",
+  "title": "Descenso al quinto piso",
+  "characters": [
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Alan Nahuel",
+      "beat": "El grupo abandona el comedor sin separarse."
+    },
+    {
+      "order": 2,
+      "speaker": "Giovanna",
+      "beat": "El descenso continúa hacia el quinto piso."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

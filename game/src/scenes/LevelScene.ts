@@ -43,6 +43,14 @@ export class LevelScene extends GameScene {
     this.hasStarted = false;
     this.isTransitioning = false;
     this.gameplayReady = false;
+    this.registry.set(
+      'transitionView',
+      {
+        visible: false,
+        message: '',
+        tone: 'normal'
+      }
+    );
 
     const pendingTransition = this.registry.get(
       'pendingCampaignTransition'
@@ -142,9 +150,6 @@ export class LevelScene extends GameScene {
       this.environmentSystem.instantiate(flowNode.systems?.environment ?? []);
       this.missionRuntimeSystem.instantiate(flowNode.systems?.mission ?? []);
 
-      this.events.once('level-exit-transition-complete', (target: LevelExitTarget) => {
-        this.transitionToNextFlowNode(flowNode, target);
-      });
       this.gameplayReady = true;
     });
   }
@@ -154,21 +159,55 @@ export class LevelScene extends GameScene {
       return;
     }
 
+    if (
+      this.enterKey
+      && Phaser.Input.Keyboard.JustDown(
+        this.enterKey
+      )
+      && this.hasPendingExitTransition()
+    ) {
+      this.confirmPendingExitTransition(
+        'manual'
+      );
+
+      this.flowDebug?.update();
+      return;
+    }
+
     super.update();
     this.flowDebug?.update();
   }
 
+  protected completeExitTransition(
+    target: LevelExitTarget
+  ): void {
+    const flowNode = this.flowNode;
+
+    if (!flowNode) {
+      throw new Error(
+        'LevelScene no tiene un flowNode activo para completar la transición.'
+      );
+    }
+
+    this.transitionToNextFlowNode(
+      flowNode,
+      target
+    );
+  }
 
   private transitionToNextFlowNode(flowNode: CampaignFlowNode, target: LevelExitTarget): void {
     if (this.hasStarted || this.isTransitioning) {
       return;
     }
 
-    this.registry.set('checkpoint', target.spawnPoint);
     this.hasStarted = true;
+    this.isTransitioning = true;
+    this.registry.set('checkpoint', target.spawnPoint);
     const manager = this.flowManager ?? new SceneFlowManager(this);
     const nextNode = manager.advanceFromNodeId(flowNode.id);
     if (!nextNode) {
+      this.hasStarted = false;
+      this.isTransitioning = false;
       this.showCampaignLoadError(
         flowNode,
         `No se pudo resolver el nodo posterior a ${flowNode.id}.`
@@ -176,8 +215,23 @@ export class LevelScene extends GameScene {
       return;
     }
 
-    this.isTransitioning = true;
-    manager.transitionToNode(nextNode, { respawnPoint: target.spawnPoint });
+    const transitionAccepted =
+      manager.transitionToNode(
+        nextNode,
+        {
+          respawnPoint:
+            target.spawnPoint
+        }
+      );
+
+    if (!transitionAccepted) {
+      this.hasStarted = false;
+      this.isTransitioning = false;
+
+      throw new Error(
+        `SceneFlowManager rechazó la transición hacia ${nextNode.id}.`
+      );
+    }
   }
 
   private ensureCampaignLevelConfigLoaded(

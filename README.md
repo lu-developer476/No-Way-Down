@@ -68,6 +68,10 @@ Para más detalle operativo, ver `docs/github-to-gitlab-mirror.md`.
 └── public/     # Referencias visuales estáticas del entorno
 ```
 
+## Dirección visual 3D / Unity
+
+La dirección objetivo para una futura implementación 3D realista está documentada en [`docs/unity/VISUAL_TARGET.md`](docs/unity/VISUAL_TARGET.md). Define HDRP, Windows x64, los perfiles Low/Medium/High/Ultra, el benchmark visual y las condiciones de validación sin modificar los 35 nodos canónicos. El frontend ejecutable actual continúa siendo Phaser; la especificación no implica que ya exista un build Unity ni que se haya alcanzado la calidad final.
+
 ## Requisitos
 
 - Node.js 20+

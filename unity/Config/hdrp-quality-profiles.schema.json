@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://no-way-down.invalid/schemas/hdrp-quality-profiles.schema.json",
+  "title": "No Way Down HDRP quality targets",
+  "type": "object",
+  "required": ["version", "status", "platform", "renderPipeline", "baseline", "profiles", "globalRules"],
+  "properties": {
+    "version": { "const": 1 },
+    "status": { "const": "implementation-target" },
+    "platform": { "const": "Windows x64" },
+    "renderPipeline": { "const": "HDRP" },
+    "baseline": {
+      "type": "object",
+      "required": ["profile", "resolution", "targetFps", "frameBudgetMs", "targetGpuBudgetMs"]
+    },
+    "profiles": {
+      "type": "object",
+      "required": ["Low", "Medium", "High", "Ultra"],
+      "additionalProperties": false
+    },
+    "globalRules": { "type": "object" }
+  },
+  "additionalProperties": false
+}

@@ -1,6 +1,10 @@
 import Phaser from 'phaser';
 import { GameScene } from './GameScene';
-import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
+import {
+  CampaignFlowNode,
+  SceneFlowManager,
+  type PendingCampaignTransition
+} from './SceneFlowManager';
 import { CampaignSystem } from '../systems/CampaignSystem';
 import { SpawnSystem } from '../systems/SpawnSystem';
 import { CombatSystem } from '../systems/CombatSystem';
@@ -40,18 +44,47 @@ export class LevelScene extends GameScene {
     this.isTransitioning = false;
     this.gameplayReady = false;
 
-    const flowNode = data.flowNode
-      ?? (this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined);
+    const pendingTransition = this.registry.get(
+      'pendingCampaignTransition'
+    ) as PendingCampaignTransition | undefined;
+    let flowNodeSource: 'scene-data' | 'pending-transition' | 'active-registry' | 'missing';
+    let flowNode: CampaignFlowNode | undefined;
+
+    if (data.flowNode) {
+      flowNode = data.flowNode;
+      flowNodeSource = 'scene-data';
+    } else if (pendingTransition?.toNode) {
+      flowNode = pendingTransition.toNode;
+      flowNodeSource = 'pending-transition';
+    } else {
+      flowNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+      flowNodeSource = flowNode ? 'active-registry' : 'missing';
+    }
 
     if (!flowNode) {
-      console.error('[LevelScene] No se recibió flowNode. No se puede resolver levelConfigPath.');
+      this.showCampaignLoadError(undefined, 'No se recibió un nodo de campaña.');
       return;
     }
+
+    if (pendingTransition && pendingTransition.toNode.id !== flowNode.id) {
+      this.showCampaignLoadError(
+        flowNode,
+        `Nodo esperado:\n${pendingTransition.toNode.id}\n\nNodo recibido:\n${flowNode.id}`
+      );
+      return;
+    }
+
+    console.info('[LevelScene] nodo seleccionado', {
+      source: flowNodeSource,
+      nodeId: flowNode.id,
+      levelConfigPath: flowNode.levelConfigPath ?? null,
+      pendingNodeId: pendingTransition?.toNode.id ?? null
+    });
 
     this.flowNode = flowNode;
 
     if (!flowNode.levelConfigPath) {
-      console.error(`[LevelScene] flowNode ${flowNode.id} no define levelConfigPath. Se aborta la creación del nivel.`);
+      this.showCampaignLoadError(flowNode, 'El nodo no define levelConfigPath.');
       return;
     }
 
@@ -71,7 +104,20 @@ export class LevelScene extends GameScene {
       this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
     }
 
-    this.ensureCampaignLevelConfigLoaded(flowNode, (campaignLevelConfig, usedFallback) => {
+    this.ensureCampaignLevelConfigLoaded(flowNode, (campaignLevelConfig) => {
+      const config = campaignLevelConfig as Record<string, unknown>;
+      const runtimeLevelId = config.runtimeLevelId as string;
+      this.registry.set('activeCampaignLevelConfigPath', flowNode.levelConfigPath);
+      this.registry.set('activeRuntimeLevelId', runtimeLevelId);
+      this.registry.remove('campaignLoadError');
+      this.registry.remove('pendingCampaignTransition');
+      this.registry.remove('pendingCampaignNodeId');
+      console.info('[LevelScene] configuración confirmada', {
+        nodeId: flowNode.id,
+        levelConfigPath: flowNode.levelConfigPath,
+        runtimeLevelId
+      });
+
       const shouldResumeProgress = this.registry.get('resumeProgressOnNextLevel') === true;
       this.registry.remove('resumeProgressOnNextLevel');
 
@@ -95,10 +141,6 @@ export class LevelScene extends GameScene {
       this.combatSystem.instantiate(flowNode.systems?.combat ?? []);
       this.environmentSystem.instantiate(flowNode.systems?.environment ?? []);
       this.missionRuntimeSystem.instantiate(flowNode.systems?.mission ?? []);
-
-      if (usedFallback) {
-        console.warn(`[LevelScene] fallback activado para ${flowNode.id}.`);
-      }
 
       this.events.once('level-exit-transition-complete', (target: LevelExitTarget) => {
         this.transitionToNextFlowNode(flowNode, target);
@@ -127,10 +169,10 @@ export class LevelScene extends GameScene {
     const manager = this.flowManager ?? new SceneFlowManager(this);
     const nextNode = manager.advanceFromNodeId(flowNode.id);
     if (!nextNode) {
-      this.scene.start(target.sceneKey, {
-        respawnPoint: target.spawnPoint,
-        skipLoad: true
-      });
+      this.showCampaignLoadError(
+        flowNode,
+        `No se pudo resolver el nodo posterior a ${flowNode.id}.`
+      );
       return;
     }
 
@@ -140,11 +182,11 @@ export class LevelScene extends GameScene {
 
   private ensureCampaignLevelConfigLoaded(
     flowNode: CampaignFlowNode,
-    onReady: (campaignLevelConfig: unknown, usedFallback: boolean) => void
+    onReady: (campaignLevelConfig: unknown) => void
   ): void {
     const configPath = flowNode.levelConfigPath;
     if (!configPath) {
-      console.error(`[LevelScene] flowNode ${flowNode.id} no tiene levelConfigPath.`);
+      this.showCampaignLoadError(flowNode, 'El nodo no tiene levelConfigPath.');
       return;
     }
 
@@ -152,27 +194,100 @@ export class LevelScene extends GameScene {
 
     if (this.cache.json.exists(cacheKey)) {
       const config = this.cache.json.get(cacheKey);
-      onReady(config, false);
+      if (!this.validateCampaignLevelConfig(flowNode, config)) {
+        this.showCampaignLoadError(flowNode, 'La configuración cacheada es inválida.');
+        return;
+      }
+      onReady(config);
       return;
     }
 
-    this.load.json(cacheKey, configPath);
-
-    this.load.once('filecomplete-json-' + cacheKey, () => {
+    const assetUrl = configPath.startsWith('/') ? configPath : `/${configPath}`;
+    const completeEvent = 'filecomplete-json-' + cacheKey;
+    const onComplete = () => {
+      this.load.off('loaderror', onError);
       const config = this.cache.json.get(cacheKey);
-      onReady(config, false);
-    });
-
-    this.load.once('loaderror', (file: Phaser.Loader.File) => {
+      if (!this.validateCampaignLevelConfig(flowNode, config)) {
+        this.showCampaignLoadError(flowNode, 'La configuración cargada es inválida.');
+        return;
+      }
+      onReady(config);
+    };
+    const onError = (file: Phaser.Loader.File) => {
       if (file.key !== cacheKey) {
         return;
       }
+      this.load.off(completeEvent, onComplete);
+      this.load.off('loaderror', onError);
+      this.showCampaignLoadError(flowNode, `No se pudo cargar ${configPath}.`);
+    };
 
-      console.error(`[LevelScene] Error cargando ${configPath} para flowNode ${flowNode.id}. Se usará fallback.`);
-      onReady({}, true);
-    });
+    this.load.once(completeEvent, onComplete);
+    this.load.on('loaderror', onError);
+    this.load.json(cacheKey, assetUrl);
 
     this.load.start();
+  }
+
+  private validateCampaignLevelConfig(
+    flowNode: CampaignFlowNode,
+    value: unknown
+  ): value is Record<string, unknown> {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return false;
+    }
+    if (flowNode.type !== 'level') {
+      return true;
+    }
+    const runtimeLevelId = (value as Record<string, unknown>).runtimeLevelId;
+    if (typeof runtimeLevelId !== 'string' || runtimeLevelId.trim() === '') {
+      return false;
+    }
+    const requiredRuntimeIds: Record<string, string> = {
+      'lvl01-esc01-subsuelo-inicial': 'level_1_subsuelo_comedor',
+      'lvl02-esc01-hall-planta-baja': 'level_2_escaleras_espiral'
+    };
+    return !requiredRuntimeIds[flowNode.id] || runtimeLevelId === requiredRuntimeIds[flowNode.id];
+  }
+
+  private showCampaignLoadError(flowNode: CampaignFlowNode | undefined, reason: string): void {
+    this.gameplayReady = false;
+    this.isTransitioning = false;
+    this.registry.remove('activeRuntimeLevelId');
+    this.registry.set('campaignLoadError', {
+      nodeId: flowNode?.id ?? null,
+      levelConfigPath: flowNode?.levelConfigPath ?? null,
+      reason
+    });
+    this.registry.set('transitionView', {
+      visible: true,
+      tone: 'danger',
+      message: [
+        'No se pudo cargar el siguiente tramo de campaña.', '',
+        `Nodo: ${flowNode?.id ?? 'desconocido'}`,
+        `Config: ${flowNode?.levelConfigPath ?? 'sin ruta'}`, '', reason
+      ].join('\n')
+    });
+    console.error('[LevelScene] ERROR DE CAMPAÑA', {
+      nodeId: flowNode?.id ?? null,
+      levelConfigPath: flowNode?.levelConfigPath ?? null,
+      reason
+    });
+
+    const { width, height } = this.scale;
+    this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.92).setDepth(10000);
+    this.add.rectangle(width / 2, height / 2, Math.min(width - 48, 720), 390, 0x180b0b, 1)
+      .setStrokeStyle(2, 0xf87171).setDepth(10001);
+    this.add.text(width / 2, height / 2, [
+      'ERROR DE CAMPAÑA', '',
+      `Nodo: ${flowNode?.id ?? 'desconocido'}`,
+      `Config: ${flowNode?.levelConfigPath ?? 'sin ruta'}`, '',
+      reason, '',
+      'La campaña fue detenida para evitar volver al nivel anterior.'
+    ].join('\n'), {
+      fontSize: '18px', color: '#f87171', align: 'center',
+      fontFamily: 'monospace', wordWrap: { width: Math.min(width - 96, 660) }
+    }).setOrigin(0.5).setDepth(10002);
   }
 
   private getCampaignLevelCacheKey(levelConfigPath: string): string {

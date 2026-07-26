@@ -1,0 +1,35 @@
+{
+  "cinematic_id": "lvl04_rescate_lorena_oficina_422",
+  "title": "Rescate de Lorena en oficina 422",
+  "characters": [
+    "Lorena",
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Lorena",
+      "beat": "El grupo llega a la oficina 422 y evita que el infectado alcance a Lorena."
+    },
+    {
+      "order": 2,
+      "speaker": "Alan Nahuel",
+      "beat": "Lorena queda a salvo y se incorpora al grupo."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  },
+  "canonicalEffect": "rescue_lorena"
+}

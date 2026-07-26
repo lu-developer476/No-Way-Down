@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl05-esc01-cuarto-piso-comedor",
+  "level_id": "level_4_oficina_422_comedor_escaleras",
+  "runtimeLevelId": "level_4_oficina_422_comedor_escaleras",
+  "runtimePath": "assets/levels/runtime/level_4_oficina_422_comedor_escaleras.runtime.json",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-cuarto"
+  },
+  "nextNodeId": "lvl05-cin01-descenso-al-quinto-piso"
+}

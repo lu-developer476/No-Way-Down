@@ -1,0 +1,34 @@
+{
+  "cinematic_id": "lvl04_llamada_selene_descenso",
+  "title": "Llamada de Selene y descenso",
+  "characters": [
+    "Selene",
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Selene",
+      "beat": "Selene llama desde otro sector; todavía no está con el grupo."
+    },
+    {
+      "order": 2,
+      "speaker": "Alan Nahuel",
+      "beat": "El grupo inicia el descenso hacia el cuarto piso."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

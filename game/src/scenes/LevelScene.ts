@@ -104,6 +104,11 @@ export class LevelScene extends GameScene {
 
     this.registry.set('activeCampaignNode', flowNode);
     this.registry.set('flowNodeId', flowNode.id);
+    // Scene-local UI/mission data must never bleed into the next canonical node.
+    this.registry.set('currentObjective', '');
+    this.registry.set('dialogueState', null);
+    this.registry.set('interactionHint', '');
+    this.registry.remove('activeMissionRuntime');
 
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
       flowNode: this.flowNode,

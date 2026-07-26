@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl07-esc01-oficina-422-rescate",
+  "level_id": "level_6_pasillos_planta_baja_salidas",
+  "runtimeLevelId": "level_6_pasillos_planta_baja_salidas",
+  "runtimePath": "assets/levels/runtime/level_6_pasillos_planta_baja_salidas.runtime.json",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-oficina-422"
+  },
+  "nextNodeId": "lvl07-cin01-inicio-del-descenso"
+}

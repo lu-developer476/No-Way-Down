@@ -1,0 +1,36 @@
+{
+  "cinematic_id": "lvl06_reencuentro_salida_e",
+  "title": "Reencuentro y salida E",
+  "characters": [
+    "Selene",
+    "Lorena",
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Selene",
+      "beat": "El grupo se reencuentra con Selene en el quinto piso."
+    },
+    {
+      "order": 2,
+      "speaker": "Lorena",
+      "beat": "Selene se incorpora y todos avanzan hacia la salida E."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  },
+  "canonicalEffect": "rescue_selene"
+}

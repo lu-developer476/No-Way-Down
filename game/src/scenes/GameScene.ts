@@ -419,16 +419,21 @@ export class GameScene extends Phaser.Scene {
     ));
 
     const loadedSnapshot = this.registry.get('loadedCampaignSnapshot') as CampaignSnapshot | undefined;
+    const carriedParty = this.registry.get('partyState') as ReturnType<PartyStateSystem['getSnapshot']> | undefined;
+    const carriedCampaign = this.registry.get('campaignState') as ReturnType<CampaignState['getSnapshot']> | undefined;
     const loadedActivePartyNames = new Set(loadedSnapshot?.party.active ?? []);
     const loadedRescuedPartyNames = new Set(loadedSnapshot?.party.rescued ?? []);
     const runtimePartyAllies = [
-      ...partySeed.allies,
+      ...partySeed.allies.filter((ally) => !carriedParty
+        || carriedParty.some((member) => member.id === ally.id && member.status === 'active')),
       ...LATE_RESCUE_ALLIES
-        .filter((ally) => loadedActivePartyNames.has(ally.name)
-          && !partySeed.allies.some((seedAlly) => seedAlly.id === ally.id))
+        .filter((ally) => (
+          (carriedParty?.some((member) => member.id === ally.id && member.status === 'active') ?? false)
+          || loadedActivePartyNames.has(ally.name)
+        ) && !partySeed.allies.some((seedAlly) => seedAlly.id === ally.id))
         .map((ally) => ({ ...ally }))
     ];
-    this.campaignState = new CampaignState('GameScene', {
+    this.campaignState = new CampaignState(data.flowNodeId ?? 'GameScene', carriedCampaign ?? {
       activeCharacters: [
         ...activePlayerConfigs.map((config) => `player-${config.slot}`),
         ...runtimePartyAllies.map((ally) => ally.id)
@@ -441,7 +446,7 @@ export class GameScene extends Phaser.Scene {
       irreversibleEvents: loadedSnapshot?.narrative.irreversible_events ?? [],
       seenCinematics: loadedSnapshot?.narrative.seen_cinematics ?? []
     });
-    this.partyState = new PartyStateSystem([
+    this.partyState = carriedParty ? PartyStateSystem.restore(carriedParty) : new PartyStateSystem([
       ...activePlayerConfigs.map((config) => ({
         id: `player-${config.slot}`,
         name: config.name,

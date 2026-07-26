@@ -8,18 +8,105 @@
     "default_spawn": {
       "x": 240,
       "y": 980
-    }
+    },
+    "background_zones": [
+      {
+        "id": "lvl06-esc01-quinto-piso-pertenencias-zone",
+        "zone": "pisos_oficina",
+        "label": "Recuperar las pertenencias y alcanzar la salida E.",
+        "x": 0,
+        "y": 0,
+        "width": 7000,
+        "height": 1048
+      }
+    ]
   },
   "spawn_zones": {
-    "minPlayerDistance": 220,
-    "maxPlayerDistance": 1300,
+    "minPlayerDistance": 240,
+    "maxPlayerDistance": 1200,
     "viewportSafePadding": 100,
     "areas": [],
     "points": []
   },
-  "objectives": [],
-  "interactables": [],
-  "triggers": [],
+  "objectives": [
+    {
+      "id": "lvl06-esc01-quinto-piso-pertenencias-objective",
+      "label": "Recuperar las pertenencias y alcanzar la salida E.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "salida-quinto"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "lvl06-esc01-quinto-piso-pertenencias-checkpoint",
+      "type": "switch",
+      "x": 3500,
+      "y": 980,
+      "interactionKey": "E",
+      "interactionRadius": 110,
+      "prompt": "E · Asegurar checkpoint",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Punto asegurado.",
+        "objectiveEventType": "interactable_used",
+        "checkpoint": {
+          "x": 3500,
+          "y": 980,
+          "label": "Checkpoint canónico"
+        }
+      }
+    },
+    {
+      "id": "lvl06-esc01-quinto-piso-pertenencias-exit",
+      "type": "stairs",
+      "x": 6700,
+      "y": 980,
+      "interactionKey": "E",
+      "interactionRadius": 150,
+      "prompt": "E · Continuar",
+      "interactionEffect": {
+        "type": "stairs",
+        "targetId": "salida-quinto",
+        "message": "Continuar.",
+        "objectiveEventType": "exit_used"
+      }
+    }
+  ],
+  "pickups": [],
+  "triggers": [
+    {
+      "id": "lvl06-esc01-quinto-piso-pertenencias-narrative",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 700,
+        "y": 860,
+        "width": 500,
+        "height": 280
+      },
+      "payload": {
+        "speaker": "Giovanna",
+        "message": "Recuperar las pertenencias y alcanzar la salida E.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
   "cinematics": [],
-  "exits": []
+  "exits": [
+    {
+      "id": "salida-quinto",
+      "target_level_id": "canonical-next-node",
+      "scene_key": "CinematicScene",
+      "spawn_point": {
+        "x": 240,
+        "y": 980
+      },
+      "label": "Continuar"
+    }
+  ]
 }

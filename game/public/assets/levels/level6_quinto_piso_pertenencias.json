@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl06-esc01-quinto-piso-pertenencias",
+  "level_id": "level_5_oficinas_selene_descenso",
+  "runtimeLevelId": "level_5_oficinas_selene_descenso",
+  "runtimePath": "assets/levels/runtime/level_5_oficinas_selene_descenso.runtime.json",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-quinto"
+  },
+  "nextNodeId": "lvl06-cin01-reencuentro-y-salida-e"
+}

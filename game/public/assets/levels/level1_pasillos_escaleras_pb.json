@@ -2,6 +2,7 @@
   "nodeId": "lvl01-esc02-pasillos-hacia-escaleras-pb",
   "level_id": "level_1_pasillos_escaleras_pb",
   "runtimeLevelId": "level_1_pasillos_escaleras_pb",
+  "visualGeneration": "v2",
   "runtimePath": "assets/levels/runtime/level_1_pasillos_escaleras_pb.runtime.json",
   "completion": {
     "type": "explicit_exit",

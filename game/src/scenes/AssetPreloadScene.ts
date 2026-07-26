@@ -4,8 +4,8 @@ import { SceneFlowManager } from './SceneFlowManager';
 import { definitionFromManifest, type CanonicalManifest } from '../campaign/campaignCore';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
-  { key: 'menu_background', path: 'assets/images/NWD-menu.png', type: 'image' },
-  { key: 'characters_panel', path: 'assets/images/NWD-characters.png', type: 'image' },
+  { key: 'menu_background', path: 'assets/images/NWD-menu.svg', type: 'image' },
+  { key: 'characters_panel', path: 'assets/images/NWD-characters.svg', type: 'image' },
   { key: 'story_bible', path: 'assets/campaign/story_bible.json', type: 'json' },
   { key: 'canonical_campaign_manifest', path: 'assets/campaign/canonical_campaign_manifest.json', type: 'json' },
   { key: 'campaign_implementation_registry', path: 'assets/campaign/campaign_implementation_registry.json', type: 'json' },
@@ -70,6 +70,16 @@ export class AssetPreloadScene extends Phaser.Scene {
         this.load.image(key, path);
       }
     });
+    const sheets: Array<[string,string,number,number]> = [
+      ['v2-alan','assets/visual-v2/characters/alan.svg',48,96], ['v2-giovanna','assets/visual-v2/characters/giovanna.svg',48,96],
+      ['v2-zombie-guard','assets/visual-v2/zombies/guard.svg',48,96], ['v2-zombie-civil','assets/visual-v2/zombies/civil.svg',48,96],
+      ['v2-zombie-advanced','assets/visual-v2/zombies/advanced.svg',48,96], ['v2-weapons','assets/visual-v2/weapons/weapons.svg',32,32],
+      ['v2-combat-fx','assets/visual-v2/fx/combat_fx.svg',16,16]
+    ];
+    sheets.forEach(([key,path,frameWidth,frameHeight])=>this.load.spritesheet(key,path,{frameWidth,frameHeight}));
+    this.load.image('v2-portrait-alan','assets/visual-v2/ui/portrait_alan.svg');
+    this.load.image('v2-portrait-giovanna','assets/visual-v2/ui/portrait_giovanna.svg');
+    this.load.spritesheet('v2-minimap-markers','assets/visual-v2/minimap/markers.svg',{frameWidth:8,frameHeight:8});
   }
 
   create(): void {

@@ -61,6 +61,10 @@ import {
   AmbientVisualSystem,
   type AmbientZoneDefinition
 } from '../systems/AmbientVisualSystem';
+import { resolveVisualGeneration, type VisualGeneration, visualV2Style } from '../config/visualStyle';
+import { VisualV2PresentationSystem } from '../systems/VisualV2PresentationSystem';
+import { InstitutionalLightingSystem } from '../systems/InstitutionalLightingSystem';
+import { MinimapSystem } from '../systems/MinimapSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -180,6 +184,11 @@ export class GameScene extends Phaser.Scene {
   private resistancePhaseConfig?: ResistancePhaseRuntimeConfig;
   private resistancePhaseEndsAt?: number;
   private resistancePhaseCompleted = false;
+  private visualGeneration: VisualGeneration = 'legacy';
+  private visualV2?: VisualV2PresentationSystem;
+  private institutionalLighting?: InstitutionalLightingSystem;
+  private minimap?: MinimapSystem;
+  private visualDebugText?: Phaser.GameObjects.Text;
   private readonly triggeredRetroCheckpoints = new Set<string>();
   private readonly onNarrativeAdvanceKey = () => {
     this.advanceDialogueRequested = true;
@@ -338,6 +347,8 @@ export class GameScene extends Phaser.Scene {
     const difficulty = setupFromRegistry?.difficulty ?? setupFromStorage?.difficulty ?? 'complejo';
     const difficultyRuntime = getDifficultyRuntimeConfig(difficulty);
     const levelConfig = levelManager.loadLevel(selectedLevelId);
+    this.visualGeneration = resolveVisualGeneration(selectedLevelId, (levelConfig as unknown as { visualGeneration?: unknown }).visualGeneration);
+    this.registry.set('visualGeneration', this.visualGeneration);
     const levelWidth = levelConfig.layout.width;
     const levelHeight = levelConfig.layout.height;
     const floorHeight = levelConfig.layout.floor_height ?? 64;
@@ -357,6 +368,12 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('combatFeedbackSystem', this.combatFeedbackSystem);
 
     this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
+    if (this.visualGeneration === 'v2') {
+      this.visualV2 = new VisualV2PresentationSystem(this, levelWidth, levelHeight - floorHeight);
+      this.visualV2.create();
+      this.institutionalLighting = new InstitutionalLightingSystem(this);
+      this.institutionalLighting.create(levelWidth, levelHeight);
+    }
     const ambientZones =
       (levelConfig.layout.background_zones ?? []) as AmbientZoneDefinition[];
 
@@ -631,6 +648,26 @@ export class GameScene extends Phaser.Scene {
     if (leadPlayer) {
       this.allySystem.spawnInitialAllies(leadPlayer, runtimePartyAllies);
     }
+    if (this.visualGeneration === 'v2') {
+      this.players.forEach((player, index) => {
+        player.setTexture(index === 0 ? 'v2-alan' : 'v2-giovanna', 0).setScale(1);
+        this.visualV2?.track(player);
+      });
+      this.allySystem.getActiveAllies().forEach((ally, index) => {
+        ally.setTexture(index === 0 ? 'v2-giovanna' : 'v2-alan', 0).setScale(1);
+        this.visualV2?.track(ally);
+      });
+      this.minimap = new MinimapSystem(
+        this, () => this.players, () => this.allySystem?.getActiveAllies() ?? [],
+        () => (this.zombieSystem?.getGroup().getChildren() ?? []) as unknown as Array<{x:number;y:number;active:boolean}>
+      );
+      this.minimap.create();
+      this.registry.set('visualV2Budgets', visualV2Style.budgets);
+      const query = new URLSearchParams(window.location.search);
+      if (query.get('visualDebug') === '1' && (import.meta.env.DEV || query.has('e2eMode'))) {
+        this.visualDebugText = this.add.text(700, 122, '', { fontFamily:'monospace', fontSize:'8px', color:'#d9f99d', backgroundColor:'rgba(4,10,12,.82)', padding:{x:6,y:5} }).setScrollFactor(0).setDepth(1300);
+      }
+    }
 
     const configuredPickups = (levelConfig.pickups as PickupDefinition[] | undefined) ?? level2PickupConfig.pickups;
     this.pickupSystem = PickupSystem.fromJSON(this, { pickups: configuredPickups });
@@ -697,6 +734,11 @@ export class GameScene extends Phaser.Scene {
       this.exitTransitionCommitInProgress = false;
       this.ambientVisualSystem?.destroy();
       this.ambientVisualSystem = undefined;
+      this.visualV2?.destroy(); this.visualV2 = undefined;
+      this.institutionalLighting?.destroy(); this.institutionalLighting = undefined;
+      this.minimap?.destroy(); this.minimap = undefined;
+      this.registry.remove('visualV2Diagnostics');
+      this.visualDebugText?.destroy(); this.visualDebugText = undefined;
       this.combatFeedbackSystem?.destroy();
       this.combatFeedbackSystem = undefined;
       this.registry.remove('combatFeedbackSystem');
@@ -819,6 +861,19 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.ambientVisualSystem?.update(this.time.now);
+    this.visualV2?.update();
+    this.institutionalLighting?.update(this.time.now);
+    this.minimap?.update();
+    if (this.visualGeneration === 'v2') {
+      this.zombieSystem?.getActiveZombies().forEach((zombie,index) => {
+        const key=['v2-zombie-guard','v2-zombie-civil','v2-zombie-advanced'][index%3];
+        if (zombie.texture.key !== key) zombie.setTexture(key,0).setScale(.98 + (index%3)*.01);
+        this.visualV2?.track(zombie);
+      });
+      const diagnostics = { internalScale:'960x540', zoom:this.cameras.main.zoom.toFixed(2), fps:Math.round(this.game.loop.actualFps), sprites:this.children.list.length, particles:0, lights:this.institutionalLighting?.count??0, decals:0, drawCalls:'n/a', generation:this.visualGeneration, nodeId:this.registry.get('flowNodeId'), runtimeLevelId:this.currentLevelId };
+      this.registry.set('visualV2Diagnostics', diagnostics);
+      this.visualDebugText?.setText(Object.entries(diagnostics).map(([k,v])=>`${k}: ${v}`).join('\n'));
+    }
     this.updateResistancePhase();
 
     if (this.movementLockedByNarrative) {

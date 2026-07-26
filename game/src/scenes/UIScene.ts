@@ -76,6 +76,7 @@ export class UIScene extends Phaser.Scene {
     this.createdAtWidth = this.scale.width;
     this.createdAtHeight = this.scale.height;
     this.createHudFrame();
+    if (this.registry.get('visualGeneration') === 'v2') this.createVisualV2Chrome();
     const events = this.registry.events;
     events.on('changedata-interactionHint', this.handleInteractionHintChanged, this);
     events.on('changedata-partyHud', this.handlePartyHudChanged, this);
@@ -384,6 +385,18 @@ export class UIScene extends Phaser.Scene {
     this.createPauseLayer(font);
     this.createTransitionLayer(font);
     this.createFatalLayer(font);
+  }
+
+  private createVisualV2Chrome(): void {
+    const portrait=this.add.image(40,40,'v2-portrait-alan').setDepth(25).setScrollFactor(0).setOrigin(.5).setScale(1);
+    const frame=this.add.rectangle(16,16,48,48,0x0a1217,0).setOrigin(0).setStrokeStyle(2,0xd3a83f).setDepth(26).setScrollFactor(0);
+    const objectiveAccent=this.add.triangle(275,486,0,12,12,0,24,12,0xf2b13d,1).setDepth(25).setScrollFactor(0);
+    const slots:Phaser.GameObjects.GameObject[]=[portrait,frame,objectiveAccent];
+    for(let i=0;i<4;i++){
+      slots.push(this.add.rectangle(18+i*42,492,36,36,0x0b151b,.94).setOrigin(0).setStrokeStyle(i===0?2:1,i===0?0xe2b84c:0x52656e).setDepth(25).setScrollFactor(0));
+      slots.push(this.add.text(22+i*42,495,String(i+1),{fontFamily:'monospace',fontSize:'8px',color:'#9fb0b6'}).setDepth(26).setScrollFactor(0));
+    }
+    this.gameplayHudLayer?.add(slots);
   }
 
   private createPartyRoster(fontFamily: string): void {

@@ -1,0 +1,481 @@
+{
+  "version": "2.0.0",
+  "license": "Original internal No Way Down artwork",
+  "assets": [
+    {
+      "id": "alan",
+      "path": "assets/visual-v2/characters/alan.svg",
+      "category": "character",
+      "dimensions": {
+        "width": 432,
+        "height": 96
+      },
+      "frameWidth": 48,
+      "frameHeight": 96,
+      "frames": 9,
+      "animations": {
+        "idle": {
+          "start": 0,
+          "end": 0,
+          "fps": 8,
+          "repeat": -1
+        },
+        "run": {
+          "start": 1,
+          "end": 1,
+          "fps": 8,
+          "repeat": -1
+        },
+        "aim": {
+          "start": 2,
+          "end": 2,
+          "fps": 8,
+          "repeat": 0
+        },
+        "shoot": {
+          "start": 3,
+          "end": 3,
+          "fps": 8,
+          "repeat": 0
+        },
+        "reload": {
+          "start": 4,
+          "end": 4,
+          "fps": 8,
+          "repeat": 0
+        },
+        "hurt": {
+          "start": 5,
+          "end": 5,
+          "fps": 8,
+          "repeat": 0
+        },
+        "melee": {
+          "start": 6,
+          "end": 6,
+          "fps": 8,
+          "repeat": 0
+        },
+        "down": {
+          "start": 7,
+          "end": 7,
+          "fps": 8,
+          "repeat": 0
+        },
+        "interact": {
+          "start": 8,
+          "end": 8,
+          "fps": 8,
+          "repeat": 0
+        }
+      },
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "giovanna",
+      "path": "assets/visual-v2/characters/giovanna.svg",
+      "category": "character",
+      "dimensions": {
+        "width": 432,
+        "height": 96
+      },
+      "frameWidth": 48,
+      "frameHeight": 96,
+      "frames": 9,
+      "animations": {
+        "idle": {
+          "start": 0,
+          "end": 0,
+          "fps": 8,
+          "repeat": -1
+        },
+        "run": {
+          "start": 1,
+          "end": 1,
+          "fps": 8,
+          "repeat": -1
+        },
+        "aim": {
+          "start": 2,
+          "end": 2,
+          "fps": 8,
+          "repeat": 0
+        },
+        "shoot": {
+          "start": 3,
+          "end": 3,
+          "fps": 8,
+          "repeat": 0
+        },
+        "reload": {
+          "start": 4,
+          "end": 4,
+          "fps": 8,
+          "repeat": 0
+        },
+        "hurt": {
+          "start": 5,
+          "end": 5,
+          "fps": 8,
+          "repeat": 0
+        },
+        "melee": {
+          "start": 6,
+          "end": 6,
+          "fps": 8,
+          "repeat": 0
+        },
+        "down": {
+          "start": 7,
+          "end": 7,
+          "fps": 8,
+          "repeat": 0
+        },
+        "interact": {
+          "start": 8,
+          "end": 8,
+          "fps": 8,
+          "repeat": 0
+        }
+      },
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "guard",
+      "path": "assets/visual-v2/zombies/guard.svg",
+      "category": "zombie",
+      "dimensions": {
+        "width": 432,
+        "height": 96
+      },
+      "frameWidth": 48,
+      "frameHeight": 96,
+      "frames": 9,
+      "animations": {
+        "idle": {
+          "start": 0,
+          "end": 0,
+          "fps": 8,
+          "repeat": -1
+        },
+        "run": {
+          "start": 1,
+          "end": 1,
+          "fps": 8,
+          "repeat": -1
+        },
+        "aim": {
+          "start": 2,
+          "end": 2,
+          "fps": 8,
+          "repeat": 0
+        },
+        "shoot": {
+          "start": 3,
+          "end": 3,
+          "fps": 8,
+          "repeat": 0
+        },
+        "reload": {
+          "start": 4,
+          "end": 4,
+          "fps": 8,
+          "repeat": 0
+        },
+        "hurt": {
+          "start": 5,
+          "end": 5,
+          "fps": 8,
+          "repeat": 0
+        },
+        "melee": {
+          "start": 6,
+          "end": 6,
+          "fps": 8,
+          "repeat": 0
+        },
+        "down": {
+          "start": 7,
+          "end": 7,
+          "fps": 8,
+          "repeat": 0
+        },
+        "interact": {
+          "start": 8,
+          "end": 8,
+          "fps": 8,
+          "repeat": 0
+        }
+      },
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "civil",
+      "path": "assets/visual-v2/zombies/civil.svg",
+      "category": "zombie",
+      "dimensions": {
+        "width": 432,
+        "height": 96
+      },
+      "frameWidth": 48,
+      "frameHeight": 96,
+      "frames": 9,
+      "animations": {
+        "idle": {
+          "start": 0,
+          "end": 0,
+          "fps": 8,
+          "repeat": -1
+        },
+        "run": {
+          "start": 1,
+          "end": 1,
+          "fps": 8,
+          "repeat": -1
+        },
+        "aim": {
+          "start": 2,
+          "end": 2,
+          "fps": 8,
+          "repeat": 0
+        },
+        "shoot": {
+          "start": 3,
+          "end": 3,
+          "fps": 8,
+          "repeat": 0
+        },
+        "reload": {
+          "start": 4,
+          "end": 4,
+          "fps": 8,
+          "repeat": 0
+        },
+        "hurt": {
+          "start": 5,
+          "end": 5,
+          "fps": 8,
+          "repeat": 0
+        },
+        "melee": {
+          "start": 6,
+          "end": 6,
+          "fps": 8,
+          "repeat": 0
+        },
+        "down": {
+          "start": 7,
+          "end": 7,
+          "fps": 8,
+          "repeat": 0
+        },
+        "interact": {
+          "start": 8,
+          "end": 8,
+          "fps": 8,
+          "repeat": 0
+        }
+      },
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "advanced",
+      "path": "assets/visual-v2/zombies/advanced.svg",
+      "category": "zombie",
+      "dimensions": {
+        "width": 432,
+        "height": 96
+      },
+      "frameWidth": 48,
+      "frameHeight": 96,
+      "frames": 9,
+      "animations": {
+        "idle": {
+          "start": 0,
+          "end": 0,
+          "fps": 8,
+          "repeat": -1
+        },
+        "run": {
+          "start": 1,
+          "end": 1,
+          "fps": 8,
+          "repeat": -1
+        },
+        "aim": {
+          "start": 2,
+          "end": 2,
+          "fps": 8,
+          "repeat": 0
+        },
+        "shoot": {
+          "start": 3,
+          "end": 3,
+          "fps": 8,
+          "repeat": 0
+        },
+        "reload": {
+          "start": 4,
+          "end": 4,
+          "fps": 8,
+          "repeat": 0
+        },
+        "hurt": {
+          "start": 5,
+          "end": 5,
+          "fps": 8,
+          "repeat": 0
+        },
+        "melee": {
+          "start": 6,
+          "end": 6,
+          "fps": 8,
+          "repeat": 0
+        },
+        "down": {
+          "start": 7,
+          "end": 7,
+          "fps": 8,
+          "repeat": 0
+        },
+        "interact": {
+          "start": 8,
+          "end": 8,
+          "fps": 8,
+          "repeat": 0
+        }
+      },
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "weapons",
+      "path": "assets/visual-v2/weapons/weapons.svg",
+      "category": "weapon",
+      "dimensions": {
+        "width": 128,
+        "height": 32
+      },
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 4,
+      "animations": {},
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "combat-fx",
+      "path": "assets/visual-v2/fx/combat_fx.svg",
+      "category": "fx",
+      "dimensions": {
+        "width": 64,
+        "height": 16
+      },
+      "frameWidth": 16,
+      "frameHeight": 16,
+      "frames": 4,
+      "animations": {},
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "portrait-alan",
+      "path": "assets/visual-v2/ui/portrait_alan.svg",
+      "category": "ui",
+      "dimensions": {
+        "width": 48,
+        "height": 48
+      },
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 1,
+      "animations": {},
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "portrait-giovanna",
+      "path": "assets/visual-v2/ui/portrait_giovanna.svg",
+      "category": "ui",
+      "dimensions": {
+        "width": 48,
+        "height": 48
+      },
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 1,
+      "animations": {},
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    },
+    {
+      "id": "minimap-markers",
+      "path": "assets/visual-v2/minimap/markers.svg",
+      "category": "minimap",
+      "dimensions": {
+        "width": 32,
+        "height": 8
+      },
+      "frameWidth": 8,
+      "frameHeight": 8,
+      "frames": 4,
+      "animations": {},
+      "origin": {
+        "x": 0.5,
+        "y": 0.92
+      },
+      "recommendedScale": 1,
+      "version": "2.0.0",
+      "source": "Original internal deterministic SVG generator"
+    }
+  ]
+}

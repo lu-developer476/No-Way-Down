@@ -139,6 +139,9 @@ export class GameScene extends Phaser.Scene {
   private campaignState?: CampaignState;
   private partyState?: PartyStateSystem;
   private hasTriggeredTransition = false;
+  private pendingExitTarget?: LevelExitTarget;
+  private exitTransitionTimer?: Phaser.Time.TimerEvent;
+  private exitTransitionCommitInProgress = false;
   private hasPlayerBeenDefeated = false;
   private respawnPoint?: Checkpoint;
   private pauseMenuVisible = false;
@@ -604,7 +607,7 @@ export class GameScene extends Phaser.Scene {
         transitionMessage: 'Subiendo al siguiente nivel...',
         transitionDelayMs: 700,
         onTransitionComplete: (target) => {
-          this.events.emit('level-exit-transition-complete', target);
+          this.completeExitTransition(target);
         }
       },
       () => this.spawnManager?.getCompletedAreasCount() ?? 0,
@@ -678,6 +681,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.exitTransitionTimer?.remove(false);
+      this.exitTransitionTimer = undefined;
+      this.pendingExitTarget = undefined;
+      this.exitTransitionCommitInProgress = false;
       this.ambientVisualSystem?.destroy();
       this.ambientVisualSystem = undefined;
       this.combatFeedbackSystem?.destroy();
@@ -746,6 +753,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   private resetRuntimeStateForRestart(): void {
+    this.exitTransitionTimer?.remove(false);
+    this.exitTransitionTimer = undefined;
+    this.pendingExitTarget = undefined;
+    this.exitTransitionCommitInProgress = false;
     this.hasTriggeredTransition = false;
     this.hasPlayerBeenDefeated = false;
     this.pauseMenuOptions = [];
@@ -1404,50 +1415,159 @@ export class GameScene extends Phaser.Scene {
     this.setTransitionView(true, message);
   }
 
-  private beginExitTransition(exitId: string, message: string): void {
-    if (this.hasTriggeredTransition || this.hasPlayerBeenDefeated) {
+  protected hasPendingExitTransition(): boolean {
+    return Boolean(
+      this.hasTriggeredTransition
+      && this.pendingExitTarget
+      && !this.exitTransitionCommitInProgress
+    );
+  }
+
+  protected confirmPendingExitTransition(
+    source: 'automatic' | 'manual'
+  ): boolean {
+    if (!this.hasPendingExitTransition()) {
+      return false;
+    }
+
+    const target = this.pendingExitTarget;
+    if (!target) {
+      return false;
+    }
+
+    this.exitTransitionCommitInProgress = true;
+    this.exitTransitionTimer?.remove(false);
+    this.exitTransitionTimer = undefined;
+
+    console.info(
+      '[GameScene] confirmando transición de salida',
+      {
+        source,
+        currentLevelId: this.currentLevelId,
+        currentSceneKey: this.scene.key,
+        targetSceneKey: target.sceneKey,
+        spawnPoint: target.spawnPoint
+      }
+    );
+
+    try {
+      this.completeExitTransition(target);
+      return true;
+    } catch (error) {
+      console.error(
+        '[GameScene] Falló la confirmación de la transición.',
+        error
+      );
+
+      this.exitTransitionCommitInProgress = false;
+      this.hasTriggeredTransition = false;
+      this.pendingExitTarget = undefined;
+
+      this.setTransitionView(false, '');
+      this.physics.resume();
+
+      this.registry.set(
+        'interactionHint',
+        'No se pudo cambiar de nivel. Intentá usar la escalera nuevamente.'
+      );
+
+      return false;
+    }
+  }
+
+  protected completeExitTransition(
+    target: LevelExitTarget
+  ): void {
+    this.registry.set(
+      'checkpoint',
+      target.spawnPoint
+    );
+
+    this.scene.start(
+      target.sceneKey,
+      {
+        respawnPoint: target.spawnPoint,
+        skipLoad: true
+      }
+    );
+  }
+
+  private beginExitTransition(
+    exitId: string,
+    message: string
+  ): void {
+    if (
+      this.hasTriggeredTransition
+      || this.hasPlayerBeenDefeated
+    ) {
       return;
     }
 
-    const transitionMessage = `${message}\nAvanzando al siguiente nivel...`;
-    this.triggerLevelExitTransition(transitionMessage);
+    try {
+      const levelDefinition =
+        levelManager.loadLevel(
+          this.currentLevelId
+        );
 
-    this.time.delayedCall(500, () => {
-      if (!this.scene.isActive(this.scene.key)) {
-        return;
+      const exit =
+        levelDefinition.exits.find(
+          (entry) => entry.id === exitId
+        );
+
+      if (!exit) {
+        throw new Error(
+          `Exit "${exitId}" no encontrado en "${this.currentLevelId}".`
+        );
       }
 
-      try {
-        const levelDefinition = levelManager.loadLevel(this.currentLevelId);
-        const exit = levelDefinition.exits.find((entry) => entry.id === exitId);
+      const target: LevelExitTarget = {
+        sceneKey: exit.scene_key,
+        spawnPoint: exit.spawn_point
+      };
 
-        if (!exit) {
-          throw new Error(`Exit "${exitId}" no encontrado en "${this.currentLevelId}".`);
-        }
+      this.pendingExitTarget = target;
+      this.exitTransitionCommitInProgress = false;
 
-        const target: LevelExitTarget = {
-          sceneKey: exit.scene_key,
-          spawnPoint: exit.spawn_point
-        };
+      const transitionMessage = [
+        message,
+        'Avanzando al siguiente nivel...',
+        '',
+        'ENTER · continuar ahora'
+      ].join('\n');
 
-        if (this.scene.key === 'LevelScene') {
-          this.events.emit('level-exit-transition-complete', target);
-          return;
-        }
+      this.triggerLevelExitTransition(
+        transitionMessage
+      );
 
-        this.registry.set('checkpoint', target.spawnPoint);
-        this.scene.start(target.sceneKey, {
-          respawnPoint: target.spawnPoint,
-          skipLoad: true
-        });
-      } catch (error) {
-        console.error('[GameScene] No se pudo completar la transición de nivel', error);
-        this.hasTriggeredTransition = false;
-        this.setTransitionView(false, '');
-        this.physics.resume();
-        this.registry.set('interactionHint', 'No se pudo cambiar de nivel. Intentá usar las escaleras otra vez.');
-      }
-    });
+      this.exitTransitionTimer?.remove(false);
+
+      this.exitTransitionTimer =
+        this.time.delayedCall(
+          900,
+          () => {
+            this.confirmPendingExitTransition(
+              'automatic'
+            );
+          }
+        );
+    } catch (error) {
+      console.error(
+        '[GameScene] No se pudo preparar la transición de nivel.',
+        error
+      );
+
+      this.pendingExitTarget = undefined;
+      this.exitTransitionCommitInProgress = false;
+      this.hasTriggeredTransition = false;
+
+      this.setTransitionView(false, '');
+      this.physics.resume();
+
+      this.registry.set(
+        'interactionHint',
+        'La salida no está configurada correctamente.'
+      );
+    }
   }
 
   private createPlatform(group: Phaser.Physics.Arcade.StaticGroup, config: PlatformConfig): void {

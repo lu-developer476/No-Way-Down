@@ -214,10 +214,10 @@ export class SceneFlowManager {
     return definition.nodes[0];
   }
 
-  transitionToNode(node: CampaignFlowNode, data: Record<string, unknown> = {}): void {
+  transitionToNode(node: CampaignFlowNode, data: Record<string, unknown> = {}): boolean {
     if (!node || typeof node !== 'object') {
       console.error('[SceneFlowManager] transitionToNode() recibió un nodo inválido.', { node });
-      return;
+      return false;
     }
 
     if (!VALID_SCENE_KEYS.includes(node.sceneKey)) {
@@ -225,7 +225,7 @@ export class SceneFlowManager {
         nodeId: node.id,
         sceneKey: node.sceneKey
       });
-      return;
+      return false;
     }
 
     const availableScenes = this.scene.scene.manager.keys as Record<string, Phaser.Scene | undefined>;
@@ -234,7 +234,7 @@ export class SceneFlowManager {
         nodeId: node.id,
         sceneKey: node.sceneKey
       });
-      return;
+      return false;
     }
 
     const transitionData = {
@@ -263,12 +263,29 @@ export class SceneFlowManager {
       sameSceneRestart: node.sceneKey === this.scene.scene.key
     });
 
+    this.scene.registry.set(
+      'lastCampaignTransitionRequest',
+      {
+        fromNodeId:
+          pendingTransition.fromNodeId,
+        targetNodeId:
+          node.id,
+        targetSceneKey:
+          node.sceneKey,
+        levelConfigPath:
+          node.levelConfigPath ?? null,
+        requestedAt:
+          Date.now()
+      }
+    );
+
     if (node.sceneKey === this.scene.scene.key) {
       this.scene.scene.restart(transitionData);
-      return;
+      return true;
     }
 
     this.scene.scene.start(node.sceneKey, transitionData);
+    return true;
   }
 
   private getDefinition(): CampaignFlowDefinition | undefined {

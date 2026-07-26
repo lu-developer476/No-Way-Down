@@ -8,6 +8,7 @@ public sealed class HealthComponent : MonoBehaviour, IDamageable {
   public float Current { get; private set; }
   public bool Dead => Current <= 0;
   public event Action Died;
+  public float Maximum => maximum;
   void Awake() => Current = maximum;
   public void ApplyDamage(DamageInfo damage) {
     if (Dead)

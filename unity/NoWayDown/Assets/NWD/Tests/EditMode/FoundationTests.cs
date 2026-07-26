@@ -84,7 +84,7 @@ public sealed class FoundationTests {
     var high = AssetDatabase.LoadAssetAtPath<HDRenderPipelineAsset>(
         $"{HdrpQualityConfiguration.Output}/NWD HDRP High.asset");
     if (!high)
-      Assert.Ignore("Run NWD/HDRP/Configure Project inside Unity first.");
+      Assert.Fail("HDRP setup was not executed before the test suite.");
     Assert.That(UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline,
                 Is.SameAs(high));
   }
@@ -92,7 +92,7 @@ public sealed class FoundationTests {
   public void BootstrapRebuildIsIdempotent() {
     if (!(UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline is
               HDRenderPipelineAsset))
-      Assert.Ignore("HDRP activation requires Unity Editor execution first.");
+      Assert.Fail("HDRP must be active before the configured CI test suite.");
     UnityRebuildBootstrap.Run();
     var first =
         AssetDatabase.FindAssets("t:Scene", new[] { "Assets/NWD/Scenes" })

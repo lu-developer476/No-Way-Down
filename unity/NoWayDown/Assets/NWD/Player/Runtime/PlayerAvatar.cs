@@ -5,6 +5,7 @@ public sealed class PlayerAvatar : MonoBehaviour {
   CharacterMotor motor;
   [SerializeField]
   FirstPersonLook cameraLook;
+  [SerializeField] PlayerFlashlight flashlight;
   [SerializeField]
   PlayerInputReader input;
   void Awake() {
@@ -17,6 +18,8 @@ public sealed class PlayerAvatar : MonoBehaviour {
     motor.Move(input.Move, input.Sprint, input.Crouch, input.JumpPressed);
     if (cameraLook)
       cameraLook.Look(input.Look);
+    if (flashlight && input.FlashlightPressed)
+      flashlight.Toggle();
   }
 }
 }

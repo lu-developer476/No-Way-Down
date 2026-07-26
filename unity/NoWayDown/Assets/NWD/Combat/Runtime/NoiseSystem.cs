@@ -27,5 +27,8 @@ public readonly struct NoiseEvent {
 public static class NoiseSystem {
   public static event Action<NoiseEvent> Emitted;
   public static void Emit(NoiseEvent value) => Emitted?.Invoke(value);
+  public static void Clear() => Emitted = null;
+  [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+  static void Reset() => Clear();
 }
 }

@@ -8,6 +8,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEditor.PackageManager;
 
 namespace NWD.Rendering.Editor {
 [Serializable]
@@ -84,6 +85,7 @@ public static class HdrpQualityConfiguration {
     GraphicsSettings.defaultRenderPipeline = assets["High"];
     PlayerSettings.colorSpace = ColorSpace.Linear;
     ApplyQualityAssignments(assets);
+    WriteReport(document, assets);
     File.WriteAllText(
         $"{Output}/applied-config.sha256",
         CanonicalCampaignImporter.Hash(File.ReadAllText(ConfigPath)));
@@ -91,6 +93,27 @@ public static class HdrpQualityConfiguration {
     AssetDatabase.SaveAssets();
     Debug.Log("HDRP configuration assets updated deterministically. Review " +
               "warnings, then restart the Editor and validate the project.");
+  }
+  static void WriteReport(HdrpQualityDocument document,
+                          Dictionary<string, HDRenderPipelineAsset> assets) {
+    var path = $"{Output}/AppliedHdrpConfiguration.asset";
+    var report = LoadOrCreate<AppliedHdrpConfiguration>(path);
+    report.jsonHash = CanonicalCampaignImporter.Hash(File.ReadAllText(ConfigPath));
+    report.unityVersion = Application.unityVersion;
+    var package = PackageInfo.FindForAssembly(typeof(HDRenderPipelineAsset).Assembly);
+    report.hdrpVersion = package != null ? package.version : "unresolved";
+    report.appliedUtc = DateTime.UtcNow.ToString("O");
+    report.defaultProfile = document.baseline.profile;
+    report.appliedProperties = new List<string> {
+      "supportDecals", "supportVolumetrics", "supportSSR", "supportSSAO",
+      "reflectionProbes", "volumetricFog", "bloom", "filmGrain", "vignette",
+      "motionBlurDefault=false", "gameplayDepthOfField=false",
+      "cinematicDepthOfField=true", "lightProbes", "adaptiveProbeVolumes"
+    };
+    report.unsupportedProperties = new List<string>();
+    report.valid = assets.ContainsKey("High") &&
+                   GraphicsSettings.defaultRenderPipeline == assets["High"];
+    EditorUtility.SetDirty(report);
   }
   public static HdrpQualityDocument ReadAndValidate() {
     if (!File.Exists(ConfigPath))
@@ -179,9 +202,8 @@ public static class HdrpQualityConfiguration {
                   string profile) {
     var property = target.FindProperty(path);
     if (property == null) {
-      Debug.LogWarning(
-          $"HDRP {profile}: unsupported property '{path}' was not silently ignored; verify against the installed HDRP package.");
-      return;
+      throw new InvalidOperationException(
+          $"HDRP {profile}: mandatory property '{path}' is unsupported by the installed HDRP package.");
     }
     property.boolValue = value;
   }
@@ -189,9 +211,8 @@ public static class HdrpQualityConfiguration {
                   string profile) {
     var property = target.FindProperty(path);
     if (property == null) {
-      Debug.LogWarning(
-          $"HDRP {profile}: unsupported property '{path}' was not silently ignored; verify against the installed HDRP package.");
-      return;
+      throw new InvalidOperationException(
+          $"HDRP {profile}: mandatory property '{path}' is unsupported by the installed HDRP package.");
     }
     property.intValue = value;
   }
@@ -230,5 +251,12 @@ public static class HdrpQualityConfiguration {
     Debug.Log(
         $"Validated {Names.Length} HDRP quality profiles at {doc.baseline.resolution.width}x{doc.baseline.resolution.height} / {doc.baseline.targetFps} FPS.");
   }
+}
+
+public sealed class AppliedHdrpConfiguration : ScriptableObject {
+  public string jsonHash, unityVersion, hdrpVersion, appliedUtc, defaultProfile;
+  public List<string> appliedProperties = new List<string>();
+  public List<string> unsupportedProperties = new List<string>();
+  public bool valid;
 }
 }

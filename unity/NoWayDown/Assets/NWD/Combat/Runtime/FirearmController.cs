@@ -6,18 +6,21 @@ public sealed class FirearmController : MonoBehaviour {
   [SerializeField]
   Camera aimCamera;
   int magazine, reserve = 60;
+  float nextShot;
   readonly HitscanResolver hitscan = new HitscanResolver();
   public int Magazine => magazine;
   public int Reserve => reserve;
   void Awake() => magazine = definition ? definition.magazineSize : 0;
   public bool Fire() {
-    if (magazine <= 0 || !definition)
+    if (magazine <= 0 || !definition || Time.unscaledTime < nextShot)
       return false;
+    nextShot = Time.unscaledTime + 1f / Mathf.Max(.01f, definition.roundsPerSecond);
     magazine--;
     var ray = aimCamera ? new Ray(aimCamera.transform.position,
                                   aimCamera.transform.forward)
                         : new Ray(transform.position, transform.forward);
-    hitscan.Resolve(ray, definition.range, definition.damage, gameObject);
+    hitscan.Resolve(ray, definition.range, definition.damage, gameObject,
+                    definition.hitMask, definition.headshotMultiplier);
     NoiseSystem.Emit(new NoiseEvent(transform.position, 1,
                                     definition.noiseRadius, 1,
                                     NoiseCategory.Gunshot, gameObject));

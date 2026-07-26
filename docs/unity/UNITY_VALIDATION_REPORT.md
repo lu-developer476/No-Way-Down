@@ -16,3 +16,6 @@ Date: 2026-07-26. Status: **Preparación automatizada para migración HDRP; ejec
 | Performance | No medido | No player, GPU runner, or profiler data. |
 
 Pending acceptance evidence includes clean import/console, stable GUIDs after reopen, resolved asmdefs, no Missing Script/URP shader/pink material, one persistent root, intro-to-comedor transition, isolated benchmark, working flashlight, both passing suites, captures, metrics, and a Windows x64 Development artifact.
+# July 2026 technical-slice preparation
+
+Unity Editor/Hub is unavailable in the execution environment. No Unity import, compilation, HDRP activation, test run, generated scene/prefab, screenshot, performance measurement, or Windows build has been validated. See [PLAYABLE_TECHNICAL_SLICE.md](PLAYABLE_TECHNICAL_SLICE.md) for the exact pending procedure. Values must remain unreported until produced by Unity 6.3 LTS.

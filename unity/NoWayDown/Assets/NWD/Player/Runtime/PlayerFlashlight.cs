@@ -13,7 +13,9 @@ public sealed class PlayerFlashlight : MonoBehaviour {
   float temperature = 4300;
   [SerializeField]
   Texture cookie;
+  [SerializeField, Min(0)] float toggleCooldown = .15f;
   Light source;
+  float nextToggle;
   public bool IsOn => source && source.enabled;
   public event Action<bool> StateChanged;
   void Awake() {
@@ -21,7 +23,11 @@ public sealed class PlayerFlashlight : MonoBehaviour {
     Apply();
     SetEnabled(startsEnabled);
   }
-  public void Toggle() => SetEnabled(!IsOn);
+  public void Toggle() {
+    if (Time.unscaledTime < nextToggle) return;
+    nextToggle = Time.unscaledTime + toggleCooldown;
+    SetEnabled(!IsOn);
+  }
   public void SetEnabled(bool value) {
     if (!source)
       source = GetComponent<Light>();

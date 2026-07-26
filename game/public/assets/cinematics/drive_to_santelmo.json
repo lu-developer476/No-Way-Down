@@ -13,5 +13,21 @@
     {
       "beat": "Alan apaga el motor, baja decidido a pelear y Giovanna lo sigue para cubrirse mutuamente."
     }
-  ]
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "SPACE",
+      "X",
+      "pointer"
+    ],
+    "debounce": "single-advance",
+    "skipCommitsFinalState": true,
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
 }

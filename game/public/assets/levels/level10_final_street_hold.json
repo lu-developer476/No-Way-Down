@@ -54,5 +54,14 @@
       ]
     }
   ],
-  "runtimeLevelId": "level_10_exterior_urbano"
+  "runtimeLevelId": "level_10_exterior_urbano",
+  "nodeId": "lvl10-esc01-combate-50-bajas-en-via-publica",
+  "runtimePath": "assets/levels/runtime/level_10_exterior_urbano.runtime.json",
+  "nextNodeId": "lvl10-cin02-cierre-duo-final-en-san-telmo",
+  "completion": {
+    "type": "objective_kills",
+    "objectiveInstanceScoped": true,
+    "uniqueEnemyIds": true,
+    "killTarget": 50
+  }
 }

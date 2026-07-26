@@ -7,6 +7,7 @@ import { getAudioManager } from '../audio/AudioManager';
 import { commitCanonicalNode } from '../campaign/canonicalPartyProgression';
 import type { CampaignStateData } from '../systems/core/CampaignState';
 import type { PartyMember } from '../systems/core/PartyStateSystem';
+import { persistCampaignCompleted } from './sceneShared';
 
 interface CinematicBeat {
   beat: string;
@@ -52,6 +53,11 @@ export class CinematicScene extends Phaser.Scene {
     applyRetroRenderer(this);
     const cinematicPath = flowNode.cinematicPath;
     this.renderCinematic(cinematicPath);
+
+    if (flowNode.id === 'campaign-end') {
+      persistCampaignCompleted();
+      this.registry.set('campaignCompleted', true);
+    }
 
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
       flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
@@ -196,6 +202,13 @@ export class CinematicScene extends Phaser.Scene {
 
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
     const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
+    if (currentNodeId === 'campaign-end') {
+      this.hasStarted = true;
+      getAudioManager(this).stopCinematicMusic();
+      this.scene.stop('UIScene');
+      this.scene.start('MainMenuScene');
+      return;
+    }
     const next = manager.advanceFromNodeId(currentNodeId);
 
     if (!next) {

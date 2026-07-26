@@ -1,0 +1,57 @@
+{
+  "level_id": "level_10_llegada_san_telmo",
+  "layout": {
+    "width": 9600,
+    "height": 1260,
+    "floor_height": 74,
+    "environment_profile": "level10_exterior_urbano",
+    "default_spawn": {
+      "x": 220,
+      "y": 1100
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1500,
+    "viewportSafePadding": 100,
+    "areas": [],
+    "points": []
+  },
+  "objectives": [
+    {
+      "id": "observar-san-telmo",
+      "label": "Observar las señales recientes",
+      "type": "interaction",
+      "required": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "radio-san-telmo",
+      "x": 9000,
+      "y": 1090,
+      "prompt": "Examinar transmisión",
+      "interactionEffect": {
+        "type": "unlock-exit",
+        "targetId": "san-telmo-desenlace"
+      }
+    }
+  ],
+  "triggers": [],
+  "cinematics": [],
+  "exits": [
+    {
+      "id": "san-telmo-desenlace",
+      "x": 9300,
+      "y": 1030,
+      "width": 120,
+      "height": 160,
+      "spawnPoint": {
+        "x": 220,
+        "y": 1100
+      },
+      "targetScene": "CinematicScene",
+      "requireInteraction": true
+    }
+  ]
+}

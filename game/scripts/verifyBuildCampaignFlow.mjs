@@ -52,3 +52,17 @@ if (fs.existsSync(path.join(projectRoot, 'dist', 'assets', 'campaign', 'campaign
   process.exit(1);
 }
 console.log('Verificación OK: registro de implementación presente y flujo legacy ausente.');
+const registry = JSON.parse(fs.readFileSync(implementationRegistryPath, 'utf8'));
+if (Object.keys(registry.nodes ?? {}).length !== 35 || canonicalIds.some((id) => registry.nodes[id]?.implemented !== true)) {
+  console.error('Error: el build de producción exige implementación 35/35.');
+  process.exit(1);
+}
+for (const node of canonicalManifest.nodes) {
+  const asset = node.levelConfigPath ?? node.cinematicPath;
+  if (node.type === 'campaignIntro') continue;
+  if (!asset || !fs.existsSync(path.join(projectRoot, 'dist', asset))) {
+    console.error(`Error: asset canónico no resoluble en producción: ${node.id}`);
+    process.exit(1);
+  }
+}
+console.log('Verificación OK: build de producción cerrado en 35/35, sin assets pendientes.');

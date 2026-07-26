@@ -32,12 +32,23 @@ if (registry.registryVersion !== 1 || registeredIds.length !== 35 || registeredI
 for (const node of manifest.nodes) {
   const asset = node.levelConfigPath ?? node.cinematicPath;
   const exists = !asset || fs.existsSync(path.join(root, 'public', asset));
-  if (registry.nodes[node.id]?.implemented !== exists) fail(`estado de implementación desactualizado: ${node.id}`);
+  if (!exists || registry.nodes[node.id]?.implemented !== true) fail(`nodo no implementado o asset ausente: ${node.id}`);
+  if (!asset) continue;
+  let config;
+  try { config = read(`public/${asset}`); } catch { fail(`asset JSON inválido: ${node.id}`); continue; }
+  if (node.type === 'cinematic') {
+    if (!Array.isArray(config.beats) || config.beats.length === 0) fail(`cinemática sin beats: ${node.id}`);
+    if (!Array.isArray(config.controls?.advance) || config.controls.advance.length === 0) fail(`cinemática sin controles explícitos: ${node.id}`);
+  }
+  if (node.type === 'level') {
+    if (typeof config.runtimePath !== 'string' || !fs.existsSync(path.join(root, 'public', config.runtimePath))) fail(`runtime faltante: ${node.id}`);
+    if (config.nodeId !== node.id) fail(`config no vinculada a su nodo: ${node.id}`);
+    if (config.nextNodeId !== manifest.nodes[ids.indexOf(node.id) + 1]?.id) fail(`siguiente nodo incorrecto: ${node.id}`);
+  }
 }
 const forbiddenLegacy = ['lvl01-esc01-subsuelo-inicial', 'lvl10-esc03-combate-final-en-via-publica', 'lvl10-esc04-epilogo-final'];
 if (ids.some((id) => forbiddenLegacy.includes(id))) fail('el flujo ejecutable contiene IDs legacy');
-if (!manifest.nodes.some((node) => registry.nodes[node.id]?.implemented === false)) fail('la auditoría de bloqueo necesita al menos un nodo pendiente');
 if (!process.exitCode) {
-  console.log('[CampaignAudit] OK: manifiesto íntegro y única fuente de verdad (35 nodos).');
-  console.log(`[CampaignAudit] assets terminados: ${manifest.nodes.filter((n) => registry.nodes[n.id].implemented).length}; pendientes bloqueantes: ${manifest.nodes.filter((n) => !registry.nodes[n.id].implemented).length}.`);
+  console.log('[CampaignAudit] OK: 35/35 nodos implementados, configurados y con assets resolubles.');
+  console.log('[CampaignAudit] pendientes: 0; flujo legacy: ausente; fallbacks: prohibidos.');
 }

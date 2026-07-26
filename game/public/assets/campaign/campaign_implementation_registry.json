@@ -86,7 +86,7 @@
       "implemented": true
     },
     "lvl10-cin02-salida-del-garage": {
-      "implemented": false
+      "implemented": true
     },
     "lvl10-cin01-traslado-silencioso-plaza-de-mayo": {
       "implemented": true
@@ -95,16 +95,16 @@
       "implemented": true
     },
     "lvl10-cin02-cierre-duo-final-en-san-telmo": {
-      "implemented": false
+      "implemented": true
     },
     "lvl10-esc03-llegada-a-san-telmo": {
-      "implemented": false
+      "implemented": true
     },
     "lvl10-cin03-desenlace-abierto": {
-      "implemented": false
+      "implemented": true
     },
     "campaign-end": {
-      "implemented": false
+      "implemented": true
     }
   }
 }

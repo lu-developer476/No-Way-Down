@@ -13,6 +13,8 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.HighDefinition;
+using Unity.AI.Navigation;
 
 namespace NWD.EditorTools {
 public static class UnityRebuildBootstrap {
@@ -23,13 +25,12 @@ public static class UnityRebuildBootstrap {
   const string Bootstrap = "Assets/NWD/Scenes/Bootstrap/Bootstrap.unity",
                Persistent = "Assets/NWD/Scenes/Persistent/Persistent.unity",
                Benchmark = "Assets/NWD/Scenes/Benchmark/VisualBenchmark.unity";
-  [MenuItem("NWD/Bootstrap Unity Rebuild")]
+  [MenuItem("NWD/Setup/Generate Project Content")]
   public static void Run() {
     ValidateEditorVersion();
     RequirePackages();
     RequireHdrpActive();
     var manifest = CanonicalCampaignImporter.Import();
-    HdrpQualityConfiguration.ConfigureProject();
     CreateBootstrap(manifest);
     CreatePersistent(manifest);
     foreach (var node in manifest.nodes.Take(4))
@@ -41,14 +42,14 @@ public static class UnityRebuildBootstrap {
               "Unity, inspect generated scenes/materials, run both test " +
               "suites, capture benchmark, and build Windows x64 Development.");
   }
-  static void ValidateEditorVersion() {
+  internal static void ValidateEditorVersion() {
     if (!Application.unityVersion.StartsWith("6000.3.",
                                              StringComparison.Ordinal))
       throw new InvalidOperationException(
           "Unity 6.3 LTS is required. Actual Editor: " +
           Application.unityVersion);
   }
-  static void RequirePackages() {
+  internal static void RequirePackages() {
     var text = File.ReadAllText("Packages/manifest.json");
     foreach (var package in new[] { "render-pipelines.high-definition",
                                     "inputsystem", "cinemachine",
@@ -60,7 +61,7 @@ public static class UnityRebuildBootstrap {
     if (text.Contains("render-pipelines.universal"))
       throw new InvalidDataException("URP is forbidden");
   }
-  static void RequireHdrpActive() {
+  internal static void RequireHdrpActive() {
     if (!(GraphicsSettings.defaultRenderPipeline is
               UnityEngine.Rendering.HighDefinition.HDRenderPipelineAsset))
       throw new InvalidOperationException(
@@ -138,7 +139,7 @@ public static class UnityRebuildBootstrap {
     if (created) {
       CreateMaterialKit();
       Primitive("Floor_10x10", root.transform, new Vector3(0, -.1f, 0),
-                new Vector3(10, .2f, 10));
+                new Vector3(10, .2f, 10), PrimitiveType.Cube, "M_Tile_Wet");
       Primitive("Ceiling", root.transform, new Vector3(0, 3, 0),
                 new Vector3(10, .15f, 10));
       foreach (var wall in new[] { (-5f, 1.5f, 0f, .2f, 3f, 10f),
@@ -147,26 +148,27 @@ public static class UnityRebuildBootstrap {
                                    (0f, 1.5f, 5f, 10f, 3f, .2f) })
         Primitive("Wall", root.transform,
                   new Vector3(wall.Item1, wall.Item2, wall.Item3),
-                  new Vector3(wall.Item4, wall.Item5, wall.Item6));
+                  new Vector3(wall.Item4, wall.Item5, wall.Item6), PrimitiveType.Cube,
+                  "M_PaintedWall_Damaged");
       for (var i = 0; i < 3; i++)
         Primitive("Column", root.transform, new Vector3(-3 + i * 3, 1.3f, 1),
-                  new Vector3(.45f, 2.6f, .45f));
+                  new Vector3(.45f, 2.6f, .45f), PrimitiveType.Cube, "M_Concrete_Dirty");
       Primitive("Stair_Step", root.transform, new Vector3(2, .15f, -2),
                 new Vector3(2, .3f, 1));
       Primitive("Door", root.transform, new Vector3(0, 1.1f, 4.75f),
-                new Vector3(1.2f, 2.2f, .15f));
+                new Vector3(1.2f, 2.2f, .15f), PrimitiveType.Cube, "M_Metal_Rusted");
       for (var i = 0; i < 3; i++)
         Primitive("Pipe", root.transform,
                   new Vector3(-3 + i * .35f, 2.6f, -4.5f),
-                  new Vector3(.15f, .15f, 7), PrimitiveType.Cylinder);
+                  new Vector3(.15f, .15f, 7), PrimitiveType.Cylinder, "M_Metal_Rusted");
       for (var i = 0; i < 5; i++)
         Primitive("Debris", root.transform,
                   new Vector3(-2 + i * .7f, .1f, -1 + i % 2),
                   Vector3.one * .2f);
       Primitive("BankFurniture", root.transform, new Vector3(-2, .5f, 2.5f),
-                new Vector3(3, 1, .7f));
+                new Vector3(3, 1, .7f), PrimitiveType.Cube, "M_Wood_Worn");
       Primitive("Puddle_Localized", root.transform, new Vector3(1, .015f, 1),
-                new Vector3(2, .02f, 1.2f));
+                new Vector3(2, .02f, 1.2f), PrimitiveType.Cube, "M_Puddle");
       CreateLight(root.transform, "Cold_Overhead", new Color(.55f, .7f, 1), 900,
                   new Vector3(0, 2.7f, 0));
       CreateLight(root.transform, "Warm_Practical", new Color(1, .55f, .25f),
@@ -182,14 +184,35 @@ public static class UnityRebuildBootstrap {
       group.probePositions =
           new[] { new Vector3(-3, .5f, -3), new Vector3(3, .5f, -3),
                   new Vector3(-3, 2, 3), new Vector3(3, 2, 3) };
-      EnsureChild(root.transform, "Decal Projectors");
+      var decals = EnsureChild(root.transform, "Decal Projectors");
+      foreach (var decalName in new[] { "Moisture", "Dirt", "Crack", "Wear", "Impact" }) {
+        var decal = EnsureChild(decals.transform, "Decal_" + decalName)
+                        .AddComponent<DecalProjector>();
+        decal.size = new Vector3(1.5f, 1.5f, .25f);
+        decal.drawDistance = 20;
+        decal.fadeScale = .8f;
+      }
       var volume =
           EnsureChild(root.transform, "Benchmark Post Processing Volume")
               .AddComponent<Volume>();
       volume.isGlobal = true;
       volume.profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(
           $"{HdrpQualityConfiguration.Output}/Benchmark Volume Profile.asset");
-      EnsureChild(root.transform, "Local Volumetric Humidity Dust");
+      var humidity = EnsureChild(root.transform, "Local Volumetric Humidity Dust")
+                         .AddComponent<LocalVolumetricFog>();
+      var humidityParameters = humidity.parameters;
+      humidityParameters.size = new Vector3(8, .6f, 8);
+      humidityParameters.meanFreePath = 18;
+      humidity.parameters = humidityParameters;
+      var beam = EnsureChild(root.transform, "Local Volumetric Practical Beam")
+                     .AddComponent<LocalVolumetricFog>();
+      var beamParameters = beam.parameters;
+      beamParameters.size = new Vector3(1.5f, 2, 4);
+      beamParameters.meanFreePath = 12;
+      beam.parameters = beamParameters;
+      EnsureChild(root.transform, "NavigationSurface").AddComponent<NavMeshSurface>();
+      EnsureChild(root.transform, "PlayerSpawn");
+      EnsureChild(root.transform, "InfectedSpawn");
       foreach (var name in new[] { "BenchmarkStart", "BenchmarkEnd",
                                    "Benchmark_Overview", "Benchmark_Flashlight",
                                    "Benchmark_WetFloor",
@@ -233,7 +256,7 @@ public static class UnityRebuildBootstrap {
         Nodes.Select(n => $"Assets/NWD/Scenes/Campaign/{n}.unity"));
     var scenes =
         paths.Select(p => new EditorBuildSettingsScene(p, true))
-            .Concat(new[] { new EditorBuildSettingsScene(Benchmark, false) })
+            .Concat(new[] { new EditorBuildSettingsScene(Benchmark, true) })
             .ToArray();
     EditorBuildSettings.scenes = scenes;
   }
@@ -248,13 +271,17 @@ public static class UnityRebuildBootstrap {
   }
   static GameObject Primitive(string name, Transform parent, Vector3 position,
                               Vector3 scale,
-                              PrimitiveType type = PrimitiveType.Cube) {
+                              PrimitiveType type = PrimitiveType.Cube,
+                              string materialName = null) {
     var value = GameObject.CreatePrimitive(type);
     value.name = name;
     value.transform.SetParent(parent, false);
     value.transform.localPosition = position;
     value.transform.localScale = scale;
     value.AddComponent<GeneratedContentMarker>();
+    if (!string.IsNullOrEmpty(materialName))
+      value.GetComponent<Renderer>().sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(
+          $"Assets/NWD/Rendering/Materials/{materialName}.mat");
     return value;
   }
   static void CreateLight(Transform parent, string name, Color color,

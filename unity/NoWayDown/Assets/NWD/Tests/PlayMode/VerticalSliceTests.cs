@@ -16,7 +16,7 @@ public sealed class VerticalSliceTests {
   [UnityTest]
   public IEnumerator BootstrapLoadsPersistentAndInitialCanonicalScene() {
     if (!UnityEngine.Application.CanStreamedLevelBeLoaded(Bootstrap))
-      Assert.Ignore("Generate scenes with NWD/Bootstrap Unity Rebuild first.");
+      Assert.Fail("Configured test run is missing the generated Bootstrap scene.");
     yield return SceneManager.LoadSceneAsync(Bootstrap, LoadSceneMode.Single);
     yield return WaitForScene("Persistent", 10);
     yield return WaitForScene("campaign-intro", 10);
@@ -30,9 +30,11 @@ public sealed class VerticalSliceTests {
   }
   [UnityTest]
   public IEnumerator CanonicalTransitionLoadsComedorOnceAndUnloadsIntro() {
-    if (!GameCompositionRoot.Instance)
-      Assert.Ignore("Bootstrap integration test must run first or scenes " +
-                    "must be generated.");
+    if (!GameCompositionRoot.Instance) {
+      Assert.True(UnityEngine.Application.CanStreamedLevelBeLoaded(Bootstrap));
+      yield return SceneManager.LoadSceneAsync(Bootstrap, LoadSceneMode.Single);
+      yield return WaitForScene("campaign-intro", 10);
+    }
     Assert.True(GameCompositionRoot.Instance.Campaign.RequestTransition(
         "playmode-test"));
     yield return WaitForScene("lvl01-esc01-comedor-resistencia", 10);
@@ -50,9 +52,11 @@ public sealed class VerticalSliceTests {
     const string benchmark =
         "Assets/NWD/Scenes/Benchmark/VisualBenchmark.unity";
     if (!UnityEngine.Application.CanStreamedLevelBeLoaded(benchmark))
-      Assert.Ignore(
-          "Benchmark is intentionally excluded from normal Build Settings; " +
-          "execute this test in the dedicated Development configuration.");
+      Assert.Fail("Configured Development test run is missing VisualBenchmark.");
+    if (!GameCompositionRoot.Instance) {
+      yield return SceneManager.LoadSceneAsync(Bootstrap, LoadSceneMode.Single);
+      yield return WaitForScene("campaign-intro", 10);
+    }
     var before = GameCompositionRoot.Instance?.Campaign.GetCurrentNode()?.id;
     yield return SceneManager.LoadSceneAsync(benchmark, LoadSceneMode.Additive);
     Assert.NotNull(Object.FindFirstObjectByType<PlayerFlashlight>());

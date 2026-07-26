@@ -57,11 +57,25 @@ public sealed class GameCompositionRoot : MonoBehaviour {
       StartCoroutine(Transition(destination));
   IEnumerator Transition(CampaignNodeDefinition destination) {
     var previous = Campaign.GetCurrentNode();
+    Input.Enabled = false;
     yield return Scenes.LoadAdditive(destination.scenePath);
-    while (Campaign.GetCurrentNode() != destination)
+    if (!Scenes.LastResult.Succeeded) {
+      Debug.LogError($"NWD_TRANSITION status={Scenes.LastResult.Status} destination={destination.id} scene={destination.scenePath}");
+      Input.Enabled = true;
+      yield break;
+    }
+    var deadline = Time.realtimeSinceStartup + 15;
+    while (Campaign.GetCurrentNode() != destination && Time.realtimeSinceStartup < deadline)
       yield return null;
+    if (Campaign.GetCurrentNode() != destination) {
+      Debug.LogError($"NWD_TRANSITION status=Timeout destination={destination.id} rollback=true");
+      yield return Scenes.Unload(destination.scenePath);
+      Input.Enabled = true;
+      yield break;
+    }
     if (previous != null)
       yield return Scenes.Unload(previous.scenePath);
+    Input.Enabled = true;
   }
   void OnDestroy() {
     if (instance == this) {

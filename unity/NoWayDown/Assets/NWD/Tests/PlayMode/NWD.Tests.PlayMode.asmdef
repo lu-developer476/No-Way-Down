@@ -8,7 +8,12 @@
     "NWD.Missions",
     "NWD.Save",
     "NWD.Enemies",
-    "NWD.Squad"
+    "NWD.Squad",
+    "NWD.Application",
+    "NWD.Player",
+    "NWD.Scenes",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.HighDefinition.Runtime"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

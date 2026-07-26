@@ -1,17 +1,13 @@
 # Unity setup
 
-## Required editor
+## Required editor and honest status
 
-Use **Unity 6.3 LTS**. This environment has no Unity Editor, so no patch number is asserted and `ProjectVersion.txt` is intentionally absent. Install an actual Unity Hub-listed 6.3 LTS patch with Windows Build Support, then let that editor write `ProjectVersion.txt` and resolve the locked packages.
+Use a real **Unity 6.3 LTS** patch shown by Unity Hub. No Editor was installed in the implementation environment, so an exact patch is not asserted and `ProjectVersion.txt` is intentionally absent. Do not create it, package-lock data, Unity YAML, GUIDs, or `.meta` files manually.
 
-1. Open `unity/NoWayDown` in the installed 6.3 LTS editor.
-2. Wait for Package Manager resolution; do not upgrade packages implicitly.
-3. Run **NWD > Bootstrap Unity Rebuild**. This deterministically imports canon, generates the first four greybox scenes, and configures Build Settings.
-4. Run **NWD > Validate Canonical Campaign**.
-5. Bake NavMesh surfaces in the generated gameplay scenes, run EditMode and PlayMode suites, then exercise intro → comedor → pasillos.
+1. Install the editor and Windows Build Support; open `unity/NoWayDown` and record the exact version Unity writes.
+2. Let Package Manager resolve HDRP, Input System, Cinemachine, AI Navigation, Addressables, Test Framework, Timeline, NGO, Transport and UGUI. Commit its regenerated lock.
+3. Run **NWD > HDRP > Configure Project**, restart Unity, and run **NWD > Bootstrap Unity Rebuild**.
+4. Run both validation menus and EditMode/PlayMode suites. Inspect the benchmark in Play Mode and execute a Windows x64 Development build.
+5. Close/reopen the project and confirm stable references and GUIDs.
 
-URP, Input System, Cinemachine, AI Navigation, Addressables, Test Framework, NGO and Transport are pinned in `Packages/manifest.json`. NGO is isolated behind `ISessionGateway`; online play is not implemented.
-
-## CI secrets
-
-A Unity runner needs `UNITY_LICENSE` (or the GameCI activation flow), `UNITY_EMAIL`, and `UNITY_PASSWORD`. Pin `UNITY_VERSION` to the exact installed 6.3 LTS patch before enabling builds. The checked-in workflow is manual scaffolding and has not run here.
+See `HDRP_MIGRATION.md` for the exact migration procedure and `UNITY_VALIDATION_REPORT.md` for unvalidated items. CI requires an exact `UNITY_VERSION` plus a licensed runner (`UNITY_LICENSE`, or the selected activation flow credentials). The workflow remains manual until those exist.

@@ -1,0 +1,1 @@
+{"name":"NWD.Application","rootNamespace":"NWD.Application","references":["NWD.Core","NWD.Narrative","NWD.Campaign","NWD.Save","NWD.Networking","NWD.Player","Unity.InputSystem"],"autoReferenced":true}

@@ -208,3 +208,7 @@ Está prohibido afirmar que se alcanzó la calidad de las referencias basándose
 
 Una revisión visual también debe comprobar que no se incorporaron textos, logos, interfaces, nombres ni escenarios específicos de las imágenes de referencia.
 
+
+## Estado de activación HDRP (2026-07-26)
+
+El repositorio ahora contiene la solicitud de paquete HDRP y herramientas deterministas para generar perfiles, volúmenes, materiales provisionales y benchmark. Como no hubo Unity Editor en el entorno, los assets no fueron generados ni inspeccionados y no existe evidencia de paridad visual, pipeline activo, materiales sin errores o rendimiento. Consultar `HDRP_MIGRATION.md` y `UNITY_VALIDATION_REPORT.md` antes de interpretar esta dirección como implementación validada.

@@ -1,7 +1,7 @@
 # Vertical slice 01
 
-Scope is restricted to `campaign-intro`, `lvl01-esc01-comedor-resistencia`, `lvl01-esc02-pasillos-hacia-escaleras-pb`, and `lvl01-cin01-cierre-contextual`, in that canonical order.
+Scope remains strictly restricted to `campaign-intro`, `lvl01-esc01-comedor-resistencia`, `lvl01-esc02-pasillos-hacia-escaleras-pb`, and `lvl01-cin01-cierre-contextual`, in canonical manifest order. VisualBenchmark is separate development instrumentation and never campaign content.
 
-The bootstrap generates provisional scene roots for intro UI/skip, the defendable bank dining room, office corridors, and contextual Timeline staging. Gameplay roots include floor, lighting, player/squad/infected spawns and an objective volume. The runtime foundations provide FPS locomotion/input, pistol/rifle/melee definitions, hitscan/health/noise, infected and squad navigation, hold/advance objectives and transactional campaign transition.
+The rebuild generator prepares descriptors with exact IDs/types/entry spawns, provisional objective and infected roots, independent flashlights, Bootstrap and a persistent composition root. Runtime foundations are deliberately maintainable, bounded implementations rather than AAA systems. The canonical manifest remains the sole narrative ordering authority.
 
-This is code-first greybox scaffolding, not a visually completed slice. Unity was unavailable here: scenes, Timeline assets, NavMesh bakes, package resolution, compilation, EditMode, PlayMode and the end-to-end route remain mandatory editor validation steps.
+No Unity Editor was available: scenes/assets/metas were not fabricated, and compilation, package resolution, HDRP activation, tests, playthrough, build and visual quality are not claimed. The next milestone is to execute `HDRP_MIGRATION.md`, correct all Editor/compiler diagnostics, validate intro → comedor, and publish real benchmark evidence.

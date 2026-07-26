@@ -1,10 +1,95 @@
-using System;using System.Collections.Generic;using System.IO;using System.Linq;using System.Security.Cryptography;using System.Text;using UnityEditor;using UnityEngine;using NWD.Narrative;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using UnityEditor;
+using UnityEngine;
+using NWD.Narrative;
 namespace NWD.EditorTools {
- public static class CanonicalCampaignImporter { public const int RequiredCount=35;public const string Source="Assets/NWD/Narrative/Source/canonical_campaign_manifest.json",Output="Assets/NWD/Narrative/Generated/CanonicalCampaign.asset";
- [Serializable]sealed class JsonManifest{public int canonicalNodeCount;public string flowId;public JsonNode[] nodes;}[Serializable]sealed class JsonNode{public string id,type,sceneKey,levelConfigPath,cinematicPath;}
- public static CampaignManifestAsset Import(){var text=File.ReadAllText(Source);var json=JsonUtility.FromJson<JsonManifest>(text);Validate(json);var asset=AssetDatabase.LoadAssetAtPath<CampaignManifestAsset>(Output);if(!asset){asset=ScriptableObject.CreateInstance<CampaignManifestAsset>();AssetDatabase.CreateAsset(asset,Output);}asset.sourceHash=Hash(text);asset.nodes=json.nodes.Select((n,i)=>new CampaignNodeDefinition{id=n.id,type=Parse(n.type),sceneKey=n.sceneKey,sourceContentPath=n.levelConfigPath??n.cinematicPath,scenePath=i<4?$"Assets/NWD/Scenes/Campaign/{n.id}.unity":null,timelinePath=n.type=="cinematic"&&i<4?$"Assets/NWD/Narrative/Generated/{n.id}.playable":null,missionId=n.type=="level"&&i<4?$"mission-{n.id}":null,spawnId=i<4?"entry":null,implementation=i<4?ImplementationState.Greybox:ImplementationState.Unimplemented}).ToList();EditorUtility.SetDirty(asset);AssetDatabase.SaveAssets();return asset;}
- static void Validate(JsonManifest m){if(m==null||m.canonicalNodeCount!=RequiredCount||m.nodes==null||m.nodes.Length!=RequiredCount)throw new InvalidDataException("Canonical campaign must contain exactly 35 nodes");if(m.flowId!="main_campaign")throw new InvalidDataException("Legacy or alternate campaign flow is forbidden");if(m.nodes.Any(n=>string.IsNullOrWhiteSpace(n.id)))throw new InvalidDataException("Canonical node ID is empty");if(m.nodes.Select(n=>n.id).Distinct().Count()!=RequiredCount)throw new InvalidDataException("Duplicate canonical node ID");}
- static CampaignNodeType Parse(string t)=>t switch{"campaignIntro"=>CampaignNodeType.CampaignIntro,"level"=>CampaignNodeType.Level,"cinematic"=>CampaignNodeType.Cinematic,"campaignEnding"=>CampaignNodeType.CampaignEnding,_=>CampaignNodeType.Unknown};public static string Hash(string text){using var sha=SHA256.Create();return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-","").ToLowerInvariant();}
- [MenuItem("NWD/Validate Canonical Campaign")]public static void ValidateMenu(){var generated=Import();foreach(var n in generated.nodes.Where(n=>n.implementation!=ImplementationState.Unimplemented))if(string.IsNullOrWhiteSpace(n.scenePath)||!File.Exists(n.scenePath))throw new InvalidDataException($"Implemented node has no scene: {n.id}");Debug.Log($"Canonical campaign valid: {generated.nodes.Count} nodes, SHA-256 {generated.sourceHash}");}
- }
+public static class CanonicalCampaignImporter {
+  public const int RequiredCount = 35;
+  public const string
+      Source = "Assets/NWD/Narrative/Source/canonical_campaign_manifest.json",
+      Output = "Assets/NWD/Narrative/Generated/CanonicalCampaign.asset";
+  [Serializable]
+  sealed class JsonManifest {
+    public int canonicalNodeCount;
+    public string flowId;
+    public JsonNode[] nodes;
+  }
+  [Serializable]
+  sealed class JsonNode {
+    public string id, type, sceneKey, levelConfigPath, cinematicPath;
+  }
+  public static CampaignManifestAsset Import() {
+    var text = File.ReadAllText(Source);
+    var json = JsonUtility.FromJson<JsonManifest>(text);
+    Validate(json);
+    var asset = AssetDatabase.LoadAssetAtPath<CampaignManifestAsset>(Output);
+    if (!asset) {
+      asset = ScriptableObject.CreateInstance<CampaignManifestAsset>();
+      AssetDatabase.CreateAsset(asset, Output);
+    }
+    asset.sourceHash = Hash(text);
+    asset.nodes =
+        json.nodes
+            .Select((n, i) => new CampaignNodeDefinition {
+              id = n.id, type = Parse(n.type), sceneKey = n.sceneKey,
+              sourceContentPath = n.levelConfigPath ?? n.cinematicPath,
+              scenePath =
+                  i < 4 ? $"Assets/NWD/Scenes/Campaign/{n.id}.unity" : null,
+              timelinePath =
+                  n.type == "cinematic" && i < 4
+                      ? $"Assets/NWD/Narrative/Generated/{n.id}.playable"
+                      : null,
+              missionId = n.type == "level" && i < 4 ? $"mission-{n.id}" : null,
+              spawnId = i < 4 ? "entry" : null,
+              implementation = i < 4 ? ImplementationState.Greybox
+                                     : ImplementationState.Unimplemented
+            })
+            .ToList();
+    EditorUtility.SetDirty(asset);
+    AssetDatabase.SaveAssets();
+    return asset;
+  }
+  static void Validate(JsonManifest m) {
+    if (m == null || m.canonicalNodeCount != RequiredCount || m.nodes == null ||
+        m.nodes.Length != RequiredCount)
+      throw new InvalidDataException(
+          "Canonical campaign must contain exactly 35 nodes");
+    if (m.flowId != "main_campaign")
+      throw new InvalidDataException(
+          "Legacy or alternate campaign flow is forbidden");
+    if (m.nodes.Any(n => string.IsNullOrWhiteSpace(n.id)))
+      throw new InvalidDataException("Canonical node ID is empty");
+    if (m.nodes.Select(n => n.id).Distinct().Count() != RequiredCount)
+      throw new InvalidDataException("Duplicate canonical node ID");
+  }
+  static CampaignNodeType Parse(string t) => t switch {
+    "campaignIntro" => CampaignNodeType.CampaignIntro,
+    "level" => CampaignNodeType.Level,
+    "cinematic" => CampaignNodeType.Cinematic,
+    "campaignEnding" => CampaignNodeType.CampaignEnding,
+    _ => CampaignNodeType.Unknown
+  };
+  public static string Hash(string text) {
+    using var sha = SHA256.Create();
+    return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(text)))
+        .Replace("-", "")
+        .ToLowerInvariant();
+  }
+  [MenuItem("NWD/Validate Canonical Campaign")]
+  public static void ValidateMenu() {
+    var generated = Import();
+    foreach (var n in generated.nodes.Where(
+                 n => n.implementation != ImplementationState.Unimplemented))
+      if (string.IsNullOrWhiteSpace(n.scenePath) || !File.Exists(n.scenePath))
+        throw new InvalidDataException(
+            $"Implemented node has no scene: {n.id}");
+    Debug.Log(
+        $"Canonical campaign valid: {generated.nodes.Count} nodes, SHA-256 {generated.sourceHash}");
+  }
+}
 }

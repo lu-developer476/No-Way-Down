@@ -8,7 +8,9 @@
     "NWD.Combat",
     "NWD.Missions",
     "NWD.Save",
-    "NWD.Enemies"
+    "NWD.Enemies",
+    "NWD.Editor",
+    "Unity.RenderPipelines.HighDefinition.Runtime"
   ],
   "includePlatforms": [
     "Editor"

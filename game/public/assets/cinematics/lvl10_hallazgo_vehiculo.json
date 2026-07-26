@@ -1,0 +1,27 @@
+{
+  "id": "lvl10_hallazgo_vehiculo",
+  "beats": [
+    {
+      "beat": "Las pistas confirman el sedán operativo."
+    },
+    {
+      "beat": "El grupo aborda el vehículo."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "SPACE",
+      "X",
+      "pointer"
+    ],
+    "debounce": "single-advance",
+    "skipCommitsFinalState": true,
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

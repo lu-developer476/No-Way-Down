@@ -12,14 +12,75 @@
   },
   "spawn_zones": {
     "minPlayerDistance": 220,
-    "maxPlayerDistance": 1350,
+    "maxPlayerDistance": 1400,
     "viewportSafePadding": 100,
-    "areas": [],
-    "points": []
+    "areas": [
+      {
+        "id": "vertical-pressure",
+        "x": 1800,
+        "y": 120,
+        "width": 5800,
+        "height": 980
+      }
+    ],
+    "points": [
+      {
+        "id": "vertical-stairs",
+        "x": 4100,
+        "y": 440,
+        "spawnCooldown": 5000,
+        "maxAlive": 6,
+        "zombieTypes": [
+          "walker"
+        ]
+      }
+    ]
   },
-  "objectives": [],
-  "interactables": [],
+  "objectives": [
+    {
+      "id": "descender-a-tiempo",
+      "label": "Alcanzá el subsuelo 3 antes de 3:00",
+      "completion": [
+        {
+          "type": "exit-used",
+          "targetId": "escalera-subsuelo-3"
+        }
+      ],
+      "failure": {
+        "type": "timer-expired",
+        "targetId": "descenso-3m"
+      }
+    }
+  ],
+  "interactables": [
+    {
+      "id": "accion-escalera-subsuelo-3",
+      "type": "stairs",
+      "x": 8100,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · BAJAR AL SUBSUELO 3",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "escalera-subsuelo-3",
+        "objectiveEventType": "exit-used",
+        "consumesOnUse": true
+      }
+    }
+  ],
   "triggers": [],
   "cinematics": [],
-  "exits": []
+  "exits": [
+    {
+      "id": "escalera-subsuelo-3",
+      "target_level_id": "lvl08-cin01-damian-infectado-y-suicidio",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 200,
+        "y": 1040
+      },
+      "label": "escalera-subsuelo-3"
+    }
+  ]
 }

@@ -1,0 +1,27 @@
+{
+  "id": "lvl08_caida_final_duo",
+  "beats": [
+    {
+      "beat": "La defensa del dúo cae."
+    },
+    {
+      "beat": "Hernán y Yamil no regresan."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "SPACE",
+      "X",
+      "pointer"
+    ],
+    "debounce": "single-advance",
+    "skipCommitsFinalState": true,
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

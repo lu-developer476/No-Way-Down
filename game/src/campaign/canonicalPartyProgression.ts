@@ -1,10 +1,15 @@
 import type { CampaignStateData } from '../systems/core/CampaignState.ts';
 import { PartyStateSystem, type PartyMember } from '../systems/core/PartyStateSystem.ts';
 
-const EFFECT_BY_NODE: Readonly<Record<string, 'rescue_lorena' | 'rescue_selene' | 'death_lorena'>> = {
+type PartyEffect = 'rescue_lorena' | 'rescue_selene' | 'death_lorena' | 'death_damian' | 'death_duo' | 'infect_selene' | 'remove_selene';
+const EFFECT_BY_NODE: Readonly<Record<string, PartyEffect>> = {
   'lvl04-cin01-rescate-lorena-en-oficina-422': 'rescue_lorena',
   'lvl06-cin01-reencuentro-y-salida-e': 'rescue_selene',
-  'lvl06-cin02-muerte-lorena-y-guardia-en-salida-e': 'death_lorena'
+  'lvl06-cin02-muerte-lorena-y-guardia-en-salida-e': 'death_lorena',
+  'lvl08-cin01-damian-infectado-y-suicidio': 'death_damian',
+  'lvl08-cin03-caida-final-del-duo': 'death_duo',
+  'lvl09-cin01-hallazgo-salida-y-mordida-selene': 'infect_selene',
+  'lvl09-cin02-traicion-de-selene-y-huida': 'remove_selene'
 };
 
 const ALLIES = {
@@ -38,11 +43,20 @@ export function commitCanonicalNode(
   campaign.irreversibleEvents = [...new Set([...campaign.irreversibleEvents, eventKey])];
   campaign.seenCinematics = [...new Set([...campaign.seenCinematics, nodeId])];
 
-  if (effect === 'death_lorena') {
-    party.markDead('ally-lorena');
-    campaign.activeCharacters = campaign.activeCharacters.filter((id) => id !== 'ally-lorena');
-    campaign.deadCharacters = [...new Set([...campaign.deadCharacters, 'ally-lorena'])];
-  } else {
+  if (effect.startsWith('death_')) {
+    const victims = effect === 'death_lorena' ? ['ally-lorena'] : effect === 'death_damian' ? ['ally-damian'] : ['ally-hernan', 'ally-yamil'];
+    victims.forEach((id) => party.markDead(id));
+    campaign.activeCharacters = campaign.activeCharacters.filter((id) => !victims.includes(id));
+    campaign.deadCharacters = [...new Set([...campaign.deadCharacters, ...victims])];
+    campaign.infectedCharacters = campaign.infectedCharacters.filter((id) => !victims.includes(id));
+  } else if (effect === 'infect_selene') {
+    party.markInfected('ally-selene');
+    campaign.infectedCharacters = [...new Set([...campaign.infectedCharacters, 'ally-selene'])];
+  } else if (effect === 'remove_selene') {
+    party.removePermanently('ally-selene');
+    campaign.activeCharacters = campaign.activeCharacters.filter((id) => id !== 'ally-selene');
+    campaign.infectedCharacters = campaign.infectedCharacters.filter((id) => id !== 'ally-selene');
+  } else if (effect === 'rescue_lorena' || effect === 'rescue_selene') {
     const ally = ALLIES[effect];
     if (!campaign.deadCharacters.includes(ally.id)) {
       party.upsertMember({ ...ally, controlMode: 'ai', status: 'active', permanentlyLost: false, narrative: { deathPending: false } });

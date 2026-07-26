@@ -1,0 +1,18 @@
+{
+  "nodeId": "lvl09-esc01-verificacion-salidas",
+  "runtimeLevelId": "level_9_verificacion_salidas",
+  "runtimePath": "assets/levels/runtime/level_9_verificacion_salidas.runtime.json",
+  "requiredExitIds": [
+    "salida-a",
+    "salida-b",
+    "salida-c",
+    "salida-d",
+    "salida-e"
+  ],
+  "selectedExitId": "salida-e-garage",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-e-garage"
+  },
+  "nextNodeId": "lvl09-cin01-hallazgo-salida-y-mordida-selene"
+}

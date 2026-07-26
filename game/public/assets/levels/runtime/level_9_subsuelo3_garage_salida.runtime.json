@@ -12,14 +12,121 @@
   },
   "spawn_zones": {
     "minPlayerDistance": 220,
-    "maxPlayerDistance": 1450,
+    "maxPlayerDistance": 1400,
     "viewportSafePadding": 100,
     "areas": [],
     "points": []
   },
-  "objectives": [],
-  "interactables": [],
+  "objectives": [
+    {
+      "id": "reunir-pistas",
+      "label": "Encontrá el mapa y las llaves",
+      "completion": [
+        {
+          "type": "garage-clue-found",
+          "targetId": "mapa-garage"
+        },
+        {
+          "type": "garage-clue-found",
+          "targetId": "llaves-suv"
+        }
+      ]
+    },
+    {
+      "id": "inspeccionar-sedan",
+      "label": "Inspeccioná manualmente el sedán operativo",
+      "completion": [
+        {
+          "type": "vehicle-inspected",
+          "targetId": "sedan-supervivencia"
+        }
+      ]
+    },
+    {
+      "id": "abordar",
+      "label": "Abordá el vehículo confirmado",
+      "completion": [
+        {
+          "type": "exit-used",
+          "targetId": "abordar-sedan"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "recoger-mapa",
+      "type": "loot_container",
+      "x": 1700,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · RECOGER MAPA",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "mapa-garage",
+        "objectiveEventType": "garage-clue-found",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "recoger-llaves",
+      "type": "loot_container",
+      "x": 4300,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · RECOGER LLAVES",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "llaves-suv",
+        "objectiveEventType": "garage-clue-found",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "inspeccionar-sedan",
+      "type": "vehicle",
+      "x": 7000,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · INSPECCIONAR SEDÁN",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "sedan-supervivencia",
+        "objectiveEventType": "vehicle-inspected",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "abordar-sedan-accion",
+      "type": "vehicle",
+      "x": 7350,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · ABORDAR VEHÍCULO",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "abordar-sedan",
+        "objectiveEventType": "exit-used",
+        "consumesOnUse": true
+      }
+    }
+  ],
   "triggers": [],
   "cinematics": [],
-  "exits": []
+  "exits": [
+    {
+      "id": "abordar-sedan",
+      "target_level_id": "lvl10-cin01-hallazgo-del-vehiculo",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 200,
+        "y": 1040
+      },
+      "label": "abordar-sedan"
+    }
+  ]
 }

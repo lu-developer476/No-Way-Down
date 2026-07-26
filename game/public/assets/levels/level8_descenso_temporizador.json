@@ -1,0 +1,21 @@
+{
+  "nodeId": "lvl08-esc01-descenso-con-temporizador",
+  "runtimeLevelId": "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+  "runtimePath": "assets/levels/runtime/level_8_pasillo_subsuelo2_escaleras_subsuelo3.runtime.json",
+  "timer": {
+    "durationMs": 180000,
+    "visible": true,
+    "clock": "gameplay-delta",
+    "pausesDuring": [
+      "pause",
+      "dialogue",
+      "cinematic"
+    ],
+    "resetOnDefeat": true
+  },
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "escalera-subsuelo-3"
+  },
+  "nextNodeId": "lvl08-cin01-damian-infectado-y-suicidio"
+}

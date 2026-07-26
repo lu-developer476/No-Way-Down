@@ -56,31 +56,31 @@
       "implemented": true
     },
     "lvl08-esc01-descenso-con-temporizador": {
-      "implemented": false
+      "implemented": true
     },
     "lvl08-cin01-damian-infectado-y-suicidio": {
-      "implemented": false
+      "implemented": true
     },
     "lvl08-cin02-sacrificio-hernan-yamil": {
-      "implemented": false
+      "implemented": true
     },
     "lvl08-cin03-caida-final-del-duo": {
-      "implemented": false
+      "implemented": true
     },
     "lvl09-esc01-verificacion-salidas": {
-      "implemented": false
+      "implemented": true
     },
     "lvl09-cin01-hallazgo-salida-y-mordida-selene": {
-      "implemented": false
+      "implemented": true
     },
     "lvl09-cin02-traicion-de-selene-y-huida": {
-      "implemented": false
+      "implemented": true
     },
     "lvl10-esc01-garage-busqueda-vehiculo": {
       "implemented": true
     },
     "lvl10-cin01-hallazgo-del-vehiculo": {
-      "implemented": false
+      "implemented": true
     },
     "lvl10-esc02-resistencia-en-garage": {
       "implemented": true

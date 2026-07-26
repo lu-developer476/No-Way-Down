@@ -14,6 +14,7 @@ import { controlManager } from '../input/ControlManager';
 import { Checkpoint } from './sceneShared';
 import { LevelExitTarget } from '../systems/LevelExitSystem';
 import { FlowDebugOverlay } from './flowDebug';
+import { CanonicalNodes19To27Runtime, type Nodes19To27Snapshot } from '../campaign/canonicalNodes19To27';
 
 type LevelSceneCreateData = {
   flowNode?: CampaignFlowNode;
@@ -34,6 +35,7 @@ export class LevelScene extends GameScene {
   private isTransitioning = false;
   private gameplayReady = false;
   private flowNode?: CampaignFlowNode;
+  private canonicalRuntime?: CanonicalNodes19To27Runtime;
 
   constructor() {
     super('LevelScene');
@@ -145,6 +147,21 @@ export class LevelScene extends GameScene {
         campaignLevelConfig
       });
 
+      if (flowNode.id === 'lvl08-esc01-descenso-con-temporizador') {
+        const saved = this.registry.get('canonicalNodes19To27') as Nodes19To27Snapshot | undefined;
+        this.canonicalRuntime = new CanonicalNodes19To27Runtime(saved);
+        if (saved?.descent.state === 'lost') {
+          this.canonicalRuntime.restartDescent();
+          this.registry.remove('canonicalTimedDescentDefeat');
+        }
+        this.publishCanonicalTimer();
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+          this.registry.set('canonicalNodes19To27', this.canonicalRuntime?.getSnapshot());
+          this.registry.remove('countdownTimer');
+          this.canonicalRuntime = undefined;
+        });
+      }
+
       this.campaignSystem = new CampaignSystem(this);
       this.spawnSystem = new SpawnSystem(this);
       this.combatSystem = new CombatSystem(this);
@@ -162,9 +179,16 @@ export class LevelScene extends GameScene {
     });
   }
 
-  update(): void {
+  update(_time?: number, delta = 0): void {
     if (!this.gameplayReady) {
       return;
+    }
+
+    if (this.canonicalRuntime) {
+      const blocked = this.registry.get('isGamePaused') === true || Boolean(this.registry.get('dialogueState'));
+      const snapshot = this.canonicalRuntime.tick(delta, blocked);
+      this.publishCanonicalTimer();
+      if (snapshot.descent.state === 'lost') this.registry.set('canonicalTimedDescentDefeat', true);
     }
 
     if (
@@ -184,6 +208,12 @@ export class LevelScene extends GameScene {
 
     super.update();
     this.flowDebug?.update();
+  }
+
+  private publishCanonicalTimer(): void {
+    if (!this.canonicalRuntime) return;
+    this.registry.set('countdownTimer', this.canonicalRuntime.formatTimer());
+    this.registry.set('canonicalNodes19To27', this.canonicalRuntime.getSnapshot());
   }
 
   protected completeExitTransition(

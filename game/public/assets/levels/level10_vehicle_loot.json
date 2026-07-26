@@ -1,106 +1,16 @@
 {
-  "levelId": "level9_b3_estacionamiento_canonico",
-  "vehicles": [
-    {
-      "id": "sedan_colapsado_a1",
-      "label": "Sedán colapsado",
-      "locked": false,
-      "breakable": true,
-      "allowOpen": true,
-      "allowBreak": true,
-      "lootTable": [
-        {
-          "itemId": "comida_enlatada_a1",
-          "label": "Comida enlatada",
-          "category": "food",
-          "chance": 0.9,
-          "quantity": {
-            "min": 1,
-            "max": 3
-          }
-        },
-        {
-          "itemId": "vendas_a1",
-          "label": "Vendas",
-          "category": "medical",
-          "chance": 0.6,
-          "quantity": {
-            "min": 1,
-            "max": 2
-          }
-        }
-      ]
-    },
-    {
-      "id": "utilitario_inservible_b2",
-      "label": "Utilitario inservible",
-      "locked": true,
-      "breakable": true,
-      "allowOpen": true,
-      "allowBreak": true,
-      "lootTable": [
-        {
-          "itemId": "municion_9mm_b2",
-          "label": "Munición 9mm",
-          "category": "ammo",
-          "chance": 0.8,
-          "quantity": {
-            "min": 10,
-            "max": 24
-          }
-        },
-        {
-          "itemId": "pistola_respaldo_b2",
-          "label": "Pistola de respaldo",
-          "category": "weapon",
-          "chance": 0.35,
-          "quantity": 1
-        }
-      ]
-    },
-    {
-      "id": "suv_dueno_infectado_c3",
-      "label": "SUV con dueño infectado",
-      "locked": false,
-      "breakable": false,
-      "allowOpen": true,
-      "allowBreak": false,
-      "lootTable": [
-        {
-          "itemId": "llave_sedan_supervivencia",
-          "label": "Llave del sedán operativo",
-          "category": "quest",
-          "chance": 1,
-          "quantity": 1,
-          "keyForEscape": true
-        },
-        {
-          "itemId": "botiquin_trauma_c3",
-          "label": "Botiquín de trauma",
-          "category": "medical",
-          "chance": 0.7,
-          "quantity": 1
-        }
-      ]
-    },
-    {
-      "id": "sedan_supervivencia_b3",
-      "label": "Sedán operativo de escape",
-      "locked": true,
-      "breakable": false,
-      "allowOpen": true,
-      "allowBreak": false,
-      "lootTable": [
-        {
-          "itemId": "llaves_puestas_encendido",
-          "label": "Llaves puestas",
-          "category": "quest",
-          "chance": 1,
-          "quantity": 1,
-          "keyForEscape": true
-        }
-      ]
-    }
+  "nodeId": "lvl10-esc01-garage-busqueda-vehiculo",
+  "runtimeLevelId": "level_9_subsuelo3_garage_salida",
+  "runtimePath": "assets/levels/runtime/level_9_subsuelo3_garage_salida.runtime.json",
+  "requiredClueIds": [
+    "mapa-garage",
+    "llaves-suv"
   ],
-  "runtimeLevelId": "level_9_subsuelo3_garage_salida"
+  "escapeVehicleId": "sedan-supervivencia",
+  "cinematicTrigger": "explicit-interaction-only",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "abordar-sedan"
+  },
+  "nextNodeId": "lvl10-cin01-hallazgo-del-vehiculo"
 }

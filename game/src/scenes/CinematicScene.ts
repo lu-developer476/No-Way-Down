@@ -18,6 +18,7 @@ interface CinematicSceneData {
 
 export class CinematicScene extends Phaser.Scene {
   private enterKey?: Phaser.Input.Keyboard.Key;
+  private advanceKeys: Phaser.Input.Keyboard.Key[] = [];
 
   private hasStarted = false;
 
@@ -62,6 +63,11 @@ export class CinematicScene extends Phaser.Scene {
 
     if (this.input.keyboard) {
       this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
+      this.advanceKeys = [...new Set([
+        this.enterKey,
+        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X)
+      ])];
     } else {
       console.error('[CinematicScene] Keyboard input no está disponible.');
     }
@@ -75,7 +81,8 @@ export class CinematicScene extends Phaser.Scene {
       this.registry.set('dialogueState', null);
       this.registry.set('interactionHint', '');
       this.registry.set('transitionView', { visible: false, message: '', tone: 'normal' });
-      this.input.keyboard?.removeKey(this.enterKey!);
+      this.advanceKeys.forEach((key) => this.input.keyboard?.removeKey(key));
+      this.advanceKeys = [];
     });
   }
 
@@ -170,11 +177,11 @@ export class CinematicScene extends Phaser.Scene {
   update(): void {
     this.flowDebug?.update();
 
-    if (!this.enterKey || this.hasStarted) {
+    if (this.advanceKeys.length === 0 || this.hasStarted) {
       return;
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+    if (this.advanceKeys.some((key) => Phaser.Input.Keyboard.JustDown(key))) {
       this.advanceToNextNode('enter');
     }
   }

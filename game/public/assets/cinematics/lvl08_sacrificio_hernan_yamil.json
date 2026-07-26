@@ -1,0 +1,27 @@
+{
+  "id": "lvl08_sacrificio_hernan_yamil",
+  "beats": [
+    {
+      "beat": "Hernán y Yamil contienen la horda."
+    },
+    {
+      "beat": "El grupo continúa el descenso."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "SPACE",
+      "X",
+      "pointer"
+    ],
+    "debounce": "single-advance",
+    "skipCommitsFinalState": true,
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

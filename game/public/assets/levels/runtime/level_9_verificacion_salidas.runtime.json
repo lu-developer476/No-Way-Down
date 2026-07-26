@@ -1,0 +1,171 @@
+{
+  "level_id": "level_9_verificacion_salidas",
+  "layout": {
+    "width": 9000,
+    "height": 1180,
+    "floor_height": 72,
+    "environment_profile": "level9_salidas",
+    "default_spawn": {
+      "x": 200,
+      "y": 1040
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 220,
+    "maxPlayerDistance": 1400,
+    "viewportSafePadding": 100,
+    "areas": [],
+    "points": []
+  },
+  "objectives": [
+    {
+      "id": "verificar-salidas",
+      "label": "Verificá personalmente las cinco salidas",
+      "completion": [
+        {
+          "type": "exit-checked",
+          "targetId": "salida-a"
+        },
+        {
+          "type": "exit-checked",
+          "targetId": "salida-b"
+        },
+        {
+          "type": "exit-checked",
+          "targetId": "salida-c"
+        },
+        {
+          "type": "exit-checked",
+          "targetId": "salida-d"
+        },
+        {
+          "type": "exit-checked",
+          "targetId": "salida-e"
+        }
+      ]
+    },
+    {
+      "id": "elegir-garage",
+      "label": "Confirmá la salida E hacia el garage",
+      "completion": [
+        {
+          "type": "exit-used",
+          "targetId": "salida-e-garage"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "inspeccionar-salida-a",
+      "type": "door",
+      "x": 1200,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · VERIFICAR SALIDA A",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "salida-a",
+        "objectiveEventType": "exit-checked",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "inspeccionar-salida-b",
+      "type": "door",
+      "x": 2500,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · VERIFICAR SALIDA B",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "salida-b",
+        "objectiveEventType": "exit-checked",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "inspeccionar-salida-c",
+      "type": "door",
+      "x": 3800,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · VERIFICAR SALIDA C",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "salida-c",
+        "objectiveEventType": "exit-checked",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "inspeccionar-salida-d",
+      "type": "door",
+      "x": 5100,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · VERIFICAR SALIDA D",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "salida-d",
+        "objectiveEventType": "exit-checked",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "inspeccionar-salida-e",
+      "type": "door",
+      "x": 6400,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · VERIFICAR SALIDA E",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "salida-e",
+        "objectiveEventType": "exit-checked",
+        "consumesOnUse": true
+      }
+    },
+    {
+      "id": "confirmar-salida-e-garage",
+      "type": "stairs",
+      "x": 8500,
+      "y": 1040,
+      "interactionKey": "E",
+      "interactionRadius": 105,
+      "prompt": "E · CONFIRMAR RUTA AL GARAGE",
+      "interactionEffect": {
+        "type": "custom",
+        "targetId": "salida-e-garage",
+        "objectiveEventType": "exit-used",
+        "consumesOnUse": true
+      }
+    }
+  ],
+  "triggers": [],
+  "cinematics": [],
+  "exits": [
+    {
+      "id": "salida-e-garage",
+      "target_level_id": "lvl09-cin01-hallazgo-salida-y-mordida-selene",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 200,
+        "y": 1040
+      },
+      "label": "salida-e-garage"
+    }
+  ],
+  "exit_outcomes": {
+    "salida-a": "bloqueada",
+    "salida-b": "infectados",
+    "salida-c": "derrumbe",
+    "salida-d": "incendio",
+    "salida-e": "garage"
+  }
+}

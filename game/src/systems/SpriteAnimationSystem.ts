@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getFacingOffsetPosition } from '../config/visualAlignment';
 
 export type SpriteAnimationState =
   | 'idle'
@@ -38,8 +39,9 @@ export class SpriteAnimationSystem {
     this.playState(sprite, characterVisualId, 'shoot', true);
 
     const flashTexture = 'fx-muzzle-flash';
-    const muzzleX = sprite.x + direction * muzzleOffset.x;
-    const muzzleY = sprite.y + muzzleOffset.y;
+    const muzzle = getFacingOffsetPosition({ x: sprite.x, y: sprite.y }, muzzleOffset, direction);
+    const muzzleX = muzzle.x;
+    const muzzleY = muzzle.y;
 
     const flash = this.scene.add
       .image(muzzleX, muzzleY, flashTexture)

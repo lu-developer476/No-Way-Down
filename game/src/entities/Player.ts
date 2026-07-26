@@ -11,22 +11,14 @@ import { WeaponAmmoRuntime } from './combat/WeaponAmmoRuntime';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 import { getMovementSpeedMultiplier, getReloadTimeMultiplier } from '../config/attributeRuntime';
 import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
+import { getCharacterAttachmentPosition, getFacingOffsetPosition, getPhysicsProfile, VISUAL_ALIGNMENT } from '../config/visualAlignment';
 
 const MOVE_SPEED = 220;
 const JUMP_SPEED = 420;
 const DAMAGE_INVULNERABILITY_MS = 900;
-const CHARACTER_DISPLAY_ORIGIN_X = 16;
-const CHARACTER_DISPLAY_ORIGIN_Y = 42;
 const CHARACTER_RENDER_DEPTH = 20;
-const PLAYER_VISUAL_SCALE = 1.62;
 const PLAYER_SHADOW_WIDTH = 38;
 const PLAYER_SHADOW_HEIGHT = 10;
-
-const CHARACTER_PHYSICS_BY_SILHOUETTE = {
-  slim: { bodyWidth: 16, bodyHeight: 38, offsetX: 8, offsetY: 10, bounce: 0.04, dragX: 850 },
-  standard: { bodyWidth: 18, bodyHeight: 40, offsetX: 7, offsetY: 8, bounce: 0.035, dragX: 900 },
-  broad: { bodyWidth: 22, bodyHeight: 42, offsetX: 5, offsetY: 6, bounce: 0.025, dragX: 980 }
-} as const;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly leftKey: Phaser.Input.Keyboard.Key;
@@ -70,14 +62,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setCollideWorldBounds(true);
-    const physicsProfile = CHARACTER_PHYSICS_BY_SILHOUETTE[characterVisual.silhouette];
-    this.setBodySize(28, 20);
-    this.setOffset(18, 40);
+    const physicsProfile = getPhysicsProfile(characterVisual.silhouette);
+    this.setBodySize(physicsProfile.bodyWidth, physicsProfile.bodyHeight);
+    this.setOffset(physicsProfile.offsetX, physicsProfile.offsetY);
     this.setBounce(0, physicsProfile.bounce);
     this.setDragX(physicsProfile.dragX);
     this.setMaxVelocity(180, 720);
-    this.setScale(PLAYER_VISUAL_SCALE);
-    this.setDisplayOrigin(CHARACTER_DISPLAY_ORIGIN_X, CHARACTER_DISPLAY_ORIGIN_Y);
+    this.setScale(VISUAL_ALIGNMENT.characterScale.player);
+    this.setDisplayOrigin(VISUAL_ALIGNMENT.visualOrigin.x, VISUAL_ALIGNMENT.visualOrigin.y);
     this.setDepth(CHARACTER_RENDER_DEPTH);
 
     this.projectileSystem = projectileSystem;
@@ -108,11 +100,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.spriteAnimationSystem.playState(this, this.characterVisualId, 'idle');
 
-    this.groundShadow = scene.add.ellipse(this.x, this.y + 19, PLAYER_SHADOW_WIDTH, PLAYER_SHADOW_HEIGHT, 0x000000, 0.32)
+    const shadowPosition = getCharacterAttachmentPosition('player', 'shadow', this.x, this.y);
+    this.groundShadow = scene.add.ellipse(shadowPosition.x, shadowPosition.y, PLAYER_SHADOW_WIDTH, PLAYER_SHADOW_HEIGHT, 0x000000, 0.32)
       .setDepth(CHARACTER_RENDER_DEPTH - 1)
       .setBlendMode(Phaser.BlendModes.MULTIPLY);
 
-    this.nameTag = scene.add.text(this.x, this.y - 54, this.runtimeConfig.name, {
+    const labelPosition = getCharacterAttachmentPosition('player', 'label', this.x, this.y);
+    this.nameTag = scene.add.text(labelPosition.x, labelPosition.y, this.runtimeConfig.name, {
       fontSize: '9px',
       color: characterVisual.faction === 'protagonist' ? '#f2cf87' : '#d9f4ff',
       backgroundColor: 'rgba(7, 9, 13, 0.78)',
@@ -416,9 +410,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     const weaponVisual = getWeaponVisualRuntimeConfig(activeWeapon.key, this.scene);
+    const muzzle = getFacingOffsetPosition({ x: this.x, y: this.y }, { x: weaponVisual.muzzleOffsetX, y: weaponVisual.muzzleOffsetY }, this.lookDirection);
     const hasFired = this.projectileSystem.tryFire({
-      originX: this.x + this.lookDirection * weaponVisual.muzzleOffsetX,
-      originY: this.y + weaponVisual.muzzleOffsetY,
+      originX: muzzle.x,
+      originY: muzzle.y,
       direction: this.lookDirection,
       weapon: activeWeapon.key,
       shooterId: `player-${this.profile.slot}`,
@@ -488,10 +483,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private updateNameTagPosition(): void {
-    this.nameTag.setPosition(this.x, this.y - 54);
+    const label = getCharacterAttachmentPosition('player', 'label', this.x, this.y);
+    const shadow = getCharacterAttachmentPosition('player', 'shadow', this.x, this.y);
+    this.nameTag.setPosition(label.x, label.y);
     this.nameTag.setDepth(this.depth + 1);
     this.groundShadow
-      .setPosition(this.x, this.y + 19)
+      .setPosition(shadow.x, shadow.y)
       .setDepth(this.depth - 1)
       .setVisible(this.active && !this.isDeadState && !this.isClimbing);
     this.updateEquippedWeaponSprite();
@@ -500,7 +497,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private refreshEquippedWeaponVisual(): void {
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
-    this.equippedWeaponSprite.setScale(weaponVisual.heldScale * 1.18);
+    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
     this.updateEquippedWeaponSprite();
   }
 
@@ -511,10 +508,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     const direction = this.lookDirection;
-    this.equippedWeaponSprite.setPosition(
-      this.x + direction * weaponVisual.carryOffsetX,
-      this.y + weaponVisual.carryOffsetY
-    );
+    const carry = getFacingOffsetPosition({ x: this.x, y: this.y }, { x: weaponVisual.carryOffsetX, y: weaponVisual.carryOffsetY }, direction);
+    this.equippedWeaponSprite.setPosition(carry.x, carry.y);
     this.equippedWeaponSprite.setFlipX(direction < 0);
     this.equippedWeaponSprite.setVisible(this.active && !this.isDeadState);
     this.equippedWeaponSprite.setDepth(this.depth + 0.2);

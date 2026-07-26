@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500"><style>text{font:12px monospace;fill:#e5e7eb}shape-rendering:crispEdges</style><rect width="960" height="500" fill="#090d15"/><text x="24" y="28" font-size="18">No Way Down — weapon alignment evidence</text><g transform="translate(24 58)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">pistol</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="84" y="49" width="21" height="7" fill="#d5a83d"/>
+  <path d="M102 48h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="102" y1="48" x2="172" y2="48" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 8,-27 · muzzle 26,-28</text></g><g transform="translate(254 58)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">revolver</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="84" y="49" width="22" height="7" fill="#d5a83d"/>
+  <path d="M103 48h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="103" y1="48" x2="173" y2="48" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 8,-27 · muzzle 27,-28</text></g><g transform="translate(484 58)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">smg</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="49" width="25" height="7" fill="#d5a83d"/>
+  <path d="M105 49h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="105" y1="49" x2="175" y2="49" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-27 · muzzle 29,-27</text></g><g transform="translate(714 58)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">shotgun</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="49" width="33" height="7" fill="#d5a83d"/>
+  <path d="M113 48h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="113" y1="48" x2="183" y2="48" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-27 · muzzle 37,-28</text></g><g transform="translate(24 200)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">carbine</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="49" width="32" height="7" fill="#d5a83d"/>
+  <path d="M112 48h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="112" y1="48" x2="182" y2="48" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-27 · muzzle 36,-28</text></g><g transform="translate(254 200)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">sniper_rifle</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="49" width="38" height="7" fill="#d5a83d"/>
+  <path d="M118 48h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="118" y1="48" x2="188" y2="48" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-27 · muzzle 42,-28</text></g><g transform="translate(484 200)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">light_machine_gun</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="50" width="37" height="7" fill="#d5a83d"/>
+  <path d="M117 49h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="117" y1="49" x2="187" y2="49" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-26 · muzzle 41,-27</text></g><g transform="translate(714 200)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">knife</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="51" width="20" height="7" fill="#d5a83d"/>
+  <path d="M100 51h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="100" y1="51" x2="170" y2="51" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-25 · muzzle 24,-25</text></g><g transform="translate(24 342)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">machete</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="51" width="29" height="7" fill="#d5a83d"/>
+  <path d="M109 50h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="109" y1="50" x2="179" y2="50" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-25 · muzzle 33,-26</text></g><g transform="translate(254 342)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">sword</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="51" width="35" height="7" fill="#d5a83d"/>
+  <path d="M115 50h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="115" y1="50" x2="185" y2="50" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-25 · muzzle 39,-26</text></g><g transform="translate(484 342)"><rect width="210" height="122" fill="#151c29" stroke="#526178"/>
+  <text x="8" y="16">tray_shield</text><ellipse cx="76" cy="102" rx="23" ry="5" fill="#05070b"/>
+  <rect x="64" y="34" width="24" height="68" fill="#64748b"/><rect x="68" y="25" width="16" height="16" fill="#d6a27f"/>
+  <rect x="83" y="51" width="21" height="7" fill="#d5a83d"/>
+  <path d="M101 51h12m-6-6v12" stroke="#facc15" stroke-width="3"/>
+  <line x1="101" y1="51" x2="171" y2="51" stroke="#fff" stroke-dasharray="3 4"/>
+  <text x="8" y="116" fill="#94a3b8">carry 7,-25 · muzzle 25,-25</text></g></svg>

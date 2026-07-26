@@ -230,7 +230,28 @@ export class SceneFlowManager {
       return;
     }
 
-    this.scene.scene.start(node.sceneKey, { ...data, flowNode: node });
+    const transitionData = {
+      ...data,
+      flowNode: node
+    };
+
+    this.scene.registry.set('activeCampaignNode', node);
+    this.scene.registry.set('flowNodeId', node.id);
+    this.scene.registry.set('pendingCampaignNodeId', node.id);
+
+    console.info('[SceneFlowManager] transición confirmada', {
+      fromScene: this.scene.scene.key,
+      targetScene: node.sceneKey,
+      targetNodeId: node.id,
+      levelConfigPath: node.levelConfigPath ?? null
+    });
+
+    if (node.sceneKey === this.scene.scene.key) {
+      this.scene.scene.restart(transitionData);
+      return;
+    }
+
+    this.scene.scene.start(node.sceneKey, transitionData);
   }
 
   private getDefinition(): CampaignFlowDefinition | undefined {

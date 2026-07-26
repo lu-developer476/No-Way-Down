@@ -66,6 +66,10 @@ const ARCADE_CAMERA_ZOOM = 1.34;
 // Este checkpoint queda reservado para una futura integración narrativa.
 // En nivel 1 no debe incorporar a Lorena/Selene.
 const LATE_ALLY_JOIN_CHECKPOINT_ID = 'late-rescue-allies-join';
+const INITIAL_DINING_LEVEL_ID =
+  'level_1_subsuelo_comedor';
+const SPIRAL_HALL_LEVEL_ID =
+  'level_2_escaleras_espiral';
 
 const LATE_RESCUE_ALLIES = [
   {
@@ -117,7 +121,7 @@ type PauseMenuState = 'root' | 'options';
 
 export class GameScene extends Phaser.Scene {
   private players: Player[] = [];
-  private currentLevelId = 'level_2_subsuelo';
+  private currentLevelId = INITIAL_DINING_LEVEL_ID;
   private projectileSystem?: ProjectileSystem;
   private combatActionSystem?: CombatActionSystem;
   private combatFeedbackSystem?: CombatFeedbackSystem;
@@ -282,7 +286,41 @@ export class GameScene extends Phaser.Scene {
     applyRetroRenderer(this);
 
     const selectedLevelId = this.resolveLevelIdFromCampaignConfig(data);
+    const pendingCampaignNodeId =
+      this.registry.get('pendingCampaignNodeId') as string | undefined;
+
+    if (
+      pendingCampaignNodeId
+      && data.flowNodeId
+      && pendingCampaignNodeId !== data.flowNodeId
+    ) {
+      console.error('[GameScene] El nodo reiniciado no coincide con el nodo pendiente.', {
+        pendingCampaignNodeId,
+        receivedFlowNodeId: data.flowNodeId,
+        campaignLevelConfigPath: data.campaignLevelConfigPath ?? null
+      });
+    }
+
+    this.registry.remove('pendingCampaignNodeId');
     this.currentLevelId = selectedLevelId;
+    const isInitialDiningLevel =
+      selectedLevelId === INITIAL_DINING_LEVEL_ID;
+    const isSpiralHallLevel =
+      selectedLevelId === SPIRAL_HALL_LEVEL_ID;
+
+    this.registry.set(
+      'activeRuntimeLevelId',
+      selectedLevelId
+    );
+
+    console.info('[GameScene] runtime jugable seleccionado', {
+      runtimeLevelId: selectedLevelId,
+      flowNodeId: data.flowNodeId ?? null,
+      campaignLevelConfigPath:
+        data.campaignLevelConfigPath ?? null,
+      isInitialDiningLevel,
+      isSpiralHallLevel
+    });
 
     const setupFromStorage = loadInitialRunSetup();
     if (setupFromStorage && !this.registry.has('initialRunSetup')) {
@@ -332,8 +370,19 @@ export class GameScene extends Phaser.Scene {
       height: floorHeight
     });
 
-    this.placeSubsueloProps(environment, tableTopY);
-    this.placeDiningRoomProps(environment, levelWidth, floorY);
+    if (isInitialDiningLevel) {
+      this.placeSubsueloProps(environment, tableTopY);
+      this.placeDiningRoomProps(
+        environment,
+        levelWidth,
+        floorY
+      );
+    } else if (isSpiralHallLevel) {
+      this.placeSpiralHallProps(
+        levelWidth,
+        levelHeight - floorHeight
+      );
+    }
 
     this.projectileSystem = new ProjectileSystem(this, {
       fireCooldownMultiplier: difficultyRuntime.playerFireCooldownMultiplier
@@ -423,10 +472,12 @@ export class GameScene extends Phaser.Scene {
     this.allySystem.createEnvironmentColliders(environment);
     this.allySystem.createZombieOverlap(this.zombieSystem.getGroup());
 
-    const initialSegmentSpawns = level2Subsuelo.segmentos[0]?.spawnPointsPosibles ?? [];
-    initialSegmentSpawns.forEach((spawnPoint) => {
-      this.zombieSystem?.spawn(spawnPoint.x, spawnPoint.y);
-    });
+    if (isInitialDiningLevel) {
+      const initialSegmentSpawns = level2Subsuelo.segmentos[0]?.spawnPointsPosibles ?? [];
+      initialSegmentSpawns.forEach((spawnPoint) => {
+        this.zombieSystem?.spawn(spawnPoint.x, spawnPoint.y);
+      });
+    }
 
     this.spawnManager = levelManager.instantiateSpawns(selectedLevelId, this, this.zombieSystem, this.players, {
       spawnPressureMultiplier: difficultyRuntime.spawnPressureMultiplier,
@@ -439,6 +490,25 @@ export class GameScene extends Phaser.Scene {
       selectedLevelId,
       controlManager.getDisplayLabel('interact')
     );
+    const runtimeExitIds = new Set(
+      levelConfig.exits.map((exit) => exit.id)
+    );
+    const hasExplicitRuntimeExit =
+      levelConfig.interactables.some(
+        (interactable) => {
+          const effect = interactable.interactionEffect;
+
+          return Boolean(
+            effect?.targetId
+            && (
+              effect.type === 'stairs'
+              || effect.type === 'door'
+              || effect.type === 'vehicle'
+            )
+            && runtimeExitIds.has(effect.targetId)
+          );
+        }
+      );
     this.levelRestartManager = levelManager.instantiateRestartManager(this, {
       checkpointSystem,
       resetEnemies: () => this.resetEnemiesForRestart(),
@@ -514,7 +584,8 @@ export class GameScene extends Phaser.Scene {
       }
     );
 
-    this.levelExitSystem = new LevelExitSystem(
+    if (!hasExplicitRuntimeExit) {
+      this.levelExitSystem = new LevelExitSystem(
       this,
       this.players,
       {
@@ -540,7 +611,8 @@ export class GameScene extends Phaser.Scene {
       (message) => this.showMissionStatus(message),
       (transitionMessage) => this.triggerLevelExitTransition(transitionMessage),
       () => this.handleExitUnlocked()
-    );
+      );
+    }
 
     const leadPlayer = this.players[0];
     if (leadPlayer) {
@@ -551,11 +623,13 @@ export class GameScene extends Phaser.Scene {
     this.pickupSystem = PickupSystem.fromJSON(this, { pickups: configuredPickups });
     this.interactKey = this.input.keyboard?.addKey(controlManager.getKeyCode('interact'));
 
-    this.setupMissionSystem();
-    this.stairSegmentSystem = StairSegmentSystem.fromLegacyStairAreas(this, stairConfigLevel2);
-    stairConfigLevel2.stairs.forEach((stair) => {
-      this.addStairVisual(stair.x, stair.y, stair.width, stair.height);
-    });
+    if (isInitialDiningLevel) {
+      this.setupMissionSystem();
+      this.stairSegmentSystem = StairSegmentSystem.fromLegacyStairAreas(this, stairConfigLevel2);
+      stairConfigLevel2.stairs.forEach((stair) => {
+        this.addStairVisual(stair.x, stair.y, stair.width, stair.height);
+      });
+    }
 
     // Ejemplo de integración para Nivel 4 (escaleras por tramos + rellanos desde JSON):
     // const level4Stairs = new StairSegmentSystem(this, level4StairSegments);
@@ -566,7 +640,12 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#0a1020');
     this.registry.set('partyHud', this.buildPartyHud());
     this.registry.set('zombiesRemaining', this.zombieSystem.getActiveCount());
-    this.registry.set('currentObjective', this.missionSystem?.getActiveObjectiveText() ?? '');
+    const initialObjective =
+      this.resistancePhaseConfig?.holdObjectiveText
+      ?? this.objectiveSystem?.getActiveObjective()?.label
+      ?? this.missionSystem?.getActiveObjectiveText()
+      ?? '';
+    this.registry.set('currentObjective', initialObjective);
     this.registry.set('interactionHint', '');
     this.registry.set('campaignState', this.campaignState?.getSnapshot());
     this.registry.set('partyState', this.partyState?.getSnapshot());
@@ -576,7 +655,9 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('audioVolume', getAudioManager(this).getVolumePercent());
     this.registry.set('gameDifficultyLabel', difficultyRuntime.label);
 
-    this.setupNarrativeSystems();
+    if (isInitialDiningLevel) {
+      this.setupNarrativeSystems();
+    }
 
     if (!this.scene.isActive('UIScene')) {
       this.scene.launch('UIScene');
@@ -628,7 +709,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private resolveLevelIdFromCampaignConfig(data: GameSceneData): string {
-    const defaultLevelId = 'level_2_subsuelo';
+    const defaultLevelId = INITIAL_DINING_LEVEL_ID;
 
     if (!data.campaignLevelConfig) {
       if (data.campaignLevelConfigPath) {
@@ -687,6 +768,19 @@ export class GameScene extends Phaser.Scene {
     this.resistancePhaseConfig = undefined;
     this.resistancePhaseEndsAt = undefined;
     this.resistancePhaseCompleted = false;
+    this.missionSystem = undefined;
+    this.stairSegmentSystem = undefined;
+    this.cinematicCallSystem = undefined;
+    this.objectiveSystem = undefined;
+    this.interactableSystem = undefined;
+    this.triggerSystem = undefined;
+    this.levelCinematicSystem = undefined;
+    this.dialogueSystem = undefined;
+    this.levelExitSystem = undefined;
+    this.spawnManager = undefined;
+    this.pickupSystem = undefined;
+    this.checkpointSystem = undefined;
+    this.levelRestartManager = undefined;
     this.triggeredRetroCheckpoints.clear();
     this.registry.set('isGamePaused', false);
     this.registry.set('dialogueState', null);
@@ -765,7 +859,7 @@ export class GameScene extends Phaser.Scene {
 
 
   private updateRetroCheckpointCinematics(): void {
-    if (this.currentLevelId !== 'level_2_subsuelo' || this.hasPlayerBeenDefeated || this.movementLockedByNarrative || this.hasTriggeredTransition) {
+    if (this.currentLevelId !== INITIAL_DINING_LEVEL_ID || this.hasPlayerBeenDefeated || this.movementLockedByNarrative || this.hasTriggeredTransition) {
       return;
     }
 
@@ -1020,7 +1114,10 @@ export class GameScene extends Phaser.Scene {
 
     this.resistancePhaseEndsAt = this.time.now + this.resistancePhaseConfig.durationMs;
     this.registry.set('currentObjective', this.resistancePhaseConfig.holdObjectiveText ?? 'Resistan hasta que se abra el paso.');
-    this.showMissionStatus('Fase 1: resistir 2 minutos en el comedor.');
+    this.showMissionStatus(
+      this.resistancePhaseConfig.holdObjectiveText
+      ?? 'Fase de resistencia iniciada.'
+    );
   }
 
   private updateResistancePhase(): void {
@@ -1080,6 +1177,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   private syncCleanupNarrativeProgress(): void {
+    if (
+      this.currentLevelId
+      !== INITIAL_DINING_LEVEL_ID
+    ) {
+      return;
+    }
+
     if (this.hasPlayerBeenDefeated || this.firstCleanupNarrativeTriggered) {
       return;
     }
@@ -1784,6 +1888,48 @@ export class GameScene extends Phaser.Scene {
     for (let x = 620; x < levelWidth - 100; x += 910) {
       addEnvironmentProp(this, { kind: 'mop-bucket', x, y: floorTop - 18, depth: 6.5, scale: 0.9 });
     }
+  }
+
+  private placeSpiralHallProps(
+    levelWidth: number,
+    floorTop: number
+  ): void {
+    this.addStairVisual(
+      460,
+      floorTop - 82,
+      360,
+      210
+    );
+
+    addEnvironmentProp(this, { kind: 'stone-column', x: 760, y: floorTop - 62, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'bronze-door', x: 900, y: floorTop - 58, depth: 5.9, scale: 1.1 });
+    addEnvironmentProp(this, { kind: 'stone-column', x: 1120, y: floorTop - 62, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'bench', x: 1380, y: floorTop - 18, depth: 6.2, scale: 1.05 });
+    addEnvironmentProp(this, { kind: 'info-screen', x: 1660, y: floorTop - 48, depth: 6.3, scale: 1 });
+
+    const hallProps = [
+      { kind: 'stone-column' as const, x: 1700, y: floorTop - 62, depth: 5.8 },
+      { kind: 'bank-counter' as const, x: 2800, y: floorTop - 22, depth: 6.1 },
+      { kind: 'bench' as const, x: 3900, y: floorTop - 18, depth: 6.2 },
+      { kind: 'atm' as const, x: 5000, y: floorTop - 48, depth: 6.3 },
+      { kind: 'info-screen' as const, x: 6100, y: floorTop - 48, depth: 6.3 },
+      { kind: 'turnstile' as const, x: 7200, y: floorTop - 25, depth: 6.2 },
+      { kind: 'stone-column' as const, x: 8300, y: floorTop - 62, depth: 5.8 }
+    ];
+    hallProps.forEach((prop) => {
+      addEnvironmentProp(this, { ...prop, scale: 1.1 });
+    });
+
+    const finalStairX = Math.min(levelWidth - 400, 9400);
+    this.addStairVisual(
+      finalStairX,
+      floorTop - 84,
+      400,
+      220
+    );
+    addEnvironmentProp(this, { kind: 'stone-column', x: finalStairX - 250, y: floorTop - 62, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'bronze-door', x: finalStairX, y: floorTop - 58, depth: 5.9, scale: 1.1 });
+    addEnvironmentProp(this, { kind: 'stone-column', x: finalStairX + 250, y: floorTop - 62, depth: 5.8, scale: 1.25 });
   }
 
   private addTableVisual(x: number, y: number, width: number, height: number): void {

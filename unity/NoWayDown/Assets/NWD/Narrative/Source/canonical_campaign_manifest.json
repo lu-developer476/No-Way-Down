@@ -1,0 +1,224 @@
+{
+  "manifestVersion": 1,
+  "campaignId": "no_way_down",
+  "title": "No Way Down",
+  "source": {
+    "repository": "lu-developer476/No-Way-Down",
+    "commit": "4d409d85859a0dd4d4a67f63fb7a8d46ec33506a",
+    "path": "game/public/assets/campaign/campaign_flow.json",
+    "rule": "Preservar orden, personajes, rescates, pérdidas, sacrificios y desenlace sin reinterpretación."
+  },
+  "flowId": "main_campaign",
+  "canonicalNodeCount": 35,
+  "nodes": [
+    {
+      "id": "campaign-intro",
+      "type": "campaignIntro",
+      "sceneKey": "CampaignIntroScene"
+    },
+    {
+      "id": "lvl01-esc01-comedor-resistencia",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level1_comedor_resistencia.json"
+    },
+    {
+      "id": "lvl01-esc02-pasillos-hacia-escaleras-pb",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level1_pasillos_escaleras_pb.json"
+    },
+    {
+      "id": "lvl01-cin01-cierre-contextual",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl01_cierre_contextual.json"
+    },
+    {
+      "id": "lvl02-esc01-hall-planta-baja",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level2_hall_planta_baja.json"
+    },
+    {
+      "id": "lvl02-cin01-ascenso-al-segundo-piso",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl02_ascenso_segundo_piso.json"
+    },
+    {
+      "id": "lvl03-esc01-segundo-piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level3_segundo_piso.json"
+    },
+    {
+      "id": "lvl03-cin01-llamado-lorena-rescate",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl03_llamado_lorena_rescate.json"
+    },
+    {
+      "id": "lvl04-esc01-tercer-piso",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level4_tercer_piso.json"
+    },
+    {
+      "id": "lvl04-cin01-rescate-lorena-en-oficina-422",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl04_rescate_lorena_oficina_422.json"
+    },
+    {
+      "id": "lvl04-cin02-llamada-selene-y-descenso",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl04_llamada_selene_descenso.json"
+    },
+    {
+      "id": "lvl05-esc01-cuarto-piso-comedor",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level5_cuarto_piso_comedor.json"
+    },
+    {
+      "id": "lvl05-cin01-descenso-al-quinto-piso",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl05_descenso_quinto_piso.json"
+    },
+    {
+      "id": "lvl06-esc01-quinto-piso-pertenencias",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level6_quinto_piso_pertenencias.json"
+    },
+    {
+      "id": "lvl06-cin01-reencuentro-y-salida-e",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl06_reencuentro_salida_e.json"
+    },
+    {
+      "id": "lvl06-cin02-muerte-lorena-y-guardia-en-salida-e",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl06_muerte_lorena_salida_e.json"
+    },
+    {
+      "id": "lvl07-esc01-oficina-422-rescate",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level7_oficina_422_rescate.json"
+    },
+    {
+      "id": "lvl07-cin01-inicio-del-descenso",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl07_inicio_descenso.json"
+    },
+    {
+      "id": "lvl08-esc01-descenso-con-temporizador",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level8_descenso_temporizador.json"
+    },
+    {
+      "id": "lvl08-cin01-damian-infectado-y-suicidio",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl08_damian_infectado_suicidio.json"
+    },
+    {
+      "id": "lvl08-cin02-sacrificio-hernan-yamil",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl08_sacrificio_hernan_yamil.json"
+    },
+    {
+      "id": "lvl08-cin03-caida-final-del-duo",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl08_caida_final_duo.json"
+    },
+    {
+      "id": "lvl09-esc01-verificacion-salidas",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level9_verificacion_salidas.json"
+    },
+    {
+      "id": "lvl09-cin01-hallazgo-salida-y-mordida-selene",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl09_hallazgo_salida_mordida_selene.json"
+    },
+    {
+      "id": "lvl09-cin02-traicion-de-selene-y-huida",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl09_traicion_selene_huida.json"
+    },
+    {
+      "id": "lvl10-esc01-garage-busqueda-vehiculo",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_vehicle_loot.json"
+    },
+    {
+      "id": "lvl10-cin01-hallazgo-del-vehiculo",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl10_hallazgo_vehiculo.json"
+    },
+    {
+      "id": "lvl10-esc02-resistencia-en-garage",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_parking_survival.json"
+    },
+    {
+      "id": "lvl10-cin02-salida-del-garage",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl10_salida_garage.json"
+    },
+    {
+      "id": "lvl10-cin01-traslado-silencioso-plaza-de-mayo",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/drive_to_santelmo.json"
+    },
+    {
+      "id": "lvl10-esc01-combate-50-bajas-en-via-publica",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_final_street_hold.json"
+    },
+    {
+      "id": "lvl10-cin02-cierre-duo-final-en-san-telmo",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl10_cierre_duo_final_san_telmo.json"
+    },
+    {
+      "id": "lvl10-esc03-llegada-a-san-telmo",
+      "type": "level",
+      "sceneKey": "LevelScene",
+      "levelConfigPath": "assets/levels/level10_llegada_san_telmo.json"
+    },
+    {
+      "id": "lvl10-cin03-desenlace-abierto",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/lvl10_desenlace_abierto.json"
+    },
+    {
+      "id": "campaign-end",
+      "type": "cinematic",
+      "sceneKey": "CinematicScene",
+      "cinematicPath": "assets/cinematics/campaign_end.json"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "NWD.Editor",
+  "rootNamespace": "NWD.Editor",
+  "references": [
+    "NWD.Core",
+    "NWD.Narrative",
+    "NWD.Campaign",
+    "NWD.Missions",
+    "NWD.Enemies",
+    "NWD.Squad"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

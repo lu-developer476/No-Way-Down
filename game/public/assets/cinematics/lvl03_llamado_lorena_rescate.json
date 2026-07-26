@@ -1,0 +1,39 @@
+{
+  "cinematic_id": "lvl03_llamado_lorena_rescate",
+  "title": "Llamado de Lorena",
+  "characters": [
+    "Lorena",
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Lorena",
+      "beat": "Lorena llama desde la oficina 422: está atrapada y pide rescate."
+    },
+    {
+      "order": 2,
+      "speaker": "Alan Nahuel",
+      "beat": "Alan confirma la ubicación. Giovanna ordena avanzar al tercer piso."
+    },
+    {
+      "order": 3,
+      "speaker": "Giovanna",
+      "beat": "El equipo emprende el rescate sin romper formación."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

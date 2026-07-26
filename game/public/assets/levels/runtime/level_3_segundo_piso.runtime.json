@@ -1,0 +1,166 @@
+{
+  "level_id": "level_3_segundo_piso",
+  "layout": {
+    "width": 6500,
+    "height": 960,
+    "floor_height": 64,
+    "environment_profile": "level3_quinto_piso_pasillos",
+    "default_spawn": {
+      "x": 240,
+      "y": 820
+    },
+    "background_zones": [
+      {
+        "id": "level_3_segundo_piso-zone",
+        "zone": "pisos_oficina",
+        "label": "Recorre el segundo piso y establece contacto con Lorena.",
+        "x": 0,
+        "y": 0,
+        "width": 6500,
+        "height": 896
+      }
+    ]
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 240,
+    "maxPlayerDistance": 1250,
+    "viewportSafePadding": 100,
+    "areas": [
+      {
+        "id": "oficinas-a",
+        "trigger": {
+          "x": 2100,
+          "y": 740,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      },
+      {
+        "id": "oficinas-b",
+        "trigger": {
+          "x": 4300,
+          "y": 740,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      }
+    ],
+    "points": [
+      {
+        "id": "oficinas-a-spawn",
+        "x": 2380,
+        "y": 820,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "oficinas-a",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "oficinas-b-spawn",
+        "x": 4580,
+        "y": 820,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "oficinas-b",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "level_3_segundo_piso-objective",
+      "label": "Recorre el segundo piso y establece contacto con Lorena.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "salida-segundo"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "level_3_segundo_piso-checkpoint",
+      "type": "switch",
+      "x": 3250,
+      "y": 820,
+      "interactionKey": "E",
+      "interactionRadius": 110,
+      "prompt": "E · Asegurar checkpoint",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Punto asegurado. El grupo puede continuar.",
+        "objectiveEventType": "interactable_used",
+        "checkpoint": {
+          "x": 3250,
+          "y": 820,
+          "label": "Checkpoint canónico"
+        }
+      }
+    },
+    {
+      "id": "level_3_segundo_piso-exit",
+      "type": "stairs",
+      "x": 6200,
+      "y": 820,
+      "interactionKey": "E",
+      "interactionRadius": 150,
+      "prompt": "E · Atender el llamado de Lorena",
+      "interactionEffect": {
+        "type": "stairs",
+        "targetId": "salida-segundo",
+        "message": "Atender el llamado de Lorena.",
+        "objectiveEventType": "exit_used"
+      }
+    }
+  ],
+  "pickups": [
+    {
+      "id": "level_3_segundo_piso-medkit",
+      "type": "medkit_small",
+      "x": 2950,
+      "y": 820,
+      "label": "Botiquín de campaña"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "level_3_segundo_piso-narrative",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 900,
+        "y": 720,
+        "width": 500,
+        "height": 300
+      },
+      "payload": {
+        "speaker": "Giovanna",
+        "message": "Recorre el segundo piso y establece contacto con Lorena.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
+  "cinematics": [],
+  "exits": [
+    {
+      "id": "salida-segundo",
+      "target_level_id": "canonical-next-node",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 240,
+        "y": 820
+      },
+      "label": "Atender el llamado de Lorena"
+    }
+  ]
+}

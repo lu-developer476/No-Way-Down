@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl01-esc02-pasillos-hacia-escaleras-pb",
+  "level_id": "level_1_pasillos_escaleras_pb",
+  "runtimeLevelId": "level_1_pasillos_escaleras_pb",
+  "runtimePath": "assets/levels/runtime/level_1_pasillos_escaleras_pb.runtime.json",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-pasillos"
+  },
+  "nextNodeId": "lvl01-cin01-cierre-contextual"
+}

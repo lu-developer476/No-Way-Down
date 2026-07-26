@@ -39,6 +39,11 @@ export interface PendingCampaignTransition {
   levelConfigPath: string | null;
 }
 
+export interface CampaignCheckpoint {
+  nodeId: string;
+  cursor: number;
+}
+
 const FLOW_REGISTRY_KEY = 'campaignFlowDefinition';
 const FLOW_CURSOR_KEY = 'campaignFlowCursor';
 const CAMPAIGN_MANIFEST_CACHE_KEY = 'canonical_campaign_manifest';
@@ -247,6 +252,15 @@ export class SceneFlowManager {
       return this.stopForDevelopmentError(node, 'El asset de este nodo todavía no está implementado.');
     }
 
+    const existingPending = this.scene.registry.get('pendingCampaignTransition') as PendingCampaignTransition | undefined;
+    if (existingPending) {
+      console.warn('[SceneFlowManager] transición duplicada bloqueada', {
+        pendingTargetNodeId: existingPending.toNode.id,
+        rejectedTargetNodeId: node.id
+      });
+      return false;
+    }
+
     const availableScenes = this.scene.scene.manager.keys as Record<string, Phaser.Scene | undefined>;
     if (!availableScenes[node.sceneKey]) {
       console.error('[SceneFlowManager] transitionToNode() no puede iniciar una escena inexistente.', {
@@ -270,7 +284,9 @@ export class SceneFlowManager {
     };
 
     this.scene.registry.set('pendingCampaignTransition', pendingTransition);
-    this.scene.registry.set(FLOW_CURSOR_KEY, definition!.nodes.findIndex((candidate) => candidate.id === node.id));
+    const targetCursor = definition!.nodes.findIndex((candidate) => candidate.id === node.id);
+    this.scene.registry.set(FLOW_CURSOR_KEY, targetCursor);
+    this.scene.registry.set('campaignCheckpoint', { nodeId: node.id, cursor: targetCursor } satisfies CampaignCheckpoint);
     this.scene.registry.set('activeCampaignNode', node);
     this.scene.registry.set('flowNodeId', node.id);
     this.scene.registry.set('pendingCampaignNodeId', node.id);
@@ -305,6 +321,25 @@ export class SceneFlowManager {
     }
 
     this.scene.scene.start(node.sceneKey, transitionData);
+    return true;
+  }
+
+
+  /** Confirms that the target scene consumed the one pending transition. */
+  confirmPendingTransition(node: CampaignFlowNode): boolean {
+    const pending = this.scene.registry.get('pendingCampaignTransition') as PendingCampaignTransition | undefined;
+    if (pending && pending.toNode.id !== node.id) {
+      console.error('[SceneFlowManager] la escena activa no coincide con la transición pendiente', {
+        pendingTargetNodeId: pending.toNode.id,
+        activeNodeId: node.id
+      });
+      return false;
+    }
+
+    this.scene.registry.remove('pendingCampaignTransition');
+    this.scene.registry.remove('pendingCampaignNodeId');
+    this.scene.registry.set('activeCampaignNode', node);
+    this.scene.registry.set('flowNodeId', node.id);
     return true;
   }
 

@@ -3,6 +3,7 @@ import { controlManager } from '../input/ControlManager';
 import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
 import { addRetroScreenOverlay, applyRetroRenderer, RETRO_PIXEL_FONT } from './retroPixelArt';
+import { getAudioManager } from '../audio/AudioManager';
 
 interface CinematicBeat {
   beat: string;
@@ -28,16 +29,24 @@ export class CinematicScene extends Phaser.Scene {
   }
 
   create(data: CinematicSceneData = {}): void {
-    if (data.flowNode) {
-      this.registry.set('activeCampaignNode', data.flowNode);
-      this.registry.set('flowNodeId', data.flowNode.id);
+    this.hasStarted = false;
+    this.isTransitioning = false;
+    const flowNode = data.flowNode ?? this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    if (!flowNode) {
+      this.showDevelopmentError(undefined, 'No se recibió el nodo cinematográfico activo.');
+      return;
+    }
+
+    this.flowManager = new SceneFlowManager(this);
+    if (!this.flowManager.confirmPendingTransition(flowNode)) {
+      this.showDevelopmentError(flowNode.cinematicPath, 'La transición pendiente no coincide con esta cinemática.');
+      return;
     }
 
     applyRetroRenderer(this);
-    const cinematicPath = data.flowNode?.cinematicPath;
+    const cinematicPath = flowNode.cinematicPath;
     this.renderCinematic(cinematicPath);
 
-    this.flowManager = new SceneFlowManager(this);
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
       flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
       enterDown: this.enterKey?.isDown ?? false,
@@ -54,6 +63,14 @@ export class CinematicScene extends Phaser.Scene {
 
     this.input.once('pointerdown', () => {
       this.advanceToNextNode('click');
+    });
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      getAudioManager(this).stopCinematicMusic();
+      this.registry.set('dialogueState', null);
+      this.registry.set('interactionHint', '');
+      this.registry.set('transitionView', { visible: false, message: '', tone: 'normal' });
+      this.input.keyboard?.removeKey(this.enterKey!);
     });
   }
 
@@ -92,7 +109,8 @@ export class CinematicScene extends Phaser.Scene {
       return;
     }
 
-    this.load.json(cacheKey, cinematicPath);
+    const assetUrl = cinematicPath.startsWith('/') ? cinematicPath : `/${cinematicPath}`;
+    this.load.json(cacheKey, assetUrl);
     this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
     this.load.once('loaderror', () => {
       this.showDevelopmentError(cinematicPath, 'No se pudo cargar el asset canónico.');

@@ -5,28 +5,28 @@
       "implemented": true
     },
     "lvl01-esc01-comedor-resistencia": {
-      "implemented": false
+      "implemented": true
     },
     "lvl01-esc02-pasillos-hacia-escaleras-pb": {
-      "implemented": false
+      "implemented": true
     },
     "lvl01-cin01-cierre-contextual": {
-      "implemented": false
+      "implemented": true
     },
     "lvl02-esc01-hall-planta-baja": {
-      "implemented": false
+      "implemented": true
     },
     "lvl02-cin01-ascenso-al-segundo-piso": {
-      "implemented": false
+      "implemented": true
     },
     "lvl03-esc01-segundo-piso": {
-      "implemented": false
+      "implemented": true
     },
     "lvl03-cin01-llamado-lorena-rescate": {
-      "implemented": false
+      "implemented": true
     },
     "lvl04-esc01-tercer-piso": {
-      "implemented": false
+      "implemented": true
     },
     "lvl04-cin01-rescate-lorena-en-oficina-422": {
       "implemented": false

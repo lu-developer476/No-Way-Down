@@ -1,0 +1,191 @@
+{
+  "level_id": "level_1_comedor_resistencia",
+  "layout": {
+    "width": 5200,
+    "height": 864,
+    "floor_height": 64,
+    "environment_profile": "level1_subsuelo_comedor_pasillos",
+    "default_spawn": {
+      "x": 240,
+      "y": 724
+    },
+    "background_zones": [
+      {
+        "id": "level_1_comedor_resistencia-zone",
+        "zone": "pisos_oficina",
+        "label": "Resiste en el comedor y asegura la puerta al pasillo.",
+        "x": 0,
+        "y": 0,
+        "width": 5200,
+        "height": 800
+      }
+    ],
+    "level_flow": {
+      "resistance": {
+        "durationMs": 45000,
+        "holdAreaIds": [
+          "comedor-oleada"
+        ],
+        "advanceAreaIds": [
+          "comedor-retaguardia"
+        ],
+        "holdObjectiveText": "Resiste 45 segundos en el comedor.",
+        "advanceObjectiveText": "La puerta cedió: alcanza la salida hacia los pasillos.",
+        "completionEventType": "phase_completed",
+        "completionEventTargetId": "comedor-resistencia"
+      }
+    }
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 240,
+    "maxPlayerDistance": 1250,
+    "viewportSafePadding": 100,
+    "areas": [
+      {
+        "id": "comedor-oleada",
+        "trigger": {
+          "x": 1450,
+          "y": 644,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      },
+      {
+        "id": "comedor-retaguardia",
+        "trigger": {
+          "x": 3150,
+          "y": 644,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      }
+    ],
+    "points": [
+      {
+        "id": "comedor-oleada-spawn",
+        "x": 1730,
+        "y": 724,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "comedor-oleada",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "comedor-retaguardia-spawn",
+        "x": 3430,
+        "y": 724,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "comedor-retaguardia",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "resistir-comedor",
+      "label": "Resiste 45 segundos en el comedor.",
+      "completion": [
+        {
+          "type": "phase_completed",
+          "targetId": "comedor-resistencia"
+        }
+      ]
+    },
+    {
+      "id": "salir-comedor",
+      "label": "Cruza la puerta hacia los pasillos.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "salida-comedor"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "level_1_comedor_resistencia-checkpoint",
+      "type": "switch",
+      "x": 2600,
+      "y": 724,
+      "interactionKey": "E",
+      "interactionRadius": 110,
+      "prompt": "E · Asegurar checkpoint",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Punto asegurado. El grupo puede continuar.",
+        "objectiveEventType": "interactable_used",
+        "checkpoint": {
+          "x": 2600,
+          "y": 724,
+          "label": "Checkpoint canónico"
+        }
+      }
+    },
+    {
+      "id": "level_1_comedor_resistencia-exit",
+      "type": "door",
+      "x": 4900,
+      "y": 724,
+      "interactionKey": "E",
+      "interactionRadius": 150,
+      "prompt": "E · Pasar a los pasillos",
+      "interactionEffect": {
+        "type": "door",
+        "targetId": "salida-comedor",
+        "message": "Pasar a los pasillos.",
+        "objectiveEventType": "exit_used"
+      }
+    }
+  ],
+  "pickups": [
+    {
+      "id": "level_1_comedor_resistencia-medkit",
+      "type": "medkit_small",
+      "x": 2300,
+      "y": 724,
+      "label": "Botiquín de campaña"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "level_1_comedor_resistencia-narrative",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 900,
+        "y": 624,
+        "width": 500,
+        "height": 300
+      },
+      "payload": {
+        "speaker": "Giovanna",
+        "message": "Resiste en el comedor y asegura la puerta al pasillo.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
+  "cinematics": [],
+  "exits": [
+    {
+      "id": "salida-comedor",
+      "target_level_id": "canonical-next-node",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 240,
+        "y": 724
+      },
+      "label": "Pasar a los pasillos"
+    }
+  ]
+}

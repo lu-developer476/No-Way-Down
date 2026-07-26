@@ -1,0 +1,33 @@
+{
+  "cinematic_id": "lvl02_ascenso_segundo_piso",
+  "title": "Ascenso al segundo piso",
+  "characters": [
+    "Giovanna",
+    "Damián"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Giovanna",
+      "beat": "El hall queda asegurado y nadie regresa al subsuelo."
+    },
+    {
+      "order": 2,
+      "speaker": "Damián",
+      "beat": "El equipo asciende unido hacia el segundo piso."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

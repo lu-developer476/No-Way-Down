@@ -68,6 +68,8 @@ const ARCADE_CAMERA_ZOOM = 1.34;
 const LATE_ALLY_JOIN_CHECKPOINT_ID = 'late-rescue-allies-join';
 const INITIAL_DINING_LEVEL_ID =
   'level_1_subsuelo_comedor';
+const CANONICAL_DINING_LEVEL_ID =
+  'level_1_comedor_resistencia';
 const SPIRAL_HALL_LEVEL_ID =
   'level_2_escaleras_espiral';
 
@@ -307,7 +309,8 @@ export class GameScene extends Phaser.Scene {
     this.registry.remove('pendingCampaignNodeId');
     this.currentLevelId = selectedLevelId;
     const isInitialDiningLevel =
-      selectedLevelId === INITIAL_DINING_LEVEL_ID;
+      selectedLevelId === INITIAL_DINING_LEVEL_ID
+      || selectedLevelId === CANONICAL_DINING_LEVEL_ID;
     const isSpiralHallLevel =
       selectedLevelId === SPIRAL_HALL_LEVEL_ID;
 
@@ -952,15 +955,6 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.applyInteractionEffect(
-      interaction.definition?.id ?? 'unknown',
-      interaction.effect
-    );
-
-    if (interaction.cinematicTrigger) {
-      void this.triggerNarrativeCheckpoint(interaction.cinematicTrigger);
-    }
-
     const objectiveEventType = interaction.effect.objectiveEventType ?? 'interactable_used';
     const objectiveUpdate = this.objectiveSystem?.process({
       type: objectiveEventType,
@@ -969,6 +963,15 @@ export class GameScene extends Phaser.Scene {
 
     if (objectiveUpdate?.status === 'completed') {
       this.registry.set('currentObjective', this.objectiveSystem?.getActiveObjective()?.label ?? 'Objetivo completado');
+    }
+
+    this.applyInteractionEffect(
+      interaction.definition?.id ?? 'unknown',
+      interaction.effect
+    );
+
+    if (interaction.cinematicTrigger) {
+      void this.triggerNarrativeCheckpoint(interaction.cinematicTrigger);
     }
   }
 
@@ -1017,7 +1020,9 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    const startsImmediateTransition = interactionSucceeded && effect.type === 'stairs' && Boolean(effect.targetId);
+    const startsImmediateTransition = interactionSucceeded
+      && ['stairs', 'door', 'vehicle'].includes(effect.type)
+      && Boolean(effect.targetId);
     if (!startsImmediateTransition) {
       this.showMissionStatus(statusMessage);
     }
@@ -1037,6 +1042,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (startsImmediateTransition && effect.targetId) {
+      if (this.objectiveSystem && !this.objectiveSystem.isCompleted()) {
+        this.showMissionStatus('La salida sigue bloqueada: completá el objetivo activo.');
+        return;
+      }
       this.beginExitTransition(effect.targetId, statusMessage);
     }
 

@@ -91,6 +91,12 @@ export class LevelScene extends GameScene {
 
     this.flowNode = flowNode;
 
+    this.flowManager = new SceneFlowManager(this);
+    if (!this.flowManager.confirmPendingTransition(flowNode)) {
+      this.showCampaignLoadError(flowNode, 'La transición pendiente no coincide con el nivel solicitado.');
+      return;
+    }
+
     if (!flowNode.levelConfigPath) {
       this.showCampaignLoadError(flowNode, 'El nodo no define levelConfigPath.');
       return;
@@ -99,7 +105,6 @@ export class LevelScene extends GameScene {
     this.registry.set('activeCampaignNode', flowNode);
     this.registry.set('flowNodeId', flowNode.id);
 
-    this.flowManager = new SceneFlowManager(this);
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
       flowNode: this.flowNode,
       enterDown: this.enterKey?.isDown ?? false,
@@ -118,8 +123,6 @@ export class LevelScene extends GameScene {
       this.registry.set('activeCampaignLevelConfigPath', flowNode.levelConfigPath);
       this.registry.set('activeRuntimeLevelId', runtimeLevelId);
       this.registry.remove('campaignLoadError');
-      this.registry.remove('pendingCampaignTransition');
-      this.registry.remove('pendingCampaignNodeId');
       console.info('[LevelScene] configuración confirmada', {
         nodeId: flowNode.id,
         levelConfigPath: flowNode.levelConfigPath,
@@ -298,7 +301,11 @@ export class LevelScene extends GameScene {
       return false;
     }
     const requiredRuntimeIds: Record<string, string> = {
-      'lvl02-esc01-hall-planta-baja': 'level_2_escaleras_espiral'
+      'lvl01-esc01-comedor-resistencia': 'level_1_comedor_resistencia',
+      'lvl01-esc02-pasillos-hacia-escaleras-pb': 'level_1_pasillos_escaleras_pb',
+      'lvl02-esc01-hall-planta-baja': 'level_2_hall_planta_baja',
+      'lvl03-esc01-segundo-piso': 'level_3_segundo_piso',
+      'lvl04-esc01-tercer-piso': 'level_4_tercer_piso'
     };
     return !requiredRuntimeIds[flowNode.id] || runtimeLevelId === requiredRuntimeIds[flowNode.id];
   }

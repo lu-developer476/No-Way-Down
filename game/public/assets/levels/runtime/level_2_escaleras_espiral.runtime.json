@@ -5,28 +5,69 @@
     "height": 864,
     "floor_height": 64,
     "environment_profile": "level2_escaleras_espiral",
-    "default_spawn": {
-      "x": 180,
-      "y": 724
-    },
+    "background_zones": [
+      { "id": "l2-escaleras-inferiores", "zone": "circulacion_vertical", "label": "Escaleras desde el subsuelo", "x": 0, "y": 0, "width": 3000, "height": 800 },
+      { "id": "l2-hall-planta-baja", "zone": "hall_publico", "label": "Hall de Planta Baja", "x": 3000, "y": 0, "width": 5600, "height": 800 },
+      { "id": "l2-escaleras-superiores", "zone": "circulacion_vertical", "label": "Escalera al siguiente piso", "x": 8600, "y": 0, "width": 1200, "height": 800 }
+    ],
+    "default_spawn": { "x": 220, "y": 724 },
     "level_flow": {
-      "canonicalName": "No Way Down - Nivel 2 Canónico",
-      "verticalAscent": {
-        "start": "escaleras_1er_subsuelo",
-        "end": "escaleras_5to_piso"
-      }
+      "canonicalName": "No Way Down - Ascenso al hall de Planta Baja",
+      "verticalAscent": { "start": "escaleras_1er_subsuelo", "end": "hall_planta_baja" }
     }
   },
   "spawn_zones": {
-    "minPlayerDistance": 220,
+    "minPlayerDistance": 240,
     "maxPlayerDistance": 1300,
     "viewportSafePadding": 100,
-    "areas": [],
-    "points": []
+    "areas": [
+      { "id": "L2-LOWER-STAIRS", "trigger": { "x": 1200, "y": 640, "width": 1800, "height": 280 }, "maxAlive": 4 },
+      { "id": "L2-HALL-CENTRAL", "trigger": { "x": 5400, "y": 640, "width": 3600, "height": 280 }, "maxAlive": 6 },
+      { "id": "L2-UPPER-STAIRS", "trigger": { "x": 9000, "y": 640, "width": 1300, "height": 280 }, "maxAlive": 4 }
+    ],
+    "points": [
+      { "id": "L2-LOWER-LEFT", "x": 720, "y": 724, "maxActive": 2, "spawnCooldown": 1450, "spawnType": "vertical_spawn", "spawnDirection": "stairs_down", "spawnArea": "L2-LOWER-STAIRS", "difficultyModifier": 1, "spawnBudget": 5 },
+      { "id": "L2-LOWER-RIGHT", "x": 2100, "y": 724, "maxActive": 2, "spawnCooldown": 1550, "spawnType": "wave_spawn", "spawnDirection": "left", "spawnArea": "L2-LOWER-STAIRS", "difficultyModifier": 1, "spawnBudget": 5 },
+      { "id": "L2-HALL-LEFT", "x": 3900, "y": 724, "maxActive": 2, "spawnCooldown": 1350, "spawnType": "door_spawn", "spawnDirection": "door_left", "spawnArea": "L2-HALL-CENTRAL", "difficultyModifier": 1, "spawnBudget": 7 },
+      { "id": "L2-HALL-RIGHT", "x": 6900, "y": 724, "maxActive": 3, "spawnCooldown": 1350, "spawnType": "door_spawn", "spawnDirection": "door_right", "spawnArea": "L2-HALL-CENTRAL", "difficultyModifier": 1.05, "spawnBudget": 8 },
+      { "id": "L2-UPPER-LEFT", "x": 8500, "y": 724, "maxActive": 2, "spawnCooldown": 1500, "spawnType": "wave_spawn", "spawnDirection": "right", "spawnArea": "L2-UPPER-STAIRS", "difficultyModifier": 1, "spawnBudget": 5 },
+      { "id": "L2-UPPER-RIGHT", "x": 9420, "y": 724, "maxActive": 2, "spawnCooldown": 1500, "spawnType": "vertical_spawn", "spawnDirection": "stairs_up", "spawnArea": "L2-UPPER-STAIRS", "difficultyModifier": 1, "spawnBudget": 5 }
+    ]
   },
-  "objectives": [],
-  "interactables": [],
-  "triggers": [],
+  "objectives": [
+    { "id": "level2_reach_ground_floor_hall", "label": "Asciende por las escaleras y alcanza el hall de Planta Baja.", "completion": [{ "type": "trigger_entered", "targetId": "level2-hall-entry" }] },
+    { "id": "level2_reach_upper_stairs", "label": "Cruza el hall y utiliza la escalera al siguiente piso.", "completion": [{ "type": "exit_used", "targetId": "level2-upper-stairs" }] }
+  ],
+  "interactables": [
+    {
+      "id": "level2-hall-checkpoint", "type": "switch", "x": 5300, "y": 690, "interactionKey": "E", "interactionRadius": 105,
+      "prompt": "E · Asegurar punto de reunión",
+      "interactionEffect": { "type": "switch", "message": "Hall de Planta Baja asegurado como punto de reunión.", "objectiveEventType": "interactable_used", "checkpoint": { "x": 5300, "y": 724, "label": "Hall Planta Baja" } }
+    },
+    {
+      "id": "level2-final-stairs", "type": "stairs", "x": 9400, "y": 724, "interactionKey": "E", "interactionRadius": 150,
+      "prompt": "E · Subir al siguiente piso",
+      "interactionEffect": { "type": "stairs", "targetId": "level2-upper-stairs", "message": "Hall de Planta Baja asegurado. Subiendo al siguiente piso.", "objectiveEventType": "exit_used" }
+    }
+  ],
+  "pickups": [
+    { "id": "level2-stairs-food", "type": "food_small", "x": 1700, "y": 724, "label": "Ración de emergencia" },
+    { "id": "level2-hall-pistol-ammo", "type": "ammo_pistol", "x": 4550, "y": 724, "label": "Munición de seguridad" },
+    { "id": "level2-hall-medkit", "type": "medkit_small", "x": 7350, "y": 724, "label": "Botiquín del hall" },
+    { "id": "level2-upper-stairs-ammo", "type": "ammo_carbine", "x": 8750, "y": 724, "label": "Cargadores de carabina" }
+  ],
+  "triggers": [
+    {
+      "id": "level2-hall-entry", "type": "narrative_message", "bounds": { "x": 3500, "y": 640, "width": 520, "height": 300 },
+      "payload": { "speaker": "Giovanna", "message": "Llegamos al hall de Planta Baja. Mantengan formación y busquen la siguiente escalera.", "durationMs": 2200 }, "once": true, "startsEnabled": true
+    },
+    {
+      "id": "level2-final-stairs-warning", "type": "narrative_message", "bounds": { "x": 8750, "y": 640, "width": 500, "height": 300 },
+      "payload": { "speaker": "Damián", "message": "Escalera localizada. Cubran la retaguardia antes de subir.", "durationMs": 2000 }, "once": true, "startsEnabled": true
+    }
+  ],
   "cinematics": [],
-  "exits": []
+  "exits": [
+    { "id": "level2-upper-stairs", "target_level_id": "level_3_upper_floor", "scene_key": "UpperFloorScene", "spawn_point": { "x": 300, "y": 1640 }, "label": "Escalera al siguiente piso" }
+  ]
 }

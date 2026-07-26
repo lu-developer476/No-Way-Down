@@ -719,7 +719,12 @@ export class GameScene extends Phaser.Scene {
       this.publishPauseMenuView();
       this.setTransitionView(false, '');
       this.setNarrativeMovementLock(false);
-      this.physics.resume();
+      // Phaser may tear down Arcade Physics before scene SHUTDOWN listeners finish.
+      // Do not let cleanup abort a same-key LevelScene restart when its world is gone.
+      const physicsWorld = (this.physics as Phaser.Physics.Arcade.ArcadePhysics | undefined)?.world;
+      if (physicsWorld) {
+        physicsWorld.resume();
+      }
       getAudioManager(this).stopGameplayAmbient();
     });
   }

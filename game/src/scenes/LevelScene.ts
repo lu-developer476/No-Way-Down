@@ -15,6 +15,7 @@ import { Checkpoint } from './sceneShared';
 import { LevelExitTarget } from '../systems/LevelExitSystem';
 import { FlowDebugOverlay } from './flowDebug';
 import { CanonicalNodes19To27Runtime, type Nodes19To27Snapshot } from '../campaign/canonicalNodes19To27';
+import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
 
 type LevelSceneCreateData = {
   flowNode?: CampaignFlowNode;
@@ -53,6 +54,10 @@ export class LevelScene extends GameScene {
         tone: 'normal'
       }
     );
+    this.registry.set('levelSceneCreateCount', ((this.registry.get('levelSceneCreateCount') as number | undefined) ?? 0) + 1);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.registry.set('levelSceneShutdownCount', ((this.registry.get('levelSceneShutdownCount') as number | undefined) ?? 0) + 1);
+    });
 
     const pendingTransition = this.registry.get(
       'pendingCampaignTransition'
@@ -94,10 +99,6 @@ export class LevelScene extends GameScene {
     this.flowNode = flowNode;
 
     this.flowManager = new SceneFlowManager(this);
-    if (!this.flowManager.confirmPendingTransition(flowNode)) {
-      this.showCampaignLoadError(flowNode, 'La transición pendiente no coincide con el nivel solicitado.');
-      return;
-    }
 
     if (!flowNode.levelConfigPath) {
       this.showCampaignLoadError(flowNode, 'El nodo no define levelConfigPath.');
@@ -176,6 +177,10 @@ export class LevelScene extends GameScene {
       this.missionRuntimeSystem.instantiate(flowNode.systems?.mission ?? []);
 
       this.gameplayReady = true;
+      if (!new CampaignTransitionCoordinator(this).confirmDestination(flowNode)) {
+        this.gameplayReady = false;
+        return;
+      }
     });
   }
 
@@ -241,33 +246,15 @@ export class LevelScene extends GameScene {
     this.hasStarted = true;
     this.isTransitioning = true;
     this.registry.set('checkpoint', target.spawnPoint);
-    const manager = this.flowManager ?? new SceneFlowManager(this);
-    const nextNode = manager.advanceFromNodeId(flowNode.id);
-    if (!nextNode) {
-      this.hasStarted = false;
-      this.isTransitioning = false;
-      this.showCampaignLoadError(
-        flowNode,
-        `No se pudo resolver el nodo posterior a ${flowNode.id}.`
-      );
-      return;
-    }
-
-    const transitionAccepted =
-      manager.transitionToNode(
-        nextNode,
-        {
-          respawnPoint:
-            target.spawnPoint
-        }
-      );
+    const transitionAccepted = new CampaignTransitionCoordinator(this)
+      .requestCanonicalTransition(flowNode.id, 'level-exit', target.spawnPoint);
 
     if (!transitionAccepted) {
       this.hasStarted = false;
       this.isTransitioning = false;
 
       throw new Error(
-        `SceneFlowManager rechazó la transición hacia ${nextNode.id}.`
+        `CampaignTransitionCoordinator rechazó la transición desde ${flowNode.id}.`
       );
     }
   }

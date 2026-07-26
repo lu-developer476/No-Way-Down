@@ -50,7 +50,7 @@ class ProductionE2E(unittest.TestCase):
         cls.browser.quit()
 
     def load_game(self):
-        self.browser.get(BASE_URL + "/")
+        self.browser.get(BASE_URL + "/?e2eResistanceMs=250")
         deadline = time.time() + 20
         while time.time() < deadline:
             scene = self.browser.execute_script("""
@@ -93,29 +93,69 @@ class ProductionE2E(unittest.TestCase):
         self.assertTrue(self.browser.execute_script("return !!window.__NWD_GAME__"))
 
     def test_03_campaign_cursor_transitions_save_party_and_completion(self):
+        """Cross the dining-room door through the same keyboard path as a player."""
         self.load_game()
-        result = self.browser.execute_script("""
-          const g=window.__NWD_GAME__, s=g.scene.getScene('MainMenuScene'), r=g.registry;
-          const d=r.get('campaignFlowDefinition');
-          const ids=d.nodes.map(n=>n.id), types=d.nodes.map(n=>n.type);
-          r.set('campaignFlowCursor', 1); r.set('flowNodeId', ids[1]);
-          r.set('campaignFlowCursor', 0); // LevelScene restart invariant: checkpoint can restore cursor.
-          localStorage.setItem('nwd-e2e-save', JSON.stringify({nodeId:ids[12], party:['Alan Nahuel','Giovanna']}));
-          const loaded=JSON.parse(localStorage.getItem('nwd-e2e-save'));
-          const sequential=ids.every((id,i)=>i===0 || d.nodes[i-1].id===ids[i-1]);
-          const transitions=types.slice(1).map((t,i)=>types[i]+'>'+t);
-          let locked=false; r.set('pendingCampaignTransition',{toNode:d.nodes[1]});
-          locked=!!r.get('pendingCampaignTransition'); r.remove('pendingCampaignTransition');
-          r.set('campaignFlowCursor',34);
-          return {count:ids.length, unique:new Set(ids).size, sequential, loaded, transitions,
-            locked, completed:r.get('campaignFlowCursor')===34};
+        body = self.browser.find_element("tag name", "body")
+        body.send_keys(Keys.ENTER, Keys.ENTER, Keys.ENTER)
+        body.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER, Keys.ENTER)
+        body.send_keys(Keys.ENTER)  # CampaignIntroScene -> first playable node.
+
+        deadline = time.time() + 10
+        while time.time() < deadline:
+            state = self.browser.execute_script("""
+              const g=window.__NWD_GAME__, s=g?.scene.getScene('LevelScene');
+              return {node:g?.registry.get('flowNodeId'), ready:!!s?.gameplayReady,
+                objective:g?.registry.get('currentObjective') ?? ''};
+            """)
+            if state["node"] == "lvl01-esc01-comedor-resistencia" and state["ready"] and "puerta" in state["objective"].lower():
+                break
+            time.sleep(.05)
+        else:
+            self.fail(f"El comedor no completó la resistencia real: {state}")
+
+        # Move the real Arcade player body into the real salida-comedor radius.
+        moved = self.browser.execute_script("""
+          const s=window.__NWD_GAME__.scene.getScene('LevelScene'), p=s.players?.[0];
+          if(!p?.body) return false; p.setPosition(4900,724); p.body.reset(4900,724); return true;
         """)
-        self.assertEqual(result["count"], 35)
-        self.assertEqual(result["unique"], 35)
-        self.assertTrue(result["sequential"] and result["locked"] and result["completed"])
-        self.assertIn("level>cinematic", result["transitions"])
-        self.assertIn("cinematic>level", result["transitions"])
-        self.assertEqual(len(result["loaded"]["party"]), 2)
+        self.assertTrue(moved)
+        lifecycle_before = self.browser.execute_script("""
+          const r=window.__NWD_GAME__.registry;
+          return {creates:r.get('levelSceneCreateCount'), shutdowns:r.get('levelSceneShutdownCount') ?? 0};
+        """)
+        self.browser.save_screenshot(str(EVIDENCE / "comedor-puerta.png"))
+        body.send_keys("e")
+        self.browser.save_screenshot(str(EVIDENCE / "transicion-comedor-pasillos.png"))
+
+        deadline = time.time() + 5
+        while time.time() < deadline:
+            result = self.browser.execute_script("""
+              const g=window.__NWD_GAME__, s=g.scene.getScene('LevelScene'), r=g.registry;
+              const v=r.get('transitionView');
+              return {active:g.scene.isActive('LevelScene'), node:r.get('flowNodeId'),
+                runtime:r.get('activeRuntimeLevelId'), cursor:r.get('campaignFlowCursor'),
+                pending:r.get('pendingCampaignTransition') ?? null,
+                pendingNode:r.get('pendingCampaignNodeId') ?? null,
+                transitionVisible:v?.visible ?? false, physicsPaused:s.physics.world.isPaused,
+                ready:!!s.gameplayReady, fatal:r.get('campaignTransitionFatal') ?? null};
+            """)
+            if result["node"] == "lvl01-esc02-pasillos-hacia-escaleras-pb" and result["ready"]:
+                break
+            time.sleep(.05)
+        else:
+            self.fail(f"La puerta no llegó a pasillos en 5 segundos: {result}")
+
+        self.assertEqual(result, {"active": True, "node": "lvl01-esc02-pasillos-hacia-escaleras-pb",
+            "runtime": "level_1_pasillos_escaleras_pb", "cursor": 2, "pending": None,
+            "pendingNode": None, "transitionVisible": False, "physicsPaused": False,
+            "ready": True, "fatal": None})
+        lifecycle_after = self.browser.execute_script("""
+          const r=window.__NWD_GAME__.registry;
+          return {creates:r.get('levelSceneCreateCount'), shutdowns:r.get('levelSceneShutdownCount')};
+        """)
+        self.assertEqual(lifecycle_after["creates"], lifecycle_before["creates"] + 1)
+        self.assertEqual(lifecycle_after["shutdowns"], lifecycle_before["shutdowns"] + 1)
+        self.browser.save_screenshot(str(EVIDENCE / "pasillos-despues-transicion.png"))
 
     def test_04_gameplay_controls_and_runtime_contracts(self):
         controls = json.loads((ROOT / "config/controls.json").read_text())

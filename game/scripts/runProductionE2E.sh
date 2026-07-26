@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 npm run build --prefix game
+mkdir -p game/test-results
 export DJANGO_SETTINGS_MODULE=config.settings.development
 export DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost
 python backend/manage.py migrate --noinput >/dev/null

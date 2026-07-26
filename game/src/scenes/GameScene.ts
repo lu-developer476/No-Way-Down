@@ -30,6 +30,7 @@ import {
   TransitionView
 } from './sceneShared';
 import { SceneFlowManager } from './SceneFlowManager';
+import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
 import { visualTheme } from './visualTheme';
 import { addCheckpointCinematicCard, addRetroScreenOverlay, applyRetroRenderer, RETRO_CHECKPOINTS } from './retroPixelArt';
 import { CampaignState } from '../systems/core/CampaignState';
@@ -1107,7 +1108,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     const configAsRecord = resistance as Record<string, unknown>;
-    const durationMs = Number(configAsRecord.durationMs ?? 120000);
+    const configuredDurationMs = Number(configAsRecord.durationMs ?? 120000);
+    // Explicit browser fixture: it changes only objective time, never campaign
+    // registry/cursor/node state.
+    const e2eDuration = new URLSearchParams(window.location.search).get('e2eResistanceMs');
+    const durationMs = e2eDuration !== null
+      ? Math.max(100, Number(e2eDuration) || configuredDurationMs)
+      : configuredDurationMs;
     const holdAreaIds = Array.isArray(configAsRecord.holdAreaIds)
       ? configAsRecord.holdAreaIds.filter((item): item is string => typeof item === 'string' && item.length > 0)
       : [];
@@ -1553,17 +1560,18 @@ export class GameScene extends Phaser.Scene {
         transitionMessage
       );
 
-      this.exitTransitionTimer?.remove(false);
-
-      this.exitTransitionTimer =
-        this.time.delayedCall(
-          900,
-          () => {
-            this.confirmPendingExitTransition(
-              'automatic'
-            );
-          }
-        );
+      // Commit on the interaction event itself. The overlay is presentation,
+      // never a gate controlled by the clock of the scene being restarted.
+      const currentNodeId = this.registry.get('flowNodeId') as string | undefined;
+      if (!currentNodeId) {
+        throw new Error('No hay flowNodeId canónico activo para la salida.');
+      }
+      this.exitTransitionCommitInProgress = true;
+      const accepted = new CampaignTransitionCoordinator(this)
+        .requestCanonicalTransition(currentNodeId, 'interactable', target.spawnPoint);
+      if (!accepted && !this.registry.get('pendingCampaignTransition')) {
+        throw new Error('CampaignTransitionCoordinator rechazó la transición.');
+      }
     } catch (error) {
       console.error(
         '[GameScene] No se pudo preparar la transición de nivel.',

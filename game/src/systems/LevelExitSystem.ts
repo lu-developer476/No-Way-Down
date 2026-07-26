@@ -137,16 +137,12 @@ export class LevelExitSystem {
     this.onTransitionStart?.(this.config.transitionMessage);
     console.info('[LevelExitSystem] transition started to next scene');
 
-    this.scene.time.delayedCall(this.config.transitionDelayMs, () => {
-      if (this.onTransitionComplete) {
-        this.onTransitionComplete(this.config.transitionTarget);
-        return;
-      }
-
-      this.scene.scene.start(this.config.transitionTarget.sceneKey, {
-        respawnPoint: this.config.transitionTarget.spawnPoint
-      });
-    });
+    // A scene-owned TimerEvent used to make this a second, cancellable exit
+    // pipeline. Commit synchronously through the owner callback instead.
+    if (!this.onTransitionComplete) {
+      throw new Error('LevelExitSystem requiere el coordinador canónico onTransitionComplete.');
+    }
+    this.onTransitionComplete(this.config.transitionTarget);
   }
 
   private canCompleteLevel(): boolean {

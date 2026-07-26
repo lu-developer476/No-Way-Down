@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import { getWeaponCatalogEntry } from '../config/weaponCatalog';
-import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
-import { getFacingOffsetPosition } from '../config/visualAlignment';
+import { getWeaponCatalogEntry } from '../config/weaponCatalog.ts';
+import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime.ts';
+import { getFacingOffsetPosition } from '../config/visualAlignment.ts';
 
 export interface ShotFeedbackInput {
   x: number; y: number; direction: -1 | 1; weaponKey: string;
@@ -17,6 +17,8 @@ export interface EnvironmentImpactInput {
 }
 
 export class CombatFeedbackSystem {
+  private readonly scene: Phaser.Scene;
+  private readonly camera: Phaser.Cameras.Scene2D.Camera;
   private readonly activeShells = new Set<Phaser.GameObjects.Image>();
   private readonly activeBloodDrops = new Set<Phaser.GameObjects.Image>();
   private readonly activeImpacts = new Set<Phaser.GameObjects.Image>();
@@ -25,10 +27,9 @@ export class CombatFeedbackSystem {
   private hitStopToken = 0;
   private destroyed = false;
 
-  constructor(
-    private readonly scene: Phaser.Scene,
-    private readonly camera: Phaser.Cameras.Scene2D.Camera
-  ) {
+  constructor(scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera) {
+    this.scene = scene;
+    this.camera = camera;
     this.scene.events.on(Phaser.Scenes.Events.PAUSE, this.restorePhysicsTimeScale, this);
   }
 
@@ -56,7 +57,19 @@ export class CombatFeedbackSystem {
       const originalX = input.weaponSprite.x;
       const originalY = input.weaponSprite.y;
       this.scene.tweens.killTweensOf(input.weaponSprite);
-      this.scene.tweens.add({ targets: input.weaponSprite, x: originalX - input.direction * (recoil[weapon.key] ?? 2), y: originalY, duration: 32, yoyo: true, hold: 4, onComplete: () => input.weaponSprite?.setPosition(originalX, originalY) });
+      this.scene.tweens.add({
+        targets: input.weaponSprite,
+        x: originalX - input.direction * (recoil[weapon.key] ?? 2),
+        y: originalY,
+        duration: 32,
+        yoyo: true,
+        hold: 4,
+        onComplete: () => {
+          if (!this.destroyed && this.scene.sys.isActive() && input.weaponSprite?.active && input.weaponSprite.scene) {
+            input.weaponSprite.setPosition(originalX, originalY);
+          }
+        }
+      });
     }
     if (weapon.key !== 'shotgun' && weapon.key !== 'revolver') this.ejectShell(input, weapon.key === 'sniper_rifle' || weapon.key === 'light_machine_gun');
 
@@ -85,7 +98,9 @@ export class CombatFeedbackSystem {
     const originX = input.target.displayOriginX;
     const direction = input.sourceX === undefined ? 1 : (input.x >= input.sourceX ? 1 : -1);
     this.scene.tweens.killTweensOf(input.target);
-    this.scene.tweens.add({ targets: input.target, displayOriginX: originX - direction * 3, duration: 28, yoyo: true, onComplete: () => { if (input.target.active) input.target.displayOriginX = originX; } });
+    this.scene.tweens.add({ targets: input.target, displayOriginX: originX - direction * 3, duration: 28, yoyo: true, onComplete: () => {
+      if (!this.destroyed && this.scene.sys.isActive() && input.target.active && input.target.scene) input.target.displayOriginX = originX;
+    } });
     if (input.damage >= 3 || input.killed) this.playHitStop(input.killed ? 45 : input.damage >= 4 ? 38 : 28);
     if (input.killed) this.playDeath(input);
   }
@@ -103,11 +118,39 @@ export class CombatFeedbackSystem {
   }
 
   destroy(): void {
-    this.destroyed = true; this.hitStopToken += 1;
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
+    this.hitStopToken += 1;
     this.scene.events.off(Phaser.Scenes.Events.PAUSE, this.restorePhysicsTimeScale, this);
+    this.timers.forEach((timer) => {
+      if (timer && typeof timer.remove === 'function') {
+        timer.remove(false);
+      }
+    });
+    this.timers.clear();
+
+    const trackedObjects = [this.activeShells, this.activeBloodDrops, this.activeImpacts, this.activeMuzzleFlashes];
+    const tweenManager = this.getTweenManager();
+    trackedObjects.forEach((set) => {
+      set.forEach((object) => {
+        if (tweenManager && object?.scene) {
+          tweenManager.killTweensOf(object);
+        }
+      });
+    });
+
     this.restorePhysicsTimeScale();
-    this.timers.forEach((timer) => timer.remove(false)); this.timers.clear();
-    [this.activeShells, this.activeBloodDrops, this.activeImpacts, this.activeMuzzleFlashes].forEach((set) => { set.forEach((object) => object.destroy()); set.clear(); });
+    trackedObjects.forEach((set) => {
+      set.forEach((object) => {
+        if (object?.scene && object.active) {
+          object.destroy();
+        }
+      });
+      set.clear();
+    });
   }
 
   private ejectShell(input: ShotFeedbackInput, large: boolean): void {
@@ -115,7 +158,10 @@ export class CombatFeedbackSystem {
     this.track(this.activeShells, shell, 40); this.scene.physics.add.existing(shell);
     const body = shell.body as Phaser.Physics.Arcade.Body;
     body.setVelocity(-input.direction * (large ? 34 : 46), large ? -72 : -82); body.setGravityY(220); body.setAngularVelocity(input.direction * (large ? 220 : 320)); body.setAllowGravity(true);
-    this.delay(520, () => { if (shell.active) this.scene.tweens.add({ targets: shell, alpha: 0, duration: 180 }); });
+    this.delay(520, () => {
+      const tweenManager = this.getTweenManager();
+      if (shell.active && shell.scene && tweenManager) tweenManager.add({ targets: shell, alpha: 0, duration: 180 });
+    });
     this.delay(700, () => this.removeAndDestroy(this.activeShells, shell));
   }
 
@@ -141,18 +187,74 @@ export class CombatFeedbackSystem {
   }
 
   private playHitStop(duration: number): void {
-    const token = ++this.hitStopToken; this.scene.physics.world.timeScale = 0.18;
-    this.delay(duration, () => { if (token === this.hitStopToken) this.scene.physics.world.timeScale = 1; });
+    const world = this.getPhysicsWorld();
+
+    if (!world || this.destroyed) {
+      return;
+    }
+
+    const token = ++this.hitStopToken;
+    world.timeScale = 0.18;
+
+    this.delay(duration, () => {
+      if (this.destroyed || token !== this.hitStopToken) {
+        return;
+      }
+
+      const activeWorld = this.getPhysicsWorld();
+      if (activeWorld) {
+        activeWorld.timeScale = 1;
+      }
+    });
   }
 
-  private restorePhysicsTimeScale(): void { this.hitStopToken += 1; this.scene.physics.world.timeScale = 1; }
+  private getPhysicsWorld(): Phaser.Physics.Arcade.World | null {
+    const sceneWithPhysics = this.scene as Phaser.Scene & {
+      physics?: Phaser.Physics.Arcade.ArcadePhysics;
+    };
+
+    return sceneWithPhysics.physics?.world ?? null;
+  }
+
+  private getTweenManager(): Phaser.Tweens.TweenManager | null {
+    const sceneWithTweens = this.scene as Phaser.Scene & { tweens?: Phaser.Tweens.TweenManager };
+    return sceneWithTweens.tweens ?? null;
+  }
+
+  private restorePhysicsTimeScale(): void {
+    this.hitStopToken += 1;
+    const world = this.getPhysicsWorld();
+
+    if (!world) {
+      return;
+    }
+
+    world.timeScale = 1;
+  }
 
   private canPlay(): boolean { return !this.destroyed && this.scene.sys.isActive() && this.scene.registry.get('isGamePaused') !== true; }
-  private delay(delay: number, callback: () => void): void {
-    let timer: Phaser.Time.TimerEvent; timer = this.scene.time.delayedCall(delay, () => { this.timers.delete(timer); callback(); }); this.timers.add(timer);
+  private delay(delayMs: number, callback: () => void): void {
+    if (this.destroyed || !this.scene.time) {
+      return;
+    }
+
+    let timer: Phaser.Time.TimerEvent;
+    timer = this.scene.time.delayedCall(delayMs, () => {
+      this.timers.delete(timer);
+
+      if (this.destroyed || !this.scene.sys.isActive()) {
+        return;
+      }
+
+      callback();
+    });
+    this.timers.add(timer);
   }
   private track<T extends Phaser.GameObjects.Image>(set: Set<T>, object: T, limit: number): void {
     if (set.size >= limit) { const oldest = set.values().next().value as T | undefined; if (oldest) this.removeAndDestroy(set, oldest); } set.add(object);
   }
-  private removeAndDestroy<T extends Phaser.GameObjects.Image>(set: Set<T>, object: T): void { set.delete(object); if (object.scene) object.destroy(); }
+  private removeAndDestroy<T extends Phaser.GameObjects.Image>(set: Set<T>, object: T): void {
+    set.delete(object);
+    if (!this.destroyed && object?.active && object.scene && this.scene.sys.isActive()) object.destroy();
+  }
 }

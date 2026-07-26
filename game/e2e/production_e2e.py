@@ -13,7 +13,7 @@ import urllib.request
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-from PIL import Image, ImageChops
+from PIL import Image, ImageChops, ImageDraw
 
 BASE_URL = os.getenv("E2E_BASE_URL", "http://127.0.0.1:8000")
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -42,6 +42,7 @@ class ProductionE2E(unittest.TestCase):
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1280,720")
+        options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
         cls.browser = webdriver.Chrome(options=options)
         EVIDENCE.mkdir(parents=True, exist_ok=True)
 
@@ -125,6 +126,11 @@ class ProductionE2E(unittest.TestCase):
         """)
         self.browser.save_screenshot(str(EVIDENCE / "comedor-puerta.png"))
         body.send_keys("e")
+        deadline = time.time() + 2
+        while time.time() < deadline:
+            if self.browser.execute_script("return window.__NWD_GAME__.registry.get('transitionView')?.visible === true"):
+                break
+            time.sleep(.01)
         self.browser.save_screenshot(str(EVIDENCE / "transicion-comedor-pasillos.png"))
 
         deadline = time.time() + 5
@@ -132,7 +138,7 @@ class ProductionE2E(unittest.TestCase):
             result = self.browser.execute_script("""
               const g=window.__NWD_GAME__, s=g.scene.getScene('LevelScene'), r=g.registry;
               const v=r.get('transitionView');
-              return {active:g.scene.isActive('LevelScene'), node:r.get('flowNodeId'),
+              return {active:g.scene.isActive('LevelScene'), uiActive:g.scene.isActive('UIScene'), node:r.get('flowNodeId'),
                 runtime:r.get('activeRuntimeLevelId'), cursor:r.get('campaignFlowCursor'),
                 pending:r.get('pendingCampaignTransition') ?? null,
                 pendingNode:r.get('pendingCampaignNodeId') ?? null,
@@ -145,7 +151,7 @@ class ProductionE2E(unittest.TestCase):
         else:
             self.fail(f"La puerta no llegó a pasillos en 5 segundos: {result}")
 
-        self.assertEqual(result, {"active": True, "node": "lvl01-esc02-pasillos-hacia-escaleras-pb",
+        self.assertEqual(result, {"active": True, "uiActive": True, "node": "lvl01-esc02-pasillos-hacia-escaleras-pb",
             "runtime": "level_1_pasillos_escaleras_pb", "cursor": 2, "pending": None,
             "pendingNode": None, "transitionVisible": False, "physicsPaused": False,
             "ready": True, "fatal": None})
@@ -153,9 +159,22 @@ class ProductionE2E(unittest.TestCase):
           const r=window.__NWD_GAME__.registry;
           return {creates:r.get('levelSceneCreateCount'), shutdowns:r.get('levelSceneShutdownCount')};
         """)
+        self.assertEqual(lifecycle_after, {"creates": 2, "shutdowns": 1})
         self.assertEqual(lifecycle_after["creates"], lifecycle_before["creates"] + 1)
         self.assertEqual(lifecycle_after["shutdowns"], lifecycle_before["shutdowns"] + 1)
         self.browser.save_screenshot(str(EVIDENCE / "pasillos-despues-transicion.png"))
+        console = self.browser.get_log("browser")
+        console_text = "\n".join(entry["message"] for entry in console)
+        forbidden = ("Cannot set properties of null", "restorePhysicsTimeScale",
+                     "destination-confirmation-watchdog", "[NoWayDown] Error global de carga")
+        for message in forbidden:
+            self.assertNotIn(message, console_text)
+        (EVIDENCE / "consola-pasillos-sin-errores.txt").write_text(console_text or "Consola sin errores.")
+        console_image = Image.new("RGB", (1280, 720), "#111827")
+        console_draw = ImageDraw.Draw(console_image)
+        lines = ["Chrome console after reaching corridors", ""] + (console_text or "No errors reported.").splitlines()
+        console_draw.multiline_text((24, 24), "\n".join(lines)[:7000], fill="#d1fae5", spacing=5)
+        console_image.save(EVIDENCE / "consola-pasillos-sin-errores.png")
 
     def test_04_gameplay_controls_and_runtime_contracts(self):
         controls = json.loads((ROOT / "config/controls.json").read_text())

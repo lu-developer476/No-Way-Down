@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl02-esc01-hall-planta-baja",
+  "level_id": "level_2_hall_planta_baja",
+  "runtimeLevelId": "level_2_hall_planta_baja",
+  "runtimePath": "assets/levels/runtime/level_2_hall_planta_baja.runtime.json",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-hall"
+  },
+  "nextNodeId": "lvl02-cin01-ascenso-al-segundo-piso"
+}

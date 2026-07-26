@@ -1,0 +1,33 @@
+{
+  "cinematic_id": "lvl01_cierre_contextual",
+  "title": "Cierre del subsuelo",
+  "characters": [
+    "Alan Nahuel",
+    "Giovanna"
+  ],
+  "beats": [
+    {
+      "order": 1,
+      "speaker": "Alan Nahuel",
+      "beat": "La resistencia ganó el tiempo necesario. El comedor queda atrás."
+    },
+    {
+      "order": 2,
+      "speaker": "Giovanna",
+      "beat": "Los pasillos están despejados; el grupo toma la escalera hacia Planta Baja."
+    }
+  ],
+  "controls": {
+    "advance": [
+      "ENTER",
+      "pointer"
+    ],
+    "skip": "ENTER",
+    "cleanup": [
+      "music",
+      "dialogue",
+      "overlays",
+      "controls"
+    ]
+  }
+}

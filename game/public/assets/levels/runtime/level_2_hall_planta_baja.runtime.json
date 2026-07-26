@@ -1,0 +1,166 @@
+{
+  "level_id": "level_2_hall_planta_baja",
+  "layout": {
+    "width": 6200,
+    "height": 864,
+    "floor_height": 64,
+    "environment_profile": "level2_escaleras_espiral",
+    "default_spawn": {
+      "x": 240,
+      "y": 724
+    },
+    "background_zones": [
+      {
+        "id": "level_2_hall_planta_baja-zone",
+        "zone": "hall_publico",
+        "label": "Asegura el hall de Planta Baja y alcanza la escalera.",
+        "x": 0,
+        "y": 0,
+        "width": 6200,
+        "height": 800
+      }
+    ]
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 240,
+    "maxPlayerDistance": 1250,
+    "viewportSafePadding": 100,
+    "areas": [
+      {
+        "id": "hall-oeste",
+        "trigger": {
+          "x": 1900,
+          "y": 644,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      },
+      {
+        "id": "hall-este",
+        "trigger": {
+          "x": 4100,
+          "y": 644,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      }
+    ],
+    "points": [
+      {
+        "id": "hall-oeste-spawn",
+        "x": 2180,
+        "y": 724,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "hall-oeste",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "hall-este-spawn",
+        "x": 4380,
+        "y": 724,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "hall-este",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "level_2_hall_planta_baja-objective",
+      "label": "Asegura el hall de Planta Baja y alcanza la escalera.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "salida-hall"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "level_2_hall_planta_baja-checkpoint",
+      "type": "switch",
+      "x": 3100,
+      "y": 724,
+      "interactionKey": "E",
+      "interactionRadius": 110,
+      "prompt": "E · Asegurar checkpoint",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Punto asegurado. El grupo puede continuar.",
+        "objectiveEventType": "interactable_used",
+        "checkpoint": {
+          "x": 3100,
+          "y": 724,
+          "label": "Checkpoint canónico"
+        }
+      }
+    },
+    {
+      "id": "level_2_hall_planta_baja-exit",
+      "type": "stairs",
+      "x": 5900,
+      "y": 724,
+      "interactionKey": "E",
+      "interactionRadius": 150,
+      "prompt": "E · Ascender al segundo piso",
+      "interactionEffect": {
+        "type": "stairs",
+        "targetId": "salida-hall",
+        "message": "Ascender al segundo piso.",
+        "objectiveEventType": "exit_used"
+      }
+    }
+  ],
+  "pickups": [
+    {
+      "id": "level_2_hall_planta_baja-medkit",
+      "type": "medkit_small",
+      "x": 2800,
+      "y": 724,
+      "label": "Botiquín de campaña"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "level_2_hall_planta_baja-narrative",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 900,
+        "y": 624,
+        "width": 500,
+        "height": 300
+      },
+      "payload": {
+        "speaker": "Giovanna",
+        "message": "Asegura el hall de Planta Baja y alcanza la escalera.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
+  "cinematics": [],
+  "exits": [
+    {
+      "id": "salida-hall",
+      "target_level_id": "canonical-next-node",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 240,
+        "y": 724
+      },
+      "label": "Ascender al segundo piso"
+    }
+  ]
+}

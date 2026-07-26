@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl03-esc01-segundo-piso",
+  "level_id": "level_3_segundo_piso",
+  "runtimeLevelId": "level_3_segundo_piso",
+  "runtimePath": "assets/levels/runtime/level_3_segundo_piso.runtime.json",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "salida-segundo"
+  },
+  "nextNodeId": "lvl03-cin01-llamado-lorena-rescate"
+}

@@ -22,9 +22,15 @@ export class CampaignIntroScene extends Phaser.Scene {
     super('CampaignIntroScene');
   }
 
-  create(_data: CampaignIntroSceneData = {}): void {
-    this.registry.set('activeCampaignNode', { id: 'campaign-intro', type: 'campaignIntro', sceneKey: 'CampaignIntroScene' });
-    this.registry.set('flowNodeId', 'campaign-intro');
+  create(data: CampaignIntroSceneData = {}): void {
+    this.hasStarted = false;
+    this.isTransitioning = false;
+    const introNode = data.flowNode ?? { id: 'campaign-intro', type: 'campaignIntro' as const, sceneKey: 'CampaignIntroScene' as const };
+    this.flowManager = new SceneFlowManager(this);
+    if (!this.flowManager.confirmPendingTransition(introNode)) {
+      console.error('[CampaignIntroScene] La transición pendiente no corresponde al intro canónico.');
+      return;
+    }
 
     const { width, height } = this.scale;
     this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
@@ -44,7 +50,6 @@ export class CampaignIntroScene extends Phaser.Scene {
       fontSize: '20px'
     }).setOrigin(0.5);
 
-    this.flowManager = new SceneFlowManager(this);
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
       flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
       enterDown: this.enterKey?.isDown ?? false,

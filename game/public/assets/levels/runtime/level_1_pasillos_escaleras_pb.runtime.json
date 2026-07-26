@@ -1,0 +1,166 @@
+{
+  "level_id": "level_1_pasillos_escaleras_pb",
+  "layout": {
+    "width": 5600,
+    "height": 864,
+    "floor_height": 64,
+    "environment_profile": "level1_subsuelo_comedor_pasillos",
+    "default_spawn": {
+      "x": 240,
+      "y": 724
+    },
+    "background_zones": [
+      {
+        "id": "level_1_pasillos_escaleras_pb-zone",
+        "zone": "pisos_oficina",
+        "label": "Cruza los pasillos y alcanza las escaleras a Planta Baja.",
+        "x": 0,
+        "y": 0,
+        "width": 5600,
+        "height": 800
+      }
+    ]
+  },
+  "spawn_zones": {
+    "minPlayerDistance": 240,
+    "maxPlayerDistance": 1250,
+    "viewportSafePadding": 100,
+    "areas": [
+      {
+        "id": "pasillo-a",
+        "trigger": {
+          "x": 1750,
+          "y": 644,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      },
+      {
+        "id": "pasillo-b",
+        "trigger": {
+          "x": 3700,
+          "y": 644,
+          "width": 1000,
+          "height": 300
+        },
+        "maxAlive": 4
+      }
+    ],
+    "points": [
+      {
+        "id": "pasillo-a-spawn",
+        "x": 2030,
+        "y": 724,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "pasillo-a",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      },
+      {
+        "id": "pasillo-b-spawn",
+        "x": 3980,
+        "y": 724,
+        "maxActive": 2,
+        "spawnCooldown": 1700,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "pasillo-b",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "level_1_pasillos_escaleras_pb-objective",
+      "label": "Cruza los pasillos y alcanza las escaleras a Planta Baja.",
+      "completion": [
+        {
+          "type": "exit_used",
+          "targetId": "salida-pasillos"
+        }
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "level_1_pasillos_escaleras_pb-checkpoint",
+      "type": "switch",
+      "x": 2800,
+      "y": 724,
+      "interactionKey": "E",
+      "interactionRadius": 110,
+      "prompt": "E · Asegurar checkpoint",
+      "interactionEffect": {
+        "type": "switch",
+        "message": "Punto asegurado. El grupo puede continuar.",
+        "objectiveEventType": "interactable_used",
+        "checkpoint": {
+          "x": 2800,
+          "y": 724,
+          "label": "Checkpoint canónico"
+        }
+      }
+    },
+    {
+      "id": "level_1_pasillos_escaleras_pb-exit",
+      "type": "stairs",
+      "x": 5300,
+      "y": 724,
+      "interactionKey": "E",
+      "interactionRadius": 150,
+      "prompt": "E · Subir hacia Planta Baja",
+      "interactionEffect": {
+        "type": "stairs",
+        "targetId": "salida-pasillos",
+        "message": "Subir hacia Planta Baja.",
+        "objectiveEventType": "exit_used"
+      }
+    }
+  ],
+  "pickups": [
+    {
+      "id": "level_1_pasillos_escaleras_pb-medkit",
+      "type": "medkit_small",
+      "x": 2500,
+      "y": 724,
+      "label": "Botiquín de campaña"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "level_1_pasillos_escaleras_pb-narrative",
+      "type": "narrative_message",
+      "bounds": {
+        "x": 900,
+        "y": 624,
+        "width": 500,
+        "height": 300
+      },
+      "payload": {
+        "speaker": "Giovanna",
+        "message": "Cruza los pasillos y alcanza las escaleras a Planta Baja.",
+        "durationMs": 2200
+      },
+      "once": true,
+      "startsEnabled": true
+    }
+  ],
+  "cinematics": [],
+  "exits": [
+    {
+      "id": "salida-pasillos",
+      "target_level_id": "canonical-next-node",
+      "scene_key": "LevelScene",
+      "spawn_point": {
+        "x": 240,
+        "y": 724
+      },
+      "label": "Subir hacia Planta Baja"
+    }
+  ]
+}

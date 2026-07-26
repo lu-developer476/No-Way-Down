@@ -8,6 +8,7 @@ import { commitCanonicalNode } from '../campaign/canonicalPartyProgression';
 import type { CampaignStateData } from '../systems/core/CampaignState';
 import type { PartyMember } from '../systems/core/PartyStateSystem';
 import { persistCampaignCompleted } from './sceneShared';
+import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
 
 interface CinematicBeat {
   beat: string;
@@ -43,7 +44,7 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     this.flowManager = new SceneFlowManager(this);
-    if (!this.flowManager.confirmPendingTransition(flowNode)) {
+    if (!new CampaignTransitionCoordinator(this).confirmDestination(flowNode)) {
       this.showDevelopmentError(flowNode.cinematicPath, 'La transición pendiente no coincide con esta cinemática.');
       return;
     }
@@ -198,8 +199,6 @@ export class CinematicScene extends Phaser.Scene {
     }
 
     this.hasStarted = true;
-    const manager = this.flowManager ?? new SceneFlowManager(this);
-
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
     const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
     if (currentNodeId === 'campaign-end') {
@@ -209,20 +208,12 @@ export class CinematicScene extends Phaser.Scene {
       this.scene.start('MainMenuScene');
       return;
     }
-    const next = manager.advanceFromNodeId(currentNodeId);
-
-    if (!next) {
+    if (!currentNodeId) {
       console.error('[CinematicScene] Error: no existe nodo siguiente para avanzar desde CinematicScene.');
       return;
     }
 
-    console.info('[CinematicScene] Avance de flujo validado.', {
-      currentNodeId,
-      nextNodeId: next.id
-    });
-
     this.isTransitioning = true;
-    void source;
-    manager.transitionToNode(next);
+    new CampaignTransitionCoordinator(this).requestCanonicalTransition(currentNodeId, source);
   }
 }

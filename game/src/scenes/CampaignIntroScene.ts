@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { controlManager } from '../input/ControlManager';
 import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
+import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
 
 interface CampaignIntroSceneData {
   flowNode?: CampaignFlowNode;
@@ -27,7 +28,7 @@ export class CampaignIntroScene extends Phaser.Scene {
     this.isTransitioning = false;
     const introNode = data.flowNode ?? { id: 'campaign-intro', type: 'campaignIntro' as const, sceneKey: 'CampaignIntroScene' as const };
     this.flowManager = new SceneFlowManager(this);
-    if (!this.flowManager.confirmPendingTransition(introNode)) {
+    if (!new CampaignTransitionCoordinator(this).confirmDestination(introNode)) {
       console.error('[CampaignIntroScene] La transición pendiente no corresponde al intro canónico.');
       return;
     }
@@ -87,10 +88,10 @@ export class CampaignIntroScene extends Phaser.Scene {
     }
 
     this.hasStarted = true;
-    const manager = this.flowManager ?? new SceneFlowManager(this);
-
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
-    const next = manager.advanceFromNodeId(currentNode?.id ?? 'campaign-intro');
+    const manager = this.flowManager ?? new SceneFlowManager(this);
+    const currentNodeId = currentNode?.id ?? 'campaign-intro';
+    const next = manager.peekNextFromNodeId(currentNodeId);
 
     if (next?.id && !next.id.startsWith('lvl01-')) {
       console.error('[CampaignIntroScene] Desvío narrativo detectado: el nodo posterior al intro no es lvl01.', {
@@ -105,7 +106,6 @@ export class CampaignIntroScene extends Phaser.Scene {
     }
 
     this.isTransitioning = true;
-    void source;
-    manager.transitionToNode(next);
+    new CampaignTransitionCoordinator(this).requestCanonicalTransition(currentNodeId, source);
   }
 }

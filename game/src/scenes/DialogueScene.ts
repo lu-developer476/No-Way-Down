@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { controlManager } from '../input/ControlManager';
 import { FlowDebugOverlay } from './flowDebug';
 import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
+import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
 
 interface DialogueLine {
   speaker: string;
@@ -37,6 +38,10 @@ export class DialogueScene extends Phaser.Scene {
     this.renderDialogue(dialoguePath);
 
     this.flowManager = new SceneFlowManager(this);
+    const flowNode = data.flowNode ?? this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    if (!flowNode || !new CampaignTransitionCoordinator(this).confirmDestination(flowNode)) {
+      return;
+    }
     this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
       flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
       enterDown: this.enterKey?.isDown ?? false,
@@ -124,24 +129,14 @@ export class DialogueScene extends Phaser.Scene {
     }
 
     this.hasStarted = true;
-    const manager = this.flowManager ?? new SceneFlowManager(this);
-
     const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
     const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
-    const next = manager.advanceFromNodeId(currentNodeId);
-
-    if (!next) {
+    if (!currentNodeId) {
       console.error('[DialogueScene] Error: no existe nodo siguiente para avanzar desde DialogueScene.');
       return;
     }
 
-    console.info('[DialogueScene] Avance de flujo validado.', {
-      currentNodeId,
-      nextNodeId: next.id
-    });
-
     this.isTransitioning = true;
-    void source;
-    manager.transitionToNode(next);
+    new CampaignTransitionCoordinator(this).requestCanonicalTransition(currentNodeId, source);
   }
 }

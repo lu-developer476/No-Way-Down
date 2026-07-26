@@ -9,15 +9,3 @@
 **/node_modules/
 **/dist/
 **/test-results/
-
-# Unity generated state
-unity/NoWayDown/[Ll]ibrary/
-unity/NoWayDown/[Tt]emp/
-unity/NoWayDown/[Oo]bj/
-unity/NoWayDown/[Ll]ogs/
-unity/NoWayDown/[Uu]ser[Ss]ettings/
-unity/NoWayDown/[Mm]emoryCaptures/
-unity/NoWayDown/[Bb]uild/
-unity/NoWayDown/[Bb]uilds/
-unity/NoWayDown/*.csproj
-unity/NoWayDown/*.sln

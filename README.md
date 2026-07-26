@@ -13,7 +13,7 @@
 ## Estado actual del proyecto
 
 - **Frontend jugable en `/game`**: aplicación Phaser 3 + TypeScript + Vite con escenas de arranque, precarga, menú principal, intro de campaña, niveles, cinemáticas, diálogo, piso superior y UI.
-- **Campaña principal integrada**: el flujo `main_campaign` encadena introducción, niveles del subsuelo, planta baja, pisos superiores, rescate en oficina 422, descenso, garage, cinemática exterior y epílogo final.
+- **Campaña principal integrada**: el flujo `main_campaign` conserva exactamente 35 nodos canónicos y encadena introducción, niveles del subsuelo, planta baja, pisos superiores, rescate en oficina 422, descenso, garage, cinemática exterior y epílogo final.
 - **Contenido y sistemas de gameplay**: existen configuraciones de niveles, rutas, oleadas, combate, objetivos, eventos narrativos, iluminación, audio, assets institucionales y scripts de generación/auditoría de assets.
 - **Backend funcional en `/backend`**: API Django + Django REST Framework con health check y endpoints de guardado/carga de progreso por `user_id`.
 - **Persistencia preparada para local y producción**: SQLite en desarrollo y configuración PostgreSQL/Supabase para despliegue en Render.
@@ -68,10 +68,6 @@ Para más detalle operativo, ver `docs/github-to-gitlab-mirror.md`.
 └── public/     # Referencias visuales estáticas del entorno
 ```
 
-## Dirección visual 3D / Unity
-
-La dirección objetivo para una futura implementación 3D realista está documentada en [`docs/unity/VISUAL_TARGET.md`](docs/unity/VISUAL_TARGET.md). Define HDRP, Windows x64, los perfiles Low/Medium/High/Ultra, el benchmark visual y las condiciones de validación sin modificar los 35 nodos canónicos. El frontend ejecutable actual continúa siendo Phaser; la especificación no implica que ya exista un build Unity ni que se haya alcanzado la calidad final.
-
 ## Requisitos
 
 - Node.js 20+
@@ -118,6 +114,15 @@ npm run build
 ```
 
 El build ejecuta `tsc --noEmit`, genera el bundle con Vite y valida el flujo de campaña con `scripts/verifyBuildCampaignFlow.mjs`.
+
+### Ejecutar tests y auditar la campaña
+
+Desde la raíz del repositorio:
+
+```bash
+npm test --prefix game
+node game/scripts/auditCanonicalCampaign.mjs
+```
 
 ### Scripts útiles
 

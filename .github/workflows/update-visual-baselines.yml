@@ -1,0 +1,23 @@
+name: Generate visual baseline candidates
+on: {workflow_dispatch: {}}
+jobs:
+  candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm, cache-dependency-path: game/package-lock.json}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: browser-actions/setup-chrome@v1
+      - run: npm ci --prefix game && pip install -r backend/requirements.txt -r game/e2e/requirements.txt
+      - name: Generate candidates (never update tracked baselines)
+        env: {E2E_CAPTURE_CANDIDATES: '1', E2E_VISUAL_COMPARISON: '0'}
+        run: npm run test:e2e:production --prefix game
+      - name: Produce review diff report
+        if: always()
+        run: python game/e2e/visual_diff_report.py || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: visual-baseline-candidates-${{ github.sha }}, path: game/test-results}

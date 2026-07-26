@@ -1,0 +1,25 @@
+name: Render production smoke
+on:
+  workflow_dispatch:
+    inputs:
+      baseUrl: {description: URL externa, required: true, default: 'https://no-way-down.onrender.com'}
+      expectedSha: {description: SHA esperado, required: false, default: ''}
+      runVisualComparison: {description: Comparar baselines, required: true, type: boolean, default: false}
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: browser-actions/setup-chrome@v1
+      - run: pip install -r game/e2e/requirements.txt
+      - env:
+          E2E_BASE_URL: ${{ inputs.baseUrl }}
+          E2E_EXPECTED_SHA: ${{ inputs.expectedSha }}
+          E2E_VISUAL_COMPARISON: ${{ inputs.runVisualComparison && '1' || '0' }}
+        run: bash game/scripts/runProductionSmoke.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: render-smoke-evidence-${{ github.run_id }}, path: game/test-results}

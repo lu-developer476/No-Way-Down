@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 from django.conf import settings
 from django.http import FileResponse, HttpResponse, JsonResponse
 from django.views import View
@@ -27,3 +30,30 @@ class FrontendIndexView(View):
 def api_not_found(request, path=''):
     """Keep unknown API URLs JSON-only instead of leaking into Django's HTML 404."""
     return JsonResponse({'detail': 'API route not found.'}, status=404)
+
+
+def _build_sha():
+    for name in ('RENDER_GIT_COMMIT', 'GITHUB_SHA', 'NWD_BUILD_SHA'):
+        value = os.getenv(name, '').strip()
+        if value:
+            return value
+    try:
+        return subprocess.run(
+            ['git', 'rev-parse', 'HEAD'], cwd=settings.BASE_DIR, check=True,
+            capture_output=True, text=True, timeout=2,
+        ).stdout.strip() or 'unknown'
+    except (OSError, subprocess.SubprocessError):
+        return 'unknown'
+
+
+def build_info(request):
+    """Expose only non-sensitive deploy identity used by production smoke tests."""
+    sha = _build_sha()
+    return JsonResponse({
+        'status': 'ok',
+        'application': 'No Way Down',
+        'environment': os.getenv('DJANGO_ENV', 'development'),
+        'backendSha': sha,
+        'frontendSha': os.getenv('NWD_FRONTEND_SHA', sha),
+        'buildId': os.getenv('RENDER_DEPLOY_ID', os.getenv('NWD_BUILT_AT', 'unknown')),
+    })

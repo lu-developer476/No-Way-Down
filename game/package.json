@@ -19,8 +19,7 @@
     "audit:asset-routes": "node scripts/auditAssetRoutes.mjs",
     "fix:asset-routes": "node scripts/auditAssetRoutes.mjs --fix",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "test:e2e:production": "bash scripts/runProductionE2E.sh",
-    "test:e2e:update-visuals": "UPDATE_VISUALS=1 bash scripts/runProductionE2E.sh"
+    "test:e2e:production": "bash scripts/runProductionE2E.sh"
   },
   "dependencies": {
     "phaser": "^3.90.0"

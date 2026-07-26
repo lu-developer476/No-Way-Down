@@ -5,6 +5,20 @@ from django.test import TestCase, override_settings
 
 
 class FrontendRoutingTests(TestCase):
+    def test_build_info_is_json_and_exposes_only_public_identity(self):
+        response = self.client.get('/api/build-info/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        payload = response.json()
+        self.assertEqual(payload['status'], 'ok')
+        self.assertEqual(
+            set(payload),
+            {'status', 'application', 'environment', 'backendSha', 'frontendSha', 'buildId'},
+        )
+        serialized = response.content.lower()
+        for sensitive in (b'secret', b'token', b'password', b'database_url', b'internal path'):
+            self.assertNotIn(sensitive, serialized)
+
     def test_root_serves_frontend_when_index_exists(self):
         with TemporaryDirectory() as temp_dir:
             dist_dir = Path(temp_dir)

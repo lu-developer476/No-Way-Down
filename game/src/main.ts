@@ -8,6 +8,7 @@ import { CinematicScene } from './scenes/CinematicScene';
 import { DialogueScene } from './scenes/DialogueScene';
 import { UIScene } from './scenes/UIScene';
 import { UpperFloorScene } from './scenes/UpperFloorScene';
+import { buildInfo, NwdBuildInfo } from './buildInfo';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
@@ -24,8 +25,13 @@ declare global {
   interface Window {
     /** Read-only production smoke-test surface. Mutations stay in Phaser's public API. */
     __NWD_GAME__?: Phaser.Game;
+    /** Immutable identity of the Vite artifact currently executing. */
+    __NWD_BUILD__?: NwdBuildInfo;
   }
 }
+
+window.__NWD_BUILD__ = buildInfo;
+console.info('[NoWayDown] Build', buildInfo);
 
 if (!appContainer || !unsupportedScreen) {
   throw new Error('Missing required game container elements');

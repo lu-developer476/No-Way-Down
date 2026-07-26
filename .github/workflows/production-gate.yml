@@ -1,12 +1,14 @@
 name: Production deploy gate
 on:
   pull_request:
-  push:
-    branches: [main]
+  push: {branches: [main]}
+concurrency:
+  group: production-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   production-gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,11 +19,14 @@ jobs:
       - run: npm ci --prefix game
       - run: pip install -r backend/requirements.txt -r game/e2e/requirements.txt
       - run: npm test --prefix game
+      - run: npm run build --prefix game
       - run: python backend/manage.py test
-      - run: UPDATE_VISUALS=1 npm run test:e2e:production --prefix game
       - run: npm run test:e2e:production --prefix game
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: production-e2e-evidence
-          path: game/test-results
+          name: production-e2e-evidence-${{ github.sha }}
+          if-no-files-found: warn
+          path: |
+            game/test-results
+            game/e2e/visual-baselines/manifest.json

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { resolveResistanceDuration } from '../config/e2eResistance';
 import { Player } from '../entities/Player';
 import { AllyAI } from '../entities/AllyAI';
 import { DEFAULT_ZOMBIE_HEALTH } from '../entities/Zombie';
@@ -1116,10 +1117,7 @@ export class GameScene extends Phaser.Scene {
     const configuredDurationMs = Number(configAsRecord.durationMs ?? 120000);
     // Explicit browser fixture: it changes only objective time, never campaign
     // registry/cursor/node state.
-    const e2eDuration = new URLSearchParams(window.location.search).get('e2eResistanceMs');
-    const durationMs = e2eDuration !== null
-      ? Math.max(100, Number(e2eDuration) || configuredDurationMs)
-      : configuredDurationMs;
+    const durationMs = resolveResistanceDuration(configuredDurationMs, window.location.search);
     const holdAreaIds = Array.isArray(configAsRecord.holdAreaIds)
       ? configAsRecord.holdAreaIds.filter((item): item is string => typeof item === 'string' && item.length > 0)
       : [];

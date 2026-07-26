@@ -55,6 +55,10 @@ import { DialogueSystem } from '../systems/core/DialogueSystem';
 import { LevelRestartManager } from '../systems/core/LevelRestartManager';
 import { CheckpointSystem } from '../systems/core/CheckpointSystem';
 import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
+import {
+  AmbientVisualSystem,
+  type AmbientZoneDefinition
+} from '../systems/AmbientVisualSystem';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -117,6 +121,7 @@ export class GameScene extends Phaser.Scene {
   private projectileSystem?: ProjectileSystem;
   private combatActionSystem?: CombatActionSystem;
   private combatFeedbackSystem?: CombatFeedbackSystem;
+  private ambientVisualSystem?: AmbientVisualSystem;
   private pickupSystem?: PickupSystem;
   private zombieSystem?: ZombieSystem;
   private missionSystem?: MissionSystem;
@@ -306,6 +311,16 @@ export class GameScene extends Phaser.Scene {
     this.registry.set('combatFeedbackSystem', this.combatFeedbackSystem);
 
     this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
+    const ambientZones =
+      (levelConfig.layout.background_zones ?? []) as AmbientZoneDefinition[];
+
+    this.ambientVisualSystem = new AmbientVisualSystem(this, {
+      levelWidth,
+      levelHeight,
+      floorTop: levelHeight - floorHeight,
+      zones: ambientZones
+    });
+    this.ambientVisualSystem.create();
     addRetroScreenOverlay(this, 17.5);
 
     const environment = this.physics.add.staticGroup();
@@ -582,6 +597,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.ambientVisualSystem?.destroy();
+      this.ambientVisualSystem = undefined;
       this.combatFeedbackSystem?.destroy();
       this.combatFeedbackSystem = undefined;
       this.registry.remove('combatFeedbackSystem');
@@ -681,6 +698,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    this.ambientVisualSystem?.update(this.time.now);
     this.updateResistancePhase();
 
     if (this.movementLockedByNarrative) {
@@ -1701,7 +1719,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (tipo.includes('cajero')) {
-      addEnvironmentProp(this, { kind: 'atm', x, y: lowerY - 44, depth: 6, scale: Phaser.Math.Clamp(width / 50, 0.9, 1.4) });
+      const propY = lowerY - 44;
+      addEnvironmentProp(this, { kind: 'atm', x, y: propY, depth: 6, scale: Phaser.Math.Clamp(width / 50, 0.9, 1.4) });
+      this.ambientVisualSystem?.registerScreen(x, propY - 20, 26, 18);
       return;
     }
 
@@ -1711,7 +1731,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     if (tipo.includes('pantalla')) {
-      addEnvironmentProp(this, { kind: 'info-screen', x, y: lowerY - 36, depth: 6, scale: Phaser.Math.Clamp(height / 78, 0.8, 1.3) });
+      const propY = lowerY - 36;
+      addEnvironmentProp(this, { kind: 'info-screen', x, y: propY, depth: 6, scale: Phaser.Math.Clamp(height / 78, 0.8, 1.3) });
+      this.ambientVisualSystem?.registerScreen(x, propY - 17, 28, 20);
       return;
     }
 
@@ -1745,10 +1767,13 @@ export class GameScene extends Phaser.Scene {
     for (let x = 455; x < levelWidth - 160; x += 1040) {
       addEnvironmentProp(this, { kind: 'cafeteria-counter', x, y: floorTop - 16, depth: 6.2, scale: 1.05 });
       this.createPlatform(environment, { x, y: floorTop - 8, width: 138, height: 26 });
+      this.ambientVisualSystem?.registerSteamSource(x + 18, floorTop - 42);
     }
 
     for (let x = 780; x < levelWidth - 220; x += 1560) {
-      addEnvironmentProp(this, { kind: 'vending-machine', x, y: floorTop - 56, depth: 5.9, scale: 1 });
+      const propY = floorTop - 56;
+      addEnvironmentProp(this, { kind: 'vending-machine', x, y: propY, depth: 5.9, scale: 1 });
+      this.ambientVisualSystem?.registerScreen(x - 5, propY - 10, 22, 38);
       this.createPlatform(environment, { x, y: floorTop - 18, width: 42, height: 26 });
     }
 

@@ -161,6 +161,7 @@ export class BootScene extends Phaser.Scene {
     this.createWeaponSilhouetteTextures(graphics);
     this.createPickupTextures(graphics);
     this.createCombatEffectTextures(graphics);
+    this.createAmbientVisualTextures(graphics);
 
     graphics.clear();
     graphics.fillStyle(palette.bullet, 1);
@@ -644,6 +645,76 @@ export class BootScene extends Phaser.Scene {
     texture('fx-blood-mist', 12, 10, [[1,1,2,2,0x7f1d1d],[5,0,1,2,0xb91c1c],[9,2,2,1,0x991b1b],[3,4,2,2,0x991b1b],[7,5,1,2,0x7f1d1d],[10,7,2,2,0xb91c1c],[1,8,1,1,0x450a0a]]);
     texture('fx-impact-spark', 8, 8, [[3,0,2,8,0xf97316],[0,3,8,2,0xf59e0b],[2,2,4,4,0xfacc15],[3,3,2,2,0xffffff]]);
     texture('fx-death-shadow', 34, 10, [[7,0,20,2,0x000000],[3,2,28,2,0x000000],[0,4,34,3,0x000000],[4,7,26,2,0x000000],[10,9,14,1,0x000000]]);
+  }
+
+  private createAmbientVisualTextures(graphics: Phaser.GameObjects.Graphics): void {
+    const rect = (x: number, y: number, width: number, height: number, color: number, alpha = 1): void => {
+      graphics.fillStyle(color, alpha);
+      graphics.fillRect(x, y, width, height);
+    };
+
+    graphics.clear();
+    rect(3, 5, 90, 11, 0x090b10); rect(4, 6, 88, 8, 0x697780);
+    rect(4, 6, 88, 2, 0xaab5bb); rect(4, 12, 88, 2, 0x38434b);
+    [19, 73].forEach((x) => { rect(x, 3, 5, 14, 0x090b10); rect(x + 1, 4, 3, 12, 0x697780); });
+    [12, 80].forEach((x) => { rect(x, 0, 8, 3, 0x38434b); rect(x + 2, 3, 4, 3, 0x090b10); });
+    rect(56, 10, 8, 2, 0x865333); rect(60, 12, 5, 1, 0x865333);
+    graphics.generateTexture('ambient-ceiling-pipe', 96, 18);
+
+    graphics.clear();
+    rect(2, 3, 50, 25, 0x090b10); rect(4, 5, 46, 20, 0x38434b); rect(7, 8, 40, 15, 0x11151d);
+    for (let y = 9; y <= 19; y += 2) { rect(8, y, 38, 1, 0x697780); }
+    rect(5, 5, 44, 2, 0xaab5bb); rect(5, 24, 44, 2, 0x090b10);
+    [[5, 7], [47, 7], [5, 23], [47, 23]].forEach(([x, y]) => rect(x, y, 2, 2, 0xaab5bb));
+    graphics.generateTexture('ambient-wall-vent', 54, 30);
+
+    graphics.clear();
+    rect(5, 0, 4, 4, 0x38434b); rect(45, 0, 4, 4, 0x38434b); rect(2, 3, 50, 16, 0x090b10);
+    rect(4, 5, 46, 12, 0x17633a); rect(5, 6, 44, 1, 0x9ee6b8); rect(5, 16, 44, 1, 0x0d3d25);
+    const glyphs: number[][] = [
+      [7,8,5,1],[7,8,1,7],[7,11,4,1],[7,14,5,1],
+      [14,9,1,6],[19,8,1,7],[15,8,4,1],[15,11,4,1],[15,14,4,1],
+      [22,8,5,1],[22,8,1,7],[22,14,5,1],[29,8,1,7],[34,8,1,7],
+      [37,8,5,1],[37,8,1,7],[37,11,5,1],[41,8,1,4],
+      [44,10,4,1],[47,8,1,5],[47,12,3,1]
+    ];
+    glyphs.forEach(([x, y, w, h]) => rect(x, y, w, h, 0xd8ffe5));
+    graphics.generateTexture('ambient-exit-sign', 54, 20);
+
+    graphics.clear();
+    rect(1, 8, 5, 4, 0x38434b); rect(5, 3, 17, 10, 0x090b10); rect(7, 4, 13, 7, 0x7f1d1d);
+    rect(9, 5, 9, 4, 0xd85b32); rect(11, 5, 5, 2, 0xffb65c); rect(7, 11, 13, 2, 0x38434b);
+    graphics.generateTexture('ambient-emergency-lamp', 24, 14);
+
+    graphics.clear();
+    const cableSegments = [[8,0,3,12],[9,10,3,13],[8,21,3,13],[6,32,3,14],[7,44,3,12],[9,54,3,10]];
+    cableSegments.forEach(([x, y, w, h]) => { rect(x, y, w, h, 0x090b10); rect(x + 1, y, 1, h, 0x697780); });
+    rect(7, 63, 6, 6, 0x090b10); rect(8, 64, 4, 4, 0x38434b); rect(9, 69, 1, 3, 0xaab5bb); rect(11, 69, 1, 2, 0x865333);
+    graphics.generateTexture('ambient-hanging-cable', 18, 72);
+
+    graphics.clear();
+    rect(1, 2, 15, 9, 0x34373c); rect(2, 1, 13, 9, 0xd8d0b9); rect(13, 1, 3, 3, 0xeee8d8);
+    rect(4, 5, 8, 1, 0x7f8587); rect(4, 8, 6, 1, 0x7f8587);
+    graphics.generateTexture('ambient-paper-a', 18, 12);
+
+    graphics.clear();
+    rect(2, 1, 18, 8, 0x34373c); rect(1, 2, 17, 6, 0xc8c9c2); rect(17, 2, 3, 3, 0xe8e4d6);
+    rect(5, 4, 9, 1, 0x747b80); rect(7, 6, 8, 1, 0x747b80);
+    graphics.generateTexture('ambient-paper-b', 22, 10);
+
+    graphics.clear(); rect(1, 1, 3, 3, 0xd8cda9, 0.16); rect(2, 2, 2, 2, 0xfff1c4, 0.9);
+    graphics.generateTexture('ambient-dust-mote', 5, 5);
+
+    graphics.clear();
+    rect(3, 8, 5, 3, 0xcbd1d3, 0.45); rect(6, 5, 4, 4, 0xe2e6e6, 0.55);
+    rect(9, 2, 3, 5, 0xcbd1d3, 0.4); rect(11, 7, 5, 3, 0xe2e6e6, 0.48); rect(7, 11, 5, 2, 0xbac2c5, 0.32);
+    graphics.generateTexture('ambient-steam-puff', 18, 14);
+
+    graphics.clear(); rect(1, 0, 2, 4, 0x285b75); rect(0, 2, 3, 3, 0x285b75); rect(1, 1, 1, 4, 0x8ed7ec); rect(1, 5, 1, 1, 0x285b75);
+    graphics.generateTexture('ambient-water-drop', 3, 6);
+
+    graphics.clear(); rect(0, 1, 4, 1, 0x5b9ead, 0.35); rect(4, 1, 20, 1, 0xc6f4f7, 0.85); rect(24, 1, 4, 1, 0x5b9ead, 0.35); rect(3, 2, 22, 1, 0x397783, 0.55);
+    graphics.generateTexture('ambient-screen-scanline', 28, 4);
   }
 
   private createWeaponProjectileTextures(graphics: Phaser.GameObjects.Graphics): void {

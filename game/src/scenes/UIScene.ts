@@ -4,6 +4,7 @@ import { controlManager } from '../input/ControlManager';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { visualTheme } from './visualTheme';
+import { calculateUiLayout, resolveDominantUiLayer, UI_LAYOUT } from './uiLayout';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
@@ -60,11 +61,20 @@ export class UIScene extends Phaser.Scene {
   private currentPauseMenuView?: PauseMenuView;
   private currentTransitionView?: TransitionView;
   private hasVisibleDialogue = false;
+  private fatalLayer?: Phaser.GameObjects.Container;
+  private fatalTitleText?: Phaser.GameObjects.Text;
+  private fatalBodyText?: Phaser.GameObjects.Text;
+  private currentFatalError?: unknown;
+  private controlsFadeTimer?: Phaser.Time.TimerEvent;
+  private createdAtWidth: number = UI_LAYOUT.logicalWidth;
+  private createdAtHeight: number = UI_LAYOUT.logicalHeight;
 
   constructor() { super('UIScene'); }
 
   create(): void {
     this.cameras.main.setRoundPixels(true);
+    this.createdAtWidth = this.scale.width;
+    this.createdAtHeight = this.scale.height;
     this.createHudFrame();
     const events = this.registry.events;
     events.on('changedata-interactionHint', this.handleInteractionHintChanged, this);
@@ -74,6 +84,9 @@ export class UIScene extends Phaser.Scene {
     events.on('changedata-dialogueState', this.handleDialogueStateChanged, this);
     events.on('changedata-pauseMenuView', this.handlePauseMenuViewChanged, this);
     events.on('changedata-transitionView', this.handleTransitionViewChanged, this);
+    events.on('changedata-campaignLoadError', this.handleFatalErrorChanged, this);
+    events.on('changedata-campaignDevelopmentError', this.handleFatalErrorChanged, this);
+    this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       events.off('changedata-interactionHint', this.handleInteractionHintChanged, this);
       events.off('changedata-partyHud', this.handlePartyHudChanged, this);
@@ -82,10 +95,20 @@ export class UIScene extends Phaser.Scene {
       events.off('changedata-dialogueState', this.handleDialogueStateChanged, this);
       events.off('changedata-pauseMenuView', this.handlePauseMenuViewChanged, this);
       events.off('changedata-transitionView', this.handleTransitionViewChanged, this);
+      events.off('changedata-campaignLoadError', this.handleFatalErrorChanged, this);
+      events.off('changedata-campaignDevelopmentError', this.handleFatalErrorChanged, this);
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this);
+      this.combatStatusClearTimer?.remove(false);
+      this.controlsFadeTimer?.remove(false);
+      this.combatStatusClearTimer = undefined;
+      this.controlsFadeTimer = undefined;
       this.pauseOptionTexts = [];
       this.pauseOptionBackgrounds = [];
+      this.partyRosterRows.length = 0;
+      this.clearObjectReferences();
     });
     this.refreshFromRegistry();
+    this.handleResize();
   }
 
   private refreshFromRegistry(): void {
@@ -96,6 +119,39 @@ export class UIScene extends Phaser.Scene {
     this.handleDialogueStateChanged(this.registry, this.registry.get('dialogueState') ?? null);
     this.handlePauseMenuViewChanged(this.registry, this.registry.get('pauseMenuView') ?? null);
     this.handleTransitionViewChanged(this.registry, this.registry.get('transitionView') ?? null);
+    this.handleFatalErrorChanged(this.registry, this.registry.get('campaignDevelopmentError') ?? this.registry.get('campaignLoadError') ?? null);
+  }
+
+  private handleResize(): void {
+    const layout = calculateUiLayout(this.scale.width, this.scale.height);
+    const dx = layout.width - this.createdAtWidth;
+    const dy = layout.height - this.createdAtHeight;
+    this.threatCard?.setPosition(dx, 0);
+    this.controlsCard?.setPosition(dx, 0);
+    this.objectiveCard?.setPosition(dx / 2, dy);
+    this.interactionContainer?.setPosition(dx / 2, dy);
+    this.dialoguePanel?.setPosition(dx / 2, dy);
+    this.pauseLayer?.setPosition(dx / 2, dy / 2);
+    this.transitionLayer?.setPosition(dx / 2, dy / 2);
+    this.fatalLayer?.setPosition(dx / 2, dy / 2);
+    this.resizeModalOverlay(this.pauseLayer, layout.width, layout.height);
+    this.resizeModalOverlay(this.transitionLayer, layout.width, layout.height);
+    this.resizeModalOverlay(this.fatalLayer, layout.width, layout.height);
+    this.cameras.main.setViewport(0, 0, layout.width, layout.height);
+  }
+
+  private resizeModalOverlay(layer: Phaser.GameObjects.Container | undefined, width: number, height: number): void {
+    const overlay = layer?.getAt(0);
+    if (overlay instanceof Phaser.GameObjects.Rectangle) overlay.setSize(width, height);
+  }
+
+  private clearObjectReferences(): void {
+    this.protagonistHud = undefined; this.previousProtagonistHud = undefined;
+    this.zombieCountText = undefined; this.objectiveText = undefined; this.interactionText = undefined;
+    this.interactionCard = undefined; this.dialoguePanel = undefined; this.gameplayHudLayer = undefined;
+    this.partyRosterContainer = undefined; this.controlsCard = undefined; this.objectiveCard = undefined;
+    this.threatCard = undefined; this.interactionContainer = undefined; this.pauseLayer = undefined;
+    this.transitionLayer = undefined; this.fatalLayer = undefined;
   }
 
   private handlePartyHudChanged(_parent: Phaser.Data.DataManager, value: PartyHudMember[]): void {
@@ -187,7 +243,7 @@ export class UIScene extends Phaser.Scene {
     this.interactionText?.setText(hint || '');
     if (hint && this.interactionText && this.interactionCard) {
       const targetWidth = Phaser.Math.Clamp(this.interactionText.width + 40, 220, 500);
-      this.interactionCard.setSize(targetWidth, 30);
+      this.interactionCard.setSize(targetWidth, Math.max(UI_LAYOUT.interactionHeight, this.interactionText.height + 14));
     }
     this.interactionContainer?.setVisible(Boolean(hint) && Boolean(this.gameplayHudLayer?.visible));
   }
@@ -197,7 +253,11 @@ export class UIScene extends Phaser.Scene {
       const choices = value.choices?.length ? `\n${value.choices.map((choice, i) => `${i + 1}. ${choice.text}`).join('\n')}` : '';
       this.dialogueSpeakerText?.setText(value.speaker || '...');
       this.dialoguePortraitText?.setText(value.portrait || value.speaker || 'Narrador');
-      this.dialogueBodyText?.setText(`${value.text}${value.emotion ? ` (${value.emotion})` : ''}${choices}`);
+      this.dialogueBodyText?.setFontSize(value.choices?.length ? 10 : 11)
+        .setText(`${value.text}${value.emotion ? ` (${value.emotion})` : ''}${choices}`);
+      while (this.dialogueBodyText && this.dialogueBodyText.height > 104 && Number.parseInt(String(this.dialogueBodyText.style.fontSize), 10) > 8) {
+        this.dialogueBodyText.setFontSize(Number.parseInt(String(this.dialogueBodyText.style.fontSize), 10) - 1);
+      }
     }
     this.refreshUiVisibility();
   }
@@ -228,11 +288,32 @@ export class UIScene extends Phaser.Scene {
     this.refreshUiVisibility();
   }
 
+  private handleFatalErrorChanged(_p: Phaser.Data.DataManager, value: unknown): void {
+    this.currentFatalError = value || this.registry.get('campaignDevelopmentError') || this.registry.get('campaignLoadError');
+    if (this.currentFatalError && typeof this.currentFatalError === 'object') {
+      const error = this.currentFatalError as Record<string, unknown>;
+      const node = error.nodeId ?? 'desconocido';
+      const asset = error.assetPath ?? error.levelConfigPath ?? 'sin ruta';
+      const reason = error.reason ?? 'La campaña fue detenida para evitar un estado inválido.';
+      this.fatalTitleText?.setText('ERROR DE CAMPAÑA');
+      this.fatalBodyText?.setText(`No se pudo continuar de forma segura.\n\nNodo: ${String(node)}\nRecurso: ${String(asset)}\n\n${String(reason)}`);
+    }
+    this.refreshUiVisibility();
+  }
+
   private refreshUiVisibility(): void {
-    const transitionVisible = Boolean(this.currentTransitionView?.visible);
-    const pauseVisible = !transitionVisible && Boolean(this.currentPauseMenuView?.visible);
-    const dialogueVisible = !transitionVisible && !pauseVisible && this.hasVisibleDialogue;
-    const gameplayVisible = !transitionVisible && !pauseVisible && !dialogueVisible;
+    const dominant = resolveDominantUiLayer({
+      fatal: Boolean(this.currentFatalError),
+      transition: Boolean(this.currentTransitionView?.visible),
+      pause: Boolean(this.currentPauseMenuView?.visible),
+      dialogue: this.hasVisibleDialogue
+    });
+    const fatalVisible = dominant === 'fatal';
+    const transitionVisible = dominant === 'transition';
+    const pauseVisible = dominant === 'pause';
+    const dialogueVisible = dominant === 'dialogue';
+    const gameplayVisible = dominant === 'gameplay';
+    this.fatalLayer?.setVisible(fatalVisible);
     this.transitionLayer?.setVisible(transitionVisible);
     this.pauseLayer?.setVisible(pauseVisible);
     this.dialoguePanel?.setVisible(dialogueVisible);
@@ -278,7 +359,7 @@ export class UIScene extends Phaser.Scene {
     const controlsBg = this.add.rectangle(this.scale.width - 12, 54, 370, 38, visualTheme.palette.uiPanelRaised, .84).setOrigin(1, 0).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, .9);
     this.controlsLegendText = this.add.text(this.scale.width - 22, 59, this.getControlsLegendText(), { color: visualTheme.palette.uiTextSecondary, fontSize: '8px', fontFamily: font, align: 'right', lineSpacing: 2, wordWrap: { width: 350 } }).setOrigin(1, 0);
     this.controlsCard = this.add.container(0, 0, [controlsBg, this.controlsLegendText]); this.gameplayHudLayer.add(this.controlsCard);
-    this.time.delayedCall(8000, () => this.controlsLegendText?.setAlpha(.58));
+    this.controlsFadeTimer = this.time.delayedCall(8000, () => this.controlsLegendText?.setAlpha(.58));
 
     const objectiveBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 58, 580, 46, visualTheme.palette.uiObjectiveFill, .96).setOrigin(.5, 0).setStrokeStyle(2, visualTheme.palette.uiObjectiveBorder);
     const objectiveLabel = this.add.text(this.scale.width / 2 - 276, this.scale.height - 53, 'MISIÓN', { color: visualTheme.palette.uiHighlight, fontSize: '8px', fontFamily: font, fontStyle: 'bold' });
@@ -286,20 +367,23 @@ export class UIScene extends Phaser.Scene {
     this.objectiveCard = this.add.container(0, 0, [objectiveBg, objectiveLabel, this.objectiveText]); this.gameplayHudLayer.add(this.objectiveCard);
 
     this.interactionCard = this.add.rectangle(this.scale.width / 2, this.scale.height - 66, 500, 30, visualTheme.palette.uiInteractionFill, .96).setOrigin(.5, 1).setStrokeStyle(2, visualTheme.palette.uiPanelAccent);
-    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 81, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '10px', fontFamily: font, align: 'center' }).setOrigin(.5);
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 81, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '10px', fontFamily: font, align: 'center', wordWrap: { width: 500, useAdvancedWrap: true } }).setOrigin(.5);
     this.interactionContainer = this.add.container(0, 0, [this.interactionCard, this.interactionText]).setVisible(false); this.gameplayHudLayer.add(this.interactionContainer);
 
-    const dialogueWidth = 820, dialogueHeight = 118, dialogueY = this.scale.height - 76, left = this.scale.width / 2 - dialogueWidth / 2;
+    const dialogueWidth = UI_LAYOUT.dialogueMaxWidth, dialogueHeight = UI_LAYOUT.dialogueHeight;
+    const dialogueY = this.scale.height - UI_LAYOUT.margin - dialogueHeight / 2;
+    const left = this.scale.width / 2 - dialogueWidth / 2;
     const dialogueBg = this.add.rectangle(this.scale.width / 2, dialogueY, dialogueWidth, dialogueHeight, visualTheme.palette.uiPanelFill, .97).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
-    const portrait = this.add.rectangle(left + 50, dialogueY, 88, 104, visualTheme.palette.uiPanelRaised, .98).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
+    const portrait = this.add.rectangle(left + 50, dialogueY, 88, dialogueHeight - 14, visualTheme.palette.uiPanelRaised, .98).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
     this.dialoguePortraitText = this.add.text(left + 50, dialogueY, '', { color: visualTheme.palette.uiTextMuted, fontSize: '9px', fontFamily: font, align: 'center', wordWrap: { width: 72, useAdvancedWrap: true } }).setOrigin(.5);
-    this.dialogueSpeakerText = this.add.text(left + 104, dialogueY - 48, '', { color: visualTheme.palette.uiAccent, fontSize: '12px', fontFamily: font, fontStyle: 'bold' });
-    this.dialogueBodyText = this.add.text(left + 104, dialogueY - 29, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '11px', fontFamily: font, lineSpacing: 2, wordWrap: { width: 680, useAdvancedWrap: true } }).setMaxLines(4);
-    this.dialogueHintText = this.add.text(left + dialogueWidth - 12, dialogueY + 48, 'SPACE avanzar · X saltar · 1-3 elegir', { color: visualTheme.palette.uiTextMuted, fontSize: '8px', fontFamily: font }).setOrigin(1, .5);
+    this.dialogueSpeakerText = this.add.text(left + 104, dialogueY - 66, '', { color: visualTheme.palette.uiAccent, fontSize: '12px', fontFamily: font, fontStyle: 'bold' });
+    this.dialogueBodyText = this.add.text(left + 104, dialogueY - 47, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '11px', fontFamily: font, lineSpacing: 2, wordWrap: { width: 680, useAdvancedWrap: true } });
+    this.dialogueHintText = this.add.text(left + dialogueWidth - 12, dialogueY + 64, 'SPACE avanzar · X saltar · 1-3 elegir', { color: visualTheme.palette.uiTextMuted, fontSize: '8px', fontFamily: font }).setOrigin(1, .5);
     this.dialoguePanel = this.add.container(0, 0, [dialogueBg, portrait, this.dialoguePortraitText, this.dialogueSpeakerText, this.dialogueBodyText, this.dialogueHintText]).setDepth(60).setVisible(false);
 
     this.createPauseLayer(font);
     this.createTransitionLayer(font);
+    this.createFatalLayer(font);
   }
 
   private createPartyRoster(fontFamily: string): void {
@@ -327,7 +411,7 @@ export class UIScene extends Phaser.Scene {
         fontSize: '8px',
         fontFamily,
         fontStyle: 'bold'
-      }).setMaxLines(1);
+      });
       const hpBackground = this.add.rectangle(5, 15, 102, 3, visualTheme.palette.uiPanelShadow, 0.95).setOrigin(0);
       const hpFill = this.add.rectangle(5, 15, 102, 3, visualTheme.palette.uiHealth).setOrigin(0);
       const container = this.add.container(18 + column * 120, 152 + row * 22, [background, nameText, hpBackground, hpFill])
@@ -362,10 +446,31 @@ export class UIScene extends Phaser.Scene {
   private createTransitionLayer(font: string): void {
     const { width, height } = this.scale;
     const overlay = this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.uiPanelShadow, .9);
-    const card = this.add.rectangle(width / 2, height / 2, 640, 132, visualTheme.palette.uiPanelFill, 1).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
-    this.transitionLabelText = this.add.text(width / 2, height / 2 - 48, 'TRANSICIÓN', { color: visualTheme.palette.uiAccent, fontSize: '9px', fontFamily: font, fontStyle: 'bold' }).setOrigin(.5);
-    this.transitionMessageText = this.add.text(width / 2, height / 2 + 4, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '18px', fontFamily: font, align: 'center', lineSpacing: 6, wordWrap: { width: 560, useAdvancedWrap: true } }).setMaxLines(3).setOrigin(.5);
+    const card = this.add.rectangle(width / 2, height / 2, UI_LAYOUT.transitionMaxWidth, UI_LAYOUT.transitionHeight, visualTheme.palette.uiPanelFill, 1).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
+    this.transitionLabelText = this.add.text(width / 2, height / 2 - 68, 'TRANSICIÓN', { color: visualTheme.palette.uiAccent, fontSize: '9px', fontFamily: font, fontStyle: 'bold' }).setOrigin(.5);
+    this.transitionMessageText = this.add.text(width / 2, height / 2 + 4, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '14px', fontFamily: font, align: 'center', lineSpacing: 4, wordWrap: { width: 560, useAdvancedWrap: true } }).setOrigin(.5);
     this.transitionLayer = this.add.container(0, 0, [overlay, card, this.transitionLabelText, this.transitionMessageText]).setDepth(80).setScrollFactor(0).setVisible(false);
+  }
+
+  private createFatalLayer(font: string): void {
+    const { width, height } = this.scale;
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x09070b, .98);
+    const cardWidth = Math.min(UI_LAYOUT.fatalMaxWidth, width - UI_LAYOUT.margin * 4);
+    const card = this.add.rectangle(width / 2, height / 2, cardWidth, UI_LAYOUT.fatalHeight, visualTheme.palette.uiPanelFill, 1)
+      .setStrokeStyle(2, Phaser.Display.Color.ValueToColor(visualTheme.palette.uiDanger).color);
+    this.fatalTitleText = this.add.text(width / 2, height / 2 - 112, 'ERROR DE CAMPAÑA', {
+      color: visualTheme.palette.uiDanger, fontSize: '18px', fontFamily: font, fontStyle: 'bold'
+    }).setOrigin(.5);
+    this.fatalBodyText = this.add.text(width / 2, height / 2 - 72, '', {
+      color: visualTheme.palette.uiTextPrimary, fontSize: '12px', fontFamily: font, align: 'center',
+      lineSpacing: 4, wordWrap: { width: cardWidth - 56, useAdvancedWrap: true }
+    }).setOrigin(.5, 0);
+    const hint = this.add.text(width / 2, height / 2 + 116, 'La campaña quedó detenida. Volvé al menú o recargá el juego.', {
+      color: visualTheme.palette.uiTextMuted, fontSize: '9px', fontFamily: font, align: 'center',
+      wordWrap: { width: cardWidth - 40, useAdvancedWrap: true }
+    }).setOrigin(.5);
+    this.fatalLayer = this.add.container(0, 0, [overlay, card, this.fatalTitleText, this.fatalBodyText, hint])
+      .setDepth(100).setScrollFactor(0).setVisible(false);
   }
 
   private createScreenVignette(): void {

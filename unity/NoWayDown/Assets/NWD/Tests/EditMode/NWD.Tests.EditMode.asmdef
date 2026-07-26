@@ -1,0 +1,29 @@
+{
+  "name": "NWD.Tests.EditMode",
+  "rootNamespace": "NWD.Tests.EditMode",
+  "references": [
+    "NWD.Core",
+    "NWD.Narrative",
+    "NWD.Campaign",
+    "NWD.Combat",
+    "NWD.Missions",
+    "NWD.Save",
+    "NWD.Enemies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

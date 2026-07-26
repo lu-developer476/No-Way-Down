@@ -1,0 +1,19 @@
+name: Unity foundation (requires licensed runner)
+on:
+  workflow_dispatch:
+    inputs:
+      unityVersion:
+        description: Exact installed Unity 6.3 LTS patch
+        required: true
+jobs:
+  tests-and-build:
+    runs-on: ubuntu-latest
+    if: ${{ false }} # Enable only after secrets and exact editor version are configured.
+    steps:
+      - uses: actions/checkout@v4
+      - name: EditMode
+        run: echo "Configure licensed Unity runner to execute EditMode and canonical validation"
+      - name: PlayMode
+        run: echo "Configure licensed Unity runner to execute PlayMode"
+      - name: Windows x64
+        run: echo "Configure licensed Unity runner to build Windows x64 and upload results"

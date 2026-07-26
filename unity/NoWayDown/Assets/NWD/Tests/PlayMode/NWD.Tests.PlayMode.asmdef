@@ -1,0 +1,27 @@
+{
+  "name": "NWD.Tests.PlayMode",
+  "rootNamespace": "NWD.Tests.PlayMode",
+  "references": [
+    "NWD.Core",
+    "NWD.Campaign",
+    "NWD.Combat",
+    "NWD.Missions",
+    "NWD.Save",
+    "NWD.Enemies",
+    "NWD.Squad"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

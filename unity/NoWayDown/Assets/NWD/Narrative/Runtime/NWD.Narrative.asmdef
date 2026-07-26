@@ -1,0 +1,16 @@
+{
+  "name": "NWD.Narrative",
+  "rootNamespace": "NWD.Narrative",
+  "references": [
+    "NWD.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,27 @@
+name: Production deploy gate
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  production-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm, cache-dependency-path: game/package-lock.json}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip, cache-dependency-path: backend/requirements.txt}
+      - uses: browser-actions/setup-chrome@v1
+      - run: npm ci --prefix game
+      - run: pip install -r backend/requirements.txt -r game/e2e/requirements.txt
+      - run: npm test --prefix game
+      - run: python backend/manage.py test
+      - run: UPDATE_VISUALS=1 npm run test:e2e:production --prefix game
+      - run: npm run test:e2e:production --prefix game
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-e2e-evidence
+          path: game/test-results

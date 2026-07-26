@@ -20,6 +20,13 @@ const appContainer = document.getElementById('app');
 const unsupportedScreen = document.getElementById('unsupported-screen');
 let game: Phaser.Game | null = null;
 
+declare global {
+  interface Window {
+    /** Read-only production smoke-test surface. Mutations stay in Phaser's public API. */
+    __NWD_GAME__?: Phaser.Game;
+  }
+}
+
 if (!appContainer || !unsupportedScreen) {
   throw new Error('Missing required game container elements');
 }
@@ -94,6 +101,7 @@ const mountGame = () => {
   hideUnsupportedScreen();
   try {
     game = new Phaser.Game(config);
+    window.__NWD_GAME__ = game;
   } catch (error) {
     console.error('[NoWayDown] Error iniciando Phaser.', error);
     showBlockingMessage(LOAD_ERROR_MESSAGE);
@@ -107,6 +115,7 @@ const unmountGame = () => {
 
   game.destroy(true);
   game = null;
+  delete window.__NWD_GAME__;
 };
 
 const syncGameAvailability = () => {

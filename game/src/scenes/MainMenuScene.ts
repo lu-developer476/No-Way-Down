@@ -172,6 +172,11 @@ export class MainMenuScene extends Phaser.Scene {
     this.menuHintText = this.add.text(width / 2, height - 26, '← → seleccionar · ENTER confirmar · ESC volver', UI_STYLES['font-subtext'])
       .setOrigin(0.5)
       .setDepth(4);
+
+    const build = window.__NWD_BUILD__;
+    this.add.text(width - 14, 12, `v${build?.version ?? 'unknown'} · ${build?.shortSha ?? 'unknown'}`, {
+      ...UI_STYLES['font-subtext'], color: '#64748b', fontSize: '11px'
+    }).setOrigin(1, 0).setDepth(4);
   }
 
   private buildControlsPanel(): void {

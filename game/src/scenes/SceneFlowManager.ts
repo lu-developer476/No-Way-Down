@@ -23,6 +23,13 @@ export interface CampaignFlowDefinition {
   nodes: CampaignFlowNode[];
 }
 
+export interface PendingCampaignTransition {
+  fromNodeId: string | null;
+  toNode: CampaignFlowNode;
+  targetSceneKey: string;
+  levelConfigPath: string | null;
+}
+
 const FLOW_REGISTRY_KEY = 'campaignFlowDefinition';
 const FLOW_CURSOR_KEY = 'campaignFlowCursor';
 const CAMPAIGN_FLOW_CACHE_KEY = 'campaign_flow';
@@ -235,15 +242,25 @@ export class SceneFlowManager {
       flowNode: node
     };
 
+    const currentNodeId = this.scene.registry.get('flowNodeId') as string | undefined;
+    const pendingTransition: PendingCampaignTransition = {
+      fromNodeId: currentNodeId ?? null,
+      toNode: node,
+      targetSceneKey: node.sceneKey,
+      levelConfigPath: node.levelConfigPath ?? null
+    };
+
+    this.scene.registry.set('pendingCampaignTransition', pendingTransition);
     this.scene.registry.set('activeCampaignNode', node);
     this.scene.registry.set('flowNodeId', node.id);
     this.scene.registry.set('pendingCampaignNodeId', node.id);
 
     console.info('[SceneFlowManager] transición confirmada', {
-      fromScene: this.scene.scene.key,
-      targetScene: node.sceneKey,
+      fromNodeId: pendingTransition.fromNodeId,
       targetNodeId: node.id,
-      levelConfigPath: node.levelConfigPath ?? null
+      targetScene: node.sceneKey,
+      levelConfigPath: node.levelConfigPath ?? null,
+      sameSceneRestart: node.sceneKey === this.scene.scene.key
     });
 
     if (node.sceneKey === this.scene.scene.key) {

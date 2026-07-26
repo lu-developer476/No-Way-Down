@@ -46,6 +46,7 @@ export interface TransitionView {
 export const MAX_PLAYER_SEPARATION_PX = 320;
 export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
 export const INITIAL_SETUP_STORAGE_KEY = 'nwd.setup.initial';
+export const CAMPAIGN_COMPLETION_STORAGE_KEY = 'nwd.campaign.completed';
 
 export type PlayableProtagonist = 'alan' | 'giovanna';
 export type GameDifficulty = 'complejo' | 'pesadilla';
@@ -89,6 +90,24 @@ function normalizePlayableProtagonist(value: unknown): PlayableProtagonist | nul
 interface LocalProgressLike {
   current_level?: unknown;
   checkpoint?: unknown;
+  campaign_completed?: unknown;
+}
+
+export interface CampaignCompletion {
+  version: 1; completed: true; finalNodeId: 'campaign-end'; completedAt: string;
+}
+
+export function persistCampaignCompleted(now = new Date()): CampaignCompletion {
+  const completion: CampaignCompletion = { version: 1, completed: true, finalNodeId: 'campaign-end', completedAt: now.toISOString() };
+  localStorage.setItem(CAMPAIGN_COMPLETION_STORAGE_KEY, JSON.stringify(completion));
+  localStorage.removeItem(LOCAL_PROGRESS_STORAGE_KEY);
+  return completion;
+}
+
+/** Clears only campaign/run data; audio, controls and other general settings remain untouched. */
+export function clearRunForNewGame(): void {
+  localStorage.removeItem(LOCAL_PROGRESS_STORAGE_KEY);
+  localStorage.removeItem(CAMPAIGN_COMPLETION_STORAGE_KEY);
 }
 
 export function getScenePlayerId(): string {
@@ -174,6 +193,7 @@ export function hasCompatibleLocalProgress(): boolean {
 
   try {
     const parsed = JSON.parse(raw) as LocalProgressLike;
+    if (parsed.campaign_completed === true) return false;
     const sceneKey = normalizeProgressSceneKey(parsed.current_level);
     const checkpoint = typeof parsed.checkpoint === 'string' ? parseCheckpoint(parsed.checkpoint) : undefined;
     return Boolean(sceneKey && checkpoint);

@@ -1,0 +1,11 @@
+{
+  "nodeId": "lvl10-esc03-llegada-a-san-telmo",
+  "runtimeLevelId": "level_10_llegada_san_telmo",
+  "runtimePath": "assets/levels/runtime/level_10_llegada_san_telmo.runtime.json",
+  "objective": "Llegar al punto seguro y observar las señales del barrio.",
+  "completion": {
+    "type": "explicit_exit",
+    "exitId": "san-telmo-desenlace"
+  },
+  "nextNodeId": "lvl10-cin03-desenlace-abierto"
+}

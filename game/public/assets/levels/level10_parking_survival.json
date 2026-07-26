@@ -93,5 +93,12 @@
       }
     ]
   },
-  "runtimeLevelId": "level_9_subsuelo3_garage_salida"
+  "runtimeLevelId": "level_9_subsuelo3_garage_salida",
+  "nodeId": "lvl10-esc02-resistencia-en-garage",
+  "runtimePath": "assets/levels/runtime/level_9_subsuelo3_garage_salida.runtime.json",
+  "nextNodeId": "lvl10-cin02-salida-del-garage",
+  "completion": {
+    "type": "survival_timer",
+    "durationMs": 600000
+  }
 }

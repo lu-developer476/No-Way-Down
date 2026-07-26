@@ -6,6 +6,7 @@ import {
   PlayableProtagonist,
   saveInitialRunSetup
 } from './sceneShared';
+import { clearRunForNewGame } from './sceneShared';
 import { getAudioManager } from '../audio/AudioManager';
 import { SceneFlowManager } from './SceneFlowManager';
 import { controlManager } from '../input/ControlManager';
@@ -682,6 +683,7 @@ export class MainMenuScene extends Phaser.Scene {
     };
 
     saveInitialRunSetup(setup);
+    clearRunForNewGame();
     this.registry.remove('checkpoint');
     this.registry.remove('loadedCampaignSnapshot');
     this.registry.remove('resumeProgressOnNextLevel');
@@ -712,10 +714,12 @@ export class MainMenuScene extends Phaser.Scene {
     getAudioManager(this).stopMenuMusic();
     this.scene.stop('UIScene');
     const flowManager = new SceneFlowManager(this);
-    const firstNode = flowManager.startFromBeginning();
-    if (firstNode) {
-      flowManager.transitionToNode(firstNode);
-    }
+    const raw = localStorage.getItem('nwd.progress.local-player');
+    const saved = raw ? JSON.parse(raw) as { campaign_snapshot?: { progress?: { flow_node_id?: string } } } : undefined;
+    const savedId = saved?.campaign_snapshot?.progress?.flow_node_id;
+    const node = savedId ? flowManager.resolveNode(savedId).current : undefined;
+    if (!node) { console.error('El progreso no contiene un nodo canónico reanudable.'); return; }
+    flowManager.transitionToNode(node);
   }
 
   private hasSavedProgress(): boolean {

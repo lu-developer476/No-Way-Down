@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { getAudioManager } from '../audio/AudioManager';
 import { SpriteAnimationSystem } from '../systems/SpriteAnimationSystem';
 import { CombatFeedbackSystem } from '../systems/CombatFeedbackSystem';
+import { getPhysicsProfile, VISUAL_ALIGNMENT } from '../config/visualAlignment';
+import { getCharacterVisualById } from '../config/characterVisuals';
 
 const DEFAULT_ZOMBIE_SPEED = 80;
 const DEFAULT_DETECTION_RANGE = 260;
@@ -10,7 +12,6 @@ const DEFAULT_ATTACK_COOLDOWN_MS = 900;
 const DEFAULT_ZOMBIE_DAMAGE = 8;
 export const DEFAULT_ZOMBIE_HEALTH = 3;
 const ZOMBIE_RENDER_DEPTH = 19;
-const ZOMBIE_VISUAL_SCALE = 1.48;
 
 type Target = Pick<Phaser.GameObjects.GameObject, 'active'> & {
   x: number;
@@ -59,9 +60,11 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
 
     this.setCollideWorldBounds(true);
-    this.setSize(18, 40);
-    this.setOffset(7, 8);
-    this.setScale(ZOMBIE_VISUAL_SCALE);
+    const physicsProfile = getPhysicsProfile(getCharacterVisualById('zombie-walker').silhouette);
+    this.setSize(physicsProfile.bodyWidth, physicsProfile.bodyHeight);
+    this.setOffset(physicsProfile.offsetX, physicsProfile.offsetY);
+    this.setScale(VISUAL_ALIGNMENT.characterScale.zombie);
+    this.setDisplayOrigin(VISUAL_ALIGNMENT.visualOrigin.x, VISUAL_ALIGNMENT.visualOrigin.y);
     this.setDepth(ZOMBIE_RENDER_DEPTH);
 
     this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle');
@@ -120,7 +123,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle', true);
     this.setAlpha(1);
     this.setAngle(0);
-    this.setScale(ZOMBIE_VISUAL_SCALE);
+    this.setScale(VISUAL_ALIGNMENT.characterScale.zombie);
   }
 
   preUpdate(time: number, delta: number): void {
@@ -214,8 +217,6 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
       targets: this,
       alpha: 0,
       angle: Phaser.Math.Between(-25, 25),
-      scaleX: 0.85,
-      scaleY: 0.85,
       duration: 260,
       ease: 'Sine.easeIn',
       onComplete: () => {

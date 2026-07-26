@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
+import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
+import { getFacingOffsetPosition } from '../config/visualAlignment';
 
 export interface ShotFeedbackInput {
   x: number; y: number; direction: -1 | 1; weaponKey: string;
@@ -33,12 +35,18 @@ export class CombatFeedbackSystem {
   playShot(input: ShotFeedbackInput): void {
     if (!this.canPlay()) return;
     const weapon = getWeaponCatalogEntry(input.weaponKey);
+    const weaponVisual = getWeaponVisualRuntimeConfig(input.weaponKey, this.scene);
     if (weapon.isMelee || weapon.isDefensive || weapon.key === 'tray_shield') return;
     const textures: Record<string, string> = { pistol: 'fx-muzzle-pistol', revolver: 'fx-muzzle-pistol', smg: 'fx-muzzle-rifle', carbine: 'fx-muzzle-rifle', sniper_rifle: 'fx-muzzle-rifle', shotgun: 'fx-muzzle-shotgun', light_machine_gun: 'fx-muzzle-heavy' };
     const durations: Record<string, number> = { pistol: 60, revolver: 70, smg: 50, carbine: 62, shotgun: 85, sniper_rifle: 78, light_machine_gun: 52 };
     const recoil: Record<string, number> = { pistol: 2, revolver: 3, smg: 2, shotgun: 5, carbine: 3, sniper_rifle: 5, light_machine_gun: 3 };
-    const muzzleX = input.x + input.direction * weapon.muzzleOffsetX;
-    const muzzleY = input.y + weapon.muzzleOffsetY;
+    const muzzle = getFacingOffsetPosition(
+      { x: input.x, y: input.y },
+      { x: weaponVisual.muzzleOffsetX, y: weaponVisual.muzzleOffsetY },
+      input.direction
+    );
+    const muzzleX = muzzle.x;
+    const muzzleY = muzzle.y;
     const flash = this.scene.add.image(muzzleX, muzzleY, textures[weapon.key] ?? 'fx-muzzle-pistol')
       .setFlipX(input.direction < 0).setDepth(input.source.depth + 1).setAlpha(1);
     this.track(this.activeMuzzleFlashes, flash, 8);

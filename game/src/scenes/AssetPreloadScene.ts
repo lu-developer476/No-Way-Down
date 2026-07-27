@@ -2,10 +2,11 @@ import Phaser from 'phaser';
 import { visualTheme } from './visualTheme';
 import { SceneFlowManager } from './SceneFlowManager';
 import { definitionFromManifest, type CanonicalManifest } from '../campaign/campaignCore';
+import { MENU_BACKGROUND_PATH, CHARACTERS_PANEL_PATH } from '../config/menuAssetPaths';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
-  { key: 'menu_background', path: 'assets/images/NWD-menu.svg', type: 'image' },
-  { key: 'characters_panel', path: 'assets/images/NWD-characters.svg', type: 'image' },
+  { key: 'menu_background', path: MENU_BACKGROUND_PATH, type: 'image' },
+  { key: 'characters_panel', path: CHARACTERS_PANEL_PATH, type: 'image' },
   { key: 'story_bible', path: 'assets/campaign/story_bible.json', type: 'json' },
   { key: 'canonical_campaign_manifest', path: 'assets/campaign/canonical_campaign_manifest.json', type: 'json' },
   { key: 'campaign_implementation_registry', path: 'assets/campaign/campaign_implementation_registry.json', type: 'json' },

@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 from django.conf import settings
 from django.http import FileResponse, HttpResponse, JsonResponse
@@ -33,17 +32,11 @@ def api_not_found(request, path=''):
 
 
 def _build_sha():
-    for name in ('RENDER_GIT_COMMIT', 'GITHUB_SHA', 'NWD_BUILD_SHA'):
+    for name in ('NWD_BUILD_SHA', 'GITHUB_SHA', 'RENDER_GIT_COMMIT'):
         value = os.getenv(name, '').strip()
         if value:
             return value
-    try:
-        return subprocess.run(
-            ['git', 'rev-parse', 'HEAD'], cwd=settings.BASE_DIR, check=True,
-            capture_output=True, text=True, timeout=2,
-        ).stdout.strip() or 'unknown'
-    except (OSError, subprocess.SubprocessError):
-        return 'unknown'
+    return 'unknown'
 
 
 def build_info(request):

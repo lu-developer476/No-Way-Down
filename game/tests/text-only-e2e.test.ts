@@ -1,0 +1,5 @@
+import test from 'node:test'; import assert from 'node:assert/strict'; import { readFileSync } from 'node:fs';
+const read=(path:string):string=>readFileSync(new URL(`../${path}`,import.meta.url),'utf8');
+test('production browser gate contains no image capture API',()=>{const source=read('e2e/production_e2e.py').toLowerCase();assert.equal(source.includes('screen'+'shot'),false);assert.equal(source.includes('p'+'il'),false)});
+test('production runner blocks on Django and validates skipped build',()=>{const source=read('scripts/runProductionE2E.sh');assert.match(source,/kill -0 "\$pid"/);assert.match(source,/readiness timed out/);assert.match(source,/E2E_SKIP_BUILD=1 requires game\/dist\/index\.html/)});
+test('workflow uploads text evidence only',()=>{const source=read('../.github/workflows/production-gate.yml');const artifact=source.slice(source.indexOf('actions/upload-artifact'));assert.match(artifact,/\*\*\/\*\.txt/);assert.match(artifact,/\*\*\/\*\.json/);assert.match(artifact,/\*\*\/\*\.log/);assert.match(artifact,/\*\*\/\*\.xml/);assert.equal(artifact.includes('game/dist'),false)});

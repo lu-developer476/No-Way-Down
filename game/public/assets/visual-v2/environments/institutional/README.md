@@ -1,3 +1,3 @@
-# Institutional modules
+# Institutional corridor modules
 
-The corridor architecture is currently assembled from deterministic Phaser geometry by `VisualV2PresentationSystem`; text-only SVG modules will be added here only after benchmark review. This file prevents an undocumented or orphaned placeholder asset.
+This directory contains the reviewable UTF-8 SVG module library for the five authored sectors of `level_1_pasillos_escaleras_pb`. Every module is loaded through the centralized corridor asset catalog and placed by the deterministic environment composition; no runtime image generator or external media dependency is used.

@@ -21,7 +21,9 @@
     "generate:visual-v2": "python scripts/generate_visual_v2.py",
     "fix:asset-routes": "node scripts/auditAssetRoutes.mjs --fix",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "test:e2e:production": "bash scripts/runProductionE2E.sh"
+    "test:e2e:production": "bash scripts/runProductionE2E.sh",
+    "audit:no-binary-diff": "node scripts/auditNoBinaryDiff.mjs",
+    "audit:corridor-svg-art": "node scripts/auditCorridorSvgArt.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

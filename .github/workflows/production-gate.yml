@@ -18,6 +18,8 @@ jobs:
       - uses: browser-actions/setup-chrome@v1
       - run: npm ci --prefix game
       - run: pip install -r backend/requirements.txt -r game/e2e/requirements.txt
+      - run: npm run audit:no-binary-diff --prefix game
+      - run: npm run audit:corridor-svg-art --prefix game
       - run: npm test --prefix game
       - run: npm run build --prefix game
       - run: python backend/manage.py test

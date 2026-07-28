@@ -11,6 +11,28 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Resolve binary audit base
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            candidate="$PR_BASE_SHA"
+          else
+            candidate="$PUSH_BEFORE_SHA"
+          fi
+          if [[ -n "$candidate" && ! "$candidate" =~ ^0+$ ]] && git rev-parse --verify "${candidate}^{commit}" >/dev/null 2>&1; then
+            echo "NWD_DIFF_BASE=$candidate" >> "$GITHUB_ENV"
+            echo "Using event commit $candidate as NWD_DIFF_BASE"
+          elif git rev-parse --verify 'HEAD^^{commit}' >/dev/null 2>&1; then
+            echo "NWD_DIFF_BASE=$(git rev-parse HEAD^)" >> "$GITHUB_ENV"
+            echo "Event base is unavailable; using HEAD^ as NWD_DIFF_BASE"
+          else
+            echo "Event base and HEAD^ are unavailable; the audit will use its safe empty-tree fallback"
+          fi
       - uses: actions/setup-node@v4
         with: {node-version: 22, cache: npm, cache-dependency-path: game/package-lock.json}
       - uses: actions/setup-python@v5
@@ -19,9 +41,15 @@ jobs:
       - run: npm ci --prefix game
       - run: pip install -r backend/requirements.txt -r game/e2e/requirements.txt
       - run: npm run audit:no-binary-diff --prefix game
-      - run: npm run audit:corridor-svg-art --prefix game
+      - run: npm run audit:protected-assets --prefix game
+      - run: npm run audit:campaign --prefix game
+      - run: npm run audit:tiled --prefix game
+      - run: npm run audit:matter-only --prefix game
+      - run: npm run audit:runtime-reachability --prefix game
+      - run: npm run audit:dead-code --prefix game
       - run: npm test --prefix game
       - run: npm run build --prefix game
+      - run: test -f game/dist/index.html
       - run: python backend/manage.py test
       - run: npm run test:e2e:production --prefix game
       - uses: actions/upload-artifact@v4
@@ -29,6 +57,4 @@ jobs:
         with:
           name: production-e2e-evidence-${{ github.sha }}
           if-no-files-found: warn
-          path: |
-            game/test-results
-            game/e2e/visual-baselines/manifest.json
+          path: game/test-results

@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
+    "build": "npm run audit:campaign && npm run audit:protected-assets && npm run audit:tiled && npm run audit:matter-only && tsc --noEmit && vite build",
+    "test:e2e:production": "bash scripts/runProductionE2E.sh",
     "audit:campaign": "node scripts/auditCanonicalCampaign.mjs",
     "audit:protected-assets": "node scripts/auditProtectedAssets.mjs",
     "audit:tiled": "node scripts/auditTiledMaps.mjs",

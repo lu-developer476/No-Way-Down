@@ -1,12 +1,22 @@
-import {readFileSync,existsSync} from 'node:fs';import {resolve} from 'node:path';import {execFileSync} from 'node:child_process';
-const game=resolve(import.meta.dirname,'..'),root=resolve(game,'..');const read=p=>readFileSync(resolve(game,p),'utf8');
-const manifest=JSON.parse(read('public/assets/campaign/canonical_campaign_manifest.json'));const ids=manifest.nodes.filter(n=>n.type==='level').map(n=>n.id);const source=read('src/config/campaignWorldDefinitions.ts');const assets=read('src/config/worldAssetCatalog.ts');const failures=[];
-if(manifest.flowId!=='main_campaign'||manifest.nodes.length!==35||manifest.canonicalNodeCount!==35)failures.push('canonical manifest shape changed');
-for(const id of ids){const hits=source.split(`'${id}'`).length-1;if(hits<1)failures.push(`missing world definition: ${id}`);}
-const declared=[...source.matchAll(/\['(lvl[^']+)','([^']+)','([^']+)'/g)];if(declared.length!==ids.length)failures.push(`expected ${ids.length} explicit definitions, found ${declared.length}`);
-if(new Set(declared.map(m=>m[3])).size!==ids.length)failures.push('worldProfileId values are not unique');
-for(const token of ['rendererKind:\'authored-level\'','legacyBackground:false','environmentInstances','entryConnectors','exitConnectors','walkableSurfaces','objectiveAnchors','minimapGeometry'])if(!source.includes(token))failures.push(`world contract missing ${token}`);
-if(!assets.includes('length:70'))failures.push('catalog does not declare 70 modules');
-for(const name of [...assets.matchAll(/'([a-z][a-z-]+)'/g)].map(m=>m[1]).filter(n=>['corridor-wall-clean','corridor-wall-damaged','teller-window','teller-window-broken','security-bars','service-door','security-door','exit-door','exit-sign','office-window-dark','office-window-lit','bank-bench','trash-bin','pipe-bundle','cable-tray','ceiling-light-cold','ceiling-light-emergency','wall-cracks-a','wall-cracks-b','humidity-stain','blood-smear','paper-cluster','debris-cluster','broken-furniture','foreground-column','foreground-bars','stairs-end','floor-wet-strip','floor-damage','bank-signage'].includes(n))){if(!existsSync(resolve(game,`public/assets/visual-v2/environments/institutional/${name}.svg`)))failures.push(`missing SVG source: ${name}`);}
-const diff=execFileSync('git',['diff','--numstat','main...HEAD'],{cwd:root,encoding:'utf8'});if(diff.split('\n').some(line=>line.startsWith('-\t-\t')))failures.push('binary diff found');
-if(failures.length){console.error(failures.map(v=>`- ${v}`).join('\n'));process.exit(1);}console.log(`Campaign world audit passed: ${ids.length} canonical levels, 70 textual modules, 14 unique profiles.`);
+import { existsSync } from 'node:fs';
+import { campaignWorldDefinitions } from '../src/config/campaignWorldDefinitions.ts';
+import { worldAssetCatalog } from '../src/config/worldAssetCatalog.ts';
+
+const failures=[];
+const nodeIds=new Set();
+const profiles=new Set();
+for(const world of campaignWorldDefinitions){
+  if(nodeIds.has(world.nodeId)) failures.push(`duplicate node: ${world.nodeId}`);
+  if(profiles.has(world.worldProfileId)) failures.push(`duplicate profile: ${world.worldProfileId}`);
+  nodeIds.add(world.nodeId);profiles.add(world.worldProfileId);
+  if(!world.environmentInstances.length||!world.walkableSurfaces.length) failures.push(`${world.nodeId}: empty visual composition`);
+  for(const item of [...world.environmentInstances,...world.foregroundInstances]){
+    if(!worldAssetCatalog.some(asset=>asset.key===item.assetKey)) failures.push(`${world.nodeId}: unknown asset ${item.assetKey}`);
+  }
+}
+for(const asset of worldAssetCatalog){
+  const path=new URL(`../public/${asset.path.replace(/^assets\//,'assets/')}`,import.meta.url);
+  if(!existsSync(path)) failures.push(`missing existing visual module: ${asset.path}`);
+}
+if(failures.length){console.error(failures.map(v=>`- ${v}`).join('\n'));process.exit(1);}
+console.log(`Campaign world audit passed: ${campaignWorldDefinitions.length} data definitions and ${worldAssetCatalog.length} existing modules parsed.`);

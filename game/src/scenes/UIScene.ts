@@ -76,7 +76,8 @@ export class UIScene extends Phaser.Scene {
     this.createdAtWidth = this.scale.width;
     this.createdAtHeight = this.scale.height;
     this.createHudFrame();
-    if (this.registry.get('visualGeneration') === 'v2') this.createVisualV2Chrome();
+    // The regular HUD is the sole gameplay HUD. Visual V2 chrome duplicated
+    // health, ammo, objective and inventory over it.
     const events = this.registry.events;
     events.on('changedata-interactionHint', this.handleInteractionHintChanged, this);
     events.on('changedata-partyHud', this.handlePartyHudChanged, this);

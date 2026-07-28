@@ -16,6 +16,7 @@
     "audit:dead-code": "node scripts/auditDeadRuntimeCode.mjs",
     "audit:no-binary-diff": "node scripts/auditNoBinaryDiff.mjs",
     "audit:e2e-text-only": "node scripts/auditTextOnlyE2E.mjs",
+    "audit:visual-production": "node scripts/auditVisualProduction.mjs",
     "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {

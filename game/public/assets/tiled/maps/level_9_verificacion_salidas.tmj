@@ -3,8 +3,8 @@
   "height": 37,
   "width": 282,
   "infinite": false,
-  "nextlayerid": 39,
-  "nextobjectid": 39,
+  "nextlayerid": 42,
+  "nextobjectid": 58,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -62,7 +62,94 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 36,
+          "name": "context-wall",
+          "type": "visual",
+          "x": 0,
+          "y": 764,
+          "width": 9024,
+          "height": 420,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "wall-damaged"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-a"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-36"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "name": "DistantArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 37,
+          "name": "distant-depth",
+          "type": "visual",
+          "x": 722,
+          "y": 684,
+          "width": 7580,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-a"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-37"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 4,
@@ -80,7 +167,160 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 38,
+          "name": "salida-a-architecture",
+          "type": "visual",
+          "x": 790,
+          "y": 854,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-a"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-38"
+            }
+          ]
+        },
+        {
+          "id": 39,
+          "name": "salida-b-architecture",
+          "type": "visual",
+          "x": 3046,
+          "y": 854,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-b"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-39"
+            }
+          ]
+        },
+        {
+          "id": 40,
+          "name": "control-architecture",
+          "type": "visual",
+          "x": 5302,
+          "y": 854,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "teller-broken"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "control"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-40"
+            }
+          ]
+        },
+        {
+          "id": 41,
+          "name": "salida-e-architecture",
+          "type": "visual",
+          "x": 7558,
+          "y": 854,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "exit-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-e"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-41"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 6,
@@ -89,7 +329,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 48,
+          "name": "upper-services",
+          "type": "visual",
+          "x": 2527,
+          "y": 754,
+          "width": 220,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "pipe-bundle"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-b"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -5
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-48"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 7,
@@ -98,7 +377,236 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 42,
+          "name": "salida-a-decor-1",
+          "type": "visual",
+          "x": 978,
+          "y": 1038,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "bank-signage"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-a"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-42"
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "name": "salida-b-decor-2",
+          "type": "visual",
+          "x": 2482,
+          "y": 1038,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "broken-furniture"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-b"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-43"
+            }
+          ]
+        },
+        {
+          "id": 44,
+          "name": "control-decor-3",
+          "type": "visual",
+          "x": 3986,
+          "y": 1038,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "cracks-b"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "control"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-44"
+            }
+          ]
+        },
+        {
+          "id": 45,
+          "name": "salida-e-decor-4",
+          "type": "visual",
+          "x": 5490,
+          "y": 1066,
+          "width": 180,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "blood-smear"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-e"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-45"
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "name": "salida-e-decor-5",
+          "type": "visual",
+          "x": 6994,
+          "y": 1038,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "exit-sign"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-e"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-46"
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "name": "salida-e-decor-6",
+          "type": "visual",
+          "x": 8498,
+          "y": 1066,
+          "width": 180,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "debris"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-e"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-47"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 8,
@@ -107,7 +615,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 49,
+          "name": "route-damage",
+          "type": "visual",
+          "x": 5234,
+          "y": 1089,
+          "width": 180,
+          "height": 40,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "floor-damage"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "control"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 6
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-49"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 9,
@@ -116,7 +663,84 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 50,
+          "name": "foreground-left",
+          "type": "visual",
+          "x": 180,
+          "y": 884,
+          "width": 90,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-column"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-a"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-50"
+            }
+          ]
+        },
+        {
+          "id": 51,
+          "name": "foreground-right",
+          "type": "visual",
+          "x": 7941,
+          "y": 914,
+          "width": 150,
+          "height": 230,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-e"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-51"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 10,
@@ -125,7 +749,216 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 55,
+          "name": "practical-light-1",
+          "type": "light-anchor",
+          "x": 1985,
+          "y": 794,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-light-1"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-55"
+            }
+          ]
+        },
+        {
+          "id": 56,
+          "name": "practical-light-2",
+          "type": "light-anchor",
+          "x": 4692,
+          "y": 794,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-light-2"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xb9d8ff"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-56"
+            }
+          ]
+        },
+        {
+          "id": 57,
+          "name": "practical-light-3",
+          "type": "light-anchor",
+          "x": 7219,
+          "y": 794,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-light-3"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-57"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "name": "OcclusionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 54,
+          "name": "localized-darkness",
+          "type": "occlusion-zone",
+          "x": 6136,
+          "y": 784,
+          "width": 1444,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.18
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-54"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "ReflectionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 53,
+          "name": "wet-floor",
+          "type": "reflection-zone",
+          "x": 3158,
+          "y": 1054,
+          "width": 2707,
+          "height": 70,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "reflectionStrength",
+              "type": "float",
+              "value": 0.28
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-53"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "name": "AmbientZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 52,
+          "name": "ambient-main",
+          "type": "ambient-zone",
+          "x": 0,
+          "y": 0,
+          "width": 9024,
+          "height": 1184,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0x18212a"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.22
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-visual-52"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 12,

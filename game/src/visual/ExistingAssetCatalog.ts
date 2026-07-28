@@ -1,0 +1,16 @@
+export type VisualAssetRole='background'|'distantArchitecture'|'rearArchitecture'|'architecture'|'rearProp'|'gameplayDecor'|'frontProp'|'foreground'|'ui'|'actor'|'effect';
+export type VisualAssetCategory='environment'|'character'|'ui'|'effect';
+export interface ExistingAssetEntry{key:string;path:string;category:VisualAssetCategory;width:number;height:number;allowedRoles:readonly VisualAssetRole[];protected:boolean;global:boolean;levelSpecific:boolean;pixelArt:boolean;defaultOrigin:Readonly<{x:number;y:number}>;defaultDepth:number}
+
+const environment=(key:string,file:string,roles:readonly VisualAssetRole[],width=128,height=128,defaultDepth=0):ExistingAssetEntry=>({key,path:`assets/visual-v2/environments/institutional/${file}.svg`,category:'environment',width,height,allowedRoles:roles,protected:false,global:false,levelSpecific:true,pixelArt:false,defaultOrigin:{x:.5,y:1},defaultDepth});
+const architecture:readonly VisualAssetRole[]=['background','distantArchitecture','rearArchitecture','architecture'];
+const props:readonly VisualAssetRole[]=['rearProp','gameplayDecor','frontProp'];
+
+export const EXISTING_ASSET_CATALOG:readonly ExistingAssetEntry[]=[
+ environment('wall-clean','corridor-wall-clean',architecture,384,192,-30),environment('wall-damaged','corridor-wall-damaged',architecture,384,192,-30),environment('office-dark','office-window-dark',architecture,192,160,-20),environment('office-lit','office-window-lit',architecture,192,160,-20),environment('teller-window','teller-window',architecture,192,144,-18),environment('teller-broken','teller-window-broken',architecture,192,144,-18),environment('security-bars','security-bars',architecture,160,160,-15),environment('security-door','security-door',architecture,112,176,-12),environment('service-door','service-door',architecture,112,176,-12),environment('exit-door','exit-door',architecture,112,176,-12),environment('stairs-end','stairs-end',architecture,224,192,-10),
+ environment('bank-bench','bank-bench',props,160,64,-2),environment('bank-signage','bank-signage',props,160,56,-4),environment('broken-furniture','broken-furniture',props,128,80,-2),environment('debris','debris-cluster',props,128,48,2),environment('exit-sign','exit-sign',props,96,40,3),environment('paper-cluster','paper-cluster',props,96,48,2),environment('pipe-bundle','pipe-bundle',props,192,64,-5),environment('trash-bin','trash-bin',props,56,72,1),environment('cable-tray','cable-tray',props,192,48,-5),environment('humidity','humidity-stain',props,160,120,-6),environment('floor-damage','floor-damage',props,160,48,1),environment('wet-strip','floor-wet-strip',props,192,40,1),environment('blood-smear','blood-smear',props,128,40,1),environment('cracks-a','wall-cracks-a',props,120,112,-1),environment('cracks-b','wall-cracks-b',props,120,112,-1),environment('cold-light','ceiling-light-cold',props,112,40,4),environment('emergency-light','ceiling-light-emergency',props,80,40,4),
+ environment('foreground-bars','foreground-bars',['foreground'],160,224,80),environment('foreground-column','foreground-column',['foreground'],112,256,80)
+] as const;
+
+const byKey=new Map(EXISTING_ASSET_CATALOG.map(entry=>[entry.key,entry]));
+export function existingAsset(key:string):ExistingAssetEntry|undefined{return byKey.get(key)}

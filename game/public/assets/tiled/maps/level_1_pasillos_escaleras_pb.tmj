@@ -3,8 +3,8 @@
   "height": 27,
   "width": 175,
   "infinite": false,
-  "nextlayerid": 42,
-  "nextobjectid": 42,
+  "nextlayerid": 45,
+  "nextobjectid": 63,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -62,7 +62,94 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 39,
+          "name": "context-wall",
+          "type": "visual",
+          "x": 0,
+          "y": 444,
+          "width": 5600,
+          "height": 420,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "wall-damaged"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-39"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "name": "DistantArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 40,
+          "name": "distant-depth",
+          "type": "visual",
+          "x": 448,
+          "y": 364,
+          "width": 4704,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "service-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-40"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 4,
@@ -80,7 +167,236 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 41,
+          "name": "salida-comedor-architecture",
+          "type": "visual",
+          "x": 327,
+          "y": 534,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "service-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-41"
+            }
+          ]
+        },
+        {
+          "id": 42,
+          "name": "servicio-architecture",
+          "type": "visual",
+          "x": 1260,
+          "y": 534,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "servicio"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-42"
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "name": "ventanillas-architecture",
+          "type": "visual",
+          "x": 2193,
+          "y": 534,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "teller-window"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "ventanillas"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-43"
+            }
+          ]
+        },
+        {
+          "id": 44,
+          "name": "oficina-danada-architecture",
+          "type": "visual",
+          "x": 3127,
+          "y": 534,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "office-dark"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "oficina-danada"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-44"
+            }
+          ]
+        },
+        {
+          "id": 45,
+          "name": "corredor-oscuro-architecture",
+          "type": "visual",
+          "x": 4060,
+          "y": 534,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "wall-damaged"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "corredor-oscuro"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-45"
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "name": "aproximacion-escaleras-architecture",
+          "type": "visual",
+          "x": 4993,
+          "y": 534,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stairs-end"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "aproximacion-escaleras"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-46"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 6,
@@ -89,7 +405,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 53,
+          "name": "upper-services",
+          "type": "visual",
+          "x": 1568,
+          "y": 434,
+          "width": 220,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "pipe-bundle"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "servicio"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -5
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-53"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 7,
@@ -98,7 +453,236 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 47,
+          "name": "salida-comedor-decor-1",
+          "type": "visual",
+          "x": 607,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "trash-bin"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-47"
+            }
+          ]
+        },
+        {
+          "id": 48,
+          "name": "servicio-decor-2",
+          "type": "visual",
+          "x": 1540,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "cable-tray"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "servicio"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-48"
+            }
+          ]
+        },
+        {
+          "id": 49,
+          "name": "ventanillas-decor-3",
+          "type": "visual",
+          "x": 2473,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "bank-bench"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "ventanillas"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-49"
+            }
+          ]
+        },
+        {
+          "id": 50,
+          "name": "oficina-danada-decor-4",
+          "type": "visual",
+          "x": 3407,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "cracks-a"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "oficina-danada"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-50"
+            }
+          ]
+        },
+        {
+          "id": 51,
+          "name": "corredor-oscuro-decor-5",
+          "type": "visual",
+          "x": 4340,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "humidity"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "corredor-oscuro"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-51"
+            }
+          ]
+        },
+        {
+          "id": 52,
+          "name": "aproximacion-escaleras-decor-6",
+          "type": "visual",
+          "x": 5273,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "exit-sign"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "aproximacion-escaleras"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-52"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 8,
@@ -107,7 +691,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 54,
+          "name": "route-damage",
+          "type": "visual",
+          "x": 3248,
+          "y": 769,
+          "width": 180,
+          "height": 40,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "floor-damage"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "corredor-oscuro"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 6
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-54"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 9,
@@ -116,7 +739,84 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 55,
+          "name": "foreground-left",
+          "type": "visual",
+          "x": 112,
+          "y": 564,
+          "width": 90,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-column"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-55"
+            }
+          ]
+        },
+        {
+          "id": 56,
+          "name": "foreground-right",
+          "type": "visual",
+          "x": 4928,
+          "y": 594,
+          "width": 150,
+          "height": 230,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "aproximacion-escaleras"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-56"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 10,
@@ -125,7 +825,216 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 60,
+          "name": "practical-light-1",
+          "type": "light-anchor",
+          "x": 1232,
+          "y": 474,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-light-1"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-60"
+            }
+          ]
+        },
+        {
+          "id": 61,
+          "name": "practical-light-2",
+          "type": "light-anchor",
+          "x": 2912,
+          "y": 474,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-light-2"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xb9d8ff"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-61"
+            }
+          ]
+        },
+        {
+          "id": 62,
+          "name": "practical-light-3",
+          "type": "light-anchor",
+          "x": 4480,
+          "y": 474,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-light-3"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-62"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "name": "OcclusionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 59,
+          "name": "localized-darkness",
+          "type": "occlusion-zone",
+          "x": 3808,
+          "y": 464,
+          "width": 896,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.18
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-59"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "name": "ReflectionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 58,
+          "name": "wet-floor",
+          "type": "reflection-zone",
+          "x": 1960,
+          "y": 734,
+          "width": 1680,
+          "height": 70,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "reflectionStrength",
+              "type": "float",
+              "value": 0.28
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-58"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "name": "AmbientZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 57,
+          "name": "ambient-main",
+          "type": "ambient-zone",
+          "x": 0,
+          "y": 0,
+          "width": 5600,
+          "height": 864,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0x18212a"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.22
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_pasillos_escaleras_pb-visual-57"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 12,

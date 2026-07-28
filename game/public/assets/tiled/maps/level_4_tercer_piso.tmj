@@ -3,8 +3,8 @@
   "height": 32,
   "width": 213,
   "infinite": false,
-  "nextlayerid": 41,
-  "nextobjectid": 41,
+  "nextlayerid": 44,
+  "nextobjectid": 60,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -62,7 +62,94 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 38,
+          "name": "context-wall",
+          "type": "visual",
+          "x": 0,
+          "y": 604,
+          "width": 6816,
+          "height": 420,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "wall-damaged"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "landing"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-38"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "DistantArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 39,
+          "name": "distant-depth",
+          "type": "visual",
+          "x": 545,
+          "y": 524,
+          "width": 5725,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "landing"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-39"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 4,
@@ -80,7 +167,160 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 40,
+          "name": "landing-architecture",
+          "type": "visual",
+          "x": 596,
+          "y": 694,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "landing"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-40"
+            }
+          ]
+        },
+        {
+          "id": 41,
+          "name": "oficinas-architecture",
+          "type": "visual",
+          "x": 2300,
+          "y": 694,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "office-dark"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "oficinas"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-41"
+            }
+          ]
+        },
+        {
+          "id": 42,
+          "name": "sector-danado-architecture",
+          "type": "visual",
+          "x": 4004,
+          "y": 694,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "teller-broken"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "sector-danado"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-42"
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "name": "salida-architecture",
+          "type": "visual",
+          "x": 5708,
+          "y": 694,
+          "width": 340,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "exit-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-43"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 6,
@@ -89,7 +329,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 50,
+          "name": "upper-services",
+          "type": "visual",
+          "x": 1908,
+          "y": 594,
+          "width": 220,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "pipe-bundle"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "oficinas"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -5
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-50"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 7,
@@ -98,7 +377,236 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 44,
+          "name": "landing-decor-1",
+          "type": "visual",
+          "x": 738,
+          "y": 878,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "cable-tray"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "landing"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-44"
+            }
+          ]
+        },
+        {
+          "id": 45,
+          "name": "oficinas-decor-2",
+          "type": "visual",
+          "x": 1874,
+          "y": 878,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "broken-furniture"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "oficinas"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-45"
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "name": "sector-danado-decor-3",
+          "type": "visual",
+          "x": 3010,
+          "y": 878,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "cracks-b"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "sector-danado"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-46"
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "name": "salida-decor-4",
+          "type": "visual",
+          "x": 4146,
+          "y": 906,
+          "width": 180,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "blood-smear"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-47"
+            }
+          ]
+        },
+        {
+          "id": 48,
+          "name": "salida-decor-5",
+          "type": "visual",
+          "x": 5282,
+          "y": 878,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "emergency-light"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-48"
+            }
+          ]
+        },
+        {
+          "id": 49,
+          "name": "salida-decor-6",
+          "type": "visual",
+          "x": 6418,
+          "y": 906,
+          "width": 180,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "debris"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-49"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 8,
@@ -107,7 +615,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 51,
+          "name": "route-damage",
+          "type": "visual",
+          "x": 3953,
+          "y": 929,
+          "width": 180,
+          "height": 40,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "floor-damage"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "sector-danado"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 6
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-51"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 9,
@@ -116,7 +663,84 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 52,
+          "name": "foreground-left",
+          "type": "visual",
+          "x": 136,
+          "y": 724,
+          "width": 90,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-column"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "landing"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-52"
+            }
+          ]
+        },
+        {
+          "id": 53,
+          "name": "foreground-right",
+          "type": "visual",
+          "x": 5998,
+          "y": 754,
+          "width": 150,
+          "height": 230,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "salida"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-53"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 10,
@@ -125,7 +749,216 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 57,
+          "name": "practical-light-1",
+          "type": "light-anchor",
+          "x": 1500,
+          "y": 634,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_4_tercer_piso-light-1"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-57"
+            }
+          ]
+        },
+        {
+          "id": 58,
+          "name": "practical-light-2",
+          "type": "light-anchor",
+          "x": 3544,
+          "y": 634,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_4_tercer_piso-light-2"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xb9d8ff"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-58"
+            }
+          ]
+        },
+        {
+          "id": 59,
+          "name": "practical-light-3",
+          "type": "light-anchor",
+          "x": 5453,
+          "y": 634,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_4_tercer_piso-light-3"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-59"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "name": "OcclusionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 56,
+          "name": "localized-darkness",
+          "type": "occlusion-zone",
+          "x": 4635,
+          "y": 624,
+          "width": 1091,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.18
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-56"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "name": "ReflectionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 55,
+          "name": "wet-floor",
+          "type": "reflection-zone",
+          "x": 2386,
+          "y": 894,
+          "width": 2045,
+          "height": 70,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "reflectionStrength",
+              "type": "float",
+              "value": 0.28
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-55"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "name": "AmbientZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 54,
+          "name": "ambient-main",
+          "type": "ambient-zone",
+          "x": 0,
+          "y": 0,
+          "width": 6816,
+          "height": 1024,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0x18212a"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.22
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-visual-54"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 12,

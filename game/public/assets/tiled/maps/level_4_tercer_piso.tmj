@@ -1,0 +1,805 @@
+{
+  "compressionlevel": -1,
+  "height": 32,
+  "width": 213,
+  "infinite": false,
+  "nextlayerid": 41,
+  "nextobjectid": 41,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.11.2",
+  "tileheight": 32,
+  "tilewidth": 32,
+  "type": "map",
+  "version": "1.10",
+  "layers": [
+    {
+      "id": 2,
+      "name": "BackgroundReference",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": false,
+      "objects": [
+        {
+          "id": 1,
+          "name": "reference-photo",
+          "type": "reference-photo",
+          "x": 0,
+          "y": 0,
+          "width": 6800,
+          "height": 1000,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-reference"
+            }
+          ],
+          "image": "../../../../../public/outside-scene.jpg"
+        }
+      ],
+      "locked": true,
+      "properties": [
+        {
+          "name": "editorOnly",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Background",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 4,
+      "name": "RearArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 5,
+      "name": "Architecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 6,
+      "name": "RearProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 7,
+      "name": "GameplayDecor",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 8,
+      "name": "FrontProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 9,
+      "name": "Foreground",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 10,
+      "name": "LightingAnchors",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 12,
+      "name": "Collision",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 11,
+          "name": "floor",
+          "type": "floor",
+          "x": 0,
+          "y": 936,
+          "width": 6800,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-floor"
+            },
+            {
+              "name": "collisionCategory",
+              "type": "string",
+              "value": "World"
+            },
+            {
+              "name": "collisionMask",
+              "type": "string",
+              "value": "Player|Ally|Enemy|Projectile"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": false
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "OneWayPlatforms",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 14,
+      "name": "Stairs",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 16,
+      "name": "PlayerSpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 15,
+          "name": "default-spawn",
+          "type": "default-spawn",
+          "x": 240,
+          "y": 860,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-spawn-default"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-8"
+            },
+            {
+              "name": "elevation",
+              "type": "float",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "AllySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 20,
+      "name": "EnemySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 18,
+          "name": "tercer-oeste-spawn",
+          "type": "tercer-oeste-spawn",
+          "x": 2480,
+          "y": 860,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "tercer-oeste-spawn"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "tercer-oeste-spawn"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-8"
+            }
+          ]
+        },
+        {
+          "id": 19,
+          "name": "tercer-este-spawn",
+          "type": "tercer-este-spawn",
+          "x": 4830,
+          "y": 860,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "tercer-este-spawn"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "tercer-este-spawn"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "SpawnAreas",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 21,
+          "name": "tercer-oeste",
+          "type": "tercer-oeste",
+          "x": 1700,
+          "y": 630,
+          "width": 1000,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "tercer-oeste"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "tercer-este",
+          "type": "tercer-este",
+          "x": 4050,
+          "y": 630,
+          "width": 1000,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "tercer-este"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Interactables",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 24,
+          "name": "level_4_tercer_piso-checkpoint",
+          "type": "level_4_tercer_piso-checkpoint",
+          "x": 3400,
+          "y": 860,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-checkpoint"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "level_4_tercer_piso-checkpoint"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · Asegurar checkpoint"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 25,
+          "name": "level_4_tercer_piso-exit",
+          "type": "level_4_tercer_piso-exit",
+          "x": 6500,
+          "y": 860,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-exit"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "level_4_tercer_piso-exit"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · Continuar hacia la oficina 422"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Triggers",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 27,
+          "name": "level_4_tercer_piso-narrative",
+          "type": "level_4_tercer_piso-narrative",
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-narrative"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": ""
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Objectives",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 29,
+          "name": "level_4_tercer_piso-objective",
+          "type": "level_4_tercer_piso-objective",
+          "x": 400,
+          "y": 764,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-objective"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "level_4_tercer_piso-objective"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "salida-tercero"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Checkpoints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 31,
+          "name": "level_4_tercer_piso-checkpoint",
+          "type": "level_4_tercer_piso-checkpoint",
+          "x": 3400,
+          "y": 860,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-checkpoint-checkpoints"
+            },
+            {
+              "name": "checkpointId",
+              "type": "string",
+              "value": "level_4_tercer_piso-checkpoint"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Pickups",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 33,
+          "name": "level_4_tercer_piso-medkit",
+          "type": "level_4_tercer_piso-medkit",
+          "x": 3100,
+          "y": 860,
+          "width": 32,
+          "height": 32,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-medkit"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "level_4_tercer_piso-medkit"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Exits",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 35,
+          "name": "salida-tercero",
+          "type": "salida-tercero",
+          "x": 6620,
+          "y": 816,
+          "width": 100,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "salida-tercero"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "salida-tercero"
+            },
+            {
+              "name": "connectorId",
+              "type": "string",
+              "value": "salida-tercero"
+            },
+            {
+              "name": "targetNodeId",
+              "type": "string",
+              "value": "lvl04-cin01-rescate-lorena-en-oficina-422"
+            },
+            {
+              "name": "targetConnectorId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "enabledByObjectiveId",
+              "type": "string",
+              "value": "level_4_tercer_piso-objective"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "Usar salida"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "name": "CameraBounds",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 37,
+          "name": "camera-bounds",
+          "type": "camera-bounds",
+          "x": 0,
+          "y": 0,
+          "width": 6800,
+          "height": 1000,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_tercer_piso-camera"
+            },
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "name": "NavigationHints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    }
+  ],
+  "properties": [
+    {
+      "name": "schemaVersion",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "nodeId",
+      "type": "string",
+      "value": "lvl04-esc01-tercer-piso"
+    },
+    {
+      "name": "canonicalNodeIds",
+      "type": "string",
+      "value": "lvl04-esc01-tercer-piso"
+    },
+    {
+      "name": "runtimeLevelId",
+      "type": "string",
+      "value": "level_4_tercer_piso"
+    },
+    {
+      "name": "locationId",
+      "type": "string",
+      "value": "level4_oficina_422_comedor_escaleras"
+    },
+    {
+      "name": "locationLabel",
+      "type": "string",
+      "value": "Atraviesa el tercer piso rumbo a la oficina 422."
+    },
+    {
+      "name": "floorId",
+      "type": "string",
+      "value": "floor-8"
+    },
+    {
+      "name": "floorLabel",
+      "type": "string",
+      "value": "Piso canónico 8"
+    },
+    {
+      "name": "canonicalIndex",
+      "type": "int",
+      "value": 8
+    },
+    {
+      "name": "entryConnectorId",
+      "type": "string",
+      "value": "default"
+    },
+    {
+      "name": "exitConnectorId",
+      "type": "string",
+      "value": "salida-tercero"
+    },
+    {
+      "name": "targetNodeId",
+      "type": "string",
+      "value": "lvl04-cin01-rescate-lorena-en-oficina-422"
+    },
+    {
+      "name": "defaultCameraZoom",
+      "type": "float",
+      "value": 1.34
+    },
+    {
+      "name": "gravityScale",
+      "type": "float",
+      "value": 1
+    },
+    {
+      "name": "referencePhotoPath",
+      "type": "file",
+      "value": "public/outside-scene.jpg"
+    },
+    {
+      "name": "runtimeBackgroundPath",
+      "type": "file",
+      "value": ""
+    },
+    {
+      "name": "supportsVerticalCamera",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "musicProfile",
+      "type": "string",
+      "value": "campaign-default"
+    },
+    {
+      "name": "environmentProfile",
+      "type": "string",
+      "value": "level4_oficina_422_comedor_escaleras"
+    }
+  ],
+  "backgroundcolor": "#111827"
+}

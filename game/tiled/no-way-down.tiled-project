@@ -1,0 +1,9 @@
+{
+  "automappingRulesFile": "",
+  "commands": [],
+  "compatibilityVersion": 1100,
+  "extensionsPath": "extensions",
+  "folders": ["../public/assets/tiled/maps", "../public/assets/tiled/tilesets", "../public/assets/tiled/templates"],
+  "propertyTypes": [],
+  "type": "project"
+}

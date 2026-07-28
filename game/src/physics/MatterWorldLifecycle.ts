@@ -1,0 +1,2 @@
+import Phaser from 'phaser';
+export class MatterWorldLifecycle {private bodies=new Set<MatterJS.BodyType>();private disposers=new Set<()=>void>();constructor(private scene:Phaser.Scene){} track<T extends MatterJS.BodyType>(body:T):T{this.bodies.add(body);return body} listen(dispose:()=>void){this.disposers.add(dispose)} destroy(){for(const dispose of this.disposers)dispose();this.disposers.clear();for(const body of this.bodies)this.scene.matter.world.remove(body);this.bodies.clear()} get bodyCount(){return this.bodies.size}}

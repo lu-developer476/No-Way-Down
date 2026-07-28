@@ -1,0 +1,833 @@
+{
+  "compressionlevel": -1,
+  "height": 27,
+  "width": 163,
+  "infinite": false,
+  "nextlayerid": 42,
+  "nextobjectid": 42,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.11.2",
+  "tileheight": 32,
+  "tilewidth": 32,
+  "type": "map",
+  "version": "1.10",
+  "layers": [
+    {
+      "id": 2,
+      "name": "BackgroundReference",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": false,
+      "objects": [
+        {
+          "id": 1,
+          "name": "reference-photo",
+          "type": "reference-photo",
+          "x": 0,
+          "y": 0,
+          "width": 5200,
+          "height": 864,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-reference"
+            }
+          ],
+          "image": "../../../../../public/ground-floor.jpg"
+        }
+      ],
+      "locked": true,
+      "properties": [
+        {
+          "name": "editorOnly",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Background",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 4,
+      "name": "RearArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 5,
+      "name": "Architecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 6,
+      "name": "RearProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 7,
+      "name": "GameplayDecor",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 8,
+      "name": "FrontProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 9,
+      "name": "Foreground",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 10,
+      "name": "LightingAnchors",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 12,
+      "name": "Collision",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 11,
+          "name": "floor",
+          "type": "floor",
+          "x": 0,
+          "y": 800,
+          "width": 5200,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-floor"
+            },
+            {
+              "name": "collisionCategory",
+              "type": "string",
+              "value": "World"
+            },
+            {
+              "name": "collisionMask",
+              "type": "string",
+              "value": "Player|Ally|Enemy|Projectile"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": false
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "OneWayPlatforms",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 14,
+      "name": "Stairs",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 16,
+      "name": "PlayerSpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 15,
+          "name": "default-spawn",
+          "type": "default-spawn",
+          "x": 240,
+          "y": 724,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-spawn-default"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-1"
+            },
+            {
+              "name": "elevation",
+              "type": "float",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "AllySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 20,
+      "name": "EnemySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 18,
+          "name": "comedor-oleada-spawn",
+          "type": "comedor-oleada-spawn",
+          "x": 1730,
+          "y": 724,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "comedor-oleada-spawn"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "comedor-oleada-spawn"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-1"
+            }
+          ]
+        },
+        {
+          "id": 19,
+          "name": "comedor-retaguardia-spawn",
+          "type": "comedor-retaguardia-spawn",
+          "x": 3430,
+          "y": 724,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "comedor-retaguardia-spawn"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "comedor-retaguardia-spawn"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "SpawnAreas",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 21,
+          "name": "comedor-oleada",
+          "type": "comedor-oleada",
+          "x": 950,
+          "y": 494,
+          "width": 1000,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "comedor-oleada"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "comedor-retaguardia",
+          "type": "comedor-retaguardia",
+          "x": 2650,
+          "y": 494,
+          "width": 1000,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "comedor-retaguardia"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Interactables",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 24,
+          "name": "level_1_comedor_resistencia-checkpoint",
+          "type": "level_1_comedor_resistencia-checkpoint",
+          "x": 2600,
+          "y": 724,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-checkpoint"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-checkpoint"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · Asegurar checkpoint"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 25,
+          "name": "level_1_comedor_resistencia-exit",
+          "type": "level_1_comedor_resistencia-exit",
+          "x": 4900,
+          "y": 724,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-exit"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-exit"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · Pasar a los pasillos"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Triggers",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 27,
+          "name": "level_1_comedor_resistencia-narrative",
+          "type": "level_1_comedor_resistencia-narrative",
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-narrative"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": ""
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Objectives",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 29,
+          "name": "resistir-comedor",
+          "type": "resistir-comedor",
+          "x": 400,
+          "y": 628,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "resistir-comedor"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "resistir-comedor"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "comedor-resistencia"
+            }
+          ]
+        },
+        {
+          "id": 30,
+          "name": "salir-comedor",
+          "type": "salir-comedor",
+          "x": 480,
+          "y": 628,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "salir-comedor"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "salir-comedor"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "salida-comedor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Checkpoints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 32,
+          "name": "level_1_comedor_resistencia-checkpoint",
+          "type": "level_1_comedor_resistencia-checkpoint",
+          "x": 2600,
+          "y": 724,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-checkpoint-checkpoints"
+            },
+            {
+              "name": "checkpointId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-checkpoint"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "name": "Pickups",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 34,
+          "name": "level_1_comedor_resistencia-medkit",
+          "type": "level_1_comedor_resistencia-medkit",
+          "x": 2300,
+          "y": 724,
+          "width": 32,
+          "height": 32,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-medkit"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-medkit"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Exits",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 36,
+          "name": "salida-comedor",
+          "type": "salida-comedor",
+          "x": 5020,
+          "y": 680,
+          "width": 100,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "connectorId",
+              "type": "string",
+              "value": "salida-comedor"
+            },
+            {
+              "name": "targetNodeId",
+              "type": "string",
+              "value": "lvl01-esc02-pasillos-hacia-escaleras-pb"
+            },
+            {
+              "name": "targetConnectorId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "enabledByObjectiveId",
+              "type": "string",
+              "value": "salir-comedor"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "Usar salida"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "name": "CameraBounds",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 38,
+          "name": "camera-bounds",
+          "type": "camera-bounds",
+          "x": 0,
+          "y": 0,
+          "width": 5200,
+          "height": 864,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_1_comedor_resistencia-camera"
+            },
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "NavigationHints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    }
+  ],
+  "properties": [
+    {
+      "name": "schemaVersion",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "nodeId",
+      "type": "string",
+      "value": "lvl01-esc01-comedor-resistencia"
+    },
+    {
+      "name": "canonicalNodeIds",
+      "type": "string",
+      "value": "lvl01-esc01-comedor-resistencia"
+    },
+    {
+      "name": "runtimeLevelId",
+      "type": "string",
+      "value": "level_1_comedor_resistencia"
+    },
+    {
+      "name": "locationId",
+      "type": "string",
+      "value": "level1_subsuelo_comedor_pasillos"
+    },
+    {
+      "name": "locationLabel",
+      "type": "string",
+      "value": "Resiste en el comedor y asegura la puerta al pasillo."
+    },
+    {
+      "name": "floorId",
+      "type": "string",
+      "value": "floor-1"
+    },
+    {
+      "name": "floorLabel",
+      "type": "string",
+      "value": "Piso canónico 1"
+    },
+    {
+      "name": "canonicalIndex",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "entryConnectorId",
+      "type": "string",
+      "value": "default"
+    },
+    {
+      "name": "exitConnectorId",
+      "type": "string",
+      "value": "salida-comedor"
+    },
+    {
+      "name": "targetNodeId",
+      "type": "string",
+      "value": "lvl01-esc02-pasillos-hacia-escaleras-pb"
+    },
+    {
+      "name": "defaultCameraZoom",
+      "type": "float",
+      "value": 1.34
+    },
+    {
+      "name": "gravityScale",
+      "type": "float",
+      "value": 1
+    },
+    {
+      "name": "referencePhotoPath",
+      "type": "file",
+      "value": "public/ground-floor.jpg"
+    },
+    {
+      "name": "runtimeBackgroundPath",
+      "type": "file",
+      "value": ""
+    },
+    {
+      "name": "supportsVerticalCamera",
+      "type": "bool",
+      "value": false
+    },
+    {
+      "name": "musicProfile",
+      "type": "string",
+      "value": "campaign-default"
+    },
+    {
+      "name": "environmentProfile",
+      "type": "string",
+      "value": "level1_subsuelo_comedor_pasillos"
+    }
+  ],
+  "backgroundcolor": "#111827"
+}

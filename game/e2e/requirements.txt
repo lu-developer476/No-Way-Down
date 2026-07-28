@@ -1,2 +1,1 @@
 selenium==4.34.2
-Pillow==11.3.0

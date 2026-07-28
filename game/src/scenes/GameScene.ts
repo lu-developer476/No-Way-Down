@@ -65,6 +65,7 @@ import { resolveVisualGeneration, type VisualGeneration, visualV2Style } from '.
 import { VisualV2PresentationSystem } from '../systems/VisualV2PresentationSystem';
 import { InstitutionalLightingSystem } from '../systems/InstitutionalLightingSystem';
 import { MinimapSystem } from '../systems/MinimapSystem';
+import { CorridorEnvironmentRenderer } from '../systems/CorridorEnvironmentRenderer';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -78,6 +79,7 @@ const CANONICAL_DINING_LEVEL_ID =
   'level_1_comedor_resistencia';
 const SPIRAL_HALL_LEVEL_ID =
   'level_2_escaleras_espiral';
+const AUTHORED_CORRIDOR_LEVEL_ID = 'level_1_pasillos_escaleras_pb';
 
 const LATE_RESCUE_ALLIES = [
   {
@@ -186,6 +188,7 @@ export class GameScene extends Phaser.Scene {
   private resistancePhaseCompleted = false;
   private visualGeneration: VisualGeneration = 'legacy';
   private visualV2?: VisualV2PresentationSystem;
+  private corridorEnvironment?: CorridorEnvironmentRenderer;
   private institutionalLighting?: InstitutionalLightingSystem;
   private minimap?: MinimapSystem;
   private visualDebugText?: Phaser.GameObjects.Text;
@@ -367,7 +370,15 @@ export class GameScene extends Phaser.Scene {
     this.combatFeedbackSystem = new CombatFeedbackSystem(this, this.cameras.main);
     this.registry.set('combatFeedbackSystem', this.combatFeedbackSystem);
 
-    this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
+    const usesAuthoredCorridor = selectedLevelId === AUTHORED_CORRIDOR_LEVEL_ID;
+    this.registry.set('environmentRenderer', usesAuthoredCorridor ? 'corridor-authored' : 'legacy');
+    this.registry.set('legacyBackgroundActive', !usesAuthoredCorridor);
+    if (usesAuthoredCorridor) {
+      this.corridorEnvironment = new CorridorEnvironmentRenderer(this);
+      this.corridorEnvironment.create();
+    } else {
+      this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
+    }
     if (this.visualGeneration === 'v2') {
       this.visualV2 = new VisualV2PresentationSystem(this, levelWidth, levelHeight - floorHeight);
       this.visualV2.create();
@@ -735,6 +746,7 @@ export class GameScene extends Phaser.Scene {
       this.ambientVisualSystem?.destroy();
       this.ambientVisualSystem = undefined;
       this.visualV2?.destroy(); this.visualV2 = undefined;
+      this.corridorEnvironment?.destroy(); this.corridorEnvironment = undefined;
       this.institutionalLighting?.destroy(); this.institutionalLighting = undefined;
       this.minimap?.destroy(); this.minimap = undefined;
       this.registry.remove('visualV2Diagnostics');
@@ -873,6 +885,11 @@ export class GameScene extends Phaser.Scene {
       const diagnostics = { internalScale:'960x540', zoom:this.cameras.main.zoom.toFixed(2), fps:Math.round(this.game.loop.actualFps), sprites:this.children.list.length, particles:0, lights:this.institutionalLighting?.count??0, decals:0, drawCalls:'n/a', generation:this.visualGeneration, nodeId:this.registry.get('flowNodeId'), runtimeLevelId:this.currentLevelId };
       this.registry.set('visualV2Diagnostics', diagnostics);
       this.visualDebugText?.setText(Object.entries(diagnostics).map(([k,v])=>`${k}: ${v}`).join('\n'));
+      const query = new URLSearchParams(window.location.search);
+      if (import.meta.env.DEV || query.has('e2eMode')) {
+        const environment = this.corridorEnvironment?.diagnostics(this.cameras.main.scrollX) ?? { loadedEnvironmentAssetKeys:[], environmentObjectCount:0, architecturePrimitiveCount:0 as const, foregroundObjectCount:0, missingTextureCount:0, activeSector:'service-entry' as const };
+        window.__NWD_VISUAL_STATE__ = { nodeId:String(this.registry.get('flowNodeId') ?? ''), runtimeLevelId:this.currentLevelId, environmentRenderer:String(this.registry.get('environmentRenderer')), legacyBackgroundActive:Boolean(this.registry.get('legacyBackgroundActive')), ...environment, lightCount:this.institutionalLighting?.count ?? 0 };
+      }
     }
     this.updateResistancePhase();
 

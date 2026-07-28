@@ -48,31 +48,47 @@ class ProductionE2E(unittest.TestCase):
   label=self.id(); self.collect_console_logs(label); self.collect_network_failures(label)
   bad_logs=[entry for entry in self.console if entry['test']==label and (entry['level']=='SEVERE' or any(term in entry['message'].lower() for term in FORBIDDEN))]
   bad_network=[entry for entry in self.network if entry['test']==label and (entry['status']>=500 or entry['status']==404)]
-  self.results.append({'test':label,'passed':not bad_logs and not bad_network}); self.assertFalse(bad_logs); self.assertFalse(bad_network); self.assert_no_fatal_state()
+  result={'test':label,'passed':not bad_logs and not bad_network}
+  if label.endswith('test_03_reload_returns_to_clean_main_menu'): result.update({'continueFeatureCovered':False,'reason':'MainMenuScene currently exposes only newGame'})
+  self.results.append(result); self.assertFalse(bad_logs); self.assertFalse(bad_network); self.assert_no_fatal_state()
  def js(self,script,*args): return self.browser.execute_script(script,*args)
+ def js_boolean(self,script,*args):
+  result=self.js(script,*args)
+  if not isinstance(result,bool): raise TypeError(f'JavaScript did not return a boolean: {type(result).__name__}')
+  return result
  def wait_for_document(self): self.wait.until(lambda _:self.js("return document.readyState")=='complete')
  def wait_for_build_info(self): self.wait.until(lambda _:isinstance(self.get_build_info(),dict))
- def wait_for_game(self): self.wait.until(lambda _:bool(self.js('return window.__NWD_GAME__')))
- def wait_for_scene(self,key,active=True): self.wait.until(lambda _:self.js("return window.__NWD_GAME__.scene.isActive(arguments[0])",key)==active)
+ def wait_for_game(self): self.wait.until(lambda _:self.js_boolean('return Boolean(window.__NWD_GAME__)') is True)
+ def wait_for_scene(self,key,active=True): self.wait.until(lambda _:self.js_boolean("return Boolean(window.__NWD_GAME__?.scene?.isActive(arguments[0]))",key) is active)
  def wait_for_menu_ready(self): self.wait_for_scene('MainMenuScene'); self.wait.until(lambda _:self.get_menu_state().get('ready') is True)
- def wait_for_registry(self,key,value): self.wait.until(lambda _:self.js("return window.__NWD_GAME__.registry.get(arguments[0])",key)==value)
- def wait_for_node(self,node): self.wait.until(lambda _:self.js("return window.__NWD_GAME__.registry.get('activeCampaignNode')?.id??null")==node)
- def wait_for_runtime(self,runtime): self.wait.until(lambda _:self.js("return window.__NWD_RUNTIME_DIAGNOSTICS__?.runtimeLevelId??null")==runtime)
- def wait_for_gameplay_ready(self): self.wait.until(lambda _:self.js("return window.__NWD_RUNTIME_DIAGNOSTICS__?.gameplayReady===true"))
- def get_menu_state(self): return self.js("return window.__NWD_GAME__?.registry.get('mainMenuState')??null") or {}
- def get_build_info(self): return self.js('return window.__NWD_BUILD__??null')
+ def get_registry_string(self,key): return self.js("const value=window.__NWD_GAME__?.registry?.get(arguments[0]);return typeof value==='string'?value:null",key)
+ def get_registry_number(self,key): return self.js("const value=window.__NWD_GAME__?.registry?.get(arguments[0]);return Number.isFinite(value)?value:null",key)
+ def get_registry_boolean(self,key): return self.js("const value=window.__NWD_GAME__?.registry?.get(arguments[0]);return typeof value==='boolean'?value:null",key)
+ def get_active_node_id(self): return self.js("const node=window.__NWD_GAME__?.registry?.get('activeCampaignNode');return typeof node?.id==='string'?node.id:null")
+ def wait_for_node(self,node): self.wait.until(lambda _:self.get_active_node_id()==node)
+ def wait_for_runtime(self,runtime): self.wait.until(lambda _:((self.get_runtime_diagnostics() or {}).get('runtimeLevelId'))==runtime)
+ def wait_for_gameplay_ready(self): self.wait.until(lambda _:((self.get_runtime_diagnostics() or {}).get('gameplayReady')) is True)
+ def get_menu_state(self):
+  return self.js("""const state=window.__NWD_GAME__?.registry?.get('mainMenuState');if(!state||typeof state!=='object')return null;return {ready:state.ready===true,selectedIndex:Number.isInteger(state.selectedIndex)?state.selectedIndex:null,selectedAction:typeof state.selectedAction==='string'?state.selectedAction:null,setupVisible:state.setupVisible===true,setupStep:typeof state.setupStep==='string'?state.setupStep:null,canContinue:state.canContinue===true}""") or {}
+ def get_build_info(self):
+  return self.js("""const build=window.__NWD_BUILD__;if(!build||typeof build!=='object')return null;return {sha:typeof build.sha==='string'?build.sha:null,shortSha:typeof build.shortSha==='string'?build.shortSha:null,builtAt:typeof build.builtAt==='string'?build.builtAt:null,mode:typeof build.mode==='string'?build.mode:null,version:typeof build.version==='string'?build.version:null}""")
+ def get_runtime_diagnostics(self):
+  return self.js("""const diagnostics=window.__NWD_RUNTIME_DIAGNOSTICS__;if(!diagnostics)return null;return {nodeId:typeof diagnostics.nodeId==='string'?diagnostics.nodeId:null,runtimeLevelId:typeof diagnostics.runtimeLevelId==='string'?diagnostics.runtimeLevelId:null,physicsEngine:typeof diagnostics.physicsEngine==='string'?diagnostics.physicsEngine:null,matterBodyCount:Number.isFinite(diagnostics.matterBodyCount)?diagnostics.matterBodyCount:0,tiledMapPath:typeof diagnostics.tiledMapPath==='string'?diagnostics.tiledMapPath:null,currentObjective:typeof diagnostics.currentObjective==='string'?diagnostics.currentObjective:null,playerCount:Number.isFinite(diagnostics.playerCount)?diagnostics.playerCount:0,gameplayReady:diagnostics.gameplayReady===true,fatalError:diagnostics.fatalError?String(diagnostics.fatalError):null}""")
  def get_api_build_info(self):
   status,ctype,body=http_get('/api/build-info/'); self.assertEqual(status,200); self.assertEqual(ctype.split(';')[0],'application/json'); return json.loads(body)
+ def clear_indexed_db(self):
+  result=self.browser.execute_async_script("""const done=arguments[arguments.length-1];if(typeof indexedDB.databases!=='function'){done(true);return}indexedDB.databases().then(databases=>Promise.all(databases.filter(database=>typeof database.name==='string').map(database=>new Promise((resolve,reject)=>{const request=indexedDB.deleteDatabase(database.name);request.onsuccess=()=>resolve(true);request.onerror=()=>reject(new Error(`Could not delete ${database.name}`));request.onblocked=()=>reject(new Error(`Deletion blocked for ${database.name}`))})))).then(()=>done(true)).catch(error=>done({ok:false,message:String(error)}))""")
+  if result is not True: self.fail(f'IndexedDB cleanup failed: {result}')
  def reset_browser_state(self):
-  self.browser.get(BASE_URL+'/'); self.wait_for_document(); self.js("localStorage.clear();sessionStorage.clear();document.cookie.split(';').forEach(v=>document.cookie=v.split('=')[0]+'=;Max-Age=0;path=/');return indexedDB.databases?.().then(ds=>Promise.all(ds.map(d=>d.name&&indexedDB.deleteDatabase(d.name))))")
+  self.browser.get(BASE_URL+'/'); self.wait_for_document(); self.js("localStorage.clear();sessionStorage.clear();return true"); self.browser.delete_all_cookies(); self.clear_indexed_db()
   self.browser.get(BASE_URL+'/?e2e=1'); self.wait_for_document(); self.wait_for_build_info(); self.wait_for_game(); self.wait_for_menu_ready()
- def assert_no_fatal_state(self): self.assertFalse(self.js("return window.__NWD_GAME__?.registry.get('fatalError')??window.__NWD_RUNTIME_DIAGNOSTICS__?.fatalError??null"))
+ def assert_no_fatal_state(self): self.assertFalse(self.js_boolean("return Boolean(window.__NWD_GAME__?.registry?.get('fatalError')??window.__NWD_RUNTIME_DIAGNOSTICS__?.fatalError)"))
  def body(self): return self.browser.find_element('tag name','body')
  def start_first_level(self):
   state=self.get_menu_state(); self.assertEqual(state['selectedIndex'],0); self.assertEqual(state['selectedAction'],'newGame'); self.body().send_keys(Keys.ENTER); self.wait_for_scene('CampaignIntroScene'); self.wait_for_node('campaign-intro'); self.body().send_keys(Keys.ENTER); self.wait_for_scene('LevelScene'); self.wait_for_node('lvl01-esc01-comedor-resistencia'); self.wait_for_gameplay_ready(); self.wait_for_runtime('level_1_comedor_resistencia')
  def advance_level(self,next_node,next_runtime=None):
   moved=self.js("const s=window.__NWD_GAME__.scene.getScene('LevelScene'),p=s.runtime?.player?.sprite,e=s.matter.world.localWorld.bodies.find(b=>b.label?.startsWith('sensor:Exits:'));if(!p||!e)return false;p.setPosition(e.position.x,e.position.y);p.setVelocity(0,0);return true")
-  self.assertTrue(moved); self.wait.until(lambda _:self.js("return window.__NWD_GAME__.scene.getScene('LevelScene').runtime?.exitReady===true")); self.body().send_keys('e'); self.wait_for_node(next_node)
+  self.assertTrue(moved); self.wait.until(lambda _:self.js_boolean("const scene=window.__NWD_GAME__?.scene?.getScene('LevelScene');return scene?.runtime?.exitReady===true")); self.body().send_keys('e'); self.wait_for_node(next_node)
   if next_runtime: self.wait_for_scene('LevelScene'); self.wait_for_gameplay_ready(); self.wait_for_runtime(next_runtime)
  def test_01_routes_and_build_identity(self):
   status,ctype,_=http_get('/'); self.assertEqual(status,200); self.assertIn('text/html',ctype); build=self.get_build_info(); self.assertEqual(set(build),EXPECTED_KEYS); self.assertTrue(all(isinstance(build[key],str) for key in EXPECTED_KEYS)); self.assertEqual(datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat(),datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat()); api=self.get_api_build_info(); expected=os.getenv('E2E_EXPECTED_SHA')
@@ -80,7 +96,7 @@ class ProductionE2E(unittest.TestCase):
   if build['sha']!='unknown' and api['backendSha']!='unknown': self.assertEqual(build['sha'],api['backendSha'])
   (RESULTS/'build-info.json').write_text(json.dumps({'frontend':build,'backend':api},indent=2))
  def test_02_canonical_transitions(self):
-  self.start_first_level(); diag=self.js('return window.__NWD_RUNTIME_DIAGNOSTICS__'); self.assertEqual(diag['physicsEngine'],'matter'); self.assertGreater(diag['matterBodyCount'],0); self.assertTrue(diag['tiledMapPath']); self.assertTrue(diag['currentObjective']); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); self.advance_level('lvl01-cin01-cierre-contextual'); self.wait_for_scene('CinematicScene'); self.wait_for_scene('LevelScene',False); self.assertEqual(self.js("return window.__NWD_GAME__.registry.get('campaignCursor')"),3)
- def test_03_continue_session_is_autonomous(self):
-  self.start_first_level(); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); before=self.js("const d=window.__NWD_RUNTIME_DIAGNOSTICS__;return {players:d.playerCount,objective:d.currentObjective,node:d.nodeId,ready:d.gameplayReady}"); self.assertEqual(before['players'],1); self.assertTrue(before['objective']); self.browser.refresh(); self.wait_for_document(); self.wait_for_build_info(); self.wait_for_game(); self.wait_for_menu_ready(); self.assertEqual(self.get_menu_state()['selectedIndex'],0); self.body().send_keys(Keys.ENTER); self.wait_for_scene('CampaignIntroScene'); self.assertEqual(self.js("return window.__NWD_GAME__.registry.get('campaignCursor')"),0)
+  self.start_first_level(); diag=self.get_runtime_diagnostics(); self.assertEqual(diag['physicsEngine'],'matter'); self.assertGreater(diag['matterBodyCount'],0); self.assertTrue(diag['tiledMapPath']); self.assertTrue(diag['currentObjective']); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); self.advance_level('lvl01-cin01-cierre-contextual'); self.wait_for_scene('CinematicScene'); self.wait_for_scene('LevelScene',False); self.assertEqual(self.get_registry_number('campaignCursor'),3)
+ def test_03_reload_returns_to_clean_main_menu(self):
+  self.start_first_level(); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); before=self.get_runtime_diagnostics(); self.assertEqual(before['playerCount'],1); self.assertTrue(before['currentObjective']); self.assertTrue(before['gameplayReady']); self.browser.refresh(); self.wait_for_document(); self.wait_for_build_info(); self.wait_for_game(); self.wait_for_menu_ready(); state=self.get_menu_state(); self.assertEqual(state['selectedIndex'],0); self.assertEqual(state['selectedAction'],'newGame'); self.assertFalse(state['setupVisible']); self.assertFalse(state['canContinue']); self.wait_for_scene('LevelScene',False); self.assert_no_fatal_state(); self.body().send_keys(Keys.ENTER); self.wait_for_scene('CampaignIntroScene'); self.assertEqual(self.get_registry_number('campaignCursor'),0)
 if __name__=='__main__': unittest.main(verbosity=2)

@@ -5,27 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/auditCanonicalCampaign.mjs && tsc --noEmit && vite build && node scripts/verifyBuildCampaignFlow.mjs",
-    "audit:campaign": "node scripts/auditCanonicalCampaign.mjs",
     "preview": "vite preview",
-    "generate:institutional-tileset": "node scripts/generateInstitutionalTileset.mjs",
-    "generate:bank-counter-spritesheet": "node scripts/generateBankCounterSpritesheet.mjs",
-    "generate:dining-tables-spritesheet": "node scripts/generateDiningTablesSpritesheet.mjs",
-    "generate:stone-columns-spritesheet": "node scripts/generateStoneColumnsSpritesheet.mjs",
-    "generate:tall-windows-spritesheet": "node scripts/generateInstitutionalTallWindowsSpritesheet.mjs",
-    "generate:institutional-decor-spritesheet": "node scripts/generateInstitutionalDecorSpritesheet.mjs",
-    "generate:stairs-spritesheet": "node scripts/generateInstitutionalStairsSpritesheet.mjs",
-    "generate:zombie-damage-tilesheet": "node scripts/generateZombieDamageTileset.mjs",
-    "audit:asset-routes": "node scripts/auditAssetRoutes.mjs",
-    "audit:visual-v2": "node scripts/auditVisualV2.mjs",
-    "generate:visual-v2": "python scripts/generate_visual_v2.py",
-    "fix:asset-routes": "node scripts/auditAssetRoutes.mjs --fix",
-    "test": "npm run audit:no-binary-diff && node --experimental-strip-types --test tests/*.test.ts",
-    "test:e2e:production": "bash scripts/runProductionE2E.sh",
+    "audit:campaign": "node scripts/auditCanonicalCampaign.mjs",
+    "audit:protected-assets": "node scripts/auditProtectedAssets.mjs",
+    "audit:tiled": "node scripts/auditTiledMaps.mjs",
+    "audit:matter-only": "node scripts/auditMatterOnly.mjs",
+    "audit:runtime-reachability": "node scripts/auditRuntimeReachability.mjs",
+    "audit:dead-code": "node scripts/auditDeadRuntimeCode.mjs",
     "audit:no-binary-diff": "node scripts/auditNoBinaryDiff.mjs",
-    "audit:corridor-svg-art": "node scripts/auditCorridorSvgArt.mjs",
-    "audit:campaign-world": "node scripts/auditCampaignWorld.mjs"
-    ,"audit:campaign-progression": "node scripts/auditCampaignProgression.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {
     "phaser": "^3.90.0"

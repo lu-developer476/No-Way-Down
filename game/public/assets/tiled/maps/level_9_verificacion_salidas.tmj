@@ -1,0 +1,771 @@
+{
+  "compressionlevel": -1,
+  "height": 37,
+  "width": 282,
+  "infinite": false,
+  "nextlayerid": 39,
+  "nextobjectid": 39,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.11.2",
+  "tileheight": 32,
+  "tilewidth": 32,
+  "type": "map",
+  "version": "1.10",
+  "layers": [
+    {
+      "id": 2,
+      "name": "BackgroundReference",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": false,
+      "objects": [
+        {
+          "id": 1,
+          "name": "reference-photo",
+          "type": "reference-photo",
+          "x": 0,
+          "y": 0,
+          "width": 9000,
+          "height": 1180,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-reference"
+            }
+          ],
+          "image": "../../../../../public/ground-floor-reconquista-sector.jpg"
+        }
+      ],
+      "locked": true,
+      "properties": [
+        {
+          "name": "editorOnly",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Background",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 4,
+      "name": "RearArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 5,
+      "name": "Architecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 6,
+      "name": "RearProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 7,
+      "name": "GameplayDecor",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 8,
+      "name": "FrontProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 9,
+      "name": "Foreground",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 10,
+      "name": "LightingAnchors",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 12,
+      "name": "Collision",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 11,
+          "name": "floor",
+          "type": "floor",
+          "x": 0,
+          "y": 1108,
+          "width": 9000,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-floor"
+            },
+            {
+              "name": "collisionCategory",
+              "type": "string",
+              "value": "World"
+            },
+            {
+              "name": "collisionMask",
+              "type": "string",
+              "value": "Player|Ally|Enemy|Projectile"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": false
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-22"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "OneWayPlatforms",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 14,
+      "name": "Stairs",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 16,
+      "name": "PlayerSpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 15,
+          "name": "default-spawn",
+          "type": "default-spawn",
+          "x": 200,
+          "y": 1040,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-spawn-default"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-22"
+            },
+            {
+              "name": "elevation",
+              "type": "float",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "AllySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 18,
+      "name": "EnemySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 19,
+      "name": "SpawnAreas",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 26,
+      "name": "Interactables",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 20,
+          "name": "inspeccionar-salida-a",
+          "type": "inspeccionar-salida-a",
+          "x": 1200,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-salida-a"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "inspeccionar-salida-a"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · VERIFICAR SALIDA A"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 21,
+          "name": "inspeccionar-salida-b",
+          "type": "inspeccionar-salida-b",
+          "x": 2500,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-salida-b"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "inspeccionar-salida-b"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · VERIFICAR SALIDA B"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "inspeccionar-salida-c",
+          "type": "inspeccionar-salida-c",
+          "x": 3800,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-salida-c"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "inspeccionar-salida-c"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · VERIFICAR SALIDA C"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 23,
+          "name": "inspeccionar-salida-d",
+          "type": "inspeccionar-salida-d",
+          "x": 5100,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-salida-d"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "inspeccionar-salida-d"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · VERIFICAR SALIDA D"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 24,
+          "name": "inspeccionar-salida-e",
+          "type": "inspeccionar-salida-e",
+          "x": 6400,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-salida-e"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "inspeccionar-salida-e"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · VERIFICAR SALIDA E"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 25,
+          "name": "confirmar-salida-e-garage",
+          "type": "confirmar-salida-e-garage",
+          "x": 8500,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "confirmar-salida-e-garage"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "confirmar-salida-e-garage"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · CONFIRMAR RUTA AL GARAGE"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Triggers",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 30,
+      "name": "Objectives",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 28,
+          "name": "verificar-salidas",
+          "type": "verificar-salidas",
+          "x": 360,
+          "y": 944,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "verificar-salidas"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "verificar-salidas"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "salida-a"
+            }
+          ]
+        },
+        {
+          "id": 29,
+          "name": "elegir-garage",
+          "type": "elegir-garage",
+          "x": 440,
+          "y": 944,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "elegir-garage"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "elegir-garage"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "salida-e-garage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Checkpoints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 32,
+      "name": "Pickups",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 34,
+      "name": "Exits",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 33,
+          "name": "salida-e-garage",
+          "type": "salida-e-garage",
+          "x": 8820,
+          "y": 988,
+          "width": 100,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "salida-e-garage"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "salida-e-garage"
+            },
+            {
+              "name": "connectorId",
+              "type": "string",
+              "value": "salida-e-garage"
+            },
+            {
+              "name": "targetNodeId",
+              "type": "string",
+              "value": "lvl09-cin01-hallazgo-salida-y-mordida-selene"
+            },
+            {
+              "name": "targetConnectorId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "enabledByObjectiveId",
+              "type": "string",
+              "value": "elegir-garage"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "Usar salida"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "name": "CameraBounds",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 35,
+          "name": "camera-bounds",
+          "type": "camera-bounds",
+          "x": 0,
+          "y": 0,
+          "width": 9000,
+          "height": 1180,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_verificacion_salidas-camera"
+            },
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "NavigationHints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    }
+  ],
+  "properties": [
+    {
+      "name": "schemaVersion",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "nodeId",
+      "type": "string",
+      "value": "lvl09-esc01-verificacion-salidas"
+    },
+    {
+      "name": "canonicalNodeIds",
+      "type": "string",
+      "value": "lvl09-esc01-verificacion-salidas"
+    },
+    {
+      "name": "runtimeLevelId",
+      "type": "string",
+      "value": "level_9_verificacion_salidas"
+    },
+    {
+      "name": "locationId",
+      "type": "string",
+      "value": "level9_salidas"
+    },
+    {
+      "name": "locationLabel",
+      "type": "string",
+      "value": "level_9_verificacion_salidas"
+    },
+    {
+      "name": "floorId",
+      "type": "string",
+      "value": "floor-22"
+    },
+    {
+      "name": "floorLabel",
+      "type": "string",
+      "value": "Piso canónico 22"
+    },
+    {
+      "name": "canonicalIndex",
+      "type": "int",
+      "value": 22
+    },
+    {
+      "name": "entryConnectorId",
+      "type": "string",
+      "value": "default"
+    },
+    {
+      "name": "exitConnectorId",
+      "type": "string",
+      "value": "salida-e-garage"
+    },
+    {
+      "name": "targetNodeId",
+      "type": "string",
+      "value": "lvl09-cin01-hallazgo-salida-y-mordida-selene"
+    },
+    {
+      "name": "defaultCameraZoom",
+      "type": "float",
+      "value": 1.34
+    },
+    {
+      "name": "gravityScale",
+      "type": "float",
+      "value": 1
+    },
+    {
+      "name": "referencePhotoPath",
+      "type": "file",
+      "value": "public/ground-floor-reconquista-sector.jpg"
+    },
+    {
+      "name": "runtimeBackgroundPath",
+      "type": "file",
+      "value": ""
+    },
+    {
+      "name": "supportsVerticalCamera",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "musicProfile",
+      "type": "string",
+      "value": "campaign-default"
+    },
+    {
+      "name": "environmentProfile",
+      "type": "string",
+      "value": "level9_salidas"
+    }
+  ],
+  "backgroundcolor": "#111827"
+}

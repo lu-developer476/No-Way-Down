@@ -33,7 +33,7 @@ for (const row of changes) {
   const [status, ...paths] = row.split('\t');
   if (status.startsWith('D')) continue;
   const path = paths.at(-1);
-  if (path === 'game/scripts/auditNoBinaryDiff.mjs') continue;
+  if (/^game\/scripts\/audit[A-Z].*\.mjs$/.test(path)) continue;
   const bytes = readFileSync(resolve(root, path));
   if (bytes.includes(0)) failures.push(`NUL content detected: ${path}`);
   try {

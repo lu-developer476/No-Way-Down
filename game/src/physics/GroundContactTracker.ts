@@ -1,0 +1,1 @@
+export class GroundContactTracker {private contacts=new Set<number>();begin(body:MatterJS.BodyType){this.contacts.add(body.id)}end(body:MatterJS.BodyType){this.contacts.delete(body.id)}reset(){this.contacts.clear()}get grounded(){return this.contacts.size>0}}

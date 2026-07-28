@@ -1,0 +1,733 @@
+{
+  "compressionlevel": -1,
+  "height": 39,
+  "width": 288,
+  "infinite": false,
+  "nextlayerid": 38,
+  "nextobjectid": 38,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.11.2",
+  "tileheight": 32,
+  "tilewidth": 32,
+  "type": "map",
+  "version": "1.10",
+  "layers": [
+    {
+      "id": 2,
+      "name": "BackgroundReference",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": false,
+      "objects": [
+        {
+          "id": 1,
+          "name": "reference-photo",
+          "type": "reference-photo",
+          "x": 0,
+          "y": 0,
+          "width": 9200,
+          "height": 1240,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_subsuelo3_garage_salida-reference"
+            }
+          ],
+          "image": "../../../../../public/outside.jpg"
+        }
+      ],
+      "locked": true,
+      "properties": [
+        {
+          "name": "editorOnly",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Background",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 4,
+      "name": "RearArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 5,
+      "name": "Architecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 6,
+      "name": "RearProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 7,
+      "name": "GameplayDecor",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 8,
+      "name": "FrontProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 9,
+      "name": "Foreground",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 10,
+      "name": "LightingAnchors",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 12,
+      "name": "Collision",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 11,
+          "name": "floor",
+          "type": "floor",
+          "x": 0,
+          "y": 1166,
+          "width": 9200,
+          "height": 74,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_subsuelo3_garage_salida-floor"
+            },
+            {
+              "name": "collisionCategory",
+              "type": "string",
+              "value": "World"
+            },
+            {
+              "name": "collisionMask",
+              "type": "string",
+              "value": "Player|Ally|Enemy|Projectile"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": false
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-25"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "OneWayPlatforms",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 14,
+      "name": "Stairs",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 16,
+      "name": "PlayerSpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 15,
+          "name": "default-spawn",
+          "type": "default-spawn",
+          "x": 200,
+          "y": 1080,
+          "width": 40,
+          "height": 72,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_subsuelo3_garage_salida-spawn-default"
+            },
+            {
+              "name": "spawnId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "floorId",
+              "type": "string",
+              "value": "floor-25"
+            },
+            {
+              "name": "elevation",
+              "type": "float",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "AllySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 18,
+      "name": "EnemySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 19,
+      "name": "SpawnAreas",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 24,
+      "name": "Interactables",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 20,
+          "name": "recoger-mapa",
+          "type": "recoger-mapa",
+          "x": 1700,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "recoger-mapa"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "recoger-mapa"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · RECOGER MAPA"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 21,
+          "name": "recoger-llaves",
+          "type": "recoger-llaves",
+          "x": 4300,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "recoger-llaves"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "recoger-llaves"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · RECOGER LLAVES"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "inspeccionar-sedan",
+          "type": "inspeccionar-sedan",
+          "x": 7000,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-sedan"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "inspeccionar-sedan"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · INSPECCIONAR SEDÁN"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": 23,
+          "name": "abordar-sedan-accion",
+          "type": "abordar-sedan-accion",
+          "x": 7350,
+          "y": 1040,
+          "width": 64,
+          "height": 96,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "abordar-sedan-accion"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "abordar-sedan-accion"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "E · ABORDAR VEHÍCULO"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Triggers",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 29,
+      "name": "Objectives",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 26,
+          "name": "reunir-pistas",
+          "type": "reunir-pistas",
+          "x": 360,
+          "y": 984,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "reunir-pistas"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "reunir-pistas"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "mapa-garage"
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "name": "inspeccionar-sedan",
+          "type": "inspeccionar-sedan",
+          "x": 440,
+          "y": 984,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "inspeccionar-sedan-objectives"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "inspeccionar-sedan"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "sedan-supervivencia"
+            }
+          ]
+        },
+        {
+          "id": 28,
+          "name": "abordar",
+          "type": "abordar",
+          "x": 520,
+          "y": 984,
+          "width": 48,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "abordar"
+            },
+            {
+              "name": "objectiveId",
+              "type": "string",
+              "value": "abordar"
+            },
+            {
+              "name": "targetId",
+              "type": "string",
+              "value": "abordar-sedan"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Checkpoints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 31,
+      "name": "Pickups",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    },
+    {
+      "id": 33,
+      "name": "Exits",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 32,
+          "name": "abordar-sedan",
+          "type": "abordar-sedan",
+          "x": 9020,
+          "y": 1046,
+          "width": 100,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "abordar-sedan"
+            },
+            {
+              "name": "interactionId",
+              "type": "string",
+              "value": "abordar-sedan"
+            },
+            {
+              "name": "connectorId",
+              "type": "string",
+              "value": "abordar-sedan"
+            },
+            {
+              "name": "targetNodeId",
+              "type": "string",
+              "value": "lvl10-cin01-hallazgo-del-vehiculo"
+            },
+            {
+              "name": "targetConnectorId",
+              "type": "string",
+              "value": "default"
+            },
+            {
+              "name": "enabledByObjectiveId",
+              "type": "string",
+              "value": "abordar"
+            },
+            {
+              "name": "sensor",
+              "type": "bool",
+              "value": true
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "value": "Usar salida"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "name": "CameraBounds",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 34,
+          "name": "camera-bounds",
+          "type": "camera-bounds",
+          "x": 0,
+          "y": 0,
+          "width": 9200,
+          "height": 1240,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_9_subsuelo3_garage_salida-camera"
+            },
+            {
+              "name": "editorOnly",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "name": "NavigationHints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": []
+    }
+  ],
+  "properties": [
+    {
+      "name": "schemaVersion",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "nodeId",
+      "type": "string",
+      "value": "lvl10-esc01-garage-busqueda-vehiculo"
+    },
+    {
+      "name": "canonicalNodeIds",
+      "type": "string",
+      "value": "lvl10-esc01-garage-busqueda-vehiculo,lvl10-esc02-resistencia-en-garage"
+    },
+    {
+      "name": "runtimeLevelId",
+      "type": "string",
+      "value": "level_9_subsuelo3_garage_salida"
+    },
+    {
+      "name": "locationId",
+      "type": "string",
+      "value": "level9_subsuelo3_garage_salida"
+    },
+    {
+      "name": "locationLabel",
+      "type": "string",
+      "value": "level_9_subsuelo3_garage_salida"
+    },
+    {
+      "name": "floorId",
+      "type": "string",
+      "value": "floor-25"
+    },
+    {
+      "name": "floorLabel",
+      "type": "string",
+      "value": "Piso canónico 25"
+    },
+    {
+      "name": "canonicalIndex",
+      "type": "int",
+      "value": 25
+    },
+    {
+      "name": "entryConnectorId",
+      "type": "string",
+      "value": "default"
+    },
+    {
+      "name": "exitConnectorId",
+      "type": "string",
+      "value": "abordar-sedan"
+    },
+    {
+      "name": "targetNodeId",
+      "type": "string",
+      "value": "lvl10-cin01-hallazgo-del-vehiculo"
+    },
+    {
+      "name": "defaultCameraZoom",
+      "type": "float",
+      "value": 1.34
+    },
+    {
+      "name": "gravityScale",
+      "type": "float",
+      "value": 1
+    },
+    {
+      "name": "referencePhotoPath",
+      "type": "file",
+      "value": "public/outside.jpg"
+    },
+    {
+      "name": "runtimeBackgroundPath",
+      "type": "file",
+      "value": ""
+    },
+    {
+      "name": "supportsVerticalCamera",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "musicProfile",
+      "type": "string",
+      "value": "campaign-default"
+    },
+    {
+      "name": "environmentProfile",
+      "type": "string",
+      "value": "level9_subsuelo3_garage_salida"
+    }
+  ],
+  "backgroundcolor": "#111827"
+}

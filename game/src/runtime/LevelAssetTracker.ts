@@ -1,0 +1,1 @@
+export class LevelAssetTracker {private refs=new Map<string,number>();retain(key:string){this.refs.set(key,(this.refs.get(key)??0)+1)}release(key:string){const next=(this.refs.get(key)??1)-1;if(next<=0)this.refs.delete(key);else this.refs.set(key,next);return next<=0}get active(){return this.refs.size}}

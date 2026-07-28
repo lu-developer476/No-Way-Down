@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "hashAlgorithm": "sha256",
+  "policy": "All versioned binary assets are read-only; this manifest is never rewritten by its audit.",
+  "assets": [
+    {
+      "path": "game/public/assets/images/NWD-characters.png",
+      "sha256": "54c76639ece6c7c78848a82cbbd4e3a099b42b598e677bb502cfb9ee230162b9",
+      "category": "character",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "game/public/assets/images/NWD-menu.png",
+      "sha256": "09ad1b36121582953003a5833e256b8671a3d2a18ef955772c74069225d2b116",
+      "category": "menu",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "game/public/favicon.png",
+      "sha256": "4e37ad9dccb66c4467aecbbd10133d30c10c044388c818b3465b6bc036972d00",
+      "category": "favicon",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/entrance.jpg",
+      "sha256": "f5be2699a054c09f4410a7a492ad4889a5c43b6a68b3b5f9c68c9d33b2c1d773",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/favicon.png",
+      "sha256": "4e37ad9dccb66c4467aecbbd10133d30c10c044388c818b3465b6bc036972d00",
+      "category": "favicon",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/ground-floor-25may-sector.jpg",
+      "sha256": "a89ed5c4da553a439e435d38dfb464ad8adaa1d0b689293905f4ef4fcf340a7c",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/ground-floor-reconquista-sector.jpg",
+      "sha256": "f49aa439d47486f53942960cb21a9bbbbc6b43e8e6f9da345503d141f14e3a58",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/ground-floor-rivadavia-sector.jpg",
+      "sha256": "39687f1a7a713142c1e331791936f7ef89d5b2abc551dc13e73499b6bd803804",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/ground-floor.jpg",
+      "sha256": "ed81789678312ebcc063cb3323f9af7a36cbf264fa37c0d9de8d0e0e5b3248e3",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/outside-scene.jpg",
+      "sha256": "50d40b86f859f9ed5bbdcdc2670fa2c487a816e5d96587bd83010d57bc9ae35b",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/outside.jpg",
+      "sha256": "ccd33964a3dd22f6172101cccd142b020708945ca7447fa53e7a723c2df4febc",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/stairs.jpg",
+      "sha256": "118194555a01248f91d1dcfce4324c4626ffdda0126a4ca099c88c33a7eeb942",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    },
+    {
+      "path": "public/subsoil.jpg",
+      "sha256": "4bb9d594f01a2d49d2e42da3e583e1e99ca20aa4d0ee065080f012842a7f61c0",
+      "category": "environment-photograph",
+      "reason": "Versioned binary asset is immutable during the Phaser Matter/Tiled migration."
+    }
+  ]
+}

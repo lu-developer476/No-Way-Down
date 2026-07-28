@@ -1,1 +1,142 @@
-import Phaser from 'phaser';import type{CampaignNode}from'../campaign/types';import{CampaignFlow}from'./CampaignFlow';export class DialogueScene extends Phaser.Scene{constructor(){super('DialogueScene')}create(data:{node:CampaignNode}){new CampaignFlow(this).confirm(data.node);this.add.text(480,230,`DIÁLOGO\n${data.node.id}`,{fontFamily:'monospace',fontSize:'24px',align:'center',color:'#f8fafc'}).setOrigin(.5);this.add.text(480,350,'ENTER para continuar',{fontFamily:'monospace',fontSize:'18px',color:'#fbbf24'}).setOrigin(.5);this.input.keyboard?.once('keydown-ENTER',()=>new CampaignFlow(this).next())}}
+import Phaser from 'phaser';
+import { controlManager } from '../input/ControlManager';
+import { FlowDebugOverlay } from './flowDebug';
+import { CampaignFlowNode, SceneFlowManager } from './SceneFlowManager';
+import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
+
+interface DialogueLine {
+  speaker: string;
+  text: string;
+}
+
+interface DialogueSceneData {
+  flowNode?: CampaignFlowNode;
+}
+
+export class DialogueScene extends Phaser.Scene {
+  private enterKey?: Phaser.Input.Keyboard.Key;
+
+  private hasStarted = false;
+
+  private isTransitioning = false;
+
+  private flowManager?: SceneFlowManager;
+
+  private flowDebug?: FlowDebugOverlay;
+
+  constructor() {
+    super('DialogueScene');
+  }
+
+  create(data: DialogueSceneData = {}): void {
+    if (data.flowNode) {
+      this.registry.set('activeCampaignNode', data.flowNode);
+      this.registry.set('flowNodeId', data.flowNode.id);
+    }
+
+    const dialoguePath = data.flowNode?.dialoguePath;
+    this.renderDialogue(dialoguePath);
+
+    this.flowManager = new SceneFlowManager(this);
+    const flowNode = data.flowNode ?? this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    if (!flowNode || !new CampaignTransitionCoordinator(this).confirmDestination(flowNode)) {
+      return;
+    }
+    this.flowDebug = new FlowDebugOverlay(this, this.flowManager, () => ({
+      flowNode: this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined,
+      enterDown: this.enterKey?.isDown ?? false,
+      hasStarted: this.hasStarted,
+      isTransitioning: this.isTransitioning
+    }));
+    this.flowDebug.create();
+
+    if (this.input.keyboard) {
+      this.enterKey = this.input.keyboard.addKey(controlManager.getKeyCode('next_level'));
+    } else {
+      console.error('[DialogueScene] Keyboard input no está disponible.');
+    }
+
+    this.input.once('pointerdown', () => {
+      this.advanceToNextNode('click');
+    });
+  }
+
+  private renderDialogue(dialoguePath?: string): void {
+    const { width, height } = this.scale;
+    const cacheKey = this.toFlowAssetCacheKey(dialoguePath);
+    const renderFromCache = () => {
+      const dialogue = (cacheKey ? this.cache.json.get(cacheKey) : undefined) as { lines: DialogueLine[] } | undefined;
+      const lines = dialogue?.lines ?? [];
+
+      this.add.rectangle(width / 2, height / 2, width, height, 0x0f172a, 1);
+      this.add.text(width / 2, 58, 'Conversación', { color: '#e2e8f0', fontFamily: 'monospace', fontSize: '26px' }).setOrigin(0.5);
+
+      const content = lines.map((line) => `${line.speaker}: ${line.text}`).join('\n\n') || 'Sin diálogo cargado';
+      this.add.text(width / 2, height / 2, content, {
+        color: '#cbd5e1',
+        fontFamily: 'monospace',
+        fontSize: '18px',
+        align: 'center',
+        wordWrap: { width: width - 120 }
+      }).setOrigin(0.5);
+
+      this.add.text(width / 2, height - 36, 'ENTER o clic para continuar', { color: '#93c5fd', fontFamily: 'monospace', fontSize: '14px' }).setOrigin(0.5);
+    };
+
+    if (!dialoguePath || !cacheKey) {
+      console.warn('[DialogueScene] dialoguePath ausente; se renderiza fallback.');
+      renderFromCache();
+      return;
+    }
+
+    if (this.cache.json.exists(cacheKey)) {
+      renderFromCache();
+      return;
+    }
+
+    this.load.json(cacheKey, dialoguePath);
+    this.load.once(`filecomplete-json-${cacheKey}`, renderFromCache);
+    this.load.once('loaderror', () => {
+      console.error('[DialogueScene] Error cargando diálogo. Se usa fallback.', { dialoguePath });
+      renderFromCache();
+    });
+    this.load.start();
+  }
+
+  private toFlowAssetCacheKey(path?: string): string | undefined {
+    if (!path) {
+      return undefined;
+    }
+
+    return `campaign_asset::${path}`;
+  }
+
+  update(): void {
+    this.flowDebug?.update();
+
+    if (!this.enterKey || this.hasStarted) {
+      return;
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+      this.advanceToNextNode('enter');
+    }
+  }
+
+  private advanceToNextNode(source: 'enter' | 'click'): void {
+    if (this.hasStarted) {
+      return;
+    }
+
+    this.hasStarted = true;
+    const currentNode = this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined;
+    const currentNodeId = currentNode?.id ?? (this.registry.get('flowNodeId') as string | undefined);
+    if (!currentNodeId) {
+      console.error('[DialogueScene] Error: no existe nodo siguiente para avanzar desde DialogueScene.');
+      return;
+    }
+
+    this.isTransitioning = true;
+    new CampaignTransitionCoordinator(this).requestCanonicalTransition(currentNodeId, source);
+  }
+}

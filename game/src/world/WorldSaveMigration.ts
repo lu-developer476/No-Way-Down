@@ -1,0 +1,4 @@
+import type { LevelWorldDefinition } from './LevelWorldDefinition.ts';
+export interface WorldResumeState {entryConnectorId:string;checkpointId:string;elevationBand:number;localSpawnId:string}
+export interface StoredWorldResume {entryConnectorId?:string;checkpointId?:string;elevationBand?:number;localSpawnId?:string}
+export const migrateWorldResume=(stored:StoredWorldResume|undefined,world:LevelWorldDefinition):WorldResumeState=>{const primary=world.entryConnectors[0];const requested=world.entryConnectors.find(connector=>connector.connectorId===stored?.entryConnectorId);return {entryConnectorId:(requested??primary).connectorId,checkpointId:stored?.checkpointId??'primary-entry',elevationBand:stored?.elevationBand??(requested??primary).elevation,localSpawnId:stored?.localSpawnId??world.allySpawnAnchors[0].id};};

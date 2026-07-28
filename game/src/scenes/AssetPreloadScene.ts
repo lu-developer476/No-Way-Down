@@ -4,6 +4,7 @@ import { SceneFlowManager } from './SceneFlowManager';
 import { definitionFromManifest, type CanonicalManifest } from '../campaign/campaignCore';
 import { MENU_BACKGROUND_PATH, CHARACTERS_PANEL_PATH } from '../config/menuAssetPaths';
 import { corridorEnvironmentAssets } from '../config/corridorEnvironmentAssets';
+import { worldAssetCatalog } from '../config/worldAssetCatalog';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
   { key: 'menu_background', path: MENU_BACKGROUND_PATH, type: 'image' },
@@ -83,6 +84,7 @@ export class AssetPreloadScene extends Phaser.Scene {
     this.load.image('v2-portrait-giovanna','assets/visual-v2/ui/portrait_giovanna.svg');
     this.load.spritesheet('v2-minimap-markers','assets/visual-v2/minimap/markers.svg',{frameWidth:8,frameHeight:8});
     corridorEnvironmentAssets.forEach(({ key, path }) => this.load.image(key, path));
+    worldAssetCatalog.forEach(({ key, path }) => this.load.image(key, path));
   }
 
   create(): void {

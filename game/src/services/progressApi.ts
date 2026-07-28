@@ -4,6 +4,9 @@ export interface PlayerProgressPayload {
   life: number;
   allies_rescued: number;
   checkpoint: string;
+  entry_connector_id?: string;
+  elevation_band?: number;
+  local_spawn_id?: string;
   save_version?: number;
   campaign_snapshot?: CampaignSnapshot;
 }
@@ -27,6 +30,9 @@ export interface CampaignSnapshot {
     level: string;
     flow_node_id?: string;
     checkpoint: string;
+    entry_connector_id?: string;
+    elevation_band?: number;
+    local_spawn_id?: string;
     segment?: string;
     life: number;
     allies_rescued: number;

@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-oficina-422"
   },
-  "nextNodeId": "lvl07-cin01-inicio-del-descenso"
+  "nextNodeId": "lvl07-cin01-inicio-del-descenso",
+  "combatProfileId": "rescue-pressure",
+  "combatExpected": true
 }

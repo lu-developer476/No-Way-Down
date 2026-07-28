@@ -100,5 +100,7 @@
   "completion": {
     "type": "survival_timer",
     "durationMs": 600000
-  }
+  },
+  "combatProfileId": "garage-defense",
+  "combatExpected": true
 }

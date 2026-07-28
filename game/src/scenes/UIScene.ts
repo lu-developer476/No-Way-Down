@@ -337,7 +337,7 @@ export class UIScene extends Phaser.Scene {
     this.gameplayHudLayer = this.add.container(0, 0).setDepth(20);
     const protagonistObjects: Phaser.GameObjects.GameObject[] = [];
     const addP = <T extends Phaser.GameObjects.GameObject>(o: T): T => { protagonistObjects.push(o); return o; };
-    addP(this.add.rectangle(12, 12, 246, 112, visualTheme.palette.uiPanelFill, .94).setOrigin(0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder));
+    addP(this.add.rectangle(12, 12, 246, 88, visualTheme.palette.uiPanelFill, .94).setOrigin(0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder));
     addP(this.add.rectangle(14, 14, 242, 22, visualTheme.palette.uiPanelRaised).setOrigin(0));
     const nameText = addP(this.add.text(16, 14, '', { color: '#f8fafc', fontSize: '12px', fontFamily: font, fontStyle: 'bold' }));
     addP(this.add.rectangle(16, 38, 214, 8, visualTheme.palette.uiPanelShadow, .95).setOrigin(0).setStrokeStyle(1, 0x334155));
@@ -346,7 +346,7 @@ export class UIScene extends Phaser.Scene {
     const activeWeaponText = addP(this.add.text(16, 44, '', { color: '#e2e8f0', fontSize: '11px', fontFamily: font }));
     const secondaryWeaponText = addP(this.add.text(16, 58, '', { color: '#cbd5e1', fontSize: '11px', fontFamily: font }));
     const ammoText = addP(this.add.text(16, 72, '', { color: Phaser.Display.Color.ValueToColor(visualTheme.palette.uiAmmo).rgba, fontSize: '11px', fontFamily: font, fontStyle: 'bold' }));
-    const statusText = addP(this.add.text(16, 86, '', { color: '#cbd5e1', fontSize: '10px', fontFamily: font, fontStyle: 'bold' }).setVisible(false));
+    const statusText = addP(this.add.text(125, 72, '', { color: '#cbd5e1', fontSize: '10px', fontFamily: font, fontStyle: 'bold' }).setVisible(false));
     const activeWeaponIcon = addP(this.add.image(164, 50, 'weapon-hud-missing'));
     const secondaryWeaponIcon = addP(this.add.image(164, 64, 'weapon-hud-missing').setAlpha(.85));
     const protagonistContainer = this.add.container(0, 0, protagonistObjects).setVisible(false);
@@ -358,14 +358,15 @@ export class UIScene extends Phaser.Scene {
     this.zombieCountText = this.add.text(this.scale.width - 24, 22, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '12px', fontFamily: font }).setOrigin(1, 0);
     this.threatCard = this.add.container(0, 0, [threatBg, this.zombieCountText]); this.gameplayHudLayer.add(this.threatCard);
 
-    const controlsBg = this.add.rectangle(this.scale.width - 12, 54, 370, 38, visualTheme.palette.uiPanelRaised, .84).setOrigin(1, 0).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, .9);
-    this.controlsLegendText = this.add.text(this.scale.width - 22, 59, this.getControlsLegendText(), { color: visualTheme.palette.uiTextSecondary, fontSize: '8px', fontFamily: font, align: 'right', lineSpacing: 2, wordWrap: { width: 350 } }).setOrigin(1, 0);
+    const controlsBg = this.add.rectangle(this.scale.width - 12, 54, 340, 38, visualTheme.palette.uiPanelRaised, .84).setOrigin(1, 0).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, .9);
+    this.controlsLegendText = this.add.text(this.scale.width - 22, 59, this.getControlsLegendText(), { color: visualTheme.palette.uiTextSecondary, fontSize: '8px', fontFamily: font, align: 'right', lineSpacing: 2, wordWrap: { width: 320 } }).setOrigin(1, 0);
     this.controlsCard = this.add.container(0, 0, [controlsBg, this.controlsLegendText]); this.gameplayHudLayer.add(this.controlsCard);
-    this.controlsFadeTimer = this.time.delayedCall(8000, () => this.controlsLegendText?.setAlpha(.58));
+    this.controlsFadeTimer = this.time.delayedCall(5000, () => this.controlsCard?.setVisible(false));
+    this.input.keyboard?.on('keydown-H', () => this.controlsCard?.setVisible(!this.controlsCard.visible));
 
-    const objectiveBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 58, 580, 46, visualTheme.palette.uiObjectiveFill, .96).setOrigin(.5, 0).setStrokeStyle(2, visualTheme.palette.uiObjectiveBorder);
-    const objectiveLabel = this.add.text(this.scale.width / 2 - 276, this.scale.height - 53, 'MISIÓN', { color: visualTheme.palette.uiHighlight, fontSize: '8px', fontFamily: font, fontStyle: 'bold' });
-    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 25, '', { color: visualTheme.palette.uiHighlight, fontSize: '12px', fontFamily: font, wordWrap: { width: 540 }, align: 'center' }).setOrigin(.5, 1);
+    const objectiveBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 70, 520, 58, visualTheme.palette.uiObjectiveFill, .96).setOrigin(.5, 0).setStrokeStyle(2, visualTheme.palette.uiObjectiveBorder);
+    const objectiveLabel = this.add.text(this.scale.width / 2 - 246, this.scale.height - 65, 'MISIÓN', { color: visualTheme.palette.uiHighlight, fontSize: '8px', fontFamily: font, fontStyle: 'bold' });
+    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 20, '', { color: visualTheme.palette.uiHighlight, fontSize: '12px', fontFamily: font, wordWrap: { width: 490 }, align: 'center' }).setOrigin(.5, 1);
     this.objectiveCard = this.add.container(0, 0, [objectiveBg, objectiveLabel, this.objectiveText]); this.gameplayHudLayer.add(this.objectiveCard);
 
     this.interactionCard = this.add.rectangle(this.scale.width / 2, this.scale.height - 66, 500, 30, visualTheme.palette.uiInteractionFill, .96).setOrigin(.5, 1).setStrokeStyle(2, visualTheme.palette.uiPanelAccent);
@@ -402,11 +403,11 @@ export class UIScene extends Phaser.Scene {
 
   private createPartyRoster(fontFamily: string): void {
     const objects: Phaser.GameObjects.GameObject[] = [];
-    const panel = this.add.rectangle(12, 130, 246, 112, visualTheme.palette.uiPanelFill, 0.92)
+    const panel = this.add.rectangle(12, 108, 246, 88, visualTheme.palette.uiPanelFill, 0.92)
       .setOrigin(0)
       .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
-    const header = this.add.rectangle(14, 132, 242, 17, visualTheme.palette.uiPanelRaised).setOrigin(0);
-    const title = this.add.text(20, 135, 'GRUPO', {
+    const header = this.add.rectangle(14, 110, 242, 17, visualTheme.palette.uiPanelRaised).setOrigin(0);
+    const title = this.add.text(20, 113, 'GRUPO', {
       color: visualTheme.palette.uiTextSecondary,
       fontSize: '8px',
       fontFamily,
@@ -417,7 +418,7 @@ export class UIScene extends Phaser.Scene {
     for (let index = 0; index < 8; index += 1) {
       const column = index % 2;
       const row = Math.floor(index / 2);
-      const background = this.add.rectangle(0, 0, 112, 20, visualTheme.palette.uiPanelRaised, 0.5)
+      const background = this.add.rectangle(0, 0, 112, 14, visualTheme.palette.uiPanelRaised, 0.5)
         .setOrigin(0)
         .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, 0.35);
       const nameText = this.add.text(5, 2, '', {
@@ -426,9 +427,9 @@ export class UIScene extends Phaser.Scene {
         fontFamily,
         fontStyle: 'bold'
       });
-      const hpBackground = this.add.rectangle(5, 15, 102, 3, visualTheme.palette.uiPanelShadow, 0.95).setOrigin(0);
-      const hpFill = this.add.rectangle(5, 15, 102, 3, visualTheme.palette.uiHealth).setOrigin(0);
-      const container = this.add.container(18 + column * 120, 152 + row * 22, [background, nameText, hpBackground, hpFill])
+      const hpBackground = this.add.rectangle(5, 11, 102, 2, visualTheme.palette.uiPanelShadow, 0.95).setOrigin(0);
+      const hpFill = this.add.rectangle(5, 11, 102, 2, visualTheme.palette.uiHealth).setOrigin(0);
+      const container = this.add.container(18 + column * 120, 130 + row * 16, [background, nameText, hpBackground, hpFill])
         .setVisible(false);
       this.partyRosterRows.push({ container, background, nameText, hpBackground, hpFill });
       objects.push(container);

@@ -14,5 +14,7 @@
     "type": "explicit_exit",
     "exitId": "salida-e-garage"
   },
-  "nextNodeId": "lvl09-cin01-hallazgo-salida-y-mordida-selene"
+  "nextNodeId": "lvl09-cin01-hallazgo-salida-y-mordida-selene",
+  "combatProfileId": "exit-verification",
+  "combatExpected": true
 }

@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-cuarto"
   },
-  "nextNodeId": "lvl05-cin01-descenso-al-quinto-piso"
+  "nextNodeId": "lvl05-cin01-descenso-al-quinto-piso",
+  "combatProfileId": "office-sweep",
+  "combatExpected": true
 }

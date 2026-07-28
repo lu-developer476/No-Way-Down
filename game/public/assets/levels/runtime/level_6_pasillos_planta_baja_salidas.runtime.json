@@ -25,8 +25,44 @@
     "minPlayerDistance": 240,
     "maxPlayerDistance": 1200,
     "viewportSafePadding": 100,
-    "areas": [],
-    "points": []
+    "areas": [
+      {
+        "id": "canonical-pressure",
+        "trigger": {
+          "x": 3648,
+          "y": 1008,
+          "width": 4180,
+          "height": 240
+        },
+        "maxAlive": 6
+      }
+    ],
+    "points": [
+      {
+        "id": "canonical-pressure-left",
+        "x": 2660,
+        "y": 1108,
+        "maxActive": 3,
+        "spawnCooldown": 2200,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "left",
+        "spawnArea": "canonical-pressure",
+        "difficultyModifier": 1,
+        "spawnBudget": 6
+      },
+      {
+        "id": "canonical-pressure-right",
+        "x": 5320,
+        "y": 1108,
+        "maxActive": 3,
+        "spawnCooldown": 2600,
+        "spawnType": "wave_spawn",
+        "spawnDirection": "right",
+        "spawnArea": "canonical-pressure",
+        "difficultyModifier": 1,
+        "spawnBudget": 5
+      }
+    ]
   },
   "objectives": [
     {

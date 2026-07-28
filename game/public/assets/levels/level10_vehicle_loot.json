@@ -12,5 +12,7 @@
     "type": "explicit_exit",
     "exitId": "abordar-sedan"
   },
-  "nextNodeId": "lvl10-cin01-hallazgo-del-vehiculo"
+  "nextNodeId": "lvl10-cin01-hallazgo-del-vehiculo",
+  "combatProfileId": "garage-search",
+  "combatExpected": true
 }

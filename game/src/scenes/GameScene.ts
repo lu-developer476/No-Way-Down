@@ -1079,6 +1079,11 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    if (!this.canActivateCanonicalExit(interaction.effect.targetId)) {
+      this.showMissionStatus('El descenso terminó: reiniciá desde el checkpoint.');
+      return;
+    }
+
     const objectiveEventType = interaction.effect.objectiveEventType ?? 'interactable_used';
     const objectiveUpdate = this.objectiveSystem?.process({
       type: objectiveEventType,
@@ -1144,9 +1149,9 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
+    const runtimeExitIds = new Set(levelManager.loadLevel(this.currentLevelId).exits.map((exit) => exit.id));
     const startsImmediateTransition = interactionSucceeded
-      && ['stairs', 'door', 'vehicle'].includes(effect.type)
-      && Boolean(effect.targetId);
+      && Boolean(effect.targetId && runtimeExitIds.has(effect.targetId));
     if (!startsImmediateTransition) {
       this.showMissionStatus(statusMessage);
     }
@@ -1174,6 +1179,9 @@ export class GameScene extends Phaser.Scene {
     }
 
   }
+
+  /** LevelScene overrides this hook for canonical timed exits. */
+  protected canActivateCanonicalExit(_exitId?: string): boolean { return true; }
 
   private setupMissionSystem(): void {
     const defaultMissionDescription = this.resistancePhaseConfig?.holdObjectiveText
@@ -1305,7 +1313,7 @@ export class GameScene extends Phaser.Scene {
 
   private publishProgressionState(): void {
     const query = new URLSearchParams(window.location.search);
-    if (!import.meta.env.DEV && !query.has('e2eMode')) return;
+    if (!import.meta.env.DEV && !query.has('e2eMode') && !query.has('qaCampaign')) return;
     const player = this.players.find((candidate)=>!candidate.isDead()) ?? this.players[0];
     const runtime = levelManager.loadLevel(this.currentLevelId);
     const exitInteraction = runtime.interactables.find((item)=>
@@ -1348,6 +1356,18 @@ export class GameScene extends Phaser.Scene {
       missingTextureCount:this.authoredEnvironment?.diagnostics(this.cameras.main.scrollX).missingTextureCount??0
     });
     Object.defineProperty(window,'__NWD_PROGRESSION_STATE__',{value:state,writable:false,configurable:true});
+    const canonical = this.registry.get('canonicalNodes19To27') as {descent?:{state?:string;remainingMs?:number}}|undefined;
+    const diagnostics = Object.freeze({
+      nodeId:state.nodeId,runtimeLevelId:this.currentLevelId,combatProfileId:String(this.registry.get('combatProfileId')??''),combatExpected:this.registry.get('combatExpected')===true,
+      configuredSpawnSystems:['runtime-spawn-manager'],configuredSpawnZones:runtime.spawn_zones.areas.length,configuredWaveCount:runtime.spawn_zones.points.length,
+      totalEnemiesSpawned:Number(this.registry.get('totalEnemiesSpawned')??0),aliveEnemies:this.zombieSystem?.getActiveCount()??0,defeatedEnemies:Number(this.registry.get('defeatedEnemies')??0),spawnErrors:[],
+      currentObjective:state.currentObjective,objectiveCompleted:this.registry.get('objectiveCompleted')===true,exitId,exitEnabled,exitReady:this.registry.get('exitReady')===true,
+      playerInsideExit:state.playerInsideExitRadius,pendingExitTransition:Boolean(this.registry.get('pendingCampaignTransition')),nextCanonicalNodeId:state.pendingDestinationNodeId,
+      timerState:canonical?.descent?.state??null,timerRemainingMs:canonical?.descent?.remainingMs??null,backdropProfileId:String(this.registry.get('backdropProfileId')??''),
+      backgroundAssetPath:String(this.registry.get('backgroundAssetPath')??''),environmentRenderer:String(this.registry.get('environmentRenderer')??''),visualFallbackUsed:this.registry.get('visualFallbackUsed')===true,
+      gameplayReady:state.gameplayReady,fatalError:this.registry.get('campaignTransitionFatal')??this.registry.get('campaignLoadError')??null
+    });
+    Object.defineProperty(window,'__NWD_LEVEL_DIAGNOSTICS__',{value:diagnostics,writable:false,configurable:true});
   }
 
   private handleExitUnlocked(): void {

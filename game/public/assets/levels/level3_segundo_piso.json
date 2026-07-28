@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-segundo"
   },
-  "nextNodeId": "lvl03-cin01-llamado-lorena-rescate"
+  "nextNodeId": "lvl03-cin01-llamado-lorena-rescate",
+  "combatProfileId": "floor-ambush",
+  "combatExpected": true
 }

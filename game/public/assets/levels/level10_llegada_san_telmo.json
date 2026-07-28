@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "san-telmo-desenlace"
   },
-  "nextNodeId": "lvl10-cin03-desenlace-abierto"
+  "nextNodeId": "lvl10-cin03-desenlace-abierto",
+  "combatProfileId": "san-telmo-approach",
+  "combatExpected": true
 }

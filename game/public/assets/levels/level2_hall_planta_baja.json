@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-hall"
   },
-  "nextNodeId": "lvl02-cin01-ascenso-al-segundo-piso"
+  "nextNodeId": "lvl02-cin01-ascenso-al-segundo-piso",
+  "combatProfileId": "hall-clearance",
+  "combatExpected": true
 }

@@ -1,2 +1,16 @@
-import type { LevelWorldDefinition,WorldConnector } from './LevelWorldDefinition.ts';
-export class WorldConnectorSystem {private readonly definition:LevelWorldDefinition;constructor(definition:LevelWorldDefinition){this.definition=definition;} nearest(x:number,y:number):WorldConnector|undefined{return [...this.definition.entryConnectors,...this.definition.exitConnectors].sort((a,b)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y))[0];} get ids(){return {entries:this.definition.entryConnectors.map(c=>c.connectorId),exits:this.definition.exitConnectors.map(c=>c.connectorId)};} }
+import type { MappedConnector } from '../campaign/campaignProgression.ts';
+export class WorldConnectorSystem {
+  private readonly connectors: readonly MappedConnector[];
+  constructor(connectors: readonly MappedConnector[]) { this.connectors=connectors; }
+  setObjectiveRequirementSatisfied(satisfied:boolean):void {
+    this.connectors.forEach((connector)=>{ connector.objectiveRequirementSatisfied=satisfied; });
+  }
+  nearest(x:number,y:number,maxDistance=160):MappedConnector|undefined {
+    return this.connectors
+      .filter((connector)=>connector.enabled && connector.objectiveRequirementSatisfied)
+      .map((connector)=>({connector,distance:Math.hypot(connector.x-x,connector.y-y)}))
+      .filter(({distance})=>distance<=maxDistance)
+      .sort((a,b)=>a.distance-b.distance)[0]?.connector;
+  }
+  get ids(){return {entries:[] as string[],exits:this.connectors.map(c=>c.connectorId)};}
+}

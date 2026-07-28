@@ -25,6 +25,7 @@
     "audit:no-binary-diff": "node scripts/auditNoBinaryDiff.mjs",
     "audit:corridor-svg-art": "node scripts/auditCorridorSvgArt.mjs",
     "audit:campaign-world": "node scripts/auditCampaignWorld.mjs"
+    ,"audit:campaign-progression": "node scripts/auditCampaignProgression.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

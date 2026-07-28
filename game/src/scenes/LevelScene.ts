@@ -46,6 +46,7 @@ export class LevelScene extends GameScene {
     this.hasStarted = false;
     this.isTransitioning = false;
     this.gameplayReady = false;
+    this.registry.set('gameplayReady', false);
     this.registry.set(
       'transitionView',
       {
@@ -177,8 +178,10 @@ export class LevelScene extends GameScene {
       this.missionRuntimeSystem.instantiate(flowNode.systems?.mission ?? []);
 
       this.gameplayReady = true;
+      this.registry.set('gameplayReady', true);
       if (!new CampaignTransitionCoordinator(this).confirmDestination(flowNode)) {
         this.gameplayReady = false;
+        this.registry.set('gameplayReady', false);
         return;
       }
     });

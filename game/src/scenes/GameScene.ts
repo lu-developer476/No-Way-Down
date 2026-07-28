@@ -69,10 +69,10 @@ import { CorridorEnvironmentRenderer } from '../systems/CorridorEnvironmentRende
 import { CampaignWorldRegistry } from '../world/CampaignWorldRegistry';
 import { AuthoredLevelEnvironmentRenderer } from '../world/AuthoredLevelEnvironmentRenderer';
 import { LevelTopologySystem } from '../world/LevelTopologySystem';
-import { StairTraversalSystem } from '../world/StairTraversalSystem';
 import { WorldConnectorSystem } from '../world/WorldConnectorSystem';
 import { createWorldState } from '../world/WorldDiagnostics';
 import type { LevelWorldDefinition } from '../world/LevelWorldDefinition';
+import { mapExitConnectors, resolveRuntimeGeometry } from '../campaign/campaignProgression';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -199,8 +199,11 @@ export class GameScene extends Phaser.Scene {
   private authoredEnvironment?: AuthoredLevelEnvironmentRenderer;
   private worldDefinition?: LevelWorldDefinition;
   private worldTopology?: LevelTopologySystem;
-  private stairTraversal?: StairTraversalSystem;
   private worldConnectors?: WorldConnectorSystem;
+  private runtimeWidth = 0;
+  private runtimeHeight = 0;
+  private worldWidthMismatch = false;
+  private worldHeightMismatch = false;
   private institutionalLighting?: InstitutionalLightingSystem;
   private minimap?: MinimapSystem;
   private visualDebugText?: Phaser.GameObjects.Text;
@@ -365,10 +368,22 @@ export class GameScene extends Phaser.Scene {
     this.visualGeneration = resolveVisualGeneration(selectedLevelId, (levelConfig as unknown as { visualGeneration?: unknown }).visualGeneration);
     this.registry.set('visualGeneration', this.visualGeneration);
     this.worldDefinition = data.flowNodeId ? CampaignWorldRegistry.resolve(data.flowNodeId) : CampaignWorldRegistry.findByRuntimeLevelId(selectedLevelId);
-    const levelWidth = this.worldDefinition?.worldWidth ?? levelConfig.layout.width;
-    const levelHeight = this.worldDefinition?.worldHeight ?? levelConfig.layout.height;
-    const floorHeight = levelConfig.layout.floor_height ?? 64;
-    const floorY = levelHeight - floorHeight / 2;
+    const geometry = resolveRuntimeGeometry(levelConfig, this.worldDefinition);
+    const levelWidth = geometry.width;
+    const levelHeight = geometry.height;
+    const floorHeight = geometry.floorHeight;
+    const floorY = geometry.floorY;
+    this.runtimeWidth = levelWidth;
+    this.runtimeHeight = levelHeight;
+    this.worldWidthMismatch = geometry.worldWidthMismatch;
+    this.worldHeightMismatch = geometry.worldHeightMismatch;
+    if (geometry.worldWidthMismatch || geometry.worldHeightMismatch) {
+      console.warn('[GameScene] visual world adapted to authoritative runtime bounds', {
+        nodeId: data.flowNodeId, runtimeWidth: levelWidth, runtimeHeight: levelHeight,
+        declaredVisualWidth: this.worldDefinition?.worldWidth,
+        declaredVisualHeight: this.worldDefinition?.worldHeight
+      });
+    }
     const tableTopY = levelHeight - 146;
 
     this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
@@ -390,8 +405,11 @@ export class GameScene extends Phaser.Scene {
       this.authoredEnvironment = new AuthoredLevelEnvironmentRenderer(this, this.worldDefinition);
       this.authoredEnvironment.create();
       this.worldTopology = new LevelTopologySystem(this.worldDefinition);
-      this.stairTraversal = new StairTraversalSystem(this.worldDefinition.stairZones);
-      this.worldConnectors = new WorldConnectorSystem(this.worldDefinition);
+      // Stair traversal remains disabled until an in-world zone/input integration exists.
+      // Canonical stair landmarks continue to use the normal interactable exit path.
+      const hasResistanceGate = Boolean((levelConfig.layout.level_flow as {resistance?:unknown}|undefined)?.resistance);
+      const mappedConnectors = mapExitConnectors(this.worldDefinition, levelConfig, !hasResistanceGate);
+      this.worldConnectors = new WorldConnectorSystem(mappedConnectors);
     } else {
       this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
     }
@@ -764,7 +782,6 @@ export class GameScene extends Phaser.Scene {
       this.visualV2?.destroy(); this.visualV2 = undefined;
       this.corridorEnvironment?.destroy(); this.corridorEnvironment = undefined;
       this.authoredEnvironment?.destroy(); this.authoredEnvironment = undefined;
-      this.stairTraversal?.shutdown(); this.stairTraversal = undefined;
       this.worldTopology = undefined; this.worldConnectors = undefined; this.worldDefinition = undefined;
       this.institutionalLighting?.destroy(); this.institutionalLighting = undefined;
       this.minimap?.destroy(); this.minimap = undefined;
@@ -895,9 +912,8 @@ export class GameScene extends Phaser.Scene {
     this.visualV2?.update();
     this.institutionalLighting?.update(this.time.now);
     this.minimap?.update();
-    this.stairTraversal?.update(this.game.loop.delta);
     if (this.worldDefinition && this.authoredEnvironment && this.worldTopology && (import.meta.env.DEV || new URLSearchParams(window.location.search).has('e2eMode'))) {
-      Object.defineProperty(window,'__NWD_WORLD_STATE__',{value:createWorldState(this.worldDefinition,this.authoredEnvironment,this.worldTopology,this.players[0]),writable:false,configurable:true});
+      Object.defineProperty(window,'__NWD_WORLD_STATE__',{value:createWorldState(this.worldDefinition,this.authoredEnvironment,this.worldTopology,this.players[0],this.worldConnectors),writable:false,configurable:true});
     }
     if (this.visualGeneration === 'v2') {
       this.zombieSystem?.getActiveZombies().forEach((zombie,index) => {
@@ -915,6 +931,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
     this.updateResistancePhase();
+    this.publishProgressionState();
 
     if (this.movementLockedByNarrative) {
       return;
@@ -1266,6 +1283,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.resistancePhaseCompleted = true;
+    this.worldConnectors?.setObjectiveRequirementSatisfied(true);
     this.resistancePhaseConfig.holdAreaIds.forEach((areaId) => {
       this.spawnManager?.completeArea(areaId, 'level1-resistance-hold-complete');
     });
@@ -1283,6 +1301,53 @@ export class GameScene extends Phaser.Scene {
       this.resistancePhaseConfig.advanceObjectiveText ?? 'Abran paso por los pasillos y alcancen las escaleras a Planta Baja.'
     );
     this.showMissionStatus('Fase 2: avance por pasillos hacia las escaleras.');
+  }
+
+  private publishProgressionState(): void {
+    const query = new URLSearchParams(window.location.search);
+    if (!import.meta.env.DEV && !query.has('e2eMode')) return;
+    const player = this.players.find((candidate)=>!candidate.isDead()) ?? this.players[0];
+    const runtime = levelManager.loadLevel(this.currentLevelId);
+    const exitInteraction = runtime.interactables.find((item)=>
+      Boolean(item.interactionEffect.targetId && runtime.exits.some((exit)=>exit.id===item.interactionEffect.targetId))
+    );
+    const exitId = exitInteraction?.interactionEffect.targetId ?? null;
+    const exitEnabled = Boolean(exitInteraction) && (!this.resistancePhaseConfig || this.resistancePhaseCompleted);
+    const remainingMs = this.resistancePhaseEndsAt === undefined ? 0 : Math.max(0,this.resistancePhaseEndsAt-this.time.now);
+    const activeConnector = player ? this.worldConnectors?.nearest(player.x,player.y,exitInteraction?.interactionRadius ?? 160) : undefined;
+    const physics = this.physics.world.bounds;
+    const camera = this.cameras.main.getBounds();
+    const state = Object.freeze({
+      nodeId:String(this.registry.get('flowNodeId')??''), runtimeLevelId:this.currentLevelId,
+      gameplayReady:this.registry.get('gameplayReady')===true,
+      activeScenes:this.scene.manager.getScenes(true).map((scene)=>scene.scene.key),
+      playerExists:Boolean(player), playerX:player?.x??null, playerY:player?.y??null,
+      playerCanMove:Boolean(player)&&!this.movementLockedByNarrative&&!this.hasTriggeredTransition&&!this.hasPlayerBeenDefeated,
+      movementLockedByNarrative:this.movementLockedByNarrative,
+      currentObjective:String(this.registry.get('currentObjective')??''),
+      runtimeWidth:this.runtimeWidth,runtimeHeight:this.runtimeHeight,
+      visualWorldWidth:this.runtimeWidth,visualWorldHeight:this.runtimeHeight,
+      worldWidthMismatch:false,worldHeightMismatch:false,
+      declaredWorldWidthMismatch:this.worldWidthMismatch,declaredWorldHeightMismatch:this.worldHeightMismatch,
+      physicsBounds:{x:physics.x,y:physics.y,width:physics.width,height:physics.height},
+      cameraBounds:{x:camera.x,y:camera.y,width:camera.width,height:camera.height},
+      resistanceActive:Boolean(this.resistancePhaseConfig)&&!this.resistancePhaseCompleted,
+      resistanceCompleted:this.resistancePhaseCompleted,resistanceRemainingMs:remainingMs,
+      holdAreaRequired:Boolean(this.resistancePhaseConfig?.holdAreaIds.length),holdAreaSatisfied:true,
+      activeEnemyCount:this.zombieSystem?.getActiveCount()??0,
+      configuredEnemySpawnCount:runtime.spawn_zones.points.length,
+      exitId,exitX:exitInteraction?.x??null,exitY:exitInteraction?.y??null,
+      exitInsideBounds:Boolean(exitInteraction&&exitInteraction.x>=0&&exitInteraction.x<=this.runtimeWidth&&exitInteraction.y>=0&&exitInteraction.y<=this.runtimeHeight),
+      exitEnabled,playerInsideExitRadius:Boolean(player&&exitInteraction&&Math.hypot(player.x-exitInteraction.x,player.y-exitInteraction.y)<=exitInteraction.interactionRadius),
+      interactionHint:String(this.registry.get('interactionHint')??''),transitionInProgress:this.hasTriggeredTransition,
+      pendingDestinationNodeId:(this.registry.get('pendingCampaignTransition') as {toNode?:{id?:string}}|undefined)?.toNode?.id??null,
+      campaignCursor:this.registry.get('campaignFlowCursor')??null,
+      fatalTransition:this.registry.get('campaignTransitionFatal')??null,
+      activeConnectorId:activeConnector?.connectorId??null,
+      connectorMappedToExistingInteraction:Boolean(activeConnector?.existingInteractionId),
+      missingTextureCount:this.authoredEnvironment?.diagnostics(this.cameras.main.scrollX).missingTextureCount??0
+    });
+    Object.defineProperty(window,'__NWD_PROGRESSION_STATE__',{value:state,writable:false,configurable:true});
   }
 
   private handleExitUnlocked(): void {

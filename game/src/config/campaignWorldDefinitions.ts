@@ -20,11 +20,17 @@ const profiles:readonly Profile[]=[
 ].map(row=>({nodeId:row[0],runtimeLevelId:row[1],profile:row[2],location:row[3],locationLabel:row[4],floor:row[5],floorLabel:row[6],elevation:row[7],landmark:row[8],connector:row[9],next:row[10],vertical:row[11],minimap:row[12],assetOffset:row[13]} as Profile));
 
 const roles:readonly EnvironmentRole[]=['structure','rearArchitecture','wall','rearDecor','playfieldDecor','prop','landmark','lightFixture'];
+const runtimeGeometry:Readonly<Record<string,{width:number;height:number}>>={
+ level_1_comedor_resistencia:{width:5200,height:864},level_1_pasillos_escaleras_pb:{width:5600,height:864},level_2_hall_planta_baja:{width:6200,height:864},
+ level_3_segundo_piso:{width:6500,height:960},level_4_tercer_piso:{width:6800,height:1000},level_4_oficina_422_comedor_escaleras:{width:6400,height:1200},
+ level_5_oficinas_selene_descenso:{width:7000,height:1120},level_6_pasillos_planta_baja_salidas:{width:7600,height:1200},level_8_pasillo_subsuelo2_escaleras_subsuelo3:{width:8400,height:1180},
+ level_9_verificacion_salidas:{width:9000,height:1180},level_9_subsuelo3_garage_salida:{width:9200,height:1240},level9_b3_estacionamiento_canonico:{width:9200,height:1240},level10:{width:9600,height:1260},level_10_exterior_urbano:{width:9600,height:1260},level_10_llegada_san_telmo:{width:9600,height:1260}
+};
 const makeInstances=(profile:Profile,sectors:readonly EnvironmentSector[]):EnvironmentInstance[]=>Array.from({length:24},(_,index)=>({assetKey:worldAssetCatalog[(profile.assetOffset+index*3)%worldAssetCatalog.length].key,x:80+(index%8)*245,y:sectors[index%3].y+sectors[index%3].height-36-(index%4)*31,originX:0,originY:1,scaleX:index%5===0?1.12:1,scaleY:index%7===0?1.08:1,flipX:index%4===1,alpha:index%9===0?.88:1,depth:1+(index%8),scrollFactorX:index%6===0?.92:1,scrollFactorY:1,sectorId:sectors[index%3].sectorId,role:roles[index%roles.length],optionalVariant:`${profile.profile}-${index+1}`,optionalLightAnchorId:index%8===7?'light-primary':undefined}));
 const connector=(p:Profile,id:string,kind:Profile['connector'],x:number,destination:string):WorldConnector=>({connectorId:id,kind,x,y:720,elevation:p.elevation,facing:x<960?'left':'right',sourceNodeId:p.nodeId,destinationNodeId:destination,destinationConnectorId:`entry-${destination}`,interactionId:`interact-${id}`,transitionLabel:kind,requiresObjectiveCompletion:true,canonicalTransitionReason:`Continuidad canónica desde ${p.nodeId}`});
 const anchor=(id:string,x:number,y:number,elevation:number):Anchor=>({id,x,y,elevation});
 export const campaignWorldDefinitions:readonly LevelWorldDefinition[]=Object.freeze(profiles.map((p,index)=>{
- const width=p.vertical?1920:2240,height=p.vertical?1440:900;
+ const {width,height}=runtimeGeometry[p.runtimeLevelId];
  const sectors:EnvironmentSector[]=[0,1,2].map(i=>({sectorId:`${p.profile}-sector-${i+1}`,label:`${p.locationLabel} ${i+1}`,x:i*width/3,y:p.vertical?i*260:0,width:width/3,height:p.vertical?900:height,elevation:p.elevation+(p.vertical?-i*2:0)}));
  const environmentInstances=makeInstances(p,sectors), foregroundInstances=[{...environmentInstances[20],assetKey:worldAssetCatalog[(p.assetOffset+58)%70].key,role:'foreground' as const,depth:820,scrollFactorX:1.03,optionalVariant:`${p.profile}-foreground`}];
  const stair=p.vertical?[{stairId:'timed-descent-flight',x:300,y:300,width:1320,height:900,lowerX:1540,lowerY:1150,upperX:380,upperY:430,direction:'descending' as const,allowsAllies:true,allowsEnemies:true,landingIds:['landing-upper','landing-middle','landing-lower']}]:[];

@@ -63,5 +63,7 @@
     "objectiveInstanceScoped": true,
     "uniqueEnemyIds": true,
     "killTarget": 50
-  }
+  },
+  "combatProfileId": "street-horde",
+  "combatExpected": true
 }

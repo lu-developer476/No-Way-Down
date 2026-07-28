@@ -5,6 +5,7 @@ import { definitionFromManifest, type CanonicalManifest } from '../campaign/camp
 import { MENU_BACKGROUND_PATH, CHARACTERS_PANEL_PATH } from '../config/menuAssetPaths';
 import { corridorEnvironmentAssets } from '../config/corridorEnvironmentAssets';
 import { worldAssetCatalog } from '../config/worldAssetCatalog';
+import { CampaignQaNavigator } from '../qa/CampaignQaNavigator';
 
 const PRELOAD_FILES: Array<{ key: string; path: string; type: 'json' | 'image' }> = [
   { key: 'nwd-menu', path: MENU_BACKGROUND_PATH, type: 'image' },
@@ -141,6 +142,11 @@ export class AssetPreloadScene extends Phaser.Scene {
     this.registry.set('storyBible', this.cache.json.get('story_bible') ?? null);
 
     manager.loadDefinition(definition);
+    const qaNavigator = new CampaignQaNavigator(this);
+    if (qaNavigator.mount(definition)) {
+      this.registry.set('campaignQaNavigator', qaNavigator);
+      return;
+    }
     this.scene.start('MainMenuScene');
   }
 

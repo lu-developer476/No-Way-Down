@@ -17,5 +17,7 @@
     "type": "explicit_exit",
     "exitId": "escalera-subsuelo-3"
   },
-  "nextNodeId": "lvl08-cin01-damian-infectado-y-suicidio"
+  "nextNodeId": "lvl08-cin01-damian-infectado-y-suicidio",
+  "combatProfileId": "timed-descent-pursuit",
+  "combatExpected": true
 }

@@ -8,5 +8,7 @@
     "type": "explicit_exit",
     "exitId": "salida-pasillos"
   },
-  "nextNodeId": "lvl01-cin01-cierre-contextual"
+  "nextNodeId": "lvl01-cin01-cierre-contextual",
+  "combatProfileId": "corridor-pressure",
+  "combatExpected": true
 }

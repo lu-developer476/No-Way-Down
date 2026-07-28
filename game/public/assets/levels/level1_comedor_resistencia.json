@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-comedor"
   },
-  "nextNodeId": "lvl01-esc02-pasillos-hacia-escaleras-pb"
+  "nextNodeId": "lvl01-esc02-pasillos-hacia-escaleras-pb",
+  "combatProfileId": "resistance-small",
+  "combatExpected": true
 }

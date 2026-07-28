@@ -17,7 +17,9 @@
     "audit:no-binary-diff": "node scripts/auditNoBinaryDiff.mjs",
     "audit:e2e-text-only": "node scripts/auditTextOnlyE2E.mjs",
     "audit:visual-production": "node scripts/auditVisualProduction.mjs",
-    "test": "node --experimental-strip-types --test tests/*.test.ts"
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "audit:midgame-progression": "node scripts/auditMidgameProgression.mjs",
+    "audit:real-backdrops": "node scripts/auditRealBackdrops.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

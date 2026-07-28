@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-quinto"
   },
-  "nextNodeId": "lvl06-cin01-reencuentro-y-salida-e"
+  "nextNodeId": "lvl06-cin01-reencuentro-y-salida-e",
+  "combatProfileId": "floor-ambush",
+  "combatExpected": true
 }

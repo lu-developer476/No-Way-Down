@@ -16,6 +16,7 @@ import { LevelExitTarget } from '../systems/LevelExitSystem';
 import { FlowDebugOverlay } from './flowDebug';
 import { CanonicalNodes19To27Runtime, type Nodes19To27Snapshot } from '../campaign/canonicalNodes19To27';
 import { CampaignTransitionCoordinator } from './CampaignTransitionCoordinator';
+import { requireCombatProfile } from '../config/CombatProfiles';
 
 type LevelSceneCreateData = {
   flowNode?: CampaignFlowNode;
@@ -131,6 +132,9 @@ export class LevelScene extends GameScene {
       const runtimeLevelId = config.runtimeLevelId as string;
       this.registry.set('activeCampaignLevelConfigPath', flowNode.levelConfigPath);
       this.registry.set('activeRuntimeLevelId', runtimeLevelId);
+      const combatProfile = requireCombatProfile(flowNode.id);
+      this.registry.set('combatProfileId', combatProfile.id);
+      this.registry.set('combatExpected', combatProfile.combatExpected);
       this.registry.remove('campaignLoadError');
       console.info('[LevelScene] configuración confirmada', {
         nodeId: flowNode.id,
@@ -196,7 +200,10 @@ export class LevelScene extends GameScene {
       const blocked = this.registry.get('isGamePaused') === true || Boolean(this.registry.get('dialogueState'));
       const snapshot = this.canonicalRuntime.tick(delta, blocked);
       this.publishCanonicalTimer();
-      if (snapshot.descent.state === 'lost') this.registry.set('canonicalTimedDescentDefeat', true);
+      if (snapshot.descent.state === 'lost') {
+        this.registry.set('canonicalTimedDescentDefeat', true);
+        this.registry.set('exitReady', false);
+      }
     }
 
     if (
@@ -222,6 +229,21 @@ export class LevelScene extends GameScene {
     if (!this.canonicalRuntime) return;
     this.registry.set('countdownTimer', this.canonicalRuntime.formatTimer());
     this.registry.set('canonicalNodes19To27', this.canonicalRuntime.getSnapshot());
+  }
+
+  protected canActivateCanonicalExit(exitId?: string): boolean {
+    if (!this.canonicalRuntime || exitId !== 'escalera-subsuelo-3') return true;
+    const snapshot = this.canonicalRuntime.getSnapshot();
+    if (snapshot.descent.state === 'lost') {
+      this.registry.set('exitReady', false);
+      return false;
+    }
+    if (snapshot.descent.state === 'running' && !this.canonicalRuntime.completeDescent()) return false;
+    this.registry.set('objectiveCompleted', true);
+    this.registry.set('exitReady', true);
+    this.registry.set('interactionHint', 'ENTER · continuar al subsuelo 3');
+    this.publishCanonicalTimer();
+    return this.canonicalRuntime.getSnapshot().descent.state === 'won';
   }
 
   protected completeExitTransition(

@@ -7,5 +7,7 @@
     "type": "explicit_exit",
     "exitId": "salida-tercero"
   },
-  "nextNodeId": "lvl04-cin01-rescate-lorena-en-oficina-422"
+  "nextNodeId": "lvl04-cin01-rescate-lorena-en-oficina-422",
+  "combatProfileId": "floor-ambush",
+  "combatExpected": true
 }

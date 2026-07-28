@@ -3,8 +3,8 @@
   "height": 27,
   "width": 194,
   "infinite": false,
-  "nextlayerid": 41,
-  "nextobjectid": 41,
+  "nextlayerid": 44,
+  "nextobjectid": 61,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -62,7 +62,94 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 38,
+          "name": "context-wall",
+          "type": "visual",
+          "x": 0,
+          "y": 444,
+          "width": 6208,
+          "height": 420,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "wall-clean"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-sur"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-38"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "DistantArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 39,
+          "name": "distant-depth",
+          "type": "visual",
+          "x": 497,
+          "y": 364,
+          "width": 5215,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "office-lit"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-sur"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-39"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 4,
@@ -80,7 +167,198 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 40,
+          "name": "acceso-sur-architecture",
+          "type": "visual",
+          "x": 435,
+          "y": 444,
+          "width": 340,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "office-lit"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-sur"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-40"
+            }
+          ]
+        },
+        {
+          "id": 41,
+          "name": "recepcion-architecture",
+          "type": "visual",
+          "x": 1676,
+          "y": 444,
+          "width": 340,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "teller-window"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "recepcion"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-41"
+            }
+          ]
+        },
+        {
+          "id": 42,
+          "name": "columnata-architecture",
+          "type": "visual",
+          "x": 2918,
+          "y": 444,
+          "width": 340,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "security-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "columnata"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-42"
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "name": "acceso-clausurado-architecture",
+          "type": "visual",
+          "x": 4159,
+          "y": 444,
+          "width": 340,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "exit-door"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-clausurado"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-43"
+            }
+          ]
+        },
+        {
+          "id": 44,
+          "name": "nucleo-vertical-architecture",
+          "type": "visual",
+          "x": 5401,
+          "y": 444,
+          "width": 340,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stairs-end"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "nucleo-vertical"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -15
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-44"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 6,
@@ -89,7 +367,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 51,
+          "name": "upper-services",
+          "type": "visual",
+          "x": 1738,
+          "y": 434,
+          "width": 220,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "pipe-bundle"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "recepcion"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -5
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-51"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 7,
@@ -98,7 +415,236 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 45,
+          "name": "acceso-sur-decor-1",
+          "type": "visual",
+          "x": 673,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "bank-signage"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-sur"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-45"
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "name": "recepcion-decor-2",
+          "type": "visual",
+          "x": 1707,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "bank-bench"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "recepcion"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-46"
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "name": "columnata-decor-3",
+          "type": "visual",
+          "x": 2742,
+          "y": 746,
+          "width": 180,
+          "height": 48,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "debris"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "columnata"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-47"
+            }
+          ]
+        },
+        {
+          "id": 48,
+          "name": "acceso-clausurado-decor-4",
+          "type": "visual",
+          "x": 3777,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "cold-light"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-clausurado"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-48"
+            }
+          ]
+        },
+        {
+          "id": 49,
+          "name": "nucleo-vertical-decor-5",
+          "type": "visual",
+          "x": 4811,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "broken-furniture"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "nucleo-vertical"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-49"
+            }
+          ]
+        },
+        {
+          "id": 50,
+          "name": "nucleo-vertical-decor-6",
+          "type": "visual",
+          "x": 5846,
+          "y": 718,
+          "width": 180,
+          "height": 76,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "exit-sign"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "nucleo-vertical"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 2
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-50"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 8,
@@ -107,7 +653,46 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 52,
+          "name": "route-damage",
+          "type": "visual",
+          "x": 3601,
+          "y": 769,
+          "width": 180,
+          "height": 40,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "floor-damage"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-clausurado"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 6
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-52"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 9,
@@ -116,7 +701,84 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 53,
+          "name": "foreground-left",
+          "type": "visual",
+          "x": 124,
+          "y": 564,
+          "width": 90,
+          "height": 260,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-column"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "acceso-sur"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-53"
+            }
+          ]
+        },
+        {
+          "id": 54,
+          "name": "foreground-right",
+          "type": "visual",
+          "x": 5463,
+          "y": 594,
+          "width": 150,
+          "height": 230,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "foreground-bars"
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "nucleo-vertical"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 80
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-54"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 10,
@@ -125,7 +787,216 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 58,
+          "name": "practical-light-1",
+          "type": "light-anchor",
+          "x": 1366,
+          "y": 474,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-light-1"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-58"
+            }
+          ]
+        },
+        {
+          "id": 59,
+          "name": "practical-light-2",
+          "type": "light-anchor",
+          "x": 3228,
+          "y": 474,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-light-2"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xb9d8ff"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-59"
+            }
+          ]
+        },
+        {
+          "id": 60,
+          "name": "practical-light-3",
+          "type": "light-anchor",
+          "x": 4966,
+          "y": 474,
+          "width": 1,
+          "height": 1,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "lightAnchorId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-light-3"
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0xffd27a"
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-60"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "name": "OcclusionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 57,
+          "name": "localized-darkness",
+          "type": "occlusion-zone",
+          "x": 4221,
+          "y": 464,
+          "width": 993,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.18
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-57"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "name": "ReflectionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 56,
+          "name": "wet-floor",
+          "type": "reflection-zone",
+          "x": 2173,
+          "y": 734,
+          "width": 1862,
+          "height": 70,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "reflectionStrength",
+              "type": "float",
+              "value": 0.28
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-56"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "name": "AmbientZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "objects": [
+        {
+          "id": 55,
+          "name": "ambient-main",
+          "type": "ambient-zone",
+          "x": 0,
+          "y": 0,
+          "width": 6208,
+          "height": 864,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "0x18212a"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.22
+            },
+            {
+              "name": "qualityTier",
+              "type": "string",
+              "value": "balanced"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_2_hall_planta_baja-visual-55"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 12,

@@ -1,0 +1,6 @@
+import Phaser from'phaser';import type{TiledMap,TiledObject}from'../tiled/TiledTypes';
+export interface AmbientSnapshot{particleCount:number;timerCount:number;listenerCount:number}
+export class AmbientPresentationSystem{private particles:Phaser.GameObjects.Arc[]=[];private timers:Phaser.Time.TimerEvent[]=[];constructor(private scene:Phaser.Scene,private map:TiledMap,private maxParticles=24){}
+ create():AmbientSnapshot{const zones=this.objects('AmbientZones').slice(0,3);const budget=Math.min(this.maxParticles,zones.length*6);for(let index=0;index<budget;index++){const zone=zones[index%zones.length];const x=zone.x+((index*137)%Math.max(1,zone.width)),y=zone.y+((index*71)%Math.max(1,zone.height));const particle=this.scene.add.circle(x,y,index%3===0?2:1,0xb8c3c9,.16).setDepth(50);this.particles.push(particle);this.scene.tweens.add({targets:particle,y:y-36,alpha:{from:.05,to:.2},duration:2600+index*80,yoyo:true,repeat:-1})}return{particleCount:this.particles.length,timerCount:this.timers.length,listenerCount:0}}
+ destroy(){for(const timer of this.timers)timer.remove(false);this.timers=[];for(const particle of this.particles){this.scene.tweens.killTweensOf(particle);particle.destroy()}this.particles=[]}
+ private objects(name:string):TiledObject[]{return this.map.layers.find(layer=>layer.name===name)?.objects??[]}}

@@ -1,0 +1,5 @@
+/** Text-only shader sources reserved for Phaser WebGL pipeline registration. Runtime
+ * currently selects the documented blend-mode fallback on both WebGL and Canvas. */
+export const SurvivalColorGradePipeline=`precision mediump float;uniform sampler2D uMainSampler;varying vec2 outTexCoord;void main(){vec4 c=texture2D(uMainSampler,outTexCoord);float l=dot(c.rgb,vec3(.22,.70,.08));c.rgb=mix(vec3(l)*vec3(.78,.9,1.0),c.rgb,.72);gl_FragColor=c;}`;
+export const LocalizedVignettePipeline=`precision mediump float;uniform sampler2D uMainSampler;varying vec2 outTexCoord;void main(){vec4 c=texture2D(uMainSampler,outTexCoord);vec2 p=outTexCoord-.5;float v=smoothstep(.78,.22,dot(p,p));gl_FragColor=vec4(c.rgb*(.78+.22*v),c.a);}`;
+export const WetSurfaceHighlightPipeline=`precision mediump float;uniform sampler2D uMainSampler;varying vec2 outTexCoord;void main(){vec4 c=texture2D(uMainSampler,outTexCoord);float wet=smoothstep(.64,1.0,outTexCoord.y);gl_FragColor=vec4(c.rgb+vec3(.035,.055,.065)*wet,c.a);}`;

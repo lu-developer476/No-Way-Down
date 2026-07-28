@@ -4,7 +4,36 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '../..');
 const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
-const base = git('merge-base', 'main', 'HEAD');
+const tryGit = (...args) => {
+  try { return git(...args); } catch { return null; }
+};
+const emptyTree = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+
+const resolveBase = () => {
+  const candidates = [
+    ['NWD_DIFF_BASE', process.env.NWD_DIFF_BASE],
+    ['origin/main', 'origin/main'],
+    ['main', 'main'],
+    ['HEAD^', 'HEAD^'],
+  ];
+  for (const [label, candidate] of candidates) {
+    if (!candidate) continue;
+    const commit = tryGit('rev-parse', '--verify', `${candidate}^{commit}`);
+    if (!commit) {
+      if (label === 'NWD_DIFF_BASE') console.warn(`[no-binary-diff] Ignoring invalid NWD_DIFF_BASE: ${candidate}`);
+      continue;
+    }
+    const base = tryGit('merge-base', commit, 'HEAD');
+    if (base) {
+      console.log(`[no-binary-diff] Selected base ${base} from ${label}.`);
+      return base;
+    }
+  }
+  console.warn(`[no-binary-diff] No commit base is available; comparing HEAD and the working tree against Git's empty tree (${emptyTree}).`);
+  return emptyTree;
+};
+
+const base = resolveBase();
 const forbiddenExtensions = /\.(?:png|jpe?g|webp|gif|bmp|ico|avif|tiff?|psd|ase|aseprite|ttf|otf|woff2?|mp3|ogg|wav|m4a|flac|mp4|webm|mov|zip|7z|rar|tar|gz|pdf)$/i;
 const forbiddenSource = [
   /data:image/i, /;base64,/i, /Buffer\.from\s*\([^)]*['"]base64['"]/s,

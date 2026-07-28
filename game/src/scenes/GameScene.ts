@@ -66,6 +66,13 @@ import { VisualV2PresentationSystem } from '../systems/VisualV2PresentationSyste
 import { InstitutionalLightingSystem } from '../systems/InstitutionalLightingSystem';
 import { MinimapSystem } from '../systems/MinimapSystem';
 import { CorridorEnvironmentRenderer } from '../systems/CorridorEnvironmentRenderer';
+import { CampaignWorldRegistry } from '../world/CampaignWorldRegistry';
+import { AuthoredLevelEnvironmentRenderer } from '../world/AuthoredLevelEnvironmentRenderer';
+import { LevelTopologySystem } from '../world/LevelTopologySystem';
+import { StairTraversalSystem } from '../world/StairTraversalSystem';
+import { WorldConnectorSystem } from '../world/WorldConnectorSystem';
+import { createWorldState } from '../world/WorldDiagnostics';
+import type { LevelWorldDefinition } from '../world/LevelWorldDefinition';
 
 const PLAYER_RESPAWN_DELAY_MS = 1800;
 const API_MESSAGE_DURATION_MS = 2600;
@@ -189,6 +196,11 @@ export class GameScene extends Phaser.Scene {
   private visualGeneration: VisualGeneration = 'legacy';
   private visualV2?: VisualV2PresentationSystem;
   private corridorEnvironment?: CorridorEnvironmentRenderer;
+  private authoredEnvironment?: AuthoredLevelEnvironmentRenderer;
+  private worldDefinition?: LevelWorldDefinition;
+  private worldTopology?: LevelTopologySystem;
+  private stairTraversal?: StairTraversalSystem;
+  private worldConnectors?: WorldConnectorSystem;
   private institutionalLighting?: InstitutionalLightingSystem;
   private minimap?: MinimapSystem;
   private visualDebugText?: Phaser.GameObjects.Text;
@@ -352,8 +364,9 @@ export class GameScene extends Phaser.Scene {
     const levelConfig = levelManager.loadLevel(selectedLevelId);
     this.visualGeneration = resolveVisualGeneration(selectedLevelId, (levelConfig as unknown as { visualGeneration?: unknown }).visualGeneration);
     this.registry.set('visualGeneration', this.visualGeneration);
-    const levelWidth = levelConfig.layout.width;
-    const levelHeight = levelConfig.layout.height;
+    this.worldDefinition = data.flowNodeId ? CampaignWorldRegistry.resolve(data.flowNodeId) : CampaignWorldRegistry.findByRuntimeLevelId(selectedLevelId);
+    const levelWidth = this.worldDefinition?.worldWidth ?? levelConfig.layout.width;
+    const levelHeight = this.worldDefinition?.worldHeight ?? levelConfig.layout.height;
     const floorHeight = levelConfig.layout.floor_height ?? 64;
     const floorY = levelHeight - floorHeight / 2;
     const tableTopY = levelHeight - 146;
@@ -370,12 +383,15 @@ export class GameScene extends Phaser.Scene {
     this.combatFeedbackSystem = new CombatFeedbackSystem(this, this.cameras.main);
     this.registry.set('combatFeedbackSystem', this.combatFeedbackSystem);
 
-    const usesAuthoredCorridor = selectedLevelId === AUTHORED_CORRIDOR_LEVEL_ID;
-    this.registry.set('environmentRenderer', usesAuthoredCorridor ? 'corridor-authored' : 'legacy');
-    this.registry.set('legacyBackgroundActive', !usesAuthoredCorridor);
-    if (usesAuthoredCorridor) {
-      this.corridorEnvironment = new CorridorEnvironmentRenderer(this);
-      this.corridorEnvironment.create();
+    const usesAuthoredWorld = this.worldDefinition !== undefined;
+    this.registry.set('environmentRenderer', usesAuthoredWorld ? 'authored-level' : 'legacy');
+    this.registry.set('legacyBackgroundActive', !usesAuthoredWorld);
+    if (this.worldDefinition) {
+      this.authoredEnvironment = new AuthoredLevelEnvironmentRenderer(this, this.worldDefinition);
+      this.authoredEnvironment.create();
+      this.worldTopology = new LevelTopologySystem(this.worldDefinition);
+      this.stairTraversal = new StairTraversalSystem(this.worldDefinition.stairZones);
+      this.worldConnectors = new WorldConnectorSystem(this.worldDefinition);
     } else {
       this.drawSubsueloBackground(levelConfig.layout, floorHeight, this.activeEnvironmentProfile);
     }
@@ -747,6 +763,9 @@ export class GameScene extends Phaser.Scene {
       this.ambientVisualSystem = undefined;
       this.visualV2?.destroy(); this.visualV2 = undefined;
       this.corridorEnvironment?.destroy(); this.corridorEnvironment = undefined;
+      this.authoredEnvironment?.destroy(); this.authoredEnvironment = undefined;
+      this.stairTraversal?.shutdown(); this.stairTraversal = undefined;
+      this.worldTopology = undefined; this.worldConnectors = undefined; this.worldDefinition = undefined;
       this.institutionalLighting?.destroy(); this.institutionalLighting = undefined;
       this.minimap?.destroy(); this.minimap = undefined;
       this.registry.remove('visualV2Diagnostics');
@@ -876,6 +895,10 @@ export class GameScene extends Phaser.Scene {
     this.visualV2?.update();
     this.institutionalLighting?.update(this.time.now);
     this.minimap?.update();
+    this.stairTraversal?.update(this.game.loop.delta);
+    if (this.worldDefinition && this.authoredEnvironment && this.worldTopology && (import.meta.env.DEV || new URLSearchParams(window.location.search).has('e2eMode'))) {
+      Object.defineProperty(window,'__NWD_WORLD_STATE__',{value:createWorldState(this.worldDefinition,this.authoredEnvironment,this.worldTopology,this.players[0]),writable:false,configurable:true});
+    }
     if (this.visualGeneration === 'v2') {
       this.zombieSystem?.getActiveZombies().forEach((zombie,index) => {
         const key=['v2-zombie-guard','v2-zombie-civil','v2-zombie-advanced'][index%3];

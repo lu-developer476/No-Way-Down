@@ -9,6 +9,7 @@ import { DialogueScene } from './scenes/DialogueScene';
 import { UIScene } from './scenes/UIScene';
 import { UpperFloorScene } from './scenes/UpperFloorScene';
 import { buildInfo, NwdBuildInfo } from './buildInfo';
+import { ProductionArtGalleryScene } from './qa/ProductionArtGalleryScene';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
@@ -62,6 +63,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [
     BootScene,
+    ProductionArtGalleryScene,
     AssetPreloadScene,
     MainMenuScene,
     CampaignIntroScene,

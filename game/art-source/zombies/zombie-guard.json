@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "characterId": "zombie-guard",
+  "canvas": [
+    80,
+    112
+  ],
+  "footLine": 104,
+  "silhouette": "broad-heavy",
+  "layers": [
+    "shadow",
+    "damaged-rear-leg",
+    "front-leg",
+    "torso",
+    "wounds",
+    "head",
+    "jaw",
+    "arms"
+  ],
+  "animationFrames": {
+    "idle": 6,
+    "walk": 8,
+    "attack": 8,
+    "hurt": 4,
+    "death": 10
+  },
+  "identityColors": [
+    "mold-green",
+    "violet",
+    "fresh-blood"
+  ]
+}

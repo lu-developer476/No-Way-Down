@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "characterId": "zombie-advanced",
+  "canvas": [
+    80,
+    112
+  ],
+  "footLine": 104,
+  "silhouette": "hulking-asymmetric",
+  "layers": [
+    "shadow",
+    "damaged-rear-leg",
+    "front-leg",
+    "torso",
+    "wounds",
+    "head",
+    "jaw",
+    "arms"
+  ],
+  "animationFrames": {
+    "idle": 6,
+    "walk": 8,
+    "attack": 8,
+    "hurt": 4,
+    "death": 10
+  },
+  "identityColors": [
+    "olive",
+    "navy",
+    "blood-red"
+  ]
+}

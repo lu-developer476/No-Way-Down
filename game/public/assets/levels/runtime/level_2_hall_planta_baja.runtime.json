@@ -162,5 +162,229 @@
       },
       "label": "Ascender al segundo piso"
     }
+  ],
+  "visualAtlas": "assets/production-art/environments/bank-interior-kit.png",
+  "visualIdentity": "hall",
+  "visualLayers": [
+    {
+      "name": "Background",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:background",
+          "assetKey": "bank-interior-kit",
+          "frame": "window",
+          "depth": -90,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            0.35,
+            1
+          ],
+          "visualRole": "Background"
+        }
+      ]
+    },
+    {
+      "name": "RearArchitecture",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:reararchitecture",
+          "assetKey": "bank-interior-kit",
+          "frame": "column",
+          "depth": -80,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "RearArchitecture"
+        }
+      ]
+    },
+    {
+      "name": "Architecture",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:architecture",
+          "assetKey": "bank-interior-kit",
+          "frame": "moulding",
+          "depth": -70,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "Architecture"
+        }
+      ]
+    },
+    {
+      "name": "RearProps",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:rearprops",
+          "assetKey": "bank-interior-kit",
+          "frame": "counter",
+          "depth": -60,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "RearProps"
+        }
+      ]
+    },
+    {
+      "name": "GameplayDecor",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:gameplaydecor",
+          "assetKey": "bank-interior-kit",
+          "frame": "desk",
+          "depth": -50,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "GameplayDecor"
+        }
+      ]
+    },
+    {
+      "name": "FrontProps",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:frontprops",
+          "assetKey": "bank-interior-kit",
+          "frame": "barricade",
+          "depth": -40,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "FrontProps"
+        }
+      ]
+    },
+    {
+      "name": "Foreground",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:foreground",
+          "assetKey": "bank-interior-kit",
+          "frame": "stairs",
+          "depth": -30,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "Foreground"
+        }
+      ]
+    },
+    {
+      "name": "LightAnchors",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:lightanchors",
+          "assetKey": "bank-interior-kit",
+          "frame": "rail",
+          "depth": -20,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "LightAnchors"
+        }
+      ]
+    },
+    {
+      "name": "ReflectionZones",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:reflectionzones",
+          "assetKey": "bank-interior-kit",
+          "frame": "lamp",
+          "depth": -10,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "ReflectionZones"
+        }
+      ]
+    },
+    {
+      "name": "AmbientZones",
+      "objects": [
+        {
+          "runtimeId": "level_2_hall_planta_baja:ambientzones",
+          "assetKey": "bank-interior-kit",
+          "frame": "foreground",
+          "depth": 0,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "AmbientZones"
+        }
+      ]
+    }
   ]
 }

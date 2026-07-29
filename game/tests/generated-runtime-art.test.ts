@@ -11,12 +11,12 @@ test('generated production art is ignored and no longer configured for LFS',()=>
  assert.equal(existsSync(resolve(repo,'.gitattributes'))?readFileSync(resolve(repo,'.gitattributes'),'utf8').includes('production-art'):false,false);
 });
 test('all expected generated files are valid deterministic RGBA PNGs',()=>{
- assert.equal(config.assets.length,14);for(const asset of config.assets){const bytes=readFileSync(resolve(repo,asset.path));assert.deepEqual([...bytes.subarray(0,8)],[137,80,78,71,13,10,26,10]);assert.equal(bytes[25],6);assert.equal(createHash('sha256').update(bytes).digest('hex'),asset.sha256)}
+ assert.equal(config.assets.length,22);for(const asset of config.assets){const bytes=readFileSync(resolve(repo,asset.path));assert.deepEqual([...bytes.subarray(0,8)],[137,80,78,71,13,10,26,10]);assert.equal(bytes[25],6);assert.equal(createHash('sha256').update(bytes).digest('hex'),asset.sha256)}
 });
 test('every human and infected owns a distinct generated sheet',()=>{
  const expected=['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-guard','zombie-civil','zombie-advanced'];
  assert.deepEqual(manifest.characters.map((entry:{characterId:string})=>entry.characterId),expected);
  assert.equal(new Set(manifest.characters.map((entry:{sheetPath:string})=>entry.sheetPath)).size,expected.length);
- for(const entry of manifest.characters){assert.equal(entry.footLine,88);assert.equal(entry.frameWidth,64);assert.equal(entry.frameHeight,96)}
- assert.deepEqual(manifest.visualOrigin,{x:32,y:88});
+ for(const entry of manifest.characters){assert.equal(entry.footLine,104);assert.equal(entry.frameWidth,80);assert.equal(entry.frameHeight,112)}
+ assert.deepEqual(manifest.visualOrigin,{x:40,y:104});
 });

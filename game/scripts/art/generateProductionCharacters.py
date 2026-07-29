@@ -57,11 +57,11 @@ class ImageDraw:
  @staticmethod
  def Draw(im):return PixelDraw(im)
 
-SEED=4762026; FW,FH,FOOT=64,96,88
+SEED=4762026; FW,FH,FOOT,COLS=80,112,104,10
 ROOT=Path(__file__).resolve().parents[3]
 GENERATOR='game/scripts/art/generateProductionCharacters.py'
-HUMAN_ANIMS=[('idle',4,5,True),('walk',8,10,True),('aim',2,8,True),('shoot',4,12,False),('reload',6,9,False),('melee',6,12,False),('hurt',3,8,False),('death',6,7,False),('climb',6,9,True),('interact',3,7,False)]
-ZOMBIE_ANIMS=[('idle',4,4,True),('walk',8,8,True),('attack',6,9,False),('hurt',3,7,False),('death',8,6,False)]
+HUMAN_ANIMS=[('idle',6,6,True),('walk',8,10,True),('aim',3,8,True),('shoot',5,12,False),('reload',8,9,False),('melee',8,12,False),('hurt',4,8,False),('death',10,7,False),('climb',8,9,True),('interact',4,7,False)]
+ZOMBIE_ANIMS=[('idle',6,4,True),('walk',8,8,True),('attack',8,9,False),('hurt',4,7,False),('death',10,6,False)]
 HUMANS={
 'alan':('Alan Nahuel',['#e3b28b','#b97d62','#75483b'],['#eef1ed','#aeb4b3','#666d70'],['#171c25','#293342','#465365','#e3ad36','#fff0a3','#080b10'],'broad','beard'),
 'giovanna':('Giovanna',['#e9b793','#bd8065','#77483e'],['#261c24','#49333f','#86616c'],['#202532','#3b3343','#74405e','#d55291','#ff9ac8','#0b0c12'],'slim','long'),
@@ -82,7 +82,7 @@ def frame(pal,profile,hair_style,row,frame,zombie=False):
  im=Image.new('RGBA',(FW,FH),(0,0,0,0)); d=ImageDraw.Draw(im); rng=random.Random(SEED+row*101+frame*17+sum(map(ord,profile+hair_style)))
  skin,hair,clothes=pal[:3],pal[3:6],pal[6:]
  phase=(frame%4)-1; bob=[0,1,0,-1][frame%4]; foot=FOOT
- if row==7: # grounded death pose
+ if row==(4 if zombie else 7): # grounded death pose
   poly(d,[(8,80-frame),(49,75),(59,80),(52,87),(16,88)],clothes[1]); poly(d,[(44,69+frame%3),(58,72),(57,84),(45,82)],skin[1]); d.rectangle((10,86,60,88),fill=clothes[-1]); d.point((2+frame*3,2),fill=clothes[4]); return im
  widths={'broad':19,'heavy':20,'robust':19,'tall':15,'lean':14,'slim':13,'curvy':16,'athletic':15,'thin':12,'hulking':21}.get(profile,16)
  cx=31; shoulder=widths; head_y=10+bob; torso_top=32+bob; torso_bottom=61+bob
@@ -126,7 +126,7 @@ def frame(pal,profile,hair_style,row,frame,zombie=False):
 
 def ImageColor(hexv): return tuple(int(hexv[i:i+2],16) for i in (1,3,5))
 def sheet(spec,anims,zombie=False):
- name,skin,hair,clothes,profile,style=spec; out=Image.new('RGBA',(FW*8,FH*len(anims)),(0,0,0,0))
+ name,skin,hair,clothes,profile,style=spec; out=Image.new('RGBA',(FW*COLS,FH*len(anims)),(0,0,0,0))
  pal=skin+hair+clothes
  for row,(_,count,_,_) in enumerate(anims):
   hashes=[]
@@ -145,27 +145,36 @@ def portrait(spec):
 
 def metadata_entry(cid,path,anims,profile,portrait_path=None):
  rows={}; start=0
- for row,(name,count,fps,repeat) in enumerate(anims): rows[name]={'row':row,'startFrame':row*8,'endFrame':row*8+count-1,'fps':fps,'repeat':-1 if repeat else 0}; start+=count
- e={'characterId':cid,'sheetPath':path,'frameWidth':FW,'frameHeight':FH,'footLine':FOOT,'animations':rows,'bodyProfile':{'width':26 if profile in ('broad','heavy','robust','hulking') else 22,'height':60,'offsetX':19,'offsetY':28},'heldWeaponAnchor':{'x':15,'y':-43},'holsteredPrimaryAnchor':{'x':-12,'y':-45},'holsteredSecondaryAnchor':{'x':-15,'y':-28},'nameplateAnchor':{'x':0,'y':-94},'shadowAnchor':{'x':0,'y':1}}
+ for row,(name,count,fps,repeat) in enumerate(anims): rows[name]={'row':row,'startFrame':row*COLS,'endFrame':row*COLS+count-1,'fps':fps,'repeat':-1 if repeat else 0}; start+=count
+ e={'characterId':cid,'sheetPath':path,'frameWidth':FW,'frameHeight':FH,'footLine':FOOT,'animations':rows,'bodyProfile':{'width':26 if profile in ('broad','heavy','robust','hulking') else 22,'height':60,'offsetX':27,'offsetY':44},'heldWeaponAnchor':{'x':15,'y':-43},'holsteredPrimaryAnchor':{'x':-12,'y':-45},'holsteredSecondaryAnchor':{'x':-15,'y':-28},'nameplateAnchor':{'x':0,'y':-94},'shadowAnchor':{'x':0,'y':1}}
  if portrait_path:e['portraitPath']=portrait_path
  return e
 
 def write_all(base, metadata=False):
+ source=ROOT/'game/art-source'
+ if not (source/'characters').is_dir(): raise RuntimeError('Missing textual production-art templates')
  (base/'game/config').mkdir(parents=True,exist_ok=True)
  art=base/'game/public/assets/production-art'; entries=[]; assets=[]
  for folder in ('characters','zombies','ui','weapons'): (art/folder).mkdir(parents=True,exist_ok=True)
  for cid,spec in HUMANS.items():
   rel=f'assets/production-art/characters/{cid}.png'; path=base/'game/public'/rel; sheet(spec,HUMAN_ANIMS).save(path,format='PNG',optimize=False,compress_level=9)
-  pp=f'assets/production-art/ui/portrait-{cid}.png' if cid in ('alan','giovanna') else None
+  pp=f'assets/production-art/ui/portrait-{cid}.png' 
   if pp: portrait(spec).save(base/'game/public'/pp,format='PNG',compress_level=9)
   entries.append(metadata_entry(cid,rel,HUMAN_ANIMS,spec[4],pp))
  for cid,spec in ZOMBIES.items():
   rel=f'assets/production-art/zombies/{cid}.png'; sheet(spec,ZOMBIE_ANIMS,True).save(base/'game/public'/rel,format='PNG',compress_level=9); entries.append(metadata_entry(cid,rel,ZOMBIE_ANIMS,spec[4]))
- manifest={'schemaVersion':1,'frameWidth':FW,'frameHeight':FH,'footLine':FOOT,'visualOrigin':{'x':32,'y':88},'characters':entries}
+ manifest={'schemaVersion':1,'frameWidth':FW,'frameHeight':FH,'footLine':FOOT,'visualOrigin':{'x':40,'y':104},'characters':entries}
  if metadata: (art/'characters/character_art_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+ # The bank kit is a deterministic indexed mosaic sourced from its reviewed JSON catalog.
+ env=art/'environments'; env.mkdir(parents=True,exist_ok=True)
+ kit=json.loads((ROOT/'game/art-source/environment/bank-interior-kit.json').read_text())
+ atlas=Image.new('RGBA',(512,512),(18,24,31,255)); draw=ImageDraw.Draw(atlas)
+ for i,item in enumerate(kit['frames']):
+  x=(i%8)*64; y=(i//8)*64; colors=kit['palette']; draw.rectangle((x,y,x+63,y+63),fill=colors[(i% (len(colors)-1))+1]); draw.line((x,y+8+(i%5)*5,x+63,y+8+(i%5)*5),fill=colors[0],width=2); draw.line((x+8+(i%4)*8,y,x+8+(i%4)*8,y+63),fill=colors[-1],width=2)
+ atlas.save(env/'bank-interior-kit.png')
  for path in sorted(art.rglob('*.png')):
   data=path.read_bytes(); rel=path.relative_to(base).as_posix(); category=path.parent.name; rows=10 if category=='characters' else (5 if category=='zombies' else 1); width=int.from_bytes(data[16:20],'big');height=int.from_bytes(data[20:24],'big')
-  assets.append({'path':rel,'category':category,'generator':GENERATOR,'width':width,'height':height,'frameWidth':FW if category in ('characters','zombies') else 48,'frameHeight':FH if category in ('characters','zombies') else 48,'animationRows':rows,'sha256':hashlib.sha256(data).hexdigest(),'fileSize':len(data),'alphaRequired':True,'purpose':'Runtime character animation' if category in ('characters','zombies') else 'Gameplay HUD portrait'})
+  assets.append({'path':rel,'category':category,'generator':GENERATOR,'width':width,'height':height,'frameWidth':FW if category in ('characters','zombies') else (64 if category=='environments' else 48),'frameHeight':FH if category in ('characters','zombies') else (64 if category=='environments' else 48),'animationRows':rows,'sha256':hashlib.sha256(data).hexdigest(),'fileSize':len(data),'alphaRequired':True,'purpose':'Runtime character animation' if category in ('characters','zombies') else 'Gameplay HUD portrait'})
  config={'schemaVersion':1,'maxFileSize':1048576,'generator':GENERATOR,'assets':assets}
  if metadata: (base/'game/config/generated-production-art.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n')
 
@@ -179,5 +188,5 @@ def main():
    if [(x['path'],x['sha256']) for x in expected] != [(x['path'],x['sha256']) for x in actual]: raise SystemExit('Production art verification failed: generated hashes differ')
    print(f'Production art verified ({len(actual)} deterministic PNG files).')
  else:
-  write_all(ROOT); print(f'Runtime art generated: {len(HUMANS)} humans, {len(ZOMBIES)} zombies and 2 portraits (14 deterministic RGBA PNG files).')
+  write_all(ROOT, metadata=True); print(f'Runtime art generated: {len(HUMANS)} humans, {len(ZOMBIES)} zombies and 9 portraits plus the environment atlas (22 deterministic RGBA PNG files).')
 if __name__=='__main__': main()

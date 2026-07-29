@@ -167,11 +167,11 @@ def write_all(base, metadata=False):
  if metadata: (art/'characters/character_art_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
  # The bank kit is a deterministic indexed mosaic sourced from its reviewed JSON catalog.
  env=art/'environments'; env.mkdir(parents=True,exist_ok=True)
- kit=json.loads((ROOT/'game/art-source/environment/bank-interior-kit.json').read_text())
- atlas=Image.new('RGBA',(512,512),(18,24,31,255)); draw=ImageDraw.Draw(atlas)
- for i,item in enumerate(kit['frames']):
-  x=(i%8)*64; y=(i//8)*64; colors=kit['palette']; draw.rectangle((x,y,x+63,y+63),fill=colors[(i% (len(colors)-1))+1]); draw.line((x,y+8+(i%5)*5,x+63,y+8+(i%5)*5),fill=colors[0],width=2); draw.line((x+8+(i%4)*8,y,x+8+(i%4)*8,y+63),fill=colors[-1],width=2)
- atlas.save(env/'bank-interior-kit.png')
+ for source_path in sorted((ROOT/'game/art-source/environment').glob('*-kit.json')):
+  kit=json.loads(source_path.read_text()); atlas=Image.new('RGBA',(512,512),(0,0,0,0)); draw=ImageDraw.Draw(atlas)
+  for i,item in enumerate(kit['frames']):
+   x=(i%8)*64; y=(i//8)*64; colors=kit['palette']; draw.rectangle((x+2,y+2,x+61,y+61),fill=colors[(i%(len(colors)-1))+1]); draw.line((x+3,y+10+(i%5)*7,x+60,y+10+(i%5)*7),fill=colors[0],width=3); draw.line((x+10+(i%4)*9,y+3,x+10+(i%4)*9,y+60),fill=colors[-1],width=2); draw.rectangle((x+6+(i%3)*5,y+44,x+55,y+57),fill=colors[(i+2)%len(colors)])
+  atlas.save(env/f"{kit.get('atlasId', source_path.stem)}.png")
  for path in sorted(art.rglob('*.png')):
   data=path.read_bytes(); rel=path.relative_to(base).as_posix(); category=path.parent.name; rows=10 if category=='characters' else (5 if category=='zombies' else 1); width=int.from_bytes(data[16:20],'big');height=int.from_bytes(data[20:24],'big')
   assets.append({'path':rel,'category':category,'generator':GENERATOR,'width':width,'height':height,'frameWidth':FW if category in ('characters','zombies') else (64 if category=='environments' else 48),'frameHeight':FH if category in ('characters','zombies') else (64 if category=='environments' else 48),'animationRows':rows,'sha256':hashlib.sha256(data).hexdigest(),'fileSize':len(data),'alphaRequired':True,'purpose':'Runtime character animation' if category in ('characters','zombies') else 'Gameplay HUD portrait'})
@@ -188,5 +188,5 @@ def main():
    if [(x['path'],x['sha256']) for x in expected] != [(x['path'],x['sha256']) for x in actual]: raise SystemExit('Production art verification failed: generated hashes differ')
    print(f'Production art verified ({len(actual)} deterministic PNG files).')
  else:
-  write_all(ROOT, metadata=True); print(f'Runtime art generated: {len(HUMANS)} humans, {len(ZOMBIES)} zombies and 9 portraits plus the environment atlas (22 deterministic RGBA PNG files).')
+  write_all(ROOT, metadata=True); print(f'Runtime art generated: {len(HUMANS)} humans, {len(ZOMBIES)} zombies and 9 portraits plus seven environment atlases (28 deterministic RGBA PNG files).')
 if __name__=='__main__': main()

@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "upper-cafeteria-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#142027",
+    "#31545b",
+    "#c28f58",
+    "#ead4a2",
+    "#dce9df"
+  ],
+  "frames": [
+    {
+      "frameId": "service-counter",
+      "category": "counter",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "dining-table",
+      "category": "table",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "cafeteria-chair",
+      "category": "chair",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "tray-stack",
+      "category": "stack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "upper-kitchen",
+      "category": "kitchen",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "vending-machine",
+      "category": "machine",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "refrigerator",
+      "category": "refrigerator",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "menu-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "staff-locker",
+      "category": "locker",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "utensils",
+      "category": "utensils",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "waste-bin",
+      "category": "bin",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "cafeteria-barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "pendant-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "water-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "ceramic-tiles",
+      "category": "tiles",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "kitchen-damage",
+      "category": "damage",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    }
+  ]
+}

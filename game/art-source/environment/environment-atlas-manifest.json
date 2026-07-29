@@ -1,0 +1,2587 @@
+{
+  "schemaVersion": 1,
+  "frameSize": 64,
+  "frames": [
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "office-divider",
+      "category": "divider",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "desk",
+      "category": "desk",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "chair",
+      "category": "chair",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "filing-cabinet",
+      "category": "cabinet",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "bookcase",
+      "category": "bookcase",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "telephone",
+      "category": "telephone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "monitor",
+      "category": "monitor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "printer",
+      "category": "printer",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "paper-stack",
+      "category": "stack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "folder-stack",
+      "category": "stack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "desk-lamp",
+      "category": "lamp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "office-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "glass-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "blinds",
+      "category": "blinds",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "floor-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "air-duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "ceiling-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "extinguisher",
+      "category": "extinguisher",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "damaged-planter",
+      "category": "planter",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "carpet",
+      "category": "carpet",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-office-kit",
+      "frameId": "wall-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "executive-door-422",
+      "category": "422",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "wide-desk",
+      "category": "desk",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "executive-chair",
+      "category": "chair",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "bookcase",
+      "category": "bookcase",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "framed-art",
+      "category": "art",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "meeting-table",
+      "category": "table",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "archive-credenza",
+      "category": "credenza",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "executive-lamp",
+      "category": "lamp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "credentials",
+      "category": "credentials",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "safe",
+      "category": "safe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "curtains",
+      "category": "curtains",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "picture-window",
+      "category": "window",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "rescue-file",
+      "category": "file",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "executive-office-kit",
+      "frameId": "422-nameplate",
+      "category": "nameplate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "service-counter",
+      "category": "counter",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "dining-table",
+      "category": "table",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "cafeteria-chair",
+      "category": "chair",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "tray-stack",
+      "category": "stack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "upper-kitchen",
+      "category": "kitchen",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "vending-machine",
+      "category": "machine",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "refrigerator",
+      "category": "refrigerator",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "menu-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "staff-locker",
+      "category": "locker",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "utensils",
+      "category": "utensils",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "waste-bin",
+      "category": "bin",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "cafeteria-barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "pendant-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "water-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "ceramic-tiles",
+      "category": "tiles",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "upper-cafeteria-kit",
+      "frameId": "kitchen-damage",
+      "category": "damage",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_4_oficina_422_comedor_escaleras"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "archive-box",
+      "category": "box",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "duffel-bag",
+      "category": "bag",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "backpack",
+      "category": "backpack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "clothes-pile",
+      "category": "pile",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "storage-shelf",
+      "category": "shelf",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "personal-locker",
+      "category": "locker",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "suitcase",
+      "category": "suitcase",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "sorting-table",
+      "category": "table",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "evidence-tag",
+      "category": "tag",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "personal-effects",
+      "category": "effects",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "looted-zone",
+      "category": "zone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "scattered-papers",
+      "category": "papers",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "belongings-sector-kit",
+      "frameId": "task-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "stair-flight",
+      "category": "flight",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "landing",
+      "category": "landing",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "handrail",
+      "category": "handrail",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "fire-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "emergency-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "floor-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "floor-number",
+      "category": "number",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "damaged-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "service-duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "water-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "extinguisher",
+      "category": "extinguisher",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "electrical-box",
+      "category": "box",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "rubble",
+      "category": "rubble",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "vertical-shaft",
+      "category": "shaft",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "stair-core-kit",
+      "frameId": "foreground-railing",
+      "category": "railing",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "foreground",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso",
+        "level_7_escaleras_subsuelo2_infectado",
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": true,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "wall-crack",
+      "category": "crack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "broken-glass",
+      "category": "glass",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "floor-stain",
+      "category": "stain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "humidity",
+      "category": "humidity",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "blood-smear",
+      "category": "smear",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "rubble",
+      "category": "rubble",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "overturned-furniture",
+      "category": "furniture",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "hanging-cable",
+      "category": "cable",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "smoke",
+      "category": "smoke",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": true,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "scattered-papers",
+      "category": "papers",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "impact-mark",
+      "category": "mark",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "default"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": false,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "atlasId": "damage-and-barricades-kit",
+      "frameId": "broken-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "defaultDepth": 12,
+      "collisionRole": "visual-only",
+      "visualRole": "gameplayDecor",
+      "allowedLevels": [
+        "level_3_segundo_piso",
+        "level_4_tercer_piso",
+        "level_4_oficina_422_comedor_escaleras",
+        "level_5_oficinas_selene_descenso"
+      ],
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "destructible": false,
+      "animated": false,
+      "lightEmitter": true,
+      "foreground": false,
+      "wallMounted": true,
+      "floorMounted": false
+    }
+  ]
+}

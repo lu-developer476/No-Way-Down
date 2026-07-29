@@ -4,7 +4,7 @@
   "width": 219,
   "infinite": false,
   "nextlayerid": 40,
-  "nextobjectid": 56,
+  "nextobjectid": 81,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -64,20 +64,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 34,
-          "name": "context-wall",
+          "id": 56,
+          "name": "arrival-background-0",
           "type": "visual",
-          "x": 0,
-          "y": 700,
-          "width": 7008,
-          "height": 420,
+          "x": 2216,
+          "y": 820,
+          "width": 520,
+          "height": 300,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-background-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-damaged"
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -87,7 +127,35 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "acceso"
+              "value": "arrival"
+            }
+          ]
+        },
+        {
+          "id": 57,
+          "name": "offices-background-1",
+          "type": "visual",
+          "x": 4352,
+          "y": 820,
+          "width": 520,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-background-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-6"
             },
             {
               "name": "depth",
@@ -95,9 +163,39 @@
               "value": -50
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-34"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "offices"
             }
           ]
         }
@@ -112,20 +210,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 35,
-          "name": "distant-depth",
+          "id": 58,
+          "name": "offices-distantarchitecture-0",
           "type": "visual",
-          "x": 561,
-          "y": 620,
-          "width": 5887,
-          "height": 260,
+          "x": 2216,
+          "y": 810,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-distantarchitecture-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "security-door"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -135,7 +273,35 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "acceso"
+              "value": "offices"
+            }
+          ]
+        },
+        {
+          "id": 59,
+          "name": "storage-distantarchitecture-1",
+          "type": "visual",
+          "x": 4352,
+          "y": 810,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-distantarchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-6"
             },
             {
               "name": "depth",
@@ -143,9 +309,39 @@
               "value": -40
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-35"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "storage"
             }
           ]
         }
@@ -158,7 +354,144 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 60,
+          "name": "storage-reararchitecture-0",
+          "type": "visual",
+          "x": 2216,
+          "y": 960,
+          "width": 176,
+          "height": 150,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-reararchitecture-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "storage"
+            }
+          ]
+        },
+        {
+          "id": 61,
+          "name": "belongings-search-reararchitecture-1",
+          "type": "visual",
+          "x": 4352,
+          "y": 910,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-reararchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "belongings-search"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 5,
@@ -169,20 +502,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 36,
-          "name": "acceso-architecture",
+          "id": 62,
+          "name": "belongings-search-architecture-0",
           "type": "visual",
-          "x": 613,
-          "y": 790,
-          "width": 340,
-          "height": 210,
+          "x": 995,
+          "y": 960,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-architecture-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "security-door"
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -192,35 +565,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "acceso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-36"
+              "value": "belongings-search"
             }
           ]
         },
         {
-          "id": 37,
-          "name": "pertenencias-architecture",
+          "id": 63,
+          "name": "selene-encounter-architecture-1",
           "type": "visual",
-          "x": 2365,
-          "y": 790,
-          "width": 340,
+          "x": 1911,
+          "y": 910,
+          "width": 224,
           "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-architecture-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "office-dark"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -230,35 +633,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "pertenencias"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-37"
+              "value": "selene-encounter"
             }
           ]
         },
         {
-          "id": 38,
-          "name": "oficinas-architecture",
+          "id": 64,
+          "name": "descent-exit-architecture-2",
           "type": "visual",
-          "x": 4117,
-          "y": 790,
-          "width": 340,
-          "height": 210,
+          "x": 2826,
+          "y": 960,
+          "width": 272,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-architecture-2"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "office-lit"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-7"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -268,35 +701,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "oficinas"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-38"
+              "value": "descent-exit"
             }
           ]
         },
         {
-          "id": 39,
-          "name": "descenso-architecture",
+          "id": 65,
+          "name": "arrival-architecture-3",
           "type": "visual",
-          "x": 5869,
-          "y": 790,
-          "width": 340,
+          "x": 3742,
+          "y": 910,
+          "width": 176,
           "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-architecture-3"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "stairs-end"
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-0"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -306,17 +769,143 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "descenso"
+              "value": "arrival"
+            }
+          ]
+        },
+        {
+          "id": 66,
+          "name": "offices-architecture-4",
+          "type": "visual",
+          "x": 4657,
+          "y": 960,
+          "width": 224,
+          "height": 150,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-architecture-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-1"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -15
+              "value": -20
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "offices"
+            }
+          ]
+        },
+        {
+          "id": 67,
+          "name": "storage-architecture-5",
+          "type": "visual",
+          "x": 5573,
+          "y": 910,
+          "width": 272,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-39"
+              "value": "level_5_oficinas_selene_descenso-architecture-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "storage"
             }
           ]
         }
@@ -331,20 +920,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 46,
-          "name": "upper-services",
+          "id": 68,
+          "name": "selene-encounter-rearprops-0",
           "type": "visual",
-          "x": 1962,
-          "y": 690,
-          "width": 220,
-          "height": 64,
+          "x": 2216,
+          "y": 960,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-rearprops-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "pipe-bundle"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -354,17 +983,75 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "pertenencias"
+              "value": "selene-encounter"
+            }
+          ]
+        },
+        {
+          "id": 69,
+          "name": "descent-exit-rearprops-1",
+          "type": "visual",
+          "x": 4352,
+          "y": 910,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-rearprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-6"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -5
+              "value": -10
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-46"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "descent-exit"
             }
           ]
         }
@@ -379,20 +1066,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 40,
-          "name": "acceso-decor-1",
+          "id": 70,
+          "name": "descent-exit-gameplaydecor-0",
           "type": "visual",
-          "x": 759,
-          "y": 1002,
-          "width": 180,
-          "height": 48,
+          "x": 995,
+          "y": 960,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-gameplaydecor-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "paper-cluster"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -402,35 +1129,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "acceso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-40"
+              "value": "descent-exit"
             }
           ]
         },
         {
-          "id": 41,
-          "name": "pertenencias-decor-2",
+          "id": 71,
+          "name": "arrival-gameplaydecor-1",
           "type": "visual",
-          "x": 1927,
-          "y": 974,
-          "width": 180,
-          "height": 76,
+          "x": 1911,
+          "y": 910,
+          "width": 224,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-gameplaydecor-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "broken-furniture"
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -440,35 +1197,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "pertenencias"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-41"
+              "value": "arrival"
             }
           ]
         },
         {
-          "id": 42,
-          "name": "oficinas-decor-3",
+          "id": 72,
+          "name": "offices-gameplaydecor-2",
           "type": "visual",
-          "x": 3095,
-          "y": 1002,
-          "width": 180,
-          "height": 48,
+          "x": 2826,
+          "y": 960,
+          "width": 272,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-gameplaydecor-2"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "blood-smear"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-7"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -478,35 +1265,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "oficinas"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-42"
+              "value": "offices"
             }
           ]
         },
         {
-          "id": 43,
-          "name": "descenso-decor-4",
+          "id": 73,
+          "name": "storage-gameplaydecor-3",
           "type": "visual",
-          "x": 4263,
-          "y": 974,
-          "width": 180,
-          "height": 76,
+          "x": 3742,
+          "y": 910,
+          "width": 176,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-gameplaydecor-3"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "cable-tray"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-0"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -516,35 +1333,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "descenso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-43"
+              "value": "storage"
             }
           ]
         },
         {
-          "id": 44,
-          "name": "descenso-decor-5",
+          "id": 74,
+          "name": "belongings-search-gameplaydecor-4",
           "type": "visual",
-          "x": 5431,
-          "y": 974,
-          "width": 180,
-          "height": 76,
+          "x": 4657,
+          "y": 960,
+          "width": 224,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-gameplaydecor-4"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "emergency-light"
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-1"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -554,35 +1401,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "descenso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-44"
+              "value": "belongings-search"
             }
           ]
         },
         {
-          "id": 45,
-          "name": "descenso-decor-6",
+          "id": 75,
+          "name": "selene-encounter-gameplaydecor-5",
           "type": "visual",
-          "x": 6599,
-          "y": 1002,
-          "width": 180,
-          "height": 48,
+          "x": 5573,
+          "y": 910,
+          "width": 272,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-gameplaydecor-5"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "debris"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -592,17 +1469,7 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "descenso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-45"
+              "value": "selene-encounter"
             }
           ]
         }
@@ -617,20 +1484,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 47,
-          "name": "route-damage",
+          "id": 76,
+          "name": "arrival-frontprops-0",
           "type": "visual",
-          "x": 4065,
-          "y": 1025,
-          "width": 180,
-          "height": 40,
+          "x": 2216,
+          "y": 960,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-frontprops-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "floor-damage"
+              "value": "belongings-sector-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "belongings-sector-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -640,17 +1547,75 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "oficinas"
+              "value": "arrival"
+            }
+          ]
+        },
+        {
+          "id": 77,
+          "name": "offices-frontprops-1",
+          "type": "visual",
+          "x": 4352,
+          "y": 910,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-frontprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-6"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": 6
+              "value": 10
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-47"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "offices"
             }
           ]
         }
@@ -665,20 +1630,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 48,
-          "name": "foreground-left",
+          "id": 78,
+          "name": "offices-foreground-0",
           "type": "visual",
-          "x": 140,
-          "y": 820,
-          "width": 90,
-          "height": 260,
+          "x": 2216,
+          "y": 960,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-foreground-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-column"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.88
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -688,35 +1693,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "acceso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-48"
+              "value": "offices"
             }
           ]
         },
         {
-          "id": 49,
-          "name": "foreground-right",
+          "id": 79,
+          "name": "storage-foreground-1",
           "type": "visual",
-          "x": 6167,
-          "y": 850,
-          "width": 150,
-          "height": 230,
+          "x": 4352,
+          "y": 910,
+          "width": 224,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-foreground-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-bars"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.88
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -726,17 +1761,7 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "descenso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_5_oficinas_selene_descenso-visual-49"
+              "value": "storage"
             }
           ]
         }
@@ -1207,7 +2232,7 @@
             {
               "name": "prompt",
               "type": "string",
-              "value": "E · Asegurar checkpoint"
+              "value": "E \u00b7 Asegurar checkpoint"
             },
             {
               "name": "sensor",
@@ -1240,7 +2265,7 @@
             {
               "name": "prompt",
               "type": "string",
-              "value": "E · Continuar"
+              "value": "E \u00b7 Continuar"
             },
             {
               "name": "sensor",
@@ -1480,7 +2505,31 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 80,
+          "name": "visible-exit-route",
+          "type": "navigation",
+          "x": 6308,
+          "y": 940,
+          "width": 420,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "target",
+              "type": "string",
+              "value": "salida-quinto"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_5_oficinas_selene_descenso-navigationhints-80"
+            }
+          ]
+        }
+      ]
     }
   ],
   "properties": [
@@ -1522,7 +2571,7 @@
     {
       "name": "floorLabel",
       "type": "string",
-      "value": "Piso canónico 13"
+      "value": "Piso can\u00f3nico 13"
     },
     {
       "name": "canonicalIndex",
@@ -1578,6 +2627,21 @@
       "name": "environmentProfile",
       "type": "string",
       "value": "level5_oficinas_selene_descenso"
+    },
+    {
+      "name": "floor",
+      "type": "int",
+      "value": 5
+    },
+    {
+      "name": "environmentKitIds",
+      "type": "string",
+      "value": "belongings-sector-kit,upper-office-kit,stair-core-kit"
+    },
+    {
+      "name": "compositionSignature",
+      "type": "string",
+      "value": "arrival|offices|storage|belongings-search|selene-encounter|descent-exit"
     }
   ],
   "backgroundcolor": "#111827"

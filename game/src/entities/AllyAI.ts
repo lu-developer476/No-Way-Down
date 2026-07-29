@@ -45,7 +45,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
   private readonly partyMarker: Phaser.GameObjects.Arc;
-  private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
+  private readonly heldWeaponSprite: Phaser.GameObjects.Image;
+  private readonly holsteredWeaponSprite: Phaser.GameObjects.Image;
   private isNameTagVisible = false;
   private readonly runtimeConfig: CharacterRuntimeConfig;
   private readonly projectileSystem: ProjectileSystem;
@@ -102,7 +103,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     const labelPosition = getCharacterAttachmentPosition('ally', 'label', this.x, this.y);
     this.nameTag = scene.add.text(labelPosition.x, labelPosition.y, this.runtimeConfig.name, {
-      fontSize: '9px',
+      fontSize: '11px',
       color: Phaser.Display.Color.ValueToColor(profile.tint).rgba,
       backgroundColor: 'rgba(5, 12, 15, 0.76)',
       padding: { x: 4, y: 2 },
@@ -121,10 +122,11 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.partyMarker.setScale(1.55, 0.32);
     this.partyMarker.setDepth(ALLY_RENDER_DEPTH - 0.2);
 
-    this.equippedWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
-    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
-    this.equippedWeaponSprite.setOrigin(0.2, 0.5);
-    this.refreshEquippedWeaponVisual();
+    this.heldWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
+    this.heldWeaponSprite.setDepth(this.depth + 0.2);
+    this.heldWeaponSprite.setOrigin(0.2, 0.5);
+    this.holsteredWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing').setOrigin(.5).setDepth(this.depth - .1);
+    this.refreshWeaponVisuals();
   }
 
   getId(): string {
@@ -185,7 +187,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.activeWeaponSlot = requestedSlot;
-    this.refreshEquippedWeaponVisual();
+    this.refreshWeaponVisuals();
     return true;
   }
 
@@ -239,9 +241,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   private followPlayer(player: Player): void {
     const desiredX = player.x + this.profile.followOffsetX;
-    const desiredY = player.y + this.profile.followOffsetY;
-
-    this.moveTowards(desiredX, desiredY, ALLY_FOLLOW_SPEED * this.movementSpeedMultiplier, ALLY_STOP_RADIUS);
+    // Horizontal formation is intentional; gravity and colliders are the only normal Y authorities.
+    this.moveTowards(desiredX, player.y, ALLY_FOLLOW_SPEED * this.movementSpeedMultiplier, ALLY_STOP_RADIUS);
     this.avoidBlockingPlayer(player);
   }
 
@@ -276,8 +277,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
   private moveTowards(targetX: number, targetY: number, baseSpeed: number, stopRadius: number): void {
     const dx = targetX - this.x;
-    const dy = targetY - this.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
+    const distance = Math.abs(dx);
 
     if (distance > ALLY_TELEPORT_DISTANCE) {
       this.recoverNearPoint(targetX, targetY);
@@ -285,17 +285,16 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (distance <= stopRadius) {
-      this.setVelocity(0, 0);
+      this.setVelocityX(0);
       this.spriteAnimationSystem.playMovement(this, this.characterVisualId, false);
       return;
     }
 
     const speedMultiplier = distance > ALLY_CATCHUP_DISTANCE ? 1.45 : 1;
     const speed = baseSpeed * speedMultiplier;
-    const velocityX = (dx / distance) * speed;
-    const velocityY = (dy / distance) * speed;
+    const velocityX = Math.sign(dx) * speed;
 
-    this.setVelocity(velocityX, velocityY);
+    this.setVelocityX(velocityX);
     this.spriteAnimationSystem.playMovement(this, this.characterVisualId, true);
 
     if (velocityX < -1) {
@@ -315,7 +314,8 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
   }
 
   private recoverNearPoint(targetX: number, targetY: number): void {
-    this.setPosition(targetX - this.profile.followOffsetX * 0.35, targetY - 10);
+    // The target is another actor's validated foot point; never recover into mid-air.
+    this.setPosition(Math.round(targetX - this.profile.followOffsetX * 0.35), Math.round(targetY));
     this.setVelocity(0, 0);
     this.setAlpha(0.45);
 
@@ -395,7 +395,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
 
     this.getCombatFeedbackSystem()?.playShot({
       x: this.x, y: this.y, direction: direction < 0 ? -1 : 1,
-      weaponKey: activeWeapon.key, source: this, weaponSprite: this.equippedWeaponSprite,
+      weaponKey: activeWeapon.key, source: this, weaponSprite: this.heldWeaponSprite,
       isPlayerControlled: false
     });
     this.ammoRuntime.consumeForShot(activeWeapon.key);
@@ -578,9 +578,7 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     const lateralSign = this.profile.followOffsetX >= 0 ? 1 : -1;
     const targetToPlayerDirection = Math.sign(player.x - target.x) || -lateralSign;
     const desiredX = target.x + targetToPlayerDirection * ALLY_COMBAT_REPOSITION_DISTANCE + lateralSign * 26;
-    const desiredY = target.y + this.profile.followOffsetY * 0.35;
-
-    return { x: desiredX, y: desiredY };
+    return { x: desiredX, y: target.y };
   }
 
   preUpdate(time: number, delta: number): void {
@@ -594,34 +592,43 @@ export class AllyAI extends Phaser.Physics.Arcade.Sprite {
     this.partyMarker.setPosition(shadow.x, shadow.y);
     this.partyMarker.setDepth(this.depth - 1);
     this.partyMarker.setVisible(this.active);
-    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
-    this.updateEquippedWeaponSprite();
+    this.heldWeaponSprite.setDepth(this.depth + 0.2);
+    this.updateWeaponSprites();
   }
 
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
     this.partyMarker.destroy();
-    this.equippedWeaponSprite.destroy();
+    this.heldWeaponSprite.destroy();
+    this.holsteredWeaponSprite.destroy();
     super.destroy(fromScene);
   }
 
-  private refreshEquippedWeaponVisual(): void {
+  private refreshWeaponVisuals(): void {
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
-    this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
-    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
-    this.updateEquippedWeaponSprite();
+    this.heldWeaponSprite.setTexture(weaponVisual.heldTexture);
+    this.heldWeaponSprite.setScale(weaponVisual.heldScale);
+    const inactiveKey = this.activeWeaponSlot === 'primary' ? this.runtimeConfig.loadout.secondaryWeapon : this.runtimeConfig.loadout.primaryWeapon;
+    if (inactiveKey && inactiveKey !== this.getActiveWeaponRuntime().key) {
+      const holsteredVisual = getWeaponVisualRuntimeConfig(inactiveKey, this.scene);
+      this.holsteredWeaponSprite.setTexture(holsteredVisual.holsteredTexture).setScale(holsteredVisual.holsteredScale).setVisible(true);
+    } else this.holsteredWeaponSprite.setVisible(false);
+    this.updateWeaponSprites();
   }
 
-  private updateEquippedWeaponSprite(): void {
-    if (!this.equippedWeaponSprite.active) {
+  private updateWeaponSprites(): void {
+    if (!this.heldWeaponSprite.active) {
       return;
     }
 
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     const direction: 1 | -1 = this.flipX ? -1 : 1;
     const carry = getFacingOffsetPosition({ x: this.x, y: this.y }, { x: weaponVisual.carryOffsetX, y: weaponVisual.carryOffsetY }, direction);
-    this.equippedWeaponSprite.setPosition(carry.x, carry.y);
-    this.equippedWeaponSprite.setFlipX(direction < 0);
-    this.equippedWeaponSprite.setVisible(this.active);
+    this.heldWeaponSprite.setPosition(carry.x, carry.y);
+    this.heldWeaponSprite.setFlipX(direction < 0);
+    const holsterOffset = this.activeWeaponSlot === 'primary' ? weaponVisual.holsterSecondaryOffset : weaponVisual.holsterPrimaryOffset;
+    const holster = getFacingOffsetPosition({ x: this.x, y: this.y }, holsterOffset, direction);
+    this.holsteredWeaponSprite.setPosition(holster.x, holster.y).setFlipX(direction < 0).setDepth(this.depth - .1).setVisible(this.active && this.holsteredWeaponSprite.visible);
+    this.heldWeaponSprite.setVisible(this.active);
   }
 }

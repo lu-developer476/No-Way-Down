@@ -15,8 +15,10 @@ export interface PhysicsSilhouetteProfile {
 
 export interface WeaponAlignmentProfile {
   heldScale: number;
+  holsteredScale: number;
   hudScale: number;
   carryOffset: PixelPoint;
+  holsterOffset: PixelPoint;
   muzzleOffset: PixelPoint;
 }
 
@@ -26,27 +28,27 @@ export interface WeaponAlignmentProfile {
  * positioned from that same point in whole world pixels.
  */
 export const VISUAL_ALIGNMENT = {
-  characterScale: { player: 1.5, ally: 1.5, zombie: 1.5 },
-  visualOrigin: { x: 16, y: 42 },
+  characterScale: { player: 1, ally: 1, zombie: 1 },
+  visualOrigin: { x: 32, y: 88 },
   shadow: { player: { x: 0, y: 2 }, ally: { x: 0, y: 2 }, zombie: { x: 0, y: 2 } },
-  label: { player: { x: 0, y: -68 }, ally: { x: 0, y: -68 }, zombie: { x: 0, y: -68 } },
+  label: { player: { x: 0, y: -94 }, ally: { x: 0, y: -94 }, zombie: { x: 0, y: -94 } },
   physics: {
-    slim: { bodyWidth: 12, bodyHeight: 34, offsetX: 10, offsetY: 8, bounce: 0.04, dragX: 850 },
-    standard: { bodyWidth: 16, bodyHeight: 34, offsetX: 8, offsetY: 8, bounce: 0.035, dragX: 900 },
-    broad: { bodyWidth: 20, bodyHeight: 34, offsetX: 6, offsetY: 8, bounce: 0.025, dragX: 980 }
+    slim: { bodyWidth: 22, bodyHeight: 60, offsetX: 21, offsetY: 28, bounce: 0.04, dragX: 850 },
+    standard: { bodyWidth: 24, bodyHeight: 60, offsetX: 20, offsetY: 28, bounce: 0.035, dragX: 900 },
+    broad: { bodyWidth: 28, bodyHeight: 60, offsetX: 18, offsetY: 28, bounce: 0.025, dragX: 980 }
   } satisfies Record<CharacterSilhouette, PhysicsSilhouetteProfile>,
   weapons: {
-    pistol: { heldScale: 1, hudScale: 1, carryOffset: { x: 8, y: -27 }, muzzleOffset: { x: 26, y: -28 } },
-    revolver: { heldScale: 1, hudScale: 1, carryOffset: { x: 8, y: -27 }, muzzleOffset: { x: 27, y: -28 } },
-    smg: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 29, y: -27 } },
-    shotgun: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 37, y: -28 } },
-    carbine: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 36, y: -28 } },
-    sniper_rifle: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 42, y: -28 } },
-    light_machine_gun: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -26 }, muzzleOffset: { x: 41, y: -27 } },
-    knife: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 24, y: -25 } },
-    machete: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 33, y: -26 } },
-    sword: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 39, y: -26 } },
-    tray_shield: { heldScale: 1, hudScale: 1, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 25, y: -25 } }
+    pistol: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 8, y: -27 }, muzzleOffset: { x: 26, y: -28 } },
+    revolver: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 8, y: -27 }, muzzleOffset: { x: 27, y: -28 } },
+    smg: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 29, y: -27 } },
+    shotgun: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 37, y: -28 } },
+    carbine: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 36, y: -28 } },
+    sniper_rifle: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -27 }, muzzleOffset: { x: 42, y: -28 } },
+    light_machine_gun: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -26 }, muzzleOffset: { x: 41, y: -27 } },
+    knife: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 24, y: -25 } },
+    machete: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 33, y: -26 } },
+    sword: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 39, y: -26 } },
+    tray_shield: { heldScale: 1, holsteredScale: .78, hudScale: 1, holsterOffset: { x: -13, y: -45 }, carryOffset: { x: 7, y: -25 }, muzzleOffset: { x: 25, y: -25 } }
   } satisfies Record<string, WeaponAlignmentProfile>
 } as const;
 

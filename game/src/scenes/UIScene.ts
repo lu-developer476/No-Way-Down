@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 import { PartyHudMember, PauseMenuView, TransitionView } from './sceneShared';
-import { controlManager } from '../input/ControlManager';
 import { getWeaponCatalogEntry } from '../config/weaponCatalog';
 import { getWeaponVisualRuntimeConfig } from '../config/weaponVisualRuntime';
 import { visualTheme } from './visualTheme';
 import { calculateUiLayout, resolveDominantUiLayer, UI_LAYOUT } from './uiLayout';
+import { OBJECTIVE_COMPLETE_VISIBLE_MS, OBJECTIVE_TOAST_FADE_MS, OBJECTIVE_TOAST_VISIBLE_MS } from './gameplayHudLayout';
 
 interface ProtagonistHud {
   container: Phaser.GameObjects.Container;
@@ -41,13 +41,12 @@ export class UIScene extends Phaser.Scene {
   private dialogueBodyText?: Phaser.GameObjects.Text;
   private dialogueHintText?: Phaser.GameObjects.Text;
   private dialoguePortraitText?: Phaser.GameObjects.Text;
-  private controlsLegendText?: Phaser.GameObjects.Text;
   private gameplayHudLayer?: Phaser.GameObjects.Container;
   private partyRosterContainer?: Phaser.GameObjects.Container;
   private readonly partyRosterRows: PartyRosterRow[] = [];
-  private controlsCard?: Phaser.GameObjects.Container;
   private objectiveCard?: Phaser.GameObjects.Container;
-  private threatCard?: Phaser.GameObjects.Container;
+  private objectiveHideTimer?: Phaser.Time.TimerEvent;
+  private lastObjective = '';
   private interactionContainer?: Phaser.GameObjects.Container;
   private pauseLayer?: Phaser.GameObjects.Container;
   private transitionLayer?: Phaser.GameObjects.Container;
@@ -65,7 +64,6 @@ export class UIScene extends Phaser.Scene {
   private fatalTitleText?: Phaser.GameObjects.Text;
   private fatalBodyText?: Phaser.GameObjects.Text;
   private currentFatalError?: unknown;
-  private controlsFadeTimer?: Phaser.Time.TimerEvent;
   private createdAtWidth: number = UI_LAYOUT.logicalWidth;
   private createdAtHeight: number = UI_LAYOUT.logicalHeight;
 
@@ -101,9 +99,9 @@ export class UIScene extends Phaser.Scene {
       events.off('changedata-campaignDevelopmentError', this.handleFatalErrorChanged, this);
       this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this);
       this.combatStatusClearTimer?.remove(false);
-      this.controlsFadeTimer?.remove(false);
+      this.objectiveHideTimer?.remove(false);
       this.combatStatusClearTimer = undefined;
-      this.controlsFadeTimer = undefined;
+      this.objectiveHideTimer = undefined;
       this.pauseOptionTexts = [];
       this.pauseOptionBackgrounds = [];
       this.partyRosterRows.length = 0;
@@ -128,8 +126,6 @@ export class UIScene extends Phaser.Scene {
     const layout = calculateUiLayout(this.scale.width, this.scale.height);
     const dx = layout.width - this.createdAtWidth;
     const dy = layout.height - this.createdAtHeight;
-    this.threatCard?.setPosition(dx, 0);
-    this.controlsCard?.setPosition(dx, 0);
     this.objectiveCard?.setPosition(dx / 2, dy);
     this.interactionContainer?.setPosition(dx / 2, dy);
     this.dialoguePanel?.setPosition(dx / 2, dy);
@@ -151,8 +147,7 @@ export class UIScene extends Phaser.Scene {
     this.protagonistHud = undefined; this.previousProtagonistHud = undefined;
     this.zombieCountText = undefined; this.objectiveText = undefined; this.interactionText = undefined;
     this.interactionCard = undefined; this.dialoguePanel = undefined; this.gameplayHudLayer = undefined;
-    this.partyRosterContainer = undefined; this.controlsCard = undefined; this.objectiveCard = undefined;
-    this.threatCard = undefined; this.interactionContainer = undefined; this.pauseLayer = undefined;
+    this.partyRosterContainer = undefined; this.objectiveCard = undefined; this.interactionContainer = undefined; this.pauseLayer = undefined;
     this.transitionLayer = undefined; this.fatalLayer = undefined;
   }
 
@@ -171,21 +166,23 @@ export class UIScene extends Phaser.Scene {
     const maxHp = Math.max(1, Math.round(protagonist.maxHealth));
     const hp = Phaser.Math.Clamp(Math.round(protagonist.health), 0, maxHp);
     const ratio = Phaser.Math.Clamp(hp / maxHp, 0, 1);
-    const active = this.getWeaponDisplayLabel(protagonist.activeWeapon);
+    const primary = this.getWeaponDisplayLabel(protagonist.primaryWeapon);
     const secondary = protagonist.secondaryWeapon ? this.getWeaponDisplayLabel(protagonist.secondaryWeapon) : 'Sin secundaria';
-    const catalog = getWeaponCatalogEntry(protagonist.activeWeapon);
-    const shield = protagonist.activeWeapon === 'tray_shield';
+    const activeWeapon = protagonist.activeSlot === 'secondary' && protagonist.secondaryWeapon ? protagonist.secondaryWeapon : protagonist.primaryWeapon;
+    const active = this.getWeaponDisplayLabel(activeWeapon);
+    const catalog = getWeaponCatalogEntry(activeWeapon);
+    const shield = activeWeapon === 'tray_shield';
     const special = shield ? 'ESCUDO ACTIVO' : catalog.isMelee ? 'MODO MELEE' : '';
     const prev = this.previousProtagonistHud;
     const empty = protagonist.usesAmmo && (protagonist.ammoCurrent ?? 0) <= 0 && (protagonist.ammoReserve ?? 0) <= 0
       && ((prev?.ammoCurrent ?? 0) > 0 || (prev?.ammoReserve ?? 0) > 0);
     this.protagonistHud.nameText.setText(protagonist.name.toUpperCase());
-    this.protagonistHud.hpFill.setSize(214 * ratio, 8).setFillStyle(ratio <= .25 ? visualTheme.palette.uiHealthDanger : visualTheme.palette.uiHealth);
+    this.protagonistHud.hpFill.setSize(132 * ratio, 8).setFillStyle(ratio <= .25 ? visualTheme.palette.uiHealthDanger : visualTheme.palette.uiHealth);
     this.protagonistHud.hpValueText.setText(`HP ${hp} / ${maxHp}`);
-    this.refreshWeaponHudIcon(this.protagonistHud.activeWeaponIcon, protagonist.activeWeapon);
+    this.refreshWeaponHudIcon(this.protagonistHud.activeWeaponIcon, protagonist.primaryWeapon);
     this.refreshWeaponHudIcon(this.protagonistHud.secondaryWeaponIcon, protagonist.secondaryWeapon);
-    this.protagonistHud.activeWeaponText.setText(`Activa: ${active}`);
-    this.protagonistHud.secondaryWeaponText.setText(`Sec.: ${secondary}`);
+    this.protagonistHud.activeWeaponText.setText(`${protagonist.activeSlot === 'primary' ? 'ACTIVA' : 'PRIM.'}: ${primary}`);
+    this.protagonistHud.secondaryWeaponText.setText(`${protagonist.activeSlot === 'secondary' ? 'ACTIVA' : 'SEC.'}: ${secondary}`);
     this.protagonistHud.ammoText.setText(this.getAmmoDisplayText(protagonist));
     if (!prev?.isReloading && protagonist.isReloading) this.showCombatStatus('RECARGANDO...', 'reload', 850);
     else if (prev?.activeWeapon !== undefined && prev.activeWeapon !== protagonist.activeWeapon) this.showCombatStatus(`ARMA: ${active}`, 'switch', 850);
@@ -239,7 +236,12 @@ export class UIScene extends Phaser.Scene {
   }
 
   private handleZombiesChanged(_p: Phaser.Data.DataManager, value: number): void { this.zombieCountText?.setText(value > 0 ? `AMENAZAS  ${value}` : 'ÁREA LIMPIA'); }
-  private handleObjectiveChanged(_p: Phaser.Data.DataManager, value: string): void { this.objectiveText?.setText(value || 'En espera'); }
+  private handleObjectiveChanged(_p: Phaser.Data.DataManager, value: string): void {
+    const objective=(value??'').trim(); if(!objective||objective===this.lastObjective)return; this.lastObjective=objective;
+    this.objectiveText?.setText(objective);this.objectiveCard?.setVisible(true).setAlpha(1);this.objectiveHideTimer?.remove(false);
+    const duration=/completad[oa]/i.test(objective)?OBJECTIVE_COMPLETE_VISIBLE_MS:OBJECTIVE_TOAST_VISIBLE_MS;
+    this.objectiveHideTimer=this.time.delayedCall(duration,()=>this.tweens.add({targets:this.objectiveCard,alpha:0,duration:OBJECTIVE_TOAST_FADE_MS,onComplete:()=>this.objectiveCard?.setVisible(false)}));
+  }
   private handleInteractionHintChanged(_p: Phaser.Data.DataManager, value: string): void {
     const hint = value?.trim();
     this.interactionText?.setText(hint || '');
@@ -255,11 +257,7 @@ export class UIScene extends Phaser.Scene {
       const choices = value.choices?.length ? `\n${value.choices.map((choice, i) => `${i + 1}. ${choice.text}`).join('\n')}` : '';
       this.dialogueSpeakerText?.setText(value.speaker || '...');
       this.dialoguePortraitText?.setText(value.portrait || value.speaker || 'Narrador');
-      this.dialogueBodyText?.setFontSize(value.choices?.length ? 10 : 11)
-        .setText(`${value.text}${value.emotion ? ` (${value.emotion})` : ''}${choices}`);
-      while (this.dialogueBodyText && this.dialogueBodyText.height > 104 && Number.parseInt(String(this.dialogueBodyText.style.fontSize), 10) > 8) {
-        this.dialogueBodyText.setFontSize(Number.parseInt(String(this.dialogueBodyText.style.fontSize), 10) - 1);
-      }
+      this.dialogueBodyText?.setFontSize(13).setText(`${value.text}${value.emotion ? ` (${value.emotion})` : ''}${choices}`);
     }
     this.refreshUiVisibility();
   }
@@ -320,16 +318,11 @@ export class UIScene extends Phaser.Scene {
     this.pauseLayer?.setVisible(pauseVisible);
     this.dialoguePanel?.setVisible(dialogueVisible);
     this.gameplayHudLayer?.setVisible(gameplayVisible);
-    this.controlsCard?.setVisible(gameplayVisible);
-    this.threatCard?.setVisible(gameplayVisible);
-    this.objectiveCard?.setVisible(gameplayVisible);
+    if (!gameplayVisible) this.objectiveCard?.setVisible(false);
     this.interactionContainer?.setVisible(gameplayVisible && Boolean(this.interactionText?.text));
     this.protagonistHud?.container.setVisible(gameplayVisible && Boolean(this.previousProtagonistHud));
   }
 
-  private getControlsLegendText(): string {
-    return `${controlManager.getMovementDisplayLabel().toUpperCase()} MOVER · ${controlManager.getDisplayLabel('jump').toUpperCase()} SALTAR · ${controlManager.getDisplayLabel('shoot').toUpperCase()} DISPARAR\n${controlManager.getDisplayLabel('reload').toUpperCase()} RECARGAR · ${controlManager.getDisplayLabel('interact').toUpperCase()} INTERACTUAR · ${controlManager.getDisplayLabel('pause').toUpperCase()} PAUSA`;
-  }
 
   private createHudFrame(): void {
     this.createScreenVignette();
@@ -337,40 +330,31 @@ export class UIScene extends Phaser.Scene {
     this.gameplayHudLayer = this.add.container(0, 0).setDepth(20);
     const protagonistObjects: Phaser.GameObjects.GameObject[] = [];
     const addP = <T extends Phaser.GameObjects.GameObject>(o: T): T => { protagonistObjects.push(o); return o; };
-    addP(this.add.rectangle(12, 12, 246, 88, visualTheme.palette.uiPanelFill, .94).setOrigin(0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder));
-    addP(this.add.rectangle(14, 14, 242, 22, visualTheme.palette.uiPanelRaised).setOrigin(0));
-    const nameText = addP(this.add.text(16, 14, '', { color: '#f8fafc', fontSize: '12px', fontFamily: font, fontStyle: 'bold' }));
-    addP(this.add.rectangle(16, 38, 214, 8, visualTheme.palette.uiPanelShadow, .95).setOrigin(0).setStrokeStyle(1, 0x334155));
+    addP(this.add.rectangle(12, 12, 252, 68, visualTheme.palette.uiPanelFill, .94).setOrigin(0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder));
+    addP(this.add.rectangle(14, 14, 248, 20, visualTheme.palette.uiPanelRaised).setOrigin(0));
+    const nameText = addP(this.add.text(16, 14, '', { color: '#f8fafc', fontSize: '13px', fontFamily: font, fontStyle: 'bold' }));
+    addP(this.add.rectangle(16, 38, 132, 8, visualTheme.palette.uiPanelShadow, .95).setOrigin(0).setStrokeStyle(1, 0x334155));
     const hpFill = addP(this.add.rectangle(16, 38, 0, 8, visualTheme.palette.uiHealth).setOrigin(0));
-    const hpValueText = addP(this.add.text(246, 27, '', { color: visualTheme.palette.uiTextSecondary, fontSize: '9px', fontFamily: font, fontStyle: 'bold' }).setOrigin(1, 0));
-    const activeWeaponText = addP(this.add.text(16, 44, '', { color: '#e2e8f0', fontSize: '11px', fontFamily: font }));
-    const secondaryWeaponText = addP(this.add.text(16, 58, '', { color: '#cbd5e1', fontSize: '11px', fontFamily: font }));
-    const ammoText = addP(this.add.text(16, 72, '', { color: Phaser.Display.Color.ValueToColor(visualTheme.palette.uiAmmo).rgba, fontSize: '11px', fontFamily: font, fontStyle: 'bold' }));
-    const statusText = addP(this.add.text(125, 72, '', { color: '#cbd5e1', fontSize: '10px', fontFamily: font, fontStyle: 'bold' }).setVisible(false));
-    const activeWeaponIcon = addP(this.add.image(164, 50, 'weapon-hud-missing'));
-    const secondaryWeaponIcon = addP(this.add.image(164, 64, 'weapon-hud-missing').setAlpha(.85));
+    const hpValueText = addP(this.add.text(246, 27, '', { color: visualTheme.palette.uiTextSecondary, fontSize: '14px', fontFamily: font, fontStyle: 'bold' }).setOrigin(1, 0));
+    const activeWeaponText = addP(this.add.text(116, 38, '', { color: '#e2e8f0', fontSize: '11px', fontFamily: font }));
+    const secondaryWeaponText = addP(this.add.text(116, 52, '', { color: '#cbd5e1', fontSize: '11px', fontFamily: font }));
+    const ammoText = addP(this.add.text(16, 52, '', { color: Phaser.Display.Color.ValueToColor(visualTheme.palette.uiAmmo).rgba, fontSize: '11px', fontFamily: font, fontStyle: 'bold' }));
+    const statusText = addP(this.add.text(16, 38, '', { color: '#cbd5e1', fontSize: '11px', fontFamily: font, fontStyle: 'bold' }).setVisible(false));
+    const activeWeaponIcon = addP(this.add.image(104, 43, 'weapon-hud-missing'));
+    const secondaryWeaponIcon = addP(this.add.image(104, 57, 'weapon-hud-missing').setAlpha(.85));
     const protagonistContainer = this.add.container(0, 0, protagonistObjects).setVisible(false);
     this.gameplayHudLayer.add(protagonistContainer);
     this.protagonistHud = { container: protagonistContainer, nameText, hpFill, hpValueText, activeWeaponIcon, secondaryWeaponIcon, activeWeaponText, secondaryWeaponText, ammoText, statusText };
     this.createPartyRoster(font);
 
-    const threatBg = this.add.rectangle(this.scale.width - 12, 12, 154, 34, visualTheme.palette.uiPanelFill, .94).setOrigin(1, 0).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
-    this.zombieCountText = this.add.text(this.scale.width - 24, 22, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '12px', fontFamily: font }).setOrigin(1, 0);
-    this.threatCard = this.add.container(0, 0, [threatBg, this.zombieCountText]); this.gameplayHudLayer.add(this.threatCard);
 
-    const controlsBg = this.add.rectangle(this.scale.width - 12, 54, 340, 38, visualTheme.palette.uiPanelRaised, .84).setOrigin(1, 0).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, .9);
-    this.controlsLegendText = this.add.text(this.scale.width - 22, 59, this.getControlsLegendText(), { color: visualTheme.palette.uiTextSecondary, fontSize: '8px', fontFamily: font, align: 'right', lineSpacing: 2, wordWrap: { width: 320 } }).setOrigin(1, 0);
-    this.controlsCard = this.add.container(0, 0, [controlsBg, this.controlsLegendText]); this.gameplayHudLayer.add(this.controlsCard);
-    this.controlsFadeTimer = this.time.delayedCall(5000, () => this.controlsCard?.setVisible(false));
-    this.input.keyboard?.on('keydown-H', () => this.controlsCard?.setVisible(!this.controlsCard.visible));
-
-    const objectiveBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 70, 520, 58, visualTheme.palette.uiObjectiveFill, .96).setOrigin(.5, 0).setStrokeStyle(2, visualTheme.palette.uiObjectiveBorder);
-    const objectiveLabel = this.add.text(this.scale.width / 2 - 246, this.scale.height - 65, 'MISIÓN', { color: visualTheme.palette.uiHighlight, fontSize: '8px', fontFamily: font, fontStyle: 'bold' });
-    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 20, '', { color: visualTheme.palette.uiHighlight, fontSize: '12px', fontFamily: font, wordWrap: { width: 490 }, align: 'center' }).setOrigin(.5, 1);
+    const objectiveBg = this.add.rectangle(this.scale.width / 2, this.scale.height - 94, 360, 44, visualTheme.palette.uiObjectiveFill, .96).setOrigin(.5, 0).setStrokeStyle(2, visualTheme.palette.uiObjectiveBorder);
+    const objectiveLabel = this.add.text(this.scale.width / 2 - 170, this.scale.height - 90, 'OBJETIVO', { color: visualTheme.palette.uiHighlight, fontSize: '11px', fontFamily: font, fontStyle: 'bold' });
+    this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 58, '', { color: visualTheme.palette.uiHighlight, fontSize: '12px', fontFamily: font, wordWrap: { width: 490 }, align: 'center' }).setOrigin(.5, 1);
     this.objectiveCard = this.add.container(0, 0, [objectiveBg, objectiveLabel, this.objectiveText]); this.gameplayHudLayer.add(this.objectiveCard);
 
     this.interactionCard = this.add.rectangle(this.scale.width / 2, this.scale.height - 66, 500, 30, visualTheme.palette.uiInteractionFill, .96).setOrigin(.5, 1).setStrokeStyle(2, visualTheme.palette.uiPanelAccent);
-    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 81, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '10px', fontFamily: font, align: 'center', wordWrap: { width: 500, useAdvancedWrap: true } }).setOrigin(.5);
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 81, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '11px', fontFamily: font, align: 'center', wordWrap: { width: 500, useAdvancedWrap: true } }).setOrigin(.5);
     this.interactionContainer = this.add.container(0, 0, [this.interactionCard, this.interactionText]).setVisible(false); this.gameplayHudLayer.add(this.interactionContainer);
 
     const dialogueWidth = UI_LAYOUT.dialogueMaxWidth, dialogueHeight = UI_LAYOUT.dialogueHeight;
@@ -378,10 +362,10 @@ export class UIScene extends Phaser.Scene {
     const left = this.scale.width / 2 - dialogueWidth / 2;
     const dialogueBg = this.add.rectangle(this.scale.width / 2, dialogueY, dialogueWidth, dialogueHeight, visualTheme.palette.uiPanelFill, .97).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
     const portrait = this.add.rectangle(left + 50, dialogueY, 88, dialogueHeight - 14, visualTheme.palette.uiPanelRaised, .98).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
-    this.dialoguePortraitText = this.add.text(left + 50, dialogueY, '', { color: visualTheme.palette.uiTextMuted, fontSize: '9px', fontFamily: font, align: 'center', wordWrap: { width: 72, useAdvancedWrap: true } }).setOrigin(.5);
-    this.dialogueSpeakerText = this.add.text(left + 104, dialogueY - 66, '', { color: visualTheme.palette.uiAccent, fontSize: '12px', fontFamily: font, fontStyle: 'bold' });
-    this.dialogueBodyText = this.add.text(left + 104, dialogueY - 47, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '11px', fontFamily: font, lineSpacing: 2, wordWrap: { width: 680, useAdvancedWrap: true } });
-    this.dialogueHintText = this.add.text(left + dialogueWidth - 12, dialogueY + 64, 'SPACE avanzar · X saltar · 1-3 elegir', { color: visualTheme.palette.uiTextMuted, fontSize: '8px', fontFamily: font }).setOrigin(1, .5);
+    this.dialoguePortraitText = this.add.text(left + 50, dialogueY, '', { color: visualTheme.palette.uiTextMuted, fontSize: '12px', fontFamily: font, align: 'center', wordWrap: { width: 72, useAdvancedWrap: true } }).setOrigin(.5);
+    this.dialogueSpeakerText = this.add.text(left + 104, dialogueY - 66, '', { color: visualTheme.palette.uiAccent, fontSize: '14px', fontFamily: font, fontStyle: 'bold' });
+    this.dialogueBodyText = this.add.text(left + 104, dialogueY - 47, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '13px', fontFamily: font, lineSpacing: 2, wordWrap: { width: 680, useAdvancedWrap: true } });
+    this.dialogueHintText = this.add.text(left + dialogueWidth - 12, dialogueY + 64, 'SPACE avanzar · X saltar · 1-3 elegir', { color: visualTheme.palette.uiTextMuted, fontSize: '11px', fontFamily: font }).setOrigin(1, .5);
     this.dialoguePanel = this.add.container(0, 0, [dialogueBg, portrait, this.dialoguePortraitText, this.dialogueSpeakerText, this.dialogueBodyText, this.dialogueHintText]).setDepth(60).setVisible(false);
 
     this.createPauseLayer(font);
@@ -389,27 +373,16 @@ export class UIScene extends Phaser.Scene {
     this.createFatalLayer(font);
   }
 
-  private createVisualV2Chrome(): void {
-    const portrait=this.add.image(40,40,'v2-portrait-alan').setDepth(25).setScrollFactor(0).setOrigin(.5).setScale(1);
-    const frame=this.add.rectangle(16,16,48,48,0x0a1217,0).setOrigin(0).setStrokeStyle(2,0xd3a83f).setDepth(26).setScrollFactor(0);
-    const objectiveAccent=this.add.triangle(275,486,0,12,12,0,24,12,0xf2b13d,1).setDepth(25).setScrollFactor(0);
-    const slots:Phaser.GameObjects.GameObject[]=[portrait,frame,objectiveAccent];
-    for(let i=0;i<4;i++){
-      slots.push(this.add.rectangle(18+i*42,492,36,36,0x0b151b,.94).setOrigin(0).setStrokeStyle(i===0?2:1,i===0?0xe2b84c:0x52656e).setDepth(25).setScrollFactor(0));
-      slots.push(this.add.text(22+i*42,495,String(i+1),{fontFamily:'monospace',fontSize:'8px',color:'#9fb0b6'}).setDepth(26).setScrollFactor(0));
-    }
-    this.gameplayHudLayer?.add(slots);
-  }
 
   private createPartyRoster(fontFamily: string): void {
     const objects: Phaser.GameObjects.GameObject[] = [];
-    const panel = this.add.rectangle(12, 108, 246, 88, visualTheme.palette.uiPanelFill, 0.92)
+    const panel = this.add.rectangle(12, 86, 252, 50, visualTheme.palette.uiPanelFill, 0.92)
       .setOrigin(0)
       .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
-    const header = this.add.rectangle(14, 110, 242, 17, visualTheme.palette.uiPanelRaised).setOrigin(0);
-    const title = this.add.text(20, 113, 'GRUPO', {
+    const header = this.add.rectangle(14, 88, 248, 16, visualTheme.palette.uiPanelRaised).setOrigin(0);
+    const title = this.add.text(20, 89, 'GRUPO', {
       color: visualTheme.palette.uiTextSecondary,
-      fontSize: '8px',
+      fontSize: '11px',
       fontFamily,
       fontStyle: 'bold'
     });
@@ -418,18 +391,18 @@ export class UIScene extends Phaser.Scene {
     for (let index = 0; index < 8; index += 1) {
       const column = index % 2;
       const row = Math.floor(index / 2);
-      const background = this.add.rectangle(0, 0, 112, 14, visualTheme.palette.uiPanelRaised, 0.5)
+      const background = this.add.rectangle(0, 0, 112, 9, visualTheme.palette.uiPanelRaised, 0.5)
         .setOrigin(0)
         .setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft, 0.35);
       const nameText = this.add.text(5, 2, '', {
         color: visualTheme.palette.uiTextPrimary,
-        fontSize: '8px',
+        fontSize: '11px',
         fontFamily,
         fontStyle: 'bold'
       });
-      const hpBackground = this.add.rectangle(5, 11, 102, 2, visualTheme.palette.uiPanelShadow, 0.95).setOrigin(0);
-      const hpFill = this.add.rectangle(5, 11, 102, 2, visualTheme.palette.uiHealth).setOrigin(0);
-      const container = this.add.container(18 + column * 120, 130 + row * 16, [background, nameText, hpBackground, hpFill])
+      const hpBackground = this.add.rectangle(5, 7, 102, 4, visualTheme.palette.uiPanelShadow, 0.95).setOrigin(0);
+      const hpFill = this.add.rectangle(5, 7, 102, 4, visualTheme.palette.uiHealth).setOrigin(0);
+      const container = this.add.container(18 + column * 120, 105 + row * 10, [background, nameText, hpBackground, hpFill])
         .setVisible(false);
       this.partyRosterRows.push({ container, background, nameText, hpBackground, hpFill });
       objects.push(container);
@@ -445,7 +418,7 @@ export class UIScene extends Phaser.Scene {
     const panel = this.add.rectangle(width / 2, height / 2, 430, 318, visualTheme.palette.uiPanelFill, 1).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
     const inner = this.add.rectangle(width / 2, height / 2, 422, 310, 0x000000, 0).setStrokeStyle(1, visualTheme.palette.uiPanelBorderSoft);
     this.pauseTitleText = this.add.text(width / 2, height / 2 - 128, 'PAUSA', { color: visualTheme.palette.uiTextPrimary, fontSize: '25px', fontFamily: font, fontStyle: 'bold' }).setOrigin(.5);
-    this.pauseDetailsText = this.add.text(width / 2, height / 2 - 82, '', { color: visualTheme.palette.uiTextSecondary, fontSize: '9px', fontFamily: font, align: 'center', lineSpacing: 2, wordWrap: { width: 360, useAdvancedWrap: true } }).setOrigin(.5, 0).setVisible(false);
+    this.pauseDetailsText = this.add.text(width / 2, height / 2 - 82, '', { color: visualTheme.palette.uiTextSecondary, fontSize: '12px', fontFamily: font, align: 'center', lineSpacing: 2, wordWrap: { width: 360, useAdvancedWrap: true } }).setOrigin(.5, 0).setVisible(false);
     const objects: Phaser.GameObjects.GameObject[] = [overlay, panel, inner, this.pauseTitleText, this.pauseDetailsText];
     for (let i = 0; i < 5; i += 1) {
       const y = height / 2 - 34 + i * 40;
@@ -453,7 +426,7 @@ export class UIScene extends Phaser.Scene {
       const text = this.add.text(width / 2, y, '', { color: visualTheme.palette.uiTextSecondary, fontSize: '15px', fontFamily: font }).setOrigin(.5);
       this.pauseOptionBackgrounds.push(bg); this.pauseOptionTexts.push(text); objects.push(bg, text);
     }
-    this.pauseHintText = this.add.text(width / 2, height / 2 + 142, '', { color: visualTheme.palette.uiTextMuted, fontSize: '9px', fontFamily: font, align: 'center', wordWrap: { width: 380, useAdvancedWrap: true } }).setOrigin(.5);
+    this.pauseHintText = this.add.text(width / 2, height / 2 + 142, '', { color: visualTheme.palette.uiTextMuted, fontSize: '12px', fontFamily: font, align: 'center', wordWrap: { width: 380, useAdvancedWrap: true } }).setOrigin(.5);
     objects.push(this.pauseHintText);
     this.pauseLayer = this.add.container(0, 0, objects).setDepth(70).setScrollFactor(0).setVisible(false);
   }
@@ -462,7 +435,7 @@ export class UIScene extends Phaser.Scene {
     const { width, height } = this.scale;
     const overlay = this.add.rectangle(width / 2, height / 2, width, height, visualTheme.palette.uiPanelShadow, .9);
     const card = this.add.rectangle(width / 2, height / 2, UI_LAYOUT.transitionMaxWidth, UI_LAYOUT.transitionHeight, visualTheme.palette.uiPanelFill, 1).setStrokeStyle(2, visualTheme.palette.uiPanelBorder);
-    this.transitionLabelText = this.add.text(width / 2, height / 2 - 68, 'TRANSICIÓN', { color: visualTheme.palette.uiAccent, fontSize: '9px', fontFamily: font, fontStyle: 'bold' }).setOrigin(.5);
+    this.transitionLabelText = this.add.text(width / 2, height / 2 - 68, 'TRANSICIÓN', { color: visualTheme.palette.uiAccent, fontSize: '11px', fontFamily: font, fontStyle: 'bold' }).setOrigin(.5);
     this.transitionMessageText = this.add.text(width / 2, height / 2 + 4, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '14px', fontFamily: font, align: 'center', lineSpacing: 4, wordWrap: { width: 560, useAdvancedWrap: true } }).setOrigin(.5);
     this.transitionLayer = this.add.container(0, 0, [overlay, card, this.transitionLabelText, this.transitionMessageText]).setDepth(80).setScrollFactor(0).setVisible(false);
   }
@@ -481,7 +454,7 @@ export class UIScene extends Phaser.Scene {
       lineSpacing: 4, wordWrap: { width: cardWidth - 56, useAdvancedWrap: true }
     }).setOrigin(.5, 0);
     const hint = this.add.text(width / 2, height / 2 + 116, 'La campaña quedó detenida. Volvé al menú o recargá el juego.', {
-      color: visualTheme.palette.uiTextMuted, fontSize: '9px', fontFamily: font, align: 'center',
+      color: visualTheme.palette.uiTextMuted, fontSize: '12px', fontFamily: font, align: 'center',
       wordWrap: { width: cardWidth - 40, useAdvancedWrap: true }
     }).setOrigin(.5);
     this.fatalLayer = this.add.container(0, 0, [overlay, card, this.fatalTitleText, this.fatalBodyText, hint])

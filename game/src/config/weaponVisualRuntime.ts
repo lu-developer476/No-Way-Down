@@ -11,11 +11,15 @@ export interface WeaponVisualRuntimeConfig {
   muzzleOffsetX: number;
   muzzleOffsetY: number;
   heldTexture: string;
+  holsteredTexture: string;
   hudTexture: string;
   heldScale: number;
+  holsteredScale: number;
   hudScale: number;
   carryOffsetX: number;
   carryOffsetY: number;
+  holsterPrimaryOffset: {x:number;y:number};
+  holsterSecondaryOffset: {x:number;y:number};
 }
 
 const warnedMissingTextures = new Set<string>();
@@ -49,10 +53,14 @@ export function getWeaponVisualRuntimeConfig(weaponKey?: CharacterWeaponKey, sce
     muzzleOffsetX: alignment.muzzleOffset.x,
     muzzleOffsetY: alignment.muzzleOffset.y,
     heldTexture,
+    holsteredTexture: heldTexture,
     hudTexture,
     heldScale: alignment.heldScale,
+    holsteredScale: alignment.holsteredScale,
     hudScale: alignment.hudScale,
     carryOffsetX: alignment.carryOffset.x,
-    carryOffsetY: alignment.carryOffset.y
+    carryOffsetY: alignment.carryOffset.y,
+    holsterPrimaryOffset: alignment.holsterOffset,
+    holsterSecondaryOffset: {x: alignment.holsterOffset.x - 3, y: alignment.holsterOffset.y + 14}
   };
 }

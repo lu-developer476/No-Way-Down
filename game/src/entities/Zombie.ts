@@ -12,6 +12,10 @@ const DEFAULT_ATTACK_COOLDOWN_MS = 900;
 const DEFAULT_ZOMBIE_DAMAGE = 8;
 export const DEFAULT_ZOMBIE_HEALTH = 3;
 const ZOMBIE_RENDER_DEPTH = 19;
+const PRODUCTION_ZOMBIE_VARIANTS = ['zombie-walker', 'zombie-crawler', 'zombie-heavy'] as const;
+let zombieVariantCursor = 0;
+const nextZombieVariant = (): typeof PRODUCTION_ZOMBIE_VARIANTS[number] =>
+  PRODUCTION_ZOMBIE_VARIANTS[zombieVariantCursor++ % PRODUCTION_ZOMBIE_VARIANTS.length];
 
 type Target = Pick<Phaser.GameObjects.GameObject, 'active'> & {
   x: number;
@@ -28,6 +32,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
   private readonly attackRange: number;
   private readonly attackCooldownMs: number;
   private readonly spriteAnimationSystem: SpriteAnimationSystem;
+  private readonly productionVisualId: typeof PRODUCTION_ZOMBIE_VARIANTS[number];
 
   private nextAttackAt = 0;
   private isDying = false;
@@ -46,7 +51,8 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
       attackCooldownMs?: number;
     } = {}
   ) {
-    super(scene, x, y, 'zombie-walker-sheet', 0);
+    const productionVisualId = nextZombieVariant();
+    super(scene, x, y, `${productionVisualId}-sheet`, 0);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -58,6 +64,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.attackRange = options.attackRange ?? DEFAULT_ATTACK_RANGE;
     this.attackCooldownMs = options.attackCooldownMs ?? DEFAULT_ATTACK_COOLDOWN_MS;
     this.spriteAnimationSystem = new SpriteAnimationSystem(scene);
+    this.productionVisualId = productionVisualId;
 
     this.setCollideWorldBounds(true);
     const physicsProfile = getPhysicsProfile(getCharacterVisualById('zombie-walker').silhouette);
@@ -67,7 +74,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.setDisplayOrigin(VISUAL_ALIGNMENT.visualOrigin.x, VISUAL_ALIGNMENT.visualOrigin.y);
     this.setDepth(ZOMBIE_RENDER_DEPTH);
 
-    this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle');
+    this.spriteAnimationSystem.playState(this, this.productionVisualId, 'idle');
   }
 
   update(targetX: number): void;
@@ -85,7 +92,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     const closestTarget = this.findClosestTarget(targetOrTargets);
     if (!closestTarget) {
       this.setVelocity(0, 0);
-      this.spriteAnimationSystem.playMovement(this, 'zombie-walker', false);
+      this.spriteAnimationSystem.playMovement(this, this.productionVisualId, false);
       return;
     }
 
@@ -103,7 +110,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.getCombatFeedbackSystem()?.playZombieHit({
       x: this.x, y: this.y, damage: amount, killed, sourceX: context?.sourceX, target: this
     });
-    this.spriteAnimationSystem.playHurt(this, 'zombie-walker');
+    this.spriteAnimationSystem.playHurt(this, this.productionVisualId);
 
     if (this.health <= 0) {
       this.die();
@@ -120,7 +127,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     this.damage = options.damage ?? this.damage;
     this.nextAttackAt = 0;
     this.isDying = false;
-    this.spriteAnimationSystem.playState(this, 'zombie-walker', 'idle', true);
+    this.spriteAnimationSystem.playState(this, this.productionVisualId, 'idle', true);
     this.setAlpha(1);
     this.setAngle(0);
     this.setScale(VISUAL_ALIGNMENT.characterScale.zombie);
@@ -159,7 +166,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
     if (distance > this.detectionRange) {
       this.setVelocity(0, 0);
-      this.spriteAnimationSystem.playMovement(this, 'zombie-walker', false);
+      this.spriteAnimationSystem.playMovement(this, this.productionVisualId, false);
       return;
     }
 
@@ -181,7 +188,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     const velocityY = Math.sin(angle) * this.speed;
 
     this.setVelocity(velocityX, velocityY);
-    this.spriteAnimationSystem.playMovement(this, 'zombie-walker', true);
+    this.spriteAnimationSystem.playMovement(this, this.productionVisualId, true);
 
     if (velocityX < 0) {
       this.setFlipX(true);
@@ -197,7 +204,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.nextAttackAt = now + this.attackCooldownMs;
-    this.spriteAnimationSystem.playState(this, 'zombie-walker', 'hurt', true);
+    this.spriteAnimationSystem.playState(this, this.productionVisualId, 'hurt', true);
     this.scene.events.emit('zombie:attack', {
       zombie: this,
       damage: this.damage,
@@ -208,7 +215,7 @@ export class Zombie extends Phaser.Physics.Arcade.Sprite {
 
   private die(): void {
     this.isDying = true;
-    this.spriteAnimationSystem.playDeath(this, 'zombie-walker');
+    this.spriteAnimationSystem.playDeath(this, this.productionVisualId);
     this.setVelocity(0, 0);
     this.disableBody();
     getAudioManager(this.scene).play('zombieDeath', { x: this.x, y: this.y, volume: 0.25 });

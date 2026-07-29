@@ -693,26 +693,13 @@ export class GameScene extends Phaser.Scene {
     if (leadPlayer) {
       this.allySystem.spawnInitialAllies(leadPlayer, runtimePartyAllies);
     }
-    if (this.visualGeneration === 'v2') {
-      this.players.forEach((player, index) => {
-        player.setTexture(index === 0 ? 'v2-alan' : 'v2-giovanna', 0).setScale(1);
-        this.visualV2?.track(player);
-      });
-      this.allySystem.getActiveAllies().forEach((ally, index) => {
-        ally.setTexture(index === 0 ? 'v2-giovanna' : 'v2-alan', 0).setScale(1);
-        this.visualV2?.track(ally);
-      });
-      this.minimap = new MinimapSystem(
-        this, () => this.players, () => this.allySystem?.getActiveAllies() ?? [],
-        () => (this.zombieSystem?.getGroup().getChildren() ?? []) as unknown as Array<{x:number;y:number;active:boolean}>
-      );
-      this.minimap.create();
-      this.registry.set('visualV2Budgets', visualV2Style.budgets);
-      const query = new URLSearchParams(window.location.search);
-      if (query.get('visualDebug') === '1' && (import.meta.env.DEV || query.has('e2eMode'))) {
-        this.visualDebugText = this.add.text(700, 122, '', { fontFamily:'monospace', fontSize:'8px', color:'#d9f99d', backgroundColor:'rgba(4,10,12,.82)', padding:{x:6,y:5} }).setScrollFactor(0).setDepth(1300);
-      }
-    }
+    this.players.forEach((player) => this.visualV2?.track(player));
+    this.allySystem.getActiveAllies().forEach((ally) => this.visualV2?.track(ally));
+    this.minimap = new MinimapSystem(
+      this, () => this.players, () => this.allySystem?.getActiveAllies() ?? [],
+      () => (this.zombieSystem?.getGroup().getChildren() ?? []) as unknown as Array<{x:number;y:number;active:boolean}>
+    );
+    this.minimap.create();
 
     const configuredPickups = (levelConfig.pickups as PickupDefinition[] | undefined) ?? level2PickupConfig.pickups;
     this.pickupSystem = PickupSystem.fromJSON(this, { pickups: configuredPickups });
@@ -916,11 +903,7 @@ export class GameScene extends Phaser.Scene {
       Object.defineProperty(window,'__NWD_WORLD_STATE__',{value:createWorldState(this.worldDefinition,this.authoredEnvironment,this.worldTopology,this.players[0],this.worldConnectors),writable:false,configurable:true});
     }
     if (this.visualGeneration === 'v2') {
-      this.zombieSystem?.getActiveZombies().forEach((zombie,index) => {
-        const key=['v2-zombie-guard','v2-zombie-civil','v2-zombie-advanced'][index%3];
-        if (zombie.texture.key !== key) zombie.setTexture(key,0).setScale(.98 + (index%3)*.01);
-        this.visualV2?.track(zombie);
-      });
+      this.zombieSystem?.getActiveZombies().forEach((zombie) => this.visualV2?.track(zombie));
       const diagnostics = { internalScale:'960x540', zoom:this.cameras.main.zoom.toFixed(2), fps:Math.round(this.game.loop.actualFps), sprites:this.children.list.length, particles:0, lights:this.institutionalLighting?.count??0, decals:0, drawCalls:'n/a', generation:this.visualGeneration, nodeId:this.registry.get('flowNodeId'), runtimeLevelId:this.currentLevelId };
       this.registry.set('visualV2Diagnostics', diagnostics);
       this.visualDebugText?.setText(Object.entries(diagnostics).map(([k,v])=>`${k}: ${v}`).join('\n'));
@@ -2143,45 +2126,45 @@ export class GameScene extends Phaser.Scene {
     const lowerY = Math.max(y, fallbackTopY);
 
     if (tipo.includes('columna')) {
-      addEnvironmentProp(this, { kind: 'stone-column', x, y: lowerY - 38, depth: 6, scale: Phaser.Math.Clamp(height / 96, 0.8, 1.4) });
+      addEnvironmentProp(this, { kind: 'stone-column', anchor: 'floor', x, y: lowerY - 38, depth: 6, scale: Phaser.Math.Clamp(height / 96, 0.8, 1.4) });
       return;
     }
 
     if (tipo.includes('cajero')) {
       const propY = lowerY - 44;
-      addEnvironmentProp(this, { kind: 'atm', x, y: propY, depth: 6, scale: Phaser.Math.Clamp(width / 50, 0.9, 1.4) });
+      addEnvironmentProp(this, { kind: 'atm', anchor: 'floor', x, y: propY, depth: 6, scale: Phaser.Math.Clamp(width / 50, 0.9, 1.4) });
       this.ambientVisualSystem?.registerScreen(x, propY - 20, 26, 18);
       return;
     }
 
     if (tipo.includes('banco')) {
-      addEnvironmentProp(this, { kind: 'bench', x, y: lowerY - 8, depth: 6, scale: Phaser.Math.Clamp(width / 96, 0.8, 1.5) });
+      addEnvironmentProp(this, { kind: 'bench', anchor: 'floor', x, y: lowerY - 8, depth: 6, scale: Phaser.Math.Clamp(width / 96, 0.8, 1.5) });
       return;
     }
 
     if (tipo.includes('pantalla')) {
       const propY = lowerY - 36;
-      addEnvironmentProp(this, { kind: 'info-screen', x, y: propY, depth: 6, scale: Phaser.Math.Clamp(height / 78, 0.8, 1.3) });
+      addEnvironmentProp(this, { kind: 'info-screen', anchor: 'wall', x, y: propY, depth: 6, scale: Phaser.Math.Clamp(height / 78, 0.8, 1.3) });
       this.ambientVisualSystem?.registerScreen(x, propY - 17, 28, 20);
       return;
     }
 
     if (zoneProps.includes('mostrador_bna_lineal') && (tipo.includes('mostrador') || tipo.includes('control'))) {
-      addEnvironmentProp(this, { kind: 'bank-counter', x, y: lowerY - 18, depth: 6, scale: Phaser.Math.Clamp(width / 128, 0.85, 1.4) });
+      addEnvironmentProp(this, { kind: 'bank-counter', anchor: 'floor', x, y: lowerY - 18, depth: 6, scale: Phaser.Math.Clamp(width / 128, 0.85, 1.4) });
       return;
     }
 
     if (zoneProps.includes('molinete_brazos_vidrio') && (tipo.includes('acceso') || tipo.includes('molinete'))) {
-      addEnvironmentProp(this, { kind: 'turnstile', x, y: lowerY - 20, depth: 6, scale: Phaser.Math.Clamp(height / 82, 0.8, 1.3) });
+      addEnvironmentProp(this, { kind: 'turnstile', anchor: 'floor', x, y: lowerY - 20, depth: 6, scale: Phaser.Math.Clamp(height / 82, 0.8, 1.3) });
       return;
     }
 
     if (tipo.includes('reciclaje') || tipo.includes('solidaria')) {
-      addEnvironmentProp(this, { kind: 'recycling-box', x, y: lowerY - 18, depth: 6, scale: Phaser.Math.Clamp(width / 34, 0.85, 1.4) });
+      addEnvironmentProp(this, { kind: 'recycling-box', anchor: 'floor', x, y: lowerY - 18, depth: 6, scale: Phaser.Math.Clamp(width / 34, 0.85, 1.4) });
       return;
     }
 
-    addEnvironmentProp(this, { kind: 'cart', x, y: lowerY - 12, depth: 6, scale: 1 });
+    addEnvironmentProp(this, { kind: 'cart', anchor: 'floor', x, y: lowerY - 12, depth: 6, scale: 1 });
   }
 
 
@@ -2189,29 +2172,29 @@ export class GameScene extends Phaser.Scene {
     const floorTop = floorY - 48;
 
     for (let x = 210; x < levelWidth - 120; x += 520) {
-      addEnvironmentProp(this, { kind: 'dining-table', x, y: floorTop - 18, depth: 6.4, scale: 1.05 });
+      addEnvironmentProp(this, { kind: 'dining-table', anchor: 'floor', x, y: floorTop - 18, depth: 6.4, scale: 1.05 });
       this.createPlatform(environment, { x, y: floorTop - 10, width: 116, height: 22 });
     }
 
     for (let x = 455; x < levelWidth - 160; x += 1040) {
-      addEnvironmentProp(this, { kind: 'cafeteria-counter', x, y: floorTop - 16, depth: 6.2, scale: 1.05 });
+      addEnvironmentProp(this, { kind: 'cafeteria-counter', anchor: 'floor', x, y: floorTop - 16, depth: 6.2, scale: 1.05 });
       this.createPlatform(environment, { x, y: floorTop - 8, width: 138, height: 26 });
       this.ambientVisualSystem?.registerSteamSource(x + 18, floorTop - 42);
     }
 
     for (let x = 780; x < levelWidth - 220; x += 1560) {
       const propY = floorTop - 56;
-      addEnvironmentProp(this, { kind: 'vending-machine', x, y: propY, depth: 5.9, scale: 1 });
+      addEnvironmentProp(this, { kind: 'vending-machine', anchor: 'floor', x, y: propY, depth: 5.9, scale: 1 });
       this.ambientVisualSystem?.registerScreen(x - 5, propY - 10, 22, 38);
       this.createPlatform(environment, { x, y: floorTop - 18, width: 42, height: 26 });
     }
 
     for (let x = 330; x < levelWidth; x += 720) {
-      addEnvironmentProp(this, { kind: 'menu-board', x, y: 238, depth: 2.1, scale: 1 });
+      addEnvironmentProp(this, { kind: 'menu-board', anchor: 'wall', x, y: 238, depth: 2.1, scale: 1 });
     }
 
     for (let x = 620; x < levelWidth - 100; x += 910) {
-      addEnvironmentProp(this, { kind: 'mop-bucket', x, y: floorTop - 18, depth: 6.5, scale: 0.9 });
+      addEnvironmentProp(this, { kind: 'mop-bucket', anchor: 'floor', x, y: floorTop - 18, depth: 6.5, scale: 0.9 });
     }
   }
 
@@ -2226,20 +2209,20 @@ export class GameScene extends Phaser.Scene {
       210
     );
 
-    addEnvironmentProp(this, { kind: 'stone-column', x: 760, y: floorTop - 62, depth: 5.8, scale: 1.25 });
-    addEnvironmentProp(this, { kind: 'bronze-door', x: 900, y: floorTop - 58, depth: 5.9, scale: 1.1 });
-    addEnvironmentProp(this, { kind: 'stone-column', x: 1120, y: floorTop - 62, depth: 5.8, scale: 1.25 });
-    addEnvironmentProp(this, { kind: 'bench', x: 1380, y: floorTop - 18, depth: 6.2, scale: 1.05 });
-    addEnvironmentProp(this, { kind: 'info-screen', x: 1660, y: floorTop - 48, depth: 6.3, scale: 1 });
+    addEnvironmentProp(this, { kind: 'stone-column', anchor: 'floor', x: 760, y: floorTop, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'bronze-door', anchor: 'wall', x: 900, y: floorTop - 58, depth: 5.9, scale: 1.1 });
+    addEnvironmentProp(this, { kind: 'stone-column', anchor: 'floor', x: 1120, y: floorTop, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'bench', anchor: 'floor', x: 1380, y: floorTop, depth: 6.2, scale: 1.05 });
+    addEnvironmentProp(this, { kind: 'info-screen', anchor: 'wall', x: 1660, y: floorTop - 48, depth: 6.3, scale: 1 });
 
     const hallProps = [
-      { kind: 'stone-column' as const, x: 1700, y: floorTop - 62, depth: 5.8 },
-      { kind: 'bank-counter' as const, x: 2800, y: floorTop - 22, depth: 6.1 },
-      { kind: 'bench' as const, x: 3900, y: floorTop - 18, depth: 6.2 },
-      { kind: 'atm' as const, x: 5000, y: floorTop - 48, depth: 6.3 },
-      { kind: 'info-screen' as const, x: 6100, y: floorTop - 48, depth: 6.3 },
-      { kind: 'turnstile' as const, x: 7200, y: floorTop - 25, depth: 6.2 },
-      { kind: 'stone-column' as const, x: 8300, y: floorTop - 62, depth: 5.8 }
+      { kind: 'stone-column' as const, anchor: 'floor' as const, x: 1700, y: floorTop, depth: 5.8 },
+      { kind: 'bank-counter' as const, anchor: 'floor' as const, x: 2800, y: floorTop, depth: 6.1 },
+      { kind: 'bench' as const, anchor: 'floor' as const, x: 3900, y: floorTop, depth: 6.2 },
+      { kind: 'atm' as const, anchor: 'floor' as const, x: 5000, y: floorTop, depth: 6.3 },
+      { kind: 'info-screen' as const, anchor: 'wall' as const, x: 6100, y: floorTop - 48, depth: 6.3 },
+      { kind: 'turnstile' as const, anchor: 'floor' as const, x: 7200, y: floorTop, depth: 6.2 },
+      { kind: 'stone-column' as const, anchor: 'floor' as const, x: 8300, y: floorTop, depth: 5.8 }
     ];
     hallProps.forEach((prop) => {
       addEnvironmentProp(this, { ...prop, scale: 1.1 });
@@ -2252,9 +2235,9 @@ export class GameScene extends Phaser.Scene {
       400,
       220
     );
-    addEnvironmentProp(this, { kind: 'stone-column', x: finalStairX - 250, y: floorTop - 62, depth: 5.8, scale: 1.25 });
-    addEnvironmentProp(this, { kind: 'bronze-door', x: finalStairX, y: floorTop - 58, depth: 5.9, scale: 1.1 });
-    addEnvironmentProp(this, { kind: 'stone-column', x: finalStairX + 250, y: floorTop - 62, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'stone-column', anchor: 'floor', x: finalStairX - 250, y: floorTop, depth: 5.8, scale: 1.25 });
+    addEnvironmentProp(this, { kind: 'bronze-door', anchor: 'wall', x: finalStairX, y: floorTop - 58, depth: 5.9, scale: 1.1 });
+    addEnvironmentProp(this, { kind: 'stone-column', anchor: 'floor', x: finalStairX + 250, y: floorTop, depth: 5.8, scale: 1.25 });
   }
 
   private addTableVisual(x: number, y: number, width: number, height: number): void {

@@ -44,7 +44,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private readonly characterVisualId: string;
   private readonly nameTag: Phaser.GameObjects.Text;
   private readonly groundShadow: Phaser.GameObjects.Ellipse;
-  private readonly equippedWeaponSprite: Phaser.GameObjects.Image;
+  private readonly heldWeaponSprite: Phaser.GameObjects.Image;
+  private readonly holsteredWeaponSprite: Phaser.GameObjects.Image;
   private isClimbing = false;
   private climbAnimations: StairAnimationKeys = {};
   private attackRequestedThisFrame = false;
@@ -107,7 +108,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     const labelPosition = getCharacterAttachmentPosition('player', 'label', this.x, this.y);
     this.nameTag = scene.add.text(labelPosition.x, labelPosition.y, this.runtimeConfig.name, {
-      fontSize: '9px',
+      fontSize: '11px',
       color: characterVisual.faction === 'protagonist' ? '#f2cf87' : '#d9f4ff',
       backgroundColor: 'rgba(7, 9, 13, 0.78)',
       padding: { x: 4, y: 2 },
@@ -116,12 +117,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       fontStyle: 'bold'
     });
     this.nameTag.setOrigin(0.5, 1);
-    this.nameTag.setDepth(30);
+    this.nameTag.setDepth(30).setVisible(false);
 
-    this.equippedWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
-    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
-    this.equippedWeaponSprite.setOrigin(0.2, 0.5);
-    this.refreshEquippedWeaponVisual();
+    this.heldWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing');
+    this.heldWeaponSprite.setDepth(this.depth + 0.2);
+    this.heldWeaponSprite.setOrigin(0.2, 0.5);
+    this.holsteredWeaponSprite = scene.add.image(this.x, this.y, 'weapon-missing').setOrigin(.5).setDepth(this.depth - .1);
+    this.refreshWeaponVisuals();
   }
 
   update(): void {
@@ -248,7 +250,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.disableBody();
       this.cancelReload();
       this.attackRequestedThisFrame = false;
-      this.updateEquippedWeaponSprite();
+      this.updateWeaponSprites();
     }
 
     return true;
@@ -344,7 +346,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.activeWeaponSlot = requestedSlot;
-    this.refreshEquippedWeaponVisual();
+    this.refreshWeaponVisuals();
     return true;
   }
 
@@ -392,7 +394,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   destroy(fromScene?: boolean): void {
     this.nameTag.destroy();
     this.groundShadow.destroy();
-    this.equippedWeaponSprite.destroy();
+    this.heldWeaponSprite.destroy();
+    this.holsteredWeaponSprite.destroy();
     super.destroy(fromScene);
   }
 
@@ -431,7 +434,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.getCombatFeedbackSystem()?.playShot({
       x: this.x, y: this.y, direction: this.lookDirection < 0 ? -1 : 1,
-      weaponKey: activeWeapon.key, source: this, weaponSprite: this.equippedWeaponSprite,
+      weaponKey: activeWeapon.key, source: this, weaponSprite: this.heldWeaponSprite,
       isPlayerControlled: true
     });
     this.ammoRuntime.consumeForShot(activeWeapon.key);
@@ -491,28 +494,36 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       .setPosition(shadow.x, shadow.y)
       .setDepth(this.depth - 1)
       .setVisible(this.active && !this.isDeadState && !this.isClimbing);
-    this.updateEquippedWeaponSprite();
+    this.updateWeaponSprites();
   }
 
-  private refreshEquippedWeaponVisual(): void {
+  private refreshWeaponVisuals(): void {
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
-    this.equippedWeaponSprite.setTexture(weaponVisual.heldTexture);
-    this.equippedWeaponSprite.setScale(weaponVisual.heldScale);
-    this.updateEquippedWeaponSprite();
+    this.heldWeaponSprite.setTexture(weaponVisual.heldTexture);
+    this.heldWeaponSprite.setScale(weaponVisual.heldScale);
+    const inactiveKey = this.activeWeaponSlot === 'primary' ? this.runtimeConfig.loadout.secondaryWeapon : this.runtimeConfig.loadout.primaryWeapon;
+    if (inactiveKey && inactiveKey !== this.getActiveWeaponRuntime().key) {
+      const holsteredVisual = getWeaponVisualRuntimeConfig(inactiveKey, this.scene);
+      this.holsteredWeaponSprite.setTexture(holsteredVisual.holsteredTexture).setScale(holsteredVisual.holsteredScale).setVisible(true);
+    } else this.holsteredWeaponSprite.setVisible(false);
+    this.updateWeaponSprites();
   }
 
-  private updateEquippedWeaponSprite(): void {
-    if (!this.equippedWeaponSprite.active) {
+  private updateWeaponSprites(): void {
+    if (!this.heldWeaponSprite.active) {
       return;
     }
 
     const weaponVisual = getWeaponVisualRuntimeConfig(this.getActiveWeaponRuntime().key, this.scene);
     const direction = this.lookDirection;
     const carry = getFacingOffsetPosition({ x: this.x, y: this.y }, { x: weaponVisual.carryOffsetX, y: weaponVisual.carryOffsetY }, direction);
-    this.equippedWeaponSprite.setPosition(carry.x, carry.y);
-    this.equippedWeaponSprite.setFlipX(direction < 0);
-    this.equippedWeaponSprite.setVisible(this.active && !this.isDeadState);
-    this.equippedWeaponSprite.setDepth(this.depth + 0.2);
+    this.heldWeaponSprite.setPosition(carry.x, carry.y);
+    this.heldWeaponSprite.setFlipX(direction < 0);
+    const holsterOffset = this.activeWeaponSlot === 'primary' ? weaponVisual.holsterSecondaryOffset : weaponVisual.holsterPrimaryOffset;
+    const holster = getFacingOffsetPosition({ x: this.x, y: this.y }, holsterOffset, direction);
+    this.holsteredWeaponSprite.setPosition(holster.x, holster.y).setFlipX(direction < 0).setDepth(this.depth - .1).setVisible(this.active && !this.isDeadState && this.holsteredWeaponSprite.visible);
+    this.heldWeaponSprite.setVisible(this.active && !this.isDeadState);
+    this.heldWeaponSprite.setDepth(this.depth + 0.2);
   }
 
   private getDefendedDamage(baseDamage: number, context?: { sourceX?: number }): number {

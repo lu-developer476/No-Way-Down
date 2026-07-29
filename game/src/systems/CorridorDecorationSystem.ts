@@ -282,15 +282,15 @@ export class CorridorDecorationSystem {
   ): Phaser.GameObjects.GameObject[] {
     switch (type) {
       case 'cajero_automatico':
-        return [this.scene.add.image(x, y - height / 2, 'prop-atm').setDisplaySize(width + 12, height + 16).setOrigin(0.5, 0.5)];
+        return [this.scene.add.image(x, y, 'prop-atm').setDisplaySize(width + 12, height + 16).setOrigin(0.5, 1)];
       case 'columna':
-        return [this.scene.add.image(x, y - height / 2 + 6, 'prop-stone-column').setDisplaySize(width + 6, height + 16).setOrigin(0.5, 0.5)];
+        return [this.scene.add.image(x, y, 'prop-stone-column').setDisplaySize(width + 6, height + 16).setOrigin(0.5, 1)];
       case 'caja':
-        return [this.scene.add.image(x, y - height / 2 + 8, 'prop-recycling-box').setDisplaySize(width + 10, height + 18).setOrigin(0.5, 0.5)];
+        return [this.scene.add.image(x, y, 'prop-recycling-box').setDisplaySize(width + 10, height + 18).setOrigin(0.5, 1)];
       case 'pantalla':
-        return [this.scene.add.image(x, y - height / 2 + 4, 'prop-info-screen').setDisplaySize(width + 10, height + 8).setOrigin(0.5, 0.5)];
+        return [this.scene.add.image(x, y, 'prop-info-screen').setDisplaySize(width + 10, height + 8).setOrigin(0.5, 1)];
       case 'banco':
-        return [this.scene.add.image(x, y - height / 2 + 8, 'prop-bench').setDisplaySize(width, height + 10).setOrigin(0.5, 0.5)];
+        return [this.scene.add.image(x, y, 'prop-bench').setDisplaySize(width, height + 10).setOrigin(0.5, 1)];
       default:
         return [];
     }

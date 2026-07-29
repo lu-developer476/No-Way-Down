@@ -1,3 +1,0 @@
-import type { TiledObject } from '../tiled/TiledTypes';
-export interface StairTraversal {x:number;y:number;active:boolean}
-export class MatterStairSystem {private stair?:TiledObject;begin(stair:TiledObject){const kind=stair.properties?.find(p=>p.name==='stairKind')?.value;if(kind!=='internal')return false;this.stair=stair;return true}step(position:{x:number;y:number},direction:-1|1,delta:number):StairTraversal{if(!this.stair)return{...position,active:false};const speed=Math.min(1,delta/500)*direction;return{x:position.x+this.stair.width*speed,y:position.y+this.stair.height*speed,active:true}}end(){this.stair=undefined}get activeStairId(){return this.stair?.properties?.find(p=>p.name==='stairId')?.value??null}}

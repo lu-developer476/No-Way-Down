@@ -150,7 +150,7 @@ def metadata_entry(cid,path,anims,profile,portrait_path=None):
  if portrait_path:e['portraitPath']=portrait_path
  return e
 
-def write_all(base):
+def write_all(base, metadata=False):
  (base/'game/config').mkdir(parents=True,exist_ok=True)
  art=base/'game/public/assets/production-art'; entries=[]; assets=[]
  for folder in ('characters','zombies','ui','weapons'): (art/folder).mkdir(parents=True,exist_ok=True)
@@ -162,22 +162,22 @@ def write_all(base):
  for cid,spec in ZOMBIES.items():
   rel=f'assets/production-art/zombies/{cid}.png'; sheet(spec,ZOMBIE_ANIMS,True).save(base/'game/public'/rel,format='PNG',compress_level=9); entries.append(metadata_entry(cid,rel,ZOMBIE_ANIMS,spec[4]))
  manifest={'schemaVersion':1,'frameWidth':FW,'frameHeight':FH,'footLine':FOOT,'visualOrigin':{'x':32,'y':88},'characters':entries}
- (art/'characters/character_art_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+ if metadata: (art/'characters/character_art_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
  for path in sorted(art.rglob('*.png')):
   data=path.read_bytes(); rel=path.relative_to(base).as_posix(); category=path.parent.name; rows=10 if category=='characters' else (5 if category=='zombies' else 1); width=int.from_bytes(data[16:20],'big');height=int.from_bytes(data[20:24],'big')
   assets.append({'path':rel,'category':category,'generator':GENERATOR,'width':width,'height':height,'frameWidth':FW if category in ('characters','zombies') else 48,'frameHeight':FH if category in ('characters','zombies') else 48,'animationRows':rows,'sha256':hashlib.sha256(data).hexdigest(),'fileSize':len(data),'alphaRequired':True,'purpose':'Runtime character animation' if category in ('characters','zombies') else 'Gameplay HUD portrait'})
  config={'schemaVersion':1,'maxFileSize':1048576,'generator':GENERATOR,'assets':assets}
- (base/'game/config/approved-production-art.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n')
+ if metadata: (base/'game/config/generated-production-art.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n')
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--verify',action='store_true');a=p.parse_args()
  random.seed(SEED)
  if a.verify:
   with tempfile.TemporaryDirectory() as td:
-   temp=Path(td); write_all(temp)
-   expected=json.loads((ROOT/'game/config/approved-production-art.json').read_text())['assets']; actual=json.loads((temp/'game/config/approved-production-art.json').read_text())['assets']
+   temp=Path(td); write_all(temp, metadata=True)
+   expected=json.loads((ROOT/'game/config/generated-production-art.json').read_text())['assets']; actual=json.loads((temp/'game/config/generated-production-art.json').read_text())['assets']
    if [(x['path'],x['sha256']) for x in expected] != [(x['path'],x['sha256']) for x in actual]: raise SystemExit('Production art verification failed: generated hashes differ')
    print(f'Production art verified ({len(actual)} deterministic PNG files).')
  else:
-  write_all(ROOT); print('Production character art generated deterministically.')
+  write_all(ROOT); print(f'Runtime art generated: {len(HUMANS)} humans, {len(ZOMBIES)} zombies and 2 portraits (14 deterministic RGBA PNG files).')
 if __name__=='__main__': main()

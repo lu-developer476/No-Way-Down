@@ -16,9 +16,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Production PNGs are deliberately stored as LFS objects so review
-          # clients receive small textual pointers instead of binary patches.
-          lfs: true
       - name: Resolve binary audit base
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -51,12 +48,12 @@ jobs:
       - run: npm run audit:protected-assets --prefix game
       - run: npm run audit:campaign --prefix game
       - run: npm run audit:tiled --prefix game
-      - run: npm run audit:matter-only --prefix game
       - run: npm run audit:runtime-reachability --prefix game
       - run: npm run audit:dead-code --prefix game
       - run: npm test --prefix game
       - run: npm run build --prefix game
       - run: test -f game/dist/index.html
+      - run: npm run audit:dist-production-art --prefix game
       - run: python backend/manage.py test
       - run: npm run test:e2e:production --prefix game
         env:

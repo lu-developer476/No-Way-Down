@@ -9,3 +9,9 @@
 **/node_modules/
 **/dist/
 **/test-results/
+
+# Deterministic build outputs (never versioned)
+game/public/assets/production-art/**/*.png
+game/.generated-art/
+game/test-results/
+game/dist/

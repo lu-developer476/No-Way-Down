@@ -6,7 +6,7 @@ import { inflateSync } from 'node:zlib';
 
 const repo = resolve(import.meta.dirname, '../..');
 const game = resolve(repo, 'game');
-const config = JSON.parse(readFileSync(resolve(game, 'config/approved-production-art.json'), 'utf8'));
+const config = JSON.parse(readFileSync(resolve(game, 'config/generated-production-art.json'), 'utf8'));
 const allowedRoots = ['characters', 'zombies', 'weapons', 'ui'].map((part) => `game/public/assets/production-art/${part}/`);
 const failures = [];
 const discovered = [];
@@ -37,16 +37,7 @@ for (const asset of config.assets) {
   if (asset.generator !== config.generator) failures.push(`unapproved generator: ${asset.path}`);
   if (!existsSync(path)) { failures.push(`missing PNG: ${asset.path}`); continue; }
   const bytes = readFileSync(path); const sha = createHash('sha256').update(bytes).digest('hex');
-  let lfsFilter = '';
-  try {
-    lfsFilter = execFileSync('git', ['check-attr', 'filter', '--', asset.path], { cwd: repo, encoding: 'utf8' });
-  } catch {
-    failures.push(`unable to inspect Git LFS attributes: ${asset.path}`);
-  }
-  if (!lfsFilter.endsWith(': lfs\n')) failures.push(`production PNG must be tracked by Git LFS: ${asset.path}`);
-  if (bytes.subarray(0, 42).toString('utf8').startsWith('version https://git-lfs.github.com/spec/')) {
-    failures.push(`Git LFS object is not hydrated: ${asset.path}`);
-  }
+  if (bytes.subarray(0, 42).toString('utf8').startsWith('version https://git-lfs.github.com/spec/v1')) failures.push(`LFS pointer found: ${asset.path}`);
   if (sha !== asset.sha256) failures.push(`hash mismatch: ${asset.path}`);
   if (bytes.length !== asset.fileSize || bytes.length > config.maxFileSize) failures.push(`invalid file size: ${asset.path}`);
   try { const png=parsePng(bytes); if(png.width!==asset.width||png.height!==asset.height) failures.push(`dimension mismatch: ${asset.path}`); if(asset.alphaRequired&&png.colorType!==6)failures.push(`RGBA required: ${asset.path}`); if(!png.nonEmpty)failures.push(`empty image: ${asset.path}`); } catch(error) { failures.push(`${error.message}: ${asset.path}`); }
@@ -57,4 +48,4 @@ for (const asset of config.assets) {
 }
 try { execFileSync('python3',['scripts/art/generateProductionCharacters.py','--verify'],{cwd:game,stdio:'pipe'}); } catch { failures.push('deterministic regeneration or frame uniqueness verification failed'); }
 if (failures.length) { console.error(failures.map(f=>`- ${f}`).join('\n')); process.exit(1); }
-console.log(`Approved production art audit passed (${config.assets.length} PNG files).`);
+console.log(`Generated production art audit passed (${config.assets.length} PNG files).`);

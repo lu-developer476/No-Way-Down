@@ -32,11 +32,11 @@ test('difficulty keeps its canonical effective difference',()=>{
  assert.ok(new Set(values).size>1);
 });
 
-test('Tiled runtime metadata and loading failure guards remain safe for future migration',()=>{
- const renderer=source('src/tiled/TiledVisualRenderer.ts'), loading=source('src/scenes/LevelLoadingScene.ts');
+test('Tiled authoring metadata remains while the disconnected Matter loading path is absent',()=>{
+ const renderer=source('src/tiled/TiledVisualRenderer.ts');
  assert.match(renderer,/runtimeId/); assert.match(renderer,/INVALID_RUNTIME_ID/); assert.match(renderer,/DUPLICATE_RUNTIME_ID/);
- for(const guard of ['loadingInProgress','retryInProgress','retryUsed','keydown-R','keydown-ESC','LOAD_TIMEOUT_MS','removeAllListeners']) assert.match(loading,new RegExp(guard));
- assert.doesNotMatch(loading,/catch[\s\S]*scene\.restart/);
+ assert.equal(fs.existsSync(path.join(game,'src/scenes/LevelLoadingScene.ts')),false);
+ assert.equal(fs.existsSync(path.join(game,'public/assets/tiled')),true);
 });
 
 test('canonical campaign remains exactly 35 nodes',()=>{

@@ -12,7 +12,7 @@ const DEFAULT_ATTACK_COOLDOWN_MS = 900;
 const DEFAULT_ZOMBIE_DAMAGE = 8;
 export const DEFAULT_ZOMBIE_HEALTH = 3;
 const ZOMBIE_RENDER_DEPTH = 19;
-const PRODUCTION_ZOMBIE_VARIANTS = ['zombie-walker', 'zombie-crawler', 'zombie-heavy'] as const;
+const PRODUCTION_ZOMBIE_VARIANTS = ['zombie-guard', 'zombie-civil', 'zombie-advanced'] as const;
 let zombieVariantCursor = 0;
 const nextZombieVariant = (): typeof PRODUCTION_ZOMBIE_VARIANTS[number] =>
   PRODUCTION_ZOMBIE_VARIANTS[zombieVariantCursor++ % PRODUCTION_ZOMBIE_VARIANTS.length];

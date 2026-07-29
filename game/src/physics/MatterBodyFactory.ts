@@ -1,6 +1,0 @@
-import Phaser from 'phaser'; import { CollisionCategory } from './CollisionCategories'; import type { TiledObject } from '../tiled/TiledTypes';
-export class MatterBodyFactory { constructor(private scene:Phaser.Scene){}
- static rectangleOptions(object:TiledObject,category=CollisionCategory.World):Phaser.Types.Physics.Matter.MatterBodyConfig{return{isStatic:true,isSensor:false,label:`tiled:${object.name}`,collisionFilter:{category,mask:0xffff}}}
- rectangle(object:TiledObject,options:Phaser.Types.Physics.Matter.MatterBodyConfig=MatterBodyFactory.rectangleOptions(object)){return this.scene.matter.add.rectangle(object.x+object.width/2,object.y+object.height/2,object.width,object.height,options)}
- polygon(object:TiledObject){if(!object.polygon?.length)throw new Error(`${object.name} has no polygon`);const vertices=object.polygon.map(point=>({x:object.x+point.x,y:object.y+point.y}));return this.scene.matter.add.fromVertices(object.x,object.y,vertices,{isStatic:true,label:`tiled:${object.name}`,collisionFilter:{category:CollisionCategory.World,mask:0xffff}},true)}
- sensor(object:TiledObject,category:number){return this.rectangle(object,{...MatterBodyFactory.rectangleOptions(object,category),isSensor:true})} }

@@ -77,14 +77,14 @@ export class AssetPreloadScene extends Phaser.Scene {
     });
     // Only gameplay consumers request production sheets; the main menu remains free of actor art.
     const requestedCharacters = this.registry.get('requiredCharacterArt') as string[] | undefined;
-    ProductionCharacterArt.queue(this, requestedCharacters ?? ['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-walker','zombie-crawler','zombie-heavy']);
+    ProductionCharacterArt.queue(this, requestedCharacters ?? ['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-guard','zombie-civil','zombie-advanced']);
     corridorEnvironmentAssets.forEach(({ key, path }) => this.load.image(key, path));
     worldAssetCatalog.forEach(({ key, path }) => this.load.image(key, path));
   }
 
   create(): void {
     const requestedCharacters = this.registry.get('requiredCharacterArt') as string[] | undefined;
-    ProductionCharacterArt.registerAnimations(this, requestedCharacters ?? ['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-walker','zombie-crawler','zombie-heavy']);
+    ProductionCharacterArt.registerAnimations(this, requestedCharacters ?? ['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-guard','zombie-civil','zombie-advanced']);
     const canonicalManifest = this.cache.json.get('canonical_campaign_manifest');
 
     if (!this.validateCanonicalCampaignManifest(canonicalManifest)) {

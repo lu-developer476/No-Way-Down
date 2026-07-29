@@ -21,7 +21,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          lfs: true
 
       - name: Mirror ref to existing GitLab repository
         env:
@@ -59,10 +58,6 @@ jobs:
             echo "Verificá que la URL HTTPS sea la de Clone with HTTPS y que el token tenga permiso write_repository." >&2
             exit 1
           fi
-
-          # Git refs contain LFS pointer files. Transfer their hydrated objects
-          # before publishing the ref so the mirrored deployment is complete.
-          git -c http.extraheader="${auth_header}" lfs push gitlab --all
 
           if [ "${GITHUB_REF_TYPE}" = "branch" ]; then
             branch="${GITHUB_REF_NAME}"

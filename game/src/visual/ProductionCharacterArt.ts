@@ -10,19 +10,26 @@ export type ProductionCharacterEntry = {
 };
 const manifest = manifestJson as unknown as {visualOrigin:{x:number;y:number};characters:ProductionCharacterEntry[]};
 const entries = new Map(manifest.characters.map((entry)=>[entry.characterId,entry]));
-const aliases:Record<string,string>={'zombie-walker':'zombie-guard','zombie-crawler':'zombie-civil','zombie-heavy':'zombie-advanced'};
 
 export class ProductionCharacterArt {
   private static consumers=new Map<string,number>();
+  private static guardedScenes=new WeakSet<Phaser.Scene>();
   static get visualOrigin(){return manifest.visualOrigin;}
   static resolve(characterId:string):ProductionCharacterEntry {
-    const id=aliases[characterId]??characterId; const entry=entries.get(id);
+    const entry=entries.get(characterId);
     if(!entry) throw new Error(`[ProductionCharacterArt] Unknown characterId "${characterId}".`);
     return entry;
   }
   static textureKey(characterId:string):string{return `production-${this.resolve(characterId).characterId}`;}
   static sheetAlias(characterId:string):string{return `${characterId}-sheet`;}
   static queue(scene:Phaser.Scene,characterIds:readonly string[]):void {
+    if(!this.guardedScenes.has(scene)){
+      this.guardedScenes.add(scene);
+      scene.load.on('loaderror',(file:Phaser.Loader.File)=>{
+        const path=String(file.url);
+        if(path.includes('assets/production-art/')) throw new Error(`[ProductionCharacterArt] Fatal: missing generated sprite "${path}". Run npm run generate:runtime-art.`);
+      });
+    }
     for(const requested of new Set(characterIds)){
       const entry=this.resolve(requested); const key=this.textureKey(entry.characterId);
       if(!scene.textures.exists(key)) scene.load.spritesheet(key,entry.sheetPath,{frameWidth:entry.frameWidth,frameHeight:entry.frameHeight});

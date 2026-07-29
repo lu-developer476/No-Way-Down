@@ -1,3 +1,0 @@
-import Phaser from 'phaser';
-export type CollisionHandler=(a:MatterJS.BodyType,b:MatterJS.BodyType)=>void;
-export class MatterCollisionRouter {private handlers=new Set<CollisionHandler>();private callback:(event:MatterJS.IEventCollision<MatterJS.Engine>)=>void;constructor(private scene:Phaser.Scene){this.callback=event=>{for(const pair of event.pairs)for(const h of this.handlers)h(pair.bodyA as MatterJS.BodyType,pair.bodyB as MatterJS.BodyType)};scene.matter.world.on('collisionstart',this.callback)}on(handler:CollisionHandler){this.handlers.add(handler);return()=>this.handlers.delete(handler)}destroy(){this.scene.matter.world.off('collisionstart',this.callback);this.handlers.clear()}get listenerCount(){return this.handlers.size}}

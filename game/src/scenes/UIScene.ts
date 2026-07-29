@@ -185,7 +185,7 @@ export class UIScene extends Phaser.Scene {
     this.protagonistHud.secondaryWeaponText.setText(`${protagonist.activeSlot === 'secondary' ? 'ACTIVA' : 'SEC.'}: ${secondary}`);
     this.protagonistHud.ammoText.setText(this.getAmmoDisplayText(protagonist));
     if (!prev?.isReloading && protagonist.isReloading) this.showCombatStatus('RECARGANDO...', 'reload', 850);
-    else if (prev?.activeWeapon !== undefined && prev.activeWeapon !== protagonist.activeWeapon) this.showCombatStatus(`ARMA: ${active}`, 'switch', 850);
+    else if (prev?.activeSlot !== undefined && prev.activeSlot !== protagonist.activeSlot) this.showCombatStatus(`ARMA: ${active}`, 'switch', 850);
     else if (empty) this.showCombatStatus('SIN MUNICIÓN', 'empty', 1000);
     else if (protagonist.isReloading) this.showCombatStatus('RECARGANDO...', 'reload', 220);
     else if (special) this.showCombatStatus(special, shield ? 'switch' : 'normal', 220);
@@ -353,8 +353,8 @@ export class UIScene extends Phaser.Scene {
     this.objectiveText = this.add.text(this.scale.width / 2, this.scale.height - 58, '', { color: visualTheme.palette.uiHighlight, fontSize: '12px', fontFamily: font, wordWrap: { width: 490 }, align: 'center' }).setOrigin(.5, 1);
     this.objectiveCard = this.add.container(0, 0, [objectiveBg, objectiveLabel, this.objectiveText]); this.gameplayHudLayer.add(this.objectiveCard);
 
-    this.interactionCard = this.add.rectangle(this.scale.width / 2, this.scale.height - 66, 500, 30, visualTheme.palette.uiInteractionFill, .96).setOrigin(.5, 1).setStrokeStyle(2, visualTheme.palette.uiPanelAccent);
-    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 81, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '11px', fontFamily: font, align: 'center', wordWrap: { width: 500, useAdvancedWrap: true } }).setOrigin(.5);
+    this.interactionCard = this.add.rectangle(this.scale.width / 2, this.scale.height - 12, 500, 34, visualTheme.palette.uiInteractionFill, .96).setOrigin(.5, 1).setStrokeStyle(2, visualTheme.palette.uiPanelAccent);
+    this.interactionText = this.add.text(this.scale.width / 2, this.scale.height - 29, '', { color: visualTheme.palette.uiTextPrimary, fontSize: '11px', fontFamily: font, align: 'center', wordWrap: { width: 500, useAdvancedWrap: true } }).setOrigin(.5);
     this.interactionContainer = this.add.container(0, 0, [this.interactionCard, this.interactionText]).setVisible(false); this.gameplayHudLayer.add(this.interactionContainer);
 
     const dialogueWidth = UI_LAYOUT.dialogueMaxWidth, dialogueHeight = UI_LAYOUT.dialogueHeight;

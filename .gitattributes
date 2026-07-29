@@ -1,0 +1,4 @@
+game/public/assets/production-art/zombies/*.png filter=lfs diff=lfs merge=lfs -text
+game/public/assets/production-art/weapons/*.png filter=lfs diff=lfs merge=lfs -text
+game/public/assets/production-art/ui/*.png filter=lfs diff=lfs merge=lfs -text
+game/public/assets/production-art/characters/*.png filter=lfs diff=lfs merge=lfs -text

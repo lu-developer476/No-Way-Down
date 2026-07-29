@@ -1,0 +1,1169 @@
+{
+  "schemaVersion": 1,
+  "frameWidth": 64,
+  "frameHeight": 96,
+  "footLine": 88,
+  "visualOrigin": {
+    "x": 32,
+    "y": 88
+  },
+  "characters": [
+    {
+      "characterId": "alan",
+      "sheetPath": "assets/production-art/characters/alan.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 26,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      },
+      "portraitPath": "assets/production-art/ui/portrait-alan.png"
+    },
+    {
+      "characterId": "giovanna",
+      "sheetPath": "assets/production-art/characters/giovanna.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      },
+      "portraitPath": "assets/production-art/ui/portrait-giovanna.png"
+    },
+    {
+      "characterId": "nahir",
+      "sheetPath": "assets/production-art/characters/nahir.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "damian",
+      "sheetPath": "assets/production-art/characters/damian.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 26,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "celestino",
+      "sheetPath": "assets/production-art/characters/celestino.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 26,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "hernan",
+      "sheetPath": "assets/production-art/characters/hernan.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "yamil",
+      "sheetPath": "assets/production-art/characters/yamil.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "lorena",
+      "sheetPath": "assets/production-art/characters/lorena.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "selene",
+      "sheetPath": "assets/production-art/characters/selene.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 5,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 10,
+          "repeat": -1
+        },
+        "aim": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 17,
+          "fps": 8,
+          "repeat": -1
+        },
+        "shoot": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 27,
+          "fps": 12,
+          "repeat": 0
+        },
+        "reload": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 37,
+          "fps": 9,
+          "repeat": 0
+        },
+        "melee": {
+          "row": 5,
+          "startFrame": 40,
+          "endFrame": 45,
+          "fps": 12,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 6,
+          "startFrame": 48,
+          "endFrame": 50,
+          "fps": 8,
+          "repeat": 0
+        },
+        "death": {
+          "row": 7,
+          "startFrame": 56,
+          "endFrame": 61,
+          "fps": 7,
+          "repeat": 0
+        },
+        "climb": {
+          "row": 8,
+          "startFrame": 64,
+          "endFrame": 69,
+          "fps": 9,
+          "repeat": -1
+        },
+        "interact": {
+          "row": 9,
+          "startFrame": 72,
+          "endFrame": 74,
+          "fps": 7,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "zombie-guard",
+      "sheetPath": "assets/production-art/zombies/zombie-guard.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 4,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 8,
+          "repeat": -1
+        },
+        "attack": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 21,
+          "fps": 9,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 26,
+          "fps": 7,
+          "repeat": 0
+        },
+        "death": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 39,
+          "fps": 6,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 26,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "zombie-civil",
+      "sheetPath": "assets/production-art/zombies/zombie-civil.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 4,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 8,
+          "repeat": -1
+        },
+        "attack": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 21,
+          "fps": 9,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 26,
+          "fps": 7,
+          "repeat": 0
+        },
+        "death": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 39,
+          "fps": 6,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 22,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "characterId": "zombie-advanced",
+      "sheetPath": "assets/production-art/zombies/zombie-advanced.png",
+      "frameWidth": 64,
+      "frameHeight": 96,
+      "footLine": 88,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "startFrame": 0,
+          "endFrame": 3,
+          "fps": 4,
+          "repeat": -1
+        },
+        "walk": {
+          "row": 1,
+          "startFrame": 8,
+          "endFrame": 15,
+          "fps": 8,
+          "repeat": -1
+        },
+        "attack": {
+          "row": 2,
+          "startFrame": 16,
+          "endFrame": 21,
+          "fps": 9,
+          "repeat": 0
+        },
+        "hurt": {
+          "row": 3,
+          "startFrame": 24,
+          "endFrame": 26,
+          "fps": 7,
+          "repeat": 0
+        },
+        "death": {
+          "row": 4,
+          "startFrame": 32,
+          "endFrame": 39,
+          "fps": 6,
+          "repeat": 0
+        }
+      },
+      "bodyProfile": {
+        "width": 26,
+        "height": 60,
+        "offsetX": 19,
+        "offsetY": 28
+      },
+      "heldWeaponAnchor": {
+        "x": 15,
+        "y": -43
+      },
+      "holsteredPrimaryAnchor": {
+        "x": -12,
+        "y": -45
+      },
+      "holsteredSecondaryAnchor": {
+        "x": -15,
+        "y": -28
+      },
+      "nameplateAnchor": {
+        "x": 0,
+        "y": -94
+      },
+      "shadowAnchor": {
+        "x": 0,
+        "y": 1
+      }
+    }
+  ]
+}

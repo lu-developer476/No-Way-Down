@@ -144,7 +144,7 @@ export class PickupSystem {
         .setBlendMode(Phaser.BlendModes.ADD);
       const visual = this.scene.add.image(pickup.x, pickup.y - 3, texture).setDepth(14).setScale(baseScale);
       const label = this.scene.add.text(pickup.x, pickup.y - 28, getDisplayLabel(pickup), {
-        fontSize: '8px',
+        fontSize: '11px',
         color: '#f8f1df',
         backgroundColor: 'rgba(9, 7, 11, 0.9)',
         padding: { x: 4, y: 2 },

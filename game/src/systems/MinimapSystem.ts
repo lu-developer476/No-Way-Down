@@ -1,21 +1,13 @@
 import Phaser from 'phaser';
-import { corridorVisualV2 } from '../config/environmentVisualsV2';
-
-export interface MinimapActor { x:number; y:number; active?:boolean }
+import { GAMEPLAY_HUD_LAYOUT } from '../scenes/gameplayHudLayout';
+export interface MinimapActor{x:number;y:number;active?:boolean}
 export class MinimapSystem {
-  private container?:Phaser.GameObjects.Container; private dots:Phaser.GameObjects.Arc[]=[]; private discovered=new Set<number>();
-  constructor(private readonly scene:Phaser.Scene, private readonly players:()=>readonly MinimapActor[], private readonly allies:()=>readonly MinimapActor[], private readonly enemies:()=>readonly MinimapActor[]){}
-  create():void{
-    const x=764,y=14,g=this.scene.add.graphics().setScrollFactor(0);
-    g.fillStyle(0x081116,.94).fillRoundedRect(x,y,182,100,4).lineStyle(1,0x68818c,1).strokeRoundedRect(x,y,182,100,4);
-    g.lineStyle(5,0x40545d,.9); corridorVisualV2.rooms.forEach(r=>g.lineBetween(x+8+r.x/34,y+61,x+8+(r.x+r.width)/34,y+61));
-    const title=this.scene.add.text(x+8,y+6,'PASILLOS · PB',{fontFamily:'monospace',fontSize:'9px',color:'#d8e3e5'}).setScrollFactor(0);
-    const exit=this.scene.add.triangle(x+164,y+61,0,7,7,0,14,7,0xf3c54e,1).setScrollFactor(0);
-    this.container=this.scene.add.container(0,0,[g,title,exit]).setDepth(1200).setScrollFactor(0);
-    [0x54d399,0xf472b6,0xf87171].forEach(c=>this.dots.push(this.scene.add.circle(0,0,3,c,1).setDepth(1201).setScrollFactor(0)));
-  }
-  update():void{const originX=772, originY=75, actorSets=[this.players(),this.allies(),this.enemies().filter(e=>this.nearPlayer(e)).slice(0,1)];actorSets.forEach((set,i)=>{const a=set.find(v=>v.active!==false);const dot=this.dots[i];dot.setVisible(Boolean(a));if(a){dot.setPosition(originX+a.x/34,originY+(a.y-724)/18);this.discovered.add(Math.floor(a.x/1700));}});}
-  private nearPlayer(e:MinimapActor):boolean{const p=this.players()[0];return Boolean(p)&&Math.abs(e.x-p.x)<650;}
-  get discoveredZoneCount():number{return this.discovered.size;}
-  destroy():void{this.container?.destroy(true);this.dots.forEach(d=>d.destroy());this.dots=[];this.discovered.clear();}
+ private container?:Phaser.GameObjects.Container;private markers:Phaser.GameObjects.Arc[]=[];private map?:Phaser.GameObjects.Graphics;private discovered=new Set<number>();private bounds=new Phaser.Geom.Rectangle();private header?:Phaser.GameObjects.Text;
+ constructor(private readonly scene:Phaser.Scene,private readonly players:()=>readonly MinimapActor[],private readonly allies:()=>readonly MinimapActor[],private readonly enemies:()=>readonly MinimapActor[]){}
+ create():void{const b=GAMEPLAY_HUD_LAYOUT.minimapBounds;this.bounds=this.scene.physics.world.bounds;const g=this.scene.add.graphics().setScrollFactor(0);g.fillStyle(0x081116,.94).fillRoundedRect(b.x,b.y,b.width,b.height,4).lineStyle(1,0x68818c,1).strokeRoundedRect(b.x,b.y,b.width,b.height,4);this.map=this.scene.add.graphics().setScrollFactor(0);this.drawStaticGeometry();this.header=this.scene.add.text(b.x+8,b.y+5,'UBICACIÓN · AMENAZAS: 0',{fontFamily:'monospace',fontSize:'11px',color:'#e2e8f0',resolution:2}).setScrollFactor(0);this.container=this.scene.add.container(0,0,[g,this.map,this.header]).setDepth(1200).setScrollFactor(0);[0x54d399,0xf472b6,0xf87171,0xf3c54e].forEach(c=>this.markers.push(this.scene.add.circle(0,0,3,c).setDepth(1201).setScrollFactor(0)));}
+ private drawStaticGeometry():void{const b=GAMEPLAY_HUD_LAYOUT.minimapBounds;this.map?.clear().lineStyle(3,0x40545d,.9).strokeRect(b.x+8,b.y+30,b.width-16,b.height-38);}
+ private project(a:MinimapActor){const b=GAMEPLAY_HUD_LAYOUT.minimapBounds;return{x:b.x+8+(a.x-this.bounds.left)/Math.max(1,this.bounds.width)*(b.width-16),y:b.y+30+(a.y-this.bounds.top)/Math.max(1,this.bounds.height)*(b.height-38)}}
+ update():void{const detected=this.enemies().filter(e=>e.active!==false&&this.nearPlayer(e));const sets=[this.players(),this.allies(),detected];sets.forEach((set,i)=>{const a=set.find(v=>v.active!==false),dot=this.markers[i];dot.setVisible(Boolean(a));if(a){const p=this.project(a);dot.setPosition(Math.round(p.x),Math.round(p.y));this.discovered.add(Math.floor(a.x/Math.max(1,this.bounds.width/8)));}});this.header?.setText(detected.length?`UBICACIÓN · AMENAZAS: ${detected.length}`:'UBICACIÓN · ÁREA LIMPIA');}
+ private nearPlayer(e:MinimapActor){const p=this.players()[0];return Boolean(p)&&Phaser.Math.Distance.Between(e.x,e.y,p.x,p.y)<650;}
+ get discoveredZoneCount(){return this.discovered.size}destroy(){this.container?.destroy(true);this.markers.forEach(d=>d.destroy());this.markers=[];this.discovered.clear();}
 }

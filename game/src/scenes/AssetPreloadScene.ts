@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { ProductionCharacterArt } from '../visual/ProductionCharacterArt';
 import { visualTheme } from './visualTheme';
 import { SceneFlowManager } from './SceneFlowManager';
 import { definitionFromManifest, type CanonicalManifest } from '../campaign/campaignCore';
@@ -74,21 +75,16 @@ export class AssetPreloadScene extends Phaser.Scene {
         this.load.image(key, path);
       }
     });
-    const sheets: Array<[string,string,number,number]> = [
-      ['v2-alan','assets/visual-v2/characters/alan.svg',48,96], ['v2-giovanna','assets/visual-v2/characters/giovanna.svg',48,96],
-      ['v2-zombie-guard','assets/visual-v2/zombies/guard.svg',48,96], ['v2-zombie-civil','assets/visual-v2/zombies/civil.svg',48,96],
-      ['v2-zombie-advanced','assets/visual-v2/zombies/advanced.svg',48,96], ['v2-weapons','assets/visual-v2/weapons/weapons.svg',32,32],
-      ['v2-combat-fx','assets/visual-v2/fx/combat_fx.svg',16,16]
-    ];
-    sheets.forEach(([key,path,frameWidth,frameHeight])=>this.load.spritesheet(key,path,{frameWidth,frameHeight}));
-    this.load.image('v2-portrait-alan','assets/visual-v2/ui/portrait_alan.svg');
-    this.load.image('v2-portrait-giovanna','assets/visual-v2/ui/portrait_giovanna.svg');
-    this.load.spritesheet('v2-minimap-markers','assets/visual-v2/minimap/markers.svg',{frameWidth:8,frameHeight:8});
+    // Only gameplay consumers request production sheets; the main menu remains free of actor art.
+    const requestedCharacters = this.registry.get('requiredCharacterArt') as string[] | undefined;
+    ProductionCharacterArt.queue(this, requestedCharacters ?? ['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-walker','zombie-crawler','zombie-heavy']);
     corridorEnvironmentAssets.forEach(({ key, path }) => this.load.image(key, path));
     worldAssetCatalog.forEach(({ key, path }) => this.load.image(key, path));
   }
 
   create(): void {
+    const requestedCharacters = this.registry.get('requiredCharacterArt') as string[] | undefined;
+    ProductionCharacterArt.registerAnimations(this, requestedCharacters ?? ['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-walker','zombie-crawler','zombie-heavy']);
     const canonicalManifest = this.cache.json.get('canonical_campaign_manifest');
 
     if (!this.validateCanonicalCampaignManifest(canonicalManifest)) {

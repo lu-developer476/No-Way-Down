@@ -340,7 +340,7 @@ export class UpperFloorScene extends Phaser.Scene {
 
     columns.forEach((column) => {
       addEnvironmentProp(this, {
-        kind: 'stone-column',
+        kind: 'stone-column', anchor: 'floor',
         x: column.x,
         y: column.y - 56,
         depth: 6,
@@ -356,7 +356,7 @@ export class UpperFloorScene extends Phaser.Scene {
 
     counters.forEach((counter) => {
       addEnvironmentProp(this, {
-        kind: 'bank-counter',
+        kind: 'bank-counter', anchor: 'floor',
         x: counter.x,
         y: counter.y - 4,
         depth: 6,
@@ -364,7 +364,7 @@ export class UpperFloorScene extends Phaser.Scene {
       });
 
       addEnvironmentProp(this, {
-        kind: 'tall-window',
+        kind: 'tall-window', anchor: 'wall',
         x: counter.x,
         y: counter.side === 'north' ? counter.y - 170 : counter.y - 138,
         depth: 4,
@@ -383,6 +383,7 @@ export class UpperFloorScene extends Phaser.Scene {
     lanePoints.forEach((lanePoint, index) => {
       addEnvironmentProp(this, {
         kind: index % 2 === 0 ? 'turnstile' : 'info-screen',
+        anchor: index % 2 === 0 ? 'floor' : 'wall',
         x: lanePoint.x,
         y: lanePoint.y - 34,
         depth: 5,

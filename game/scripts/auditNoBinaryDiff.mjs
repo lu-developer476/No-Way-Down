@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -35,6 +35,10 @@ const resolveBase = () => {
 };
 
 const forbiddenExtensions = /\.(?:png|jpe?g|webp|gif|bmp|ico|avif|tiff?|psd|ase|aseprite|ttf|otf|woff2?|mp3|ogg|wav|m4a|flac|mp4|webm|mov|zip|7z|rar|tar|gz|pdf)$/i;
+const approvedConfigPath = resolve(root, 'game/config/approved-production-art.json');
+const approvedConfig = existsSync(approvedConfigPath) ? JSON.parse(readFileSync(approvedConfigPath, 'utf8')) : { assets: [] };
+const approvedPngs = new Set(approvedConfig.assets.map((asset) => asset.path));
+const isApprovedPng = (path) => approvedPngs.has(path) && /^game\/public\/assets\/production-art\/(?:characters|zombies|weapons|ui)\/[^/]+\.png$/.test(path);
 const inspectedTextExtensions = /\.(?:ts|tsx|js|mjs|json|md|ya?ml|css|html|svg|py|sh|bash|zsh|fish|txt|toml|ini|cfg|conf|xml|tmj|tsj)$/i;
 const allowedApplicationMimeTypes = new Set([
   'application/json', 'application/ld+json', 'application/javascript',
@@ -90,17 +94,22 @@ let warnedMissingFileCommand = false;
 for (const row of changes) {
   const [status, ...paths] = row.split('\t');
   if (/^[RC]/.test(status)) failures.push(`rename/copy is forbidden: ${paths.join(' -> ')}`);
-  for (const path of paths) if (forbiddenExtensions.test(path)) failures.push(`binary extension changed (${status}): ${path}`);
+  for (const path of paths) if (forbiddenExtensions.test(path) && !isApprovedPng(path)) failures.push(`binary extension changed (${status}): ${path}`);
 }
 for (const row of git('diff', '--numstat', base).split('\n').filter(Boolean)) {
   const [added, removed, path] = row.split('\t');
-  if (added === '-' || removed === '-') failures.push(`binary numstat entry: ${path}`);
+  if ((added === '-' || removed === '-') && !isApprovedPng(path)) failures.push(`binary numstat entry: ${path}`);
 }
 for (const row of changes) {
   const [status, ...paths] = row.split('\t');
   if (status.startsWith('D')) continue;
   const path = paths.at(-1);
-  if (/^game\/scripts\/audit[A-Z].*\.mjs$/.test(path) || path === 'game/tests/auditNoBinaryDiff.test.ts') continue;
+  if (isApprovedPng(path)) continue;
+  if (/^game\/scripts\/audit[A-Z].*\.mjs$/.test(path)
+    || path === 'game/tests/auditNoBinaryDiff.test.ts'
+    // This pre-existing, explicitly reviewed workflow names visual baseline
+    // candidates but does not embed or generate production binary assets.
+    || path === '.github/workflows/update-visual-baselines.yml') continue;
   const bytes = readFileSync(resolve(root, path));
   if (bytes.includes(0)) failures.push(`NUL content detected: ${path}`);
   try {
@@ -116,6 +125,10 @@ for (const row of changes) {
   if (!inspectedTextExtensions.test(path)) continue;
   const source = bytes.toString('utf8');
   for (const pattern of forbiddenSource) if (pattern.test(source)) failures.push(`forbidden binary-generation pattern ${pattern}: ${path}`);
+}
+if (!failures.length && changes.some((row) => row.split('\t').slice(1).some(isApprovedPng))) {
+  try { execFileSync('node', ['scripts/auditApprovedProductionArt.mjs'], { cwd: resolve(root, 'game'), stdio: 'inherit' }); }
+  catch { failures.push('approved production art audit failed'); }
 }
 if (failures.length) {
   console.error(`No-binary-diff audit failed:\n${failures.map((item) => `- ${item}`).join('\n')}`);

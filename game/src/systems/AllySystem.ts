@@ -7,7 +7,7 @@ import { ProjectileSystem } from './ProjectileSystem';
 import { CombatActionSystem } from './CombatActionSystem';
 
 const DEFAULT_LANE_OFFSETS_X = [-74, 74, -118, 118, -154, 154, -190, 190];
-const DEFAULT_LANE_OFFSETS_Y = [-8, -12, -8, -12, -4, -8, -4, -8];
+const DEFAULT_LANE_OFFSETS_Y = [0, 0, 0, 0, 0, 0, 0, 0];
 
 export class AllySystem {
   private readonly scene: Phaser.Scene;
@@ -67,7 +67,7 @@ export class AllySystem {
   }
 
   private spawnAtPlayer(profile: AllyProfile, player: Player): AllyAI | null {
-    const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y + profile.followOffsetY, profile, this.projectileSystem, this.combatActionSystem);
+    const ally = new AllyAI(this.scene, player.x + profile.followOffsetX, player.y, profile, this.projectileSystem, this.combatActionSystem);
     this.allies.add(ally);
     return ally;
   }

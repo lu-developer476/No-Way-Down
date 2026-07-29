@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "upper-office-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#111820",
+    "#33424a",
+    "#7a9295",
+    "#d5b36a",
+    "#e8e2cf"
+  ],
+  "frames": [
+    {
+      "frameId": "office-divider",
+      "category": "divider",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "desk",
+      "category": "desk",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "chair",
+      "category": "chair",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "filing-cabinet",
+      "category": "cabinet",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "bookcase",
+      "category": "bookcase",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "telephone",
+      "category": "telephone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "monitor",
+      "category": "monitor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "printer",
+      "category": "printer",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "paper-stack",
+      "category": "stack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "folder-stack",
+      "category": "stack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "desk-lamp",
+      "category": "lamp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "office-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "glass-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "blinds",
+      "category": "blinds",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "floor-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "air-duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "ceiling-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "extinguisher",
+      "category": "extinguisher",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "damaged-planter",
+      "category": "planter",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "carpet",
+      "category": "carpet",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "wall-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    }
+  ]
+}

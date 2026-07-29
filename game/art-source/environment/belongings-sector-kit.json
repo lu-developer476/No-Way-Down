@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "belongings-sector-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#161a22",
+    "#424957",
+    "#79624c",
+    "#c99e60",
+    "#e6d4b4"
+  ],
+  "frames": [
+    {
+      "frameId": "archive-box",
+      "category": "box",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "duffel-bag",
+      "category": "bag",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "backpack",
+      "category": "backpack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "clothes-pile",
+      "category": "pile",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "storage-shelf",
+      "category": "shelf",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "personal-locker",
+      "category": "locker",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "suitcase",
+      "category": "suitcase",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "sorting-table",
+      "category": "table",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "evidence-tag",
+      "category": "tag",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "personal-effects",
+      "category": "effects",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "looted-zone",
+      "category": "zone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "scattered-papers",
+      "category": "papers",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "task-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    }
+  ]
+}

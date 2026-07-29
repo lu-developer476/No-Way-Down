@@ -4,7 +4,7 @@ import {TiledObjectParser} from './TiledObjectParser';
 import type {TiledMap,TiledObject,TiledObjectLayer,TiledPropertyValue} from './TiledTypes';
 
 export const VISUAL_LAYER_ROLES:Readonly<Record<string,VisualAssetRole>>={Background:'background',DistantArchitecture:'distantArchitecture',RearArchitecture:'rearArchitecture',Architecture:'architecture',RearProps:'rearProp',GameplayDecor:'gameplayDecor',FrontProps:'frontProp',Foreground:'foreground'};
-const allowedProperties=new Set(['assetKey','depth','scrollFactorX','scrollFactorY','tint','alpha','blendMode','visualRole','occludesActors','lightAnchorId','reflectionStrength','editorOnly','runtimeOnly','qualityTier','sector','runtimeId']);
+const allowedProperties=new Set(['assetKey','depth','scrollFactorX','scrollFactorY','tint','alpha','blendMode','visualRole','occludesActors','lightAnchorId','reflectionStrength','editorOnly','runtimeOnly','qualityTier','sector','runtimeId','frame','anchor']);
 export interface TiledVisualResult{objects:readonly Phaser.GameObjects.Image[];renderedLayerNames:readonly string[];backgroundObjectCount:number;architectureObjectCount:number;propObjectCount:number;foregroundObjectCount:number;missingAssetKeys:readonly string[];destroy():void}
 
 function property(object:TiledObject,name:string):TiledPropertyValue|undefined{return TiledObjectParser.properties(object.properties??[])[name]}

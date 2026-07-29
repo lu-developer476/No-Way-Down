@@ -4,7 +4,7 @@
   "width": 200,
   "infinite": false,
   "nextlayerid": 40,
-  "nextobjectid": 56,
+  "nextobjectid": 81,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -64,20 +64,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 34,
-          "name": "context-wall",
+          "id": 56,
+          "name": "fourth-entry-background-0",
           "type": "visual",
-          "x": 0,
-          "y": 796,
-          "width": 6400,
-          "height": 420,
+          "x": 2013,
+          "y": 916,
+          "width": 520,
+          "height": 300,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-background-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-damaged"
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -87,7 +127,35 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "comedor"
+              "value": "fourth-entry"
+            }
+          ]
+        },
+        {
+          "id": 57,
+          "name": "office-422-antechamber-background-1",
+          "type": "visual",
+          "x": 3947,
+          "y": 916,
+          "width": 520,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-background-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-5"
             },
             {
               "name": "depth",
@@ -95,9 +163,39 @@
               "value": -50
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-34"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "office-422-antechamber"
             }
           ]
         }
@@ -112,20 +210,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 35,
-          "name": "distant-depth",
+          "id": 58,
+          "name": "office-422-antechamber-distantarchitecture-0",
           "type": "visual",
-          "x": 512,
-          "y": 716,
-          "width": 5376,
-          "height": 260,
+          "x": 2013,
+          "y": 906,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-distantarchitecture-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-clean"
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -135,7 +273,35 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "comedor"
+              "value": "office-422-antechamber"
+            }
+          ]
+        },
+        {
+          "id": 59,
+          "name": "executive-office-422-distantarchitecture-1",
+          "type": "visual",
+          "x": 3947,
+          "y": 906,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-distantarchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-5"
             },
             {
               "name": "depth",
@@ -143,9 +309,39 @@
               "value": -40
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-35"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "executive-office-422"
             }
           ]
         }
@@ -158,7 +354,144 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 60,
+          "name": "executive-office-422-reararchitecture-0",
+          "type": "visual",
+          "x": 2013,
+          "y": 1056,
+          "width": 176,
+          "height": 150,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-reararchitecture-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "executive-office-422"
+            }
+          ]
+        },
+        {
+          "id": 61,
+          "name": "upper-cafeteria-reararchitecture-1",
+          "type": "visual",
+          "x": 3947,
+          "y": 1006,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-reararchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "upper-cafeteria"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 5,
@@ -169,20 +502,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 36,
-          "name": "comedor-architecture",
+          "id": 62,
+          "name": "upper-cafeteria-architecture-0",
           "type": "visual",
-          "x": 560,
-          "y": 886,
-          "width": 340,
-          "height": 210,
+          "x": 909,
+          "y": 1056,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-architecture-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-clean"
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -192,35 +565,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "comedor"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-36"
+              "value": "upper-cafeteria"
             }
           ]
         },
         {
-          "id": 37,
-          "name": "oficina-422-architecture",
+          "id": 63,
+          "name": "narrative-table-architecture-1",
           "type": "visual",
-          "x": 2160,
-          "y": 886,
-          "width": 340,
+          "x": 1737,
+          "y": 1006,
+          "width": 224,
           "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-architecture-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "office-lit"
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -230,35 +633,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "oficina-422"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-37"
+              "value": "narrative-table"
             }
           ]
         },
         {
-          "id": 38,
-          "name": "servicio-architecture",
+          "id": 64,
+          "name": "down-stair-architecture-2",
           "type": "visual",
-          "x": 3760,
-          "y": 886,
-          "width": 340,
-          "height": 210,
+          "x": 2566,
+          "y": 1056,
+          "width": 272,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-architecture-2"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "service-door"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -268,35 +701,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "servicio"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-38"
+              "value": "down-stair"
             }
           ]
         },
         {
-          "id": 39,
-          "name": "escalera-architecture",
+          "id": 65,
+          "name": "fourth-entry-architecture-3",
           "type": "visual",
-          "x": 5360,
-          "y": 886,
-          "width": 340,
+          "x": 3394,
+          "y": 1006,
+          "width": 176,
           "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-architecture-3"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "stairs-end"
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-7"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -306,17 +769,143 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "escalera"
+              "value": "fourth-entry"
+            }
+          ]
+        },
+        {
+          "id": 66,
+          "name": "office-422-antechamber-architecture-4",
+          "type": "visual",
+          "x": 4223,
+          "y": 1056,
+          "width": 224,
+          "height": 150,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-architecture-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-0"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -15
+              "value": -20
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "office-422-antechamber"
+            }
+          ]
+        },
+        {
+          "id": 67,
+          "name": "executive-office-422-architecture-5",
+          "type": "visual",
+          "x": 5051,
+          "y": 1006,
+          "width": 272,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-39"
+              "value": "level_4_oficina_422_comedor_escaleras-architecture-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-1"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "executive-office-422"
             }
           ]
         }
@@ -331,20 +920,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 46,
-          "name": "upper-services",
+          "id": 68,
+          "name": "narrative-table-rearprops-0",
           "type": "visual",
-          "x": 1792,
-          "y": 786,
-          "width": 220,
-          "height": 64,
+          "x": 2013,
+          "y": 1056,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-rearprops-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "pipe-bundle"
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -354,17 +983,75 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "oficina-422"
+              "value": "narrative-table"
+            }
+          ]
+        },
+        {
+          "id": 69,
+          "name": "down-stair-rearprops-1",
+          "type": "visual",
+          "x": 3947,
+          "y": 1006,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-rearprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-5"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -5
+              "value": -10
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-46"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "down-stair"
             }
           ]
         }
@@ -379,20 +1066,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 40,
-          "name": "comedor-decor-1",
+          "id": 70,
+          "name": "down-stair-gameplaydecor-0",
           "type": "visual",
-          "x": 693,
-          "y": 1070,
-          "width": 180,
-          "height": 76,
+          "x": 909,
+          "y": 1056,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-gameplaydecor-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "bank-bench"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -402,35 +1129,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "comedor"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-40"
+              "value": "down-stair"
             }
           ]
         },
         {
-          "id": 41,
-          "name": "oficina-422-decor-2",
+          "id": 71,
+          "name": "fourth-entry-gameplaydecor-1",
           "type": "visual",
-          "x": 1760,
-          "y": 1098,
-          "width": 180,
-          "height": 48,
+          "x": 1737,
+          "y": 1006,
+          "width": 224,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-gameplaydecor-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "paper-cluster"
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -440,35 +1197,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "oficina-422"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-41"
+              "value": "fourth-entry"
             }
           ]
         },
         {
-          "id": 42,
-          "name": "servicio-decor-3",
+          "id": 72,
+          "name": "office-422-antechamber-gameplaydecor-2",
           "type": "visual",
-          "x": 2827,
-          "y": 1070,
-          "width": 180,
-          "height": 76,
+          "x": 2566,
+          "y": 1056,
+          "width": 272,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-gameplaydecor-2"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "pipe-bundle"
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -478,35 +1265,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "servicio"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-42"
+              "value": "office-422-antechamber"
             }
           ]
         },
         {
-          "id": 43,
-          "name": "escalera-decor-4",
+          "id": 73,
+          "name": "executive-office-422-gameplaydecor-3",
           "type": "visual",
-          "x": 3893,
-          "y": 1098,
-          "width": 180,
-          "height": 48,
+          "x": 3394,
+          "y": 1006,
+          "width": 176,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-gameplaydecor-3"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "floor-damage"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-7"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -516,35 +1333,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "escalera"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-43"
+              "value": "executive-office-422"
             }
           ]
         },
         {
-          "id": 44,
-          "name": "escalera-decor-5",
+          "id": 74,
+          "name": "upper-cafeteria-gameplaydecor-4",
           "type": "visual",
-          "x": 4960,
-          "y": 1070,
-          "width": 180,
-          "height": 76,
+          "x": 4223,
+          "y": 1056,
+          "width": 224,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-gameplaydecor-4"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "cold-light"
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-0"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -554,35 +1401,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "escalera"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-44"
+              "value": "upper-cafeteria"
             }
           ]
         },
         {
-          "id": 45,
-          "name": "escalera-decor-6",
+          "id": 75,
+          "name": "narrative-table-gameplaydecor-5",
           "type": "visual",
-          "x": 6027,
-          "y": 1070,
-          "width": 180,
-          "height": 76,
+          "x": 5051,
+          "y": 1006,
+          "width": 272,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-gameplaydecor-5"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "exit-sign"
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-1"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -592,17 +1469,7 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "escalera"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-45"
+              "value": "narrative-table"
             }
           ]
         }
@@ -617,20 +1484,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 47,
-          "name": "route-damage",
+          "id": 76,
+          "name": "fourth-entry-frontprops-0",
           "type": "visual",
-          "x": 3712,
-          "y": 1121,
-          "width": 180,
-          "height": 40,
+          "x": 2013,
+          "y": 1056,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-frontprops-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "floor-damage"
+              "value": "executive-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "executive-office-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -640,17 +1547,75 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "servicio"
+              "value": "fourth-entry"
+            }
+          ]
+        },
+        {
+          "id": 77,
+          "name": "office-422-antechamber-frontprops-1",
+          "type": "visual",
+          "x": 3947,
+          "y": 1006,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-frontprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-5"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": 6
+              "value": 10
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-47"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "office-422-antechamber"
             }
           ]
         }
@@ -665,20 +1630,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 48,
-          "name": "foreground-left",
+          "id": 78,
+          "name": "office-422-antechamber-foreground-0",
           "type": "visual",
-          "x": 128,
-          "y": 916,
-          "width": 90,
-          "height": 260,
+          "x": 2013,
+          "y": 1056,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-foreground-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-column"
+              "value": "upper-cafeteria-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-cafeteria-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.88
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -688,35 +1693,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "comedor"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-48"
+              "value": "office-422-antechamber"
             }
           ]
         },
         {
-          "id": 49,
-          "name": "foreground-right",
+          "id": 79,
+          "name": "executive-office-422-foreground-1",
           "type": "visual",
-          "x": 5632,
-          "y": 946,
-          "width": 150,
-          "height": 230,
+          "x": 3947,
+          "y": 1006,
+          "width": 224,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-foreground-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-bars"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.88
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -726,17 +1761,7 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "escalera"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_4_oficina_422_comedor_escaleras-visual-49"
+              "value": "executive-office-422"
             }
           ]
         }
@@ -1207,7 +2232,7 @@
             {
               "name": "prompt",
               "type": "string",
-              "value": "E · Asegurar checkpoint"
+              "value": "E \u00b7 Asegurar checkpoint"
             },
             {
               "name": "sensor",
@@ -1240,7 +2265,7 @@
             {
               "name": "prompt",
               "type": "string",
-              "value": "E · Continuar"
+              "value": "E \u00b7 Continuar"
             },
             {
               "name": "sensor",
@@ -1480,7 +2505,31 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 80,
+          "name": "visible-exit-route",
+          "type": "navigation",
+          "x": 5700,
+          "y": 1036,
+          "width": 420,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "target",
+              "type": "string",
+              "value": "salida-cuarto"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_4_oficina_422_comedor_escaleras-navigationhints-80"
+            }
+          ]
+        }
+      ]
     }
   ],
   "properties": [
@@ -1522,7 +2571,7 @@
     {
       "name": "floorLabel",
       "type": "string",
-      "value": "Piso canónico 11"
+      "value": "Piso can\u00f3nico 11"
     },
     {
       "name": "canonicalIndex",
@@ -1578,6 +2627,21 @@
       "name": "environmentProfile",
       "type": "string",
       "value": "level4_oficina_422_comedor_escaleras"
+    },
+    {
+      "name": "floor",
+      "type": "int",
+      "value": 4
+    },
+    {
+      "name": "environmentKitIds",
+      "type": "string",
+      "value": "executive-office-kit,upper-cafeteria-kit,stair-core-kit"
+    },
+    {
+      "name": "compositionSignature",
+      "type": "string",
+      "value": "fourth-entry|office-422-antechamber|executive-office-422|upper-cafeteria|narrative-table|down-stair"
     }
   ],
   "backgroundcolor": "#111827"

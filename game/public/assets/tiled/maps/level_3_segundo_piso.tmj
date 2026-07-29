@@ -4,7 +4,7 @@
   "width": 204,
   "infinite": false,
   "nextlayerid": 44,
-  "nextobjectid": 60,
+  "nextobjectid": 86,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -64,20 +64,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 38,
-          "name": "context-wall",
+          "id": 60,
+          "name": "arrival-background-0",
           "type": "visual",
-          "x": 0,
-          "y": 540,
-          "width": 6528,
-          "height": 420,
+          "x": 2056,
+          "y": 660,
+          "width": 520,
+          "height": 300,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-background-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-damaged"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -50
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -87,7 +127,35 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "landing"
+              "value": "arrival"
+            }
+          ]
+        },
+        {
+          "id": 61,
+          "name": "administrative-reception-background-1",
+          "type": "visual",
+          "x": 4032,
+          "y": 660,
+          "width": 520,
+          "height": 300,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-background-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-3"
             },
             {
               "name": "depth",
@@ -95,9 +163,39 @@
               "value": -50
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_3_segundo_piso-visual-38"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "background"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "administrative-reception"
             }
           ]
         }
@@ -112,20 +210,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 39,
-          "name": "distant-depth",
+          "id": 62,
+          "name": "administrative-reception-distantarchitecture-0",
           "type": "visual",
-          "x": 522,
-          "y": 460,
-          "width": 5484,
-          "height": 260,
+          "x": 2056,
+          "y": 650,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-distantarchitecture-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "service-door"
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -135,7 +273,35 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "landing"
+              "value": "administrative-reception"
+            }
+          ]
+        },
+        {
+          "id": 63,
+          "name": "open-office-distantarchitecture-1",
+          "type": "visual",
+          "x": 4032,
+          "y": 650,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-distantarchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-3"
             },
             {
               "name": "depth",
@@ -143,9 +309,39 @@
               "value": -40
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_3_segundo_piso-visual-39"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 0.75
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "distantArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "open-office"
             }
           ]
         }
@@ -158,7 +354,144 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 64,
+          "name": "open-office-reararchitecture-0",
+          "type": "visual",
+          "x": 2056,
+          "y": 800,
+          "width": 176,
+          "height": 150,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-reararchitecture-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "open-office"
+            }
+          ]
+        },
+        {
+          "id": 65,
+          "name": "records-reararchitecture-1",
+          "type": "visual",
+          "x": 4032,
+          "y": 750,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-reararchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-3"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearArchitecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "records"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 5,
@@ -169,20 +502,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 40,
-          "name": "landing-architecture",
+          "id": 66,
+          "name": "records-architecture-0",
           "type": "visual",
-          "x": 571,
-          "y": 630,
-          "width": 340,
-          "height": 210,
+          "x": 927,
+          "y": 800,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-architecture-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "service-door"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -192,35 +565,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "landing"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-40"
+              "value": "records"
             }
           ]
         },
         {
-          "id": 41,
-          "name": "administracion-architecture",
+          "id": 67,
+          "name": "blocked-corridor-architecture-1",
           "type": "visual",
-          "x": 2203,
-          "y": 630,
-          "width": 340,
+          "x": 1774,
+          "y": 750,
+          "width": 224,
           "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-architecture-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "office-lit"
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-3"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -230,35 +633,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "administracion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-41"
+              "value": "blocked-corridor"
             }
           ]
         },
         {
-          "id": 42,
-          "name": "archivo-architecture",
+          "id": 68,
+          "name": "up-stair-architecture-2",
           "type": "visual",
-          "x": 3835,
-          "y": 630,
-          "width": 340,
-          "height": 210,
+          "x": 2621,
+          "y": 800,
+          "width": 272,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-architecture-2"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "office-dark"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -268,35 +701,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "archivo"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-42"
+              "value": "up-stair"
             }
           ]
         },
         {
-          "id": 43,
-          "name": "contacto-architecture",
+          "id": 69,
+          "name": "arrival-architecture-3",
           "type": "visual",
-          "x": 5467,
-          "y": 630,
-          "width": 340,
+          "x": 3467,
+          "y": 750,
+          "width": 176,
           "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-architecture-3"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "exit-door"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -306,17 +769,143 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "contacto"
+              "value": "arrival"
+            }
+          ]
+        },
+        {
+          "id": 70,
+          "name": "administrative-reception-architecture-4",
+          "type": "visual",
+          "x": 4314,
+          "y": 800,
+          "width": 224,
+          "height": 150,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-architecture-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-6"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -15
+              "value": -20
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "administrative-reception"
+            }
+          ]
+        },
+        {
+          "id": 71,
+          "name": "open-office-architecture-5",
+          "type": "visual",
+          "x": 5161,
+          "y": 750,
+          "width": 272,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_3_segundo_piso-visual-43"
+              "value": "level_3_segundo_piso-architecture-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-7"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "open-office"
             }
           ]
         }
@@ -331,20 +920,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 50,
-          "name": "upper-services",
+          "id": 72,
+          "name": "blocked-corridor-rearprops-0",
           "type": "visual",
-          "x": 1828,
-          "y": 530,
-          "width": 220,
-          "height": 64,
+          "x": 2056,
+          "y": 800,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-rearprops-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "pipe-bundle"
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -354,17 +983,75 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "administracion"
+              "value": "blocked-corridor"
+            }
+          ]
+        },
+        {
+          "id": 73,
+          "name": "up-stair-rearprops-1",
+          "type": "visual",
+          "x": 4032,
+          "y": 750,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-rearprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-3"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -5
+              "value": -10
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_3_segundo_piso-visual-50"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "rearProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "up-stair"
             }
           ]
         }
@@ -379,20 +1066,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 44,
-          "name": "landing-decor-1",
+          "id": 74,
+          "name": "up-stair-gameplaydecor-0",
           "type": "visual",
-          "x": 707,
-          "y": 814,
-          "width": 180,
-          "height": 76,
+          "x": 927,
+          "y": 800,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-gameplaydecor-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "bank-bench"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -402,35 +1129,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "landing"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-44"
+              "value": "up-stair"
             }
           ]
         },
         {
-          "id": 45,
-          "name": "administracion-decor-2",
+          "id": 75,
+          "name": "arrival-gameplaydecor-1",
           "type": "visual",
-          "x": 1795,
-          "y": 842,
-          "width": 180,
-          "height": 48,
+          "x": 1774,
+          "y": 750,
+          "width": 224,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-gameplaydecor-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "paper-cluster"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-3"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -440,35 +1197,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "administracion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-45"
+              "value": "arrival"
             }
           ]
         },
         {
-          "id": 46,
-          "name": "archivo-decor-3",
+          "id": 76,
+          "name": "administrative-reception-gameplaydecor-2",
           "type": "visual",
-          "x": 2883,
-          "y": 814,
-          "width": 180,
-          "height": 76,
+          "x": 2621,
+          "y": 800,
+          "width": 272,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-gameplaydecor-2"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "cracks-a"
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-4"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -478,35 +1265,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "archivo"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-46"
+              "value": "administrative-reception"
             }
           ]
         },
         {
-          "id": 47,
-          "name": "contacto-decor-4",
+          "id": 77,
+          "name": "open-office-gameplaydecor-3",
           "type": "visual",
-          "x": 3971,
-          "y": 842,
-          "width": 180,
-          "height": 48,
+          "x": 3467,
+          "y": 750,
+          "width": 176,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-gameplaydecor-3"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "debris"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-5"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -516,35 +1333,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "contacto"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-47"
+              "value": "open-office"
             }
           ]
         },
         {
-          "id": 48,
-          "name": "contacto-decor-5",
+          "id": 78,
+          "name": "records-gameplaydecor-4",
           "type": "visual",
-          "x": 5059,
-          "y": 814,
-          "width": 180,
-          "height": 76,
+          "x": 4314,
+          "y": 800,
+          "width": 224,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-gameplaydecor-4"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "cold-light"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-6"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -554,35 +1401,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "contacto"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-48"
+              "value": "records"
             }
           ]
         },
         {
-          "id": 49,
-          "name": "contacto-decor-6",
+          "id": 79,
+          "name": "blocked-corridor-gameplaydecor-5",
           "type": "visual",
-          "x": 6147,
-          "y": 814,
-          "width": 180,
-          "height": 76,
+          "x": 5161,
+          "y": 750,
+          "width": 272,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-gameplaydecor-5"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "exit-sign"
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-7"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 0
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -592,17 +1469,7 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "contacto"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-49"
+              "value": "blocked-corridor"
             }
           ]
         }
@@ -617,20 +1484,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 51,
-          "name": "route-damage",
+          "id": 80,
+          "name": "arrival-frontprops-0",
           "type": "visual",
-          "x": 3786,
-          "y": 865,
-          "width": 180,
-          "height": 40,
+          "x": 2056,
+          "y": 800,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-frontprops-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "floor-damage"
+              "value": "upper-office-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "upper-office-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -640,17 +1547,75 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "archivo"
+              "value": "arrival"
+            }
+          ]
+        },
+        {
+          "id": 81,
+          "name": "administrative-reception-frontprops-1",
+          "type": "visual",
+          "x": 4032,
+          "y": 750,
+          "width": 224,
+          "height": 210,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-frontprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-3"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": 6
+              "value": 10
             },
             {
-              "name": "runtimeId",
+              "name": "anchor",
               "type": "string",
-              "value": "level_3_segundo_piso-visual-51"
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "frontProp"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "administrative-reception"
             }
           ]
         }
@@ -665,20 +1630,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 52,
-          "name": "foreground-left",
+          "id": 82,
+          "name": "administrative-reception-foreground-0",
           "type": "visual",
-          "x": 131,
-          "y": 660,
-          "width": 90,
-          "height": 260,
+          "x": 2056,
+          "y": 800,
+          "width": 176,
+          "height": 150,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-foreground-0"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-column"
+              "value": "damage-and-barricades-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damage-and-barricades-kit-frame-2"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.88
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -688,35 +1693,65 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "landing"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-52"
+              "value": "administrative-reception"
             }
           ]
         },
         {
-          "id": 53,
-          "name": "foreground-right",
+          "id": 83,
+          "name": "open-office-foreground-1",
           "type": "visual",
-          "x": 5745,
-          "y": 690,
-          "width": 150,
-          "height": 230,
+          "x": 4032,
+          "y": 750,
+          "width": 224,
+          "height": 210,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-foreground-1"
+            },
+            {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-bars"
+              "value": "stair-core-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stair-core-kit-frame-3"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 0.88
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "int",
+              "value": 1
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "int",
+              "value": 1
             },
             {
               "name": "visualRole",
@@ -726,17 +1761,7 @@
             {
               "name": "sector",
               "type": "string",
-              "value": "contacto"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_3_segundo_piso-visual-53"
+              "value": "open-office"
             }
           ]
         }
@@ -1024,7 +2049,36 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 84,
+          "name": "level_3_segundo_piso-canonical-stair",
+          "type": "stair",
+          "x": 6008,
+          "y": 720,
+          "width": 300,
+          "height": 176,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "stairId",
+              "type": "string",
+              "value": "level_3_segundo_piso-stair"
+            },
+            {
+              "name": "direction",
+              "type": "string",
+              "value": "up"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-stairs-84"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 16,
@@ -1232,7 +2286,7 @@
             {
               "name": "prompt",
               "type": "string",
-              "value": "E · Asegurar checkpoint"
+              "value": "E \u00b7 Asegurar checkpoint"
             },
             {
               "name": "sensor",
@@ -1265,7 +2319,7 @@
             {
               "name": "prompt",
               "type": "string",
-              "value": "E · Atender el llamado de Lorena"
+              "value": "E \u00b7 Atender el llamado de Lorena"
             },
             {
               "name": "sensor",
@@ -1534,7 +2588,31 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 85,
+          "name": "visible-exit-route",
+          "type": "navigation",
+          "x": 5828,
+          "y": 780,
+          "width": 420,
+          "height": 120,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "target",
+              "type": "string",
+              "value": "salida-segundo"
+            },
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_3_segundo_piso-navigationhints-85"
+            }
+          ]
+        }
+      ]
     }
   ],
   "properties": [
@@ -1576,7 +2654,7 @@
     {
       "name": "floorLabel",
       "type": "string",
-      "value": "Piso canónico 6"
+      "value": "Piso can\u00f3nico 6"
     },
     {
       "name": "canonicalIndex",
@@ -1632,6 +2710,21 @@
       "name": "environmentProfile",
       "type": "string",
       "value": "level3_quinto_piso_pasillos"
+    },
+    {
+      "name": "floor",
+      "type": "int",
+      "value": 2
+    },
+    {
+      "name": "environmentKitIds",
+      "type": "string",
+      "value": "upper-office-kit,damage-and-barricades-kit,stair-core-kit"
+    },
+    {
+      "name": "compositionSignature",
+      "type": "string",
+      "value": "arrival|administrative-reception|open-office|records|blocked-corridor|up-stair"
     }
   ],
   "backgroundcolor": "#111827"

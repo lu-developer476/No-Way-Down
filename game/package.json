@@ -28,7 +28,8 @@
     "predev": "npm run generate:runtime-art",
     "prebuild": "npm run generate:runtime-art",
     "postbuild": "npm run clean:generated-art",
-    "audit:production-art-v2": "node scripts/auditProductionArtV2.mjs"
+    "audit:production-art-v2": "node scripts/auditProductionArtV2.mjs",
+    "audit:upper-floor-production": "node scripts/auditUpperFloorProduction.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

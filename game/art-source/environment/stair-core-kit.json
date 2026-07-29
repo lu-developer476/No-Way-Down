@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "stair-core-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#10171d",
+    "#283841",
+    "#526a70",
+    "#c14e45",
+    "#e6d9bd"
+  ],
+  "frames": [
+    {
+      "frameId": "stair-flight",
+      "category": "flight",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "landing",
+      "category": "landing",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "handrail",
+      "category": "handrail",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "fire-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "emergency-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "floor-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "floor-number",
+      "category": "number",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "damaged-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "service-duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "water-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "extinguisher",
+      "category": "extinguisher",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "electrical-box",
+      "category": "box",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "rubble",
+      "category": "rubble",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "vertical-shaft",
+      "category": "shaft",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "foreground-railing",
+      "category": "railing",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "executive-office-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#15131a",
+    "#423b48",
+    "#886f62",
+    "#cfb47a",
+    "#eee2ca"
+  ],
+  "frames": [
+    {
+      "frameId": "executive-door-422",
+      "category": "422",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true
+    },
+    {
+      "frameId": "wide-desk",
+      "category": "desk",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "executive-chair",
+      "category": "chair",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "bookcase",
+      "category": "bookcase",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "framed-art",
+      "category": "art",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "meeting-table",
+      "category": "table",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "archive-credenza",
+      "category": "credenza",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "executive-lamp",
+      "category": "lamp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "credentials",
+      "category": "credentials",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "safe",
+      "category": "safe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "curtains",
+      "category": "curtains",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "picture-window",
+      "category": "window",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": true,
+      "floorMounted": false
+    },
+    {
+      "frameId": "rescue-file",
+      "category": "file",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "clean",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    },
+    {
+      "frameId": "422-nameplate",
+      "category": "nameplate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default"
+      ],
+      "wallMounted": false,
+      "floorMounted": true
+    }
+  ]
+}

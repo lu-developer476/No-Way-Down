@@ -163,5 +163,229 @@
       },
       "label": "Subir hacia Planta Baja"
     }
+  ],
+  "visualAtlas": "assets/production-art/environments/bank-interior-kit.png",
+  "visualIdentity": "pasillos",
+  "visualLayers": [
+    {
+      "name": "Background",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:background",
+          "assetKey": "bank-interior-kit",
+          "frame": "damaged-wall",
+          "depth": -90,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            0.35,
+            1
+          ],
+          "visualRole": "Background"
+        }
+      ]
+    },
+    {
+      "name": "RearArchitecture",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:reararchitecture",
+          "assetKey": "bank-interior-kit",
+          "frame": "door",
+          "depth": -80,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "RearArchitecture"
+        }
+      ]
+    },
+    {
+      "name": "Architecture",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:architecture",
+          "assetKey": "bank-interior-kit",
+          "frame": "teller-window",
+          "depth": -70,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "Architecture"
+        }
+      ]
+    },
+    {
+      "name": "RearProps",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:rearprops",
+          "assetKey": "bank-interior-kit",
+          "frame": "bars",
+          "depth": -60,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "RearProps"
+        }
+      ]
+    },
+    {
+      "name": "GameplayDecor",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:gameplaydecor",
+          "assetKey": "bank-interior-kit",
+          "frame": "pipes",
+          "depth": -50,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "GameplayDecor"
+        }
+      ]
+    },
+    {
+      "name": "FrontProps",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:frontprops",
+          "assetKey": "bank-interior-kit",
+          "frame": "wiring",
+          "depth": -40,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "FrontProps"
+        }
+      ]
+    },
+    {
+      "name": "Foreground",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:foreground",
+          "assetKey": "bank-interior-kit",
+          "frame": "sign",
+          "depth": -30,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "Foreground"
+        }
+      ]
+    },
+    {
+      "name": "LightAnchors",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:lightanchors",
+          "assetKey": "bank-interior-kit",
+          "frame": "rubble",
+          "depth": -20,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "LightAnchors"
+        }
+      ]
+    },
+    {
+      "name": "ReflectionZones",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:reflectionzones",
+          "assetKey": "bank-interior-kit",
+          "frame": "lamp",
+          "depth": -10,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "ReflectionZones"
+        }
+      ]
+    },
+    {
+      "name": "AmbientZones",
+      "objects": [
+        {
+          "runtimeId": "level_1_pasillos_escaleras_pb:ambientzones",
+          "assetKey": "bank-interior-kit",
+          "frame": "foreground",
+          "depth": 0,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "AmbientZones"
+        }
+      ]
+    }
   ]
 }

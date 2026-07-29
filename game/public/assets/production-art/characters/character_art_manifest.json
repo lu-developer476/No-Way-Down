@@ -1,87 +1,87 @@
 {
   "schemaVersion": 1,
-  "frameWidth": 64,
-  "frameHeight": 96,
-  "footLine": 88,
+  "frameWidth": 80,
+  "frameHeight": 112,
+  "footLine": 104,
   "visualOrigin": {
-    "x": 32,
-    "y": 88
+    "x": 40,
+    "y": 104
   },
   "characters": [
     {
       "characterId": "alan",
       "sheetPath": "assets/production-art/characters/alan.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -89,8 +89,8 @@
       "bodyProfile": {
         "width": 26,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -117,77 +117,77 @@
     {
       "characterId": "giovanna",
       "sheetPath": "assets/production-art/characters/giovanna.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -195,8 +195,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -223,77 +223,77 @@
     {
       "characterId": "nahir",
       "sheetPath": "assets/production-art/characters/nahir.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -301,8 +301,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -323,82 +323,83 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-nahir.png"
     },
     {
       "characterId": "damian",
       "sheetPath": "assets/production-art/characters/damian.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -406,8 +407,8 @@
       "bodyProfile": {
         "width": 26,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -428,82 +429,83 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-damian.png"
     },
     {
       "characterId": "celestino",
       "sheetPath": "assets/production-art/characters/celestino.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -511,8 +513,8 @@
       "bodyProfile": {
         "width": 26,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -533,82 +535,83 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-celestino.png"
     },
     {
       "characterId": "hernan",
       "sheetPath": "assets/production-art/characters/hernan.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -616,8 +619,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -638,82 +641,83 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-hernan.png"
     },
     {
       "characterId": "yamil",
       "sheetPath": "assets/production-art/characters/yamil.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -721,8 +725,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -743,82 +747,83 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-yamil.png"
     },
     {
       "characterId": "lorena",
       "sheetPath": "assets/production-art/characters/lorena.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -826,8 +831,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -848,82 +853,83 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-lorena.png"
     },
     {
       "characterId": "selene",
       "sheetPath": "assets/production-art/characters/selene.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
-          "fps": 5,
+          "endFrame": 5,
+          "fps": 6,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 10,
           "repeat": -1
         },
         "aim": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 17,
+          "startFrame": 20,
+          "endFrame": 22,
           "fps": 8,
           "repeat": -1
         },
         "shoot": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 27,
+          "startFrame": 30,
+          "endFrame": 34,
           "fps": 12,
           "repeat": 0
         },
         "reload": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 37,
+          "startFrame": 40,
+          "endFrame": 47,
           "fps": 9,
           "repeat": 0
         },
         "melee": {
           "row": 5,
-          "startFrame": 40,
-          "endFrame": 45,
+          "startFrame": 50,
+          "endFrame": 57,
           "fps": 12,
           "repeat": 0
         },
         "hurt": {
           "row": 6,
-          "startFrame": 48,
-          "endFrame": 50,
+          "startFrame": 60,
+          "endFrame": 63,
           "fps": 8,
           "repeat": 0
         },
         "death": {
           "row": 7,
-          "startFrame": 56,
-          "endFrame": 61,
+          "startFrame": 70,
+          "endFrame": 79,
           "fps": 7,
           "repeat": 0
         },
         "climb": {
           "row": 8,
-          "startFrame": 64,
-          "endFrame": 69,
+          "startFrame": 80,
+          "endFrame": 87,
           "fps": 9,
           "repeat": -1
         },
         "interact": {
           "row": 9,
-          "startFrame": 72,
-          "endFrame": 74,
+          "startFrame": 90,
+          "endFrame": 93,
           "fps": 7,
           "repeat": 0
         }
@@ -931,8 +937,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -953,47 +959,48 @@
       "shadowAnchor": {
         "x": 0,
         "y": 1
-      }
+      },
+      "portraitPath": "assets/production-art/ui/portrait-selene.png"
     },
     {
       "characterId": "zombie-guard",
       "sheetPath": "assets/production-art/zombies/zombie-guard.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
+          "endFrame": 5,
           "fps": 4,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 8,
           "repeat": -1
         },
         "attack": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 21,
+          "startFrame": 20,
+          "endFrame": 27,
           "fps": 9,
           "repeat": 0
         },
         "hurt": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 26,
+          "startFrame": 30,
+          "endFrame": 33,
           "fps": 7,
           "repeat": 0
         },
         "death": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 39,
+          "startFrame": 40,
+          "endFrame": 49,
           "fps": 6,
           "repeat": 0
         }
@@ -1001,8 +1008,8 @@
       "bodyProfile": {
         "width": 26,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -1028,42 +1035,42 @@
     {
       "characterId": "zombie-civil",
       "sheetPath": "assets/production-art/zombies/zombie-civil.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
+          "endFrame": 5,
           "fps": 4,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 8,
           "repeat": -1
         },
         "attack": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 21,
+          "startFrame": 20,
+          "endFrame": 27,
           "fps": 9,
           "repeat": 0
         },
         "hurt": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 26,
+          "startFrame": 30,
+          "endFrame": 33,
           "fps": 7,
           "repeat": 0
         },
         "death": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 39,
+          "startFrame": 40,
+          "endFrame": 49,
           "fps": 6,
           "repeat": 0
         }
@@ -1071,8 +1078,8 @@
       "bodyProfile": {
         "width": 22,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,
@@ -1098,42 +1105,42 @@
     {
       "characterId": "zombie-advanced",
       "sheetPath": "assets/production-art/zombies/zombie-advanced.png",
-      "frameWidth": 64,
-      "frameHeight": 96,
-      "footLine": 88,
+      "frameWidth": 80,
+      "frameHeight": 112,
+      "footLine": 104,
       "animations": {
         "idle": {
           "row": 0,
           "startFrame": 0,
-          "endFrame": 3,
+          "endFrame": 5,
           "fps": 4,
           "repeat": -1
         },
         "walk": {
           "row": 1,
-          "startFrame": 8,
-          "endFrame": 15,
+          "startFrame": 10,
+          "endFrame": 17,
           "fps": 8,
           "repeat": -1
         },
         "attack": {
           "row": 2,
-          "startFrame": 16,
-          "endFrame": 21,
+          "startFrame": 20,
+          "endFrame": 27,
           "fps": 9,
           "repeat": 0
         },
         "hurt": {
           "row": 3,
-          "startFrame": 24,
-          "endFrame": 26,
+          "startFrame": 30,
+          "endFrame": 33,
           "fps": 7,
           "repeat": 0
         },
         "death": {
           "row": 4,
-          "startFrame": 32,
-          "endFrame": 39,
+          "startFrame": 40,
+          "endFrame": 49,
           "fps": 6,
           "repeat": 0
         }
@@ -1141,8 +1148,8 @@
       "bodyProfile": {
         "width": 26,
         "height": 60,
-        "offsetX": 19,
-        "offsetY": 28
+        "offsetX": 27,
+        "offsetY": 44
       },
       "heldWeaponAnchor": {
         "x": 15,

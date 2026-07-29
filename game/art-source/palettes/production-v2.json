@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "transparent": "#00000000",
+  "outline": "#080b10",
+  "characters": {
+    "alan": [
+      "white",
+      "yellow"
+    ],
+    "giovanna": [
+      "black",
+      "magenta"
+    ],
+    "nahir": [
+      "red",
+      "pink"
+    ],
+    "damian": [
+      "brown",
+      "burgundy"
+    ],
+    "celestino": [
+      "brown",
+      "green"
+    ],
+    "hernan": [
+      "black",
+      "green"
+    ],
+    "yamil": [
+      "brown",
+      "orange"
+    ],
+    "lorena": [
+      "light-brown",
+      "turquoise"
+    ],
+    "selene": [
+      "black",
+      "gold"
+    ]
+  }
+}

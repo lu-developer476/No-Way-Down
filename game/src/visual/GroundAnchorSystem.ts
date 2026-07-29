@@ -4,7 +4,7 @@ import type { ProductionCharacterEntry } from './ProductionCharacterArt';
 export type WalkableSurface={left:number;right:number;top:number};
 export type GroundAnchorSnapshot={foot:{x:number;y:number};bodyBottom:number;shadow:{x:number;y:number};nameplate:{x:number;y:number};groundError:number;wholePixels:boolean};
 export class GroundAnchorSystem {
-  static readonly ORIGIN={x:32,y:88};
+  static readonly ORIGIN={x:40,y:104};
   static footPoint(actor:{x:number;y:number}){return{x:Math.round(actor.x),y:Math.round(actor.y)};}
   static apply(sprite:Phaser.Physics.Arcade.Sprite,entry:ProductionCharacterEntry):void {
     sprite.setScale(1).setDisplayOrigin(this.ORIGIN.x,this.ORIGIN.y).setBodySize(entry.bodyProfile.width,entry.bodyProfile.height).setOffset(entry.bodyProfile.offsetX,entry.bodyProfile.offsetY);

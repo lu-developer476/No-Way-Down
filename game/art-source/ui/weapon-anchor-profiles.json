@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 2,
+  "profiles": {
+    "pistol": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "revolver": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "smg": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "shotgun": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "carbine": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "sniper-rifle": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "light-machine-gun": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "knife": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "machete": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "sword": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    },
+    "tray-shield": {
+      "held": [
+        15,
+        -43
+      ],
+      "supportHand": [
+        8,
+        -40
+      ],
+      "holster": [
+        -13,
+        -38
+      ],
+      "muzzle": [
+        31,
+        -45
+      ],
+      "scale": 1,
+      "rotation": 0,
+      "flipBehavior": "mirror-x-keep-ground"
+    }
+  }
+}

@@ -4,6 +4,8 @@ import { Level10ParkingExplorationSystem } from './Level10ParkingExplorationSyst
 import level4ReverseRouteJson from '../../public/assets/levels/level4_reverse_route.json';
 import { ReverseRouteConfig, ReverseRouteSystem } from './ReverseRouteSystem';
 
+export const BANK_INTERIOR_ATLAS_PATH = 'assets/production-art/environments/bank-interior-kit.png';
+
 /** Sole production authority for photographic level backdrops and environment runtime systems. */
 export class EnvironmentSystem {
   private readonly instantiated: unknown[] = [];

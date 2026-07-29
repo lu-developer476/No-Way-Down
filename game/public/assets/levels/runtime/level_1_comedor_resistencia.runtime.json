@@ -187,5 +187,229 @@
       },
       "label": "Pasar a los pasillos"
     }
+  ],
+  "visualAtlas": "assets/production-art/environments/bank-interior-kit.png",
+  "visualIdentity": "comedor",
+  "visualLayers": [
+    {
+      "name": "Background",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:background",
+          "assetKey": "bank-interior-kit",
+          "frame": "institutional-wall",
+          "depth": -90,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            0.35,
+            1
+          ],
+          "visualRole": "Background"
+        }
+      ]
+    },
+    {
+      "name": "RearArchitecture",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:reararchitecture",
+          "assetKey": "bank-interior-kit",
+          "frame": "service-door",
+          "depth": -80,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "RearArchitecture"
+        }
+      ]
+    },
+    {
+      "name": "Architecture",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:architecture",
+          "assetKey": "bank-interior-kit",
+          "frame": "counter",
+          "depth": -70,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "Architecture"
+        }
+      ]
+    },
+    {
+      "name": "RearProps",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:rearprops",
+          "assetKey": "bank-interior-kit",
+          "frame": "table",
+          "depth": -60,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "RearProps"
+        }
+      ]
+    },
+    {
+      "name": "GameplayDecor",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:gameplaydecor",
+          "assetKey": "bank-interior-kit",
+          "frame": "chair",
+          "depth": -50,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "GameplayDecor"
+        }
+      ]
+    },
+    {
+      "name": "FrontProps",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:frontprops",
+          "assetKey": "bank-interior-kit",
+          "frame": "vending-machine",
+          "depth": -40,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "FrontProps"
+        }
+      ]
+    },
+    {
+      "name": "Foreground",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:foreground",
+          "assetKey": "bank-interior-kit",
+          "frame": "barricade",
+          "depth": -30,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "Foreground"
+        }
+      ]
+    },
+    {
+      "name": "LightAnchors",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:lightanchors",
+          "assetKey": "bank-interior-kit",
+          "frame": "damp",
+          "depth": -20,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "LightAnchors"
+        }
+      ]
+    },
+    {
+      "name": "ReflectionZones",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:reflectionzones",
+          "assetKey": "bank-interior-kit",
+          "frame": "lamp",
+          "depth": -10,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "ReflectionZones"
+        }
+      ]
+    },
+    {
+      "name": "AmbientZones",
+      "objects": [
+        {
+          "runtimeId": "level_1_comedor_resistencia:ambientzones",
+          "assetKey": "bank-interior-kit",
+          "frame": "foreground",
+          "depth": 0,
+          "anchor": [
+            0.5,
+            1
+          ],
+          "alpha": 1,
+          "tint": "#ffffff",
+          "scrollFactor": [
+            1,
+            1
+          ],
+          "visualRole": "AmbientZones"
+        }
+      ]
+    }
   ]
 }

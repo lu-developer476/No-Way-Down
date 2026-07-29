@@ -124,6 +124,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (new URLSearchParams(window.location.search).get('artGallery') === '1') { this.scene.start('ProductionArtGalleryScene'); return; }
     const audioManager = getAudioManager(this);
     this.registry.set('audioMuted', audioManager.isMuted());
     this.registry.set('audioVolume', audioManager.getVolumePercent());

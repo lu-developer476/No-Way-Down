@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "characterId": "celestino",
+  "canvas": [
+    80,
+    112
+  ],
+  "footLine": 104,
+  "origin": [
+    40,
+    104
+  ],
+  "baseFacing": "right",
+  "silhouette": "robust-defensive-pack",
+  "identityColors": [
+    "brown",
+    "green"
+  ],
+  "layers": [
+    "contact-shadow",
+    "rear-equipment",
+    "rear-leg",
+    "front-leg",
+    "boots",
+    "torso-volume",
+    "neck",
+    "face",
+    "hair",
+    "rear-arm",
+    "weapon",
+    "support-hand",
+    "front-arm",
+    "rim-light"
+  ],
+  "anatomy": {
+    "headRatio": 6,
+    "shoulderWidth": 18,
+    "hipWidth": 13,
+    "legArticulation": [
+      62,
+      79,
+      104
+    ]
+  },
+  "animationFrames": {
+    "idle": 6,
+    "walk": 8,
+    "aim": 3,
+    "shoot": 5,
+    "reload": 8,
+    "melee": 8,
+    "hurt": 4,
+    "death": 10,
+    "climb": 8,
+    "interact": 4
+  },
+  "anchors": {
+    "held": [
+      15,
+      -43
+    ],
+    "supportHand": [
+      8,
+      -40
+    ],
+    "holster": [
+      -13,
+      -38
+    ],
+    "muzzle": [
+      31,
+      -45
+    ]
+  }
+}

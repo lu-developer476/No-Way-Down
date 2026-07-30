@@ -3,50 +3,4760 @@
   "height": 40,
   "width": 300,
   "infinite": false,
-  "nextlayerid": 35,
-  "nextobjectid": 51,
+  "nextlayerid": 34,
+  "nextobjectid": 98,
   "orientation": "orthogonal",
   "renderorder": "right-down",
-  "tiledversion": "1.11.2",
+  "tiledversion": "1.10.2",
   "tileheight": 32,
   "tilewidth": 32,
   "type": "map",
   "version": "1.10",
   "layers": [
     {
-      "id": 2,
-      "name": "BackgroundReference",
+      "id": 1,
+      "name": "Sky",
       "type": "objectgroup",
       "draworder": "topdown",
+      "visible": true,
       "opacity": 1,
-      "visible": false,
+      "x": 0,
+      "y": 0,
       "objects": [
         {
           "id": 1,
-          "name": "reference-photo",
-          "type": "reference-photo",
-          "x": 0,
-          "y": 0,
-          "width": 9600,
-          "height": 1260,
+          "name": "level_10_exterior_urbano-sky-0",
+          "type": "Sky",
+          "x": 160,
+          "y": 420,
+          "width": 192,
+          "height": 128,
           "rotation": 0,
           "visible": true,
           "properties": [
             {
-              "name": "editorOnly",
-              "type": "bool",
-              "value": true
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-sky-0"
             },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-arrival"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Sky"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "level_10_exterior_urbano-sky-3",
+          "type": "Sky",
+          "x": 2800,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_10_exterior_urbano-reference"
+              "value": "level_10_exterior_urbano-sky-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "first-cover-line"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Sky"
             }
-          ],
-          "image": "../../../../../public/ground-floor-rivadavia-sector.jpg"
+          ]
+        },
+        {
+          "id": 3,
+          "name": "level_10_exterior_urbano-sky-6",
+          "type": "Sky",
+          "x": 5440,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-sky-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "central-resistance"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Sky"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "level_10_exterior_urbano-sky-9",
+          "type": "Sky",
+          "x": 8080,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-sky-9"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "rear-guard"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Sky"
+            }
+          ]
         }
-      ],
-      "locked": true,
+      ]
+    },
+    {
+      "id": 2,
+      "name": "DistantCity",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 5,
+          "name": "level_10_exterior_urbano-distantcity-2",
+          "type": "DistantCity",
+          "x": 1920,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantcity-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "initial-corner"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantCity"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "level_10_exterior_urbano-distantcity-5",
+          "type": "DistantCity",
+          "x": 4560,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantcity-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "independencia-intersection"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantCity"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "level_10_exterior_urbano-distantcity-8",
+          "type": "DistantCity",
+          "x": 7200,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantcity-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "east-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantCity"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "level_10_exterior_urbano-distantcity-11",
+          "type": "DistantCity",
+          "x": 9408,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantcity-11"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-return"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantCity"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "DistantArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 9,
+          "name": "level_10_exterior_urbano-distantarchitecture-1",
+          "type": "DistantArchitecture",
+          "x": 1040,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantarchitecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "duo-descent"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantArchitecture"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "level_10_exterior_urbano-distantarchitecture-4",
+          "type": "DistantArchitecture",
+          "x": 3680,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantarchitecture-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "metrobus-lane"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantArchitecture"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "level_10_exterior_urbano-distantarchitecture-7",
+          "type": "DistantArchitecture",
+          "x": 6320,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantarchitecture-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "west-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantArchitecture"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "level_10_exterior_urbano-distantarchitecture-10",
+          "type": "DistantArchitecture",
+          "x": 8960,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-distantarchitecture-10"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "final-push"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "DistantArchitecture"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Background",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 13,
+          "name": "level_10_exterior_urbano-background-0",
+          "type": "Background",
+          "x": 160,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-background-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-arrival"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Background"
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "name": "level_10_exterior_urbano-background-3",
+          "type": "Background",
+          "x": 2800,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-background-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "first-cover-line"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Background"
+            }
+          ]
+        },
+        {
+          "id": 15,
+          "name": "level_10_exterior_urbano-background-6",
+          "type": "Background",
+          "x": 5440,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-background-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "central-resistance"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Background"
+            }
+          ]
+        },
+        {
+          "id": 16,
+          "name": "level_10_exterior_urbano-background-9",
+          "type": "Background",
+          "x": 8080,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-background-9"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "rear-guard"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Background"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "RearArchitecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 17,
+          "name": "level_10_exterior_urbano-reararchitecture-2",
+          "type": "RearArchitecture",
+          "x": 1920,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-reararchitecture-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "initial-corner"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearArchitecture"
+            }
+          ]
+        },
+        {
+          "id": 18,
+          "name": "level_10_exterior_urbano-reararchitecture-5",
+          "type": "RearArchitecture",
+          "x": 4560,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-reararchitecture-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "independencia-intersection"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearArchitecture"
+            }
+          ]
+        },
+        {
+          "id": 19,
+          "name": "level_10_exterior_urbano-reararchitecture-8",
+          "type": "RearArchitecture",
+          "x": 7200,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-reararchitecture-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "east-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearArchitecture"
+            }
+          ]
+        },
+        {
+          "id": 20,
+          "name": "level_10_exterior_urbano-reararchitecture-11",
+          "type": "RearArchitecture",
+          "x": 9408,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-reararchitecture-11"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-return"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearArchitecture"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Architecture",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 21,
+          "name": "level_10_exterior_urbano-architecture-1",
+          "type": "Architecture",
+          "x": 1040,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-architecture-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "duo-descent"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Architecture"
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "level_10_exterior_urbano-architecture-4",
+          "type": "Architecture",
+          "x": 3680,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-architecture-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "metrobus-lane"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Architecture"
+            }
+          ]
+        },
+        {
+          "id": 23,
+          "name": "level_10_exterior_urbano-architecture-7",
+          "type": "Architecture",
+          "x": 6320,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-architecture-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "west-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Architecture"
+            }
+          ]
+        },
+        {
+          "id": 24,
+          "name": "level_10_exterior_urbano-architecture-10",
+          "type": "Architecture",
+          "x": 8960,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-architecture-10"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "final-push"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Architecture"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "StreetSurface",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 25,
+          "name": "level_10_exterior_urbano-streetsurface-0",
+          "type": "StreetSurface",
+          "x": 160,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-streetsurface-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-arrival"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "StreetSurface"
+            }
+          ]
+        },
+        {
+          "id": 26,
+          "name": "level_10_exterior_urbano-streetsurface-3",
+          "type": "StreetSurface",
+          "x": 2800,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-streetsurface-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "first-cover-line"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "StreetSurface"
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "name": "level_10_exterior_urbano-streetsurface-6",
+          "type": "StreetSurface",
+          "x": 5440,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-streetsurface-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "central-resistance"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "StreetSurface"
+            }
+          ]
+        },
+        {
+          "id": 28,
+          "name": "level_10_exterior_urbano-streetsurface-9",
+          "type": "StreetSurface",
+          "x": 8080,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-streetsurface-9"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "rear-guard"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "StreetSurface"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "RearVehicles",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 29,
+          "name": "level_10_exterior_urbano-rearvehicles-2",
+          "type": "RearVehicles",
+          "x": 1920,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearvehicles-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "initial-corner"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearVehicles"
+            }
+          ]
+        },
+        {
+          "id": 30,
+          "name": "level_10_exterior_urbano-rearvehicles-5",
+          "type": "RearVehicles",
+          "x": 4560,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearvehicles-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "independencia-intersection"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearVehicles"
+            }
+          ]
+        },
+        {
+          "id": 31,
+          "name": "level_10_exterior_urbano-rearvehicles-8",
+          "type": "RearVehicles",
+          "x": 7200,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearvehicles-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "east-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearVehicles"
+            }
+          ]
+        },
+        {
+          "id": 32,
+          "name": "level_10_exterior_urbano-rearvehicles-11",
+          "type": "RearVehicles",
+          "x": 9408,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearvehicles-11"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-return"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearVehicles"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "RearProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 33,
+          "name": "level_10_exterior_urbano-rearprops-1",
+          "type": "RearProps",
+          "x": 1040,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "duo-descent"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearProps"
+            }
+          ]
+        },
+        {
+          "id": 34,
+          "name": "level_10_exterior_urbano-rearprops-4",
+          "type": "RearProps",
+          "x": 3680,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearprops-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "metrobus-lane"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearProps"
+            }
+          ]
+        },
+        {
+          "id": 35,
+          "name": "level_10_exterior_urbano-rearprops-7",
+          "type": "RearProps",
+          "x": 6320,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearprops-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "west-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearProps"
+            }
+          ]
+        },
+        {
+          "id": 36,
+          "name": "level_10_exterior_urbano-rearprops-10",
+          "type": "RearProps",
+          "x": 8960,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-rearprops-10"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "final-push"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "RearProps"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "GameplayDecor",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 37,
+          "name": "level_10_exterior_urbano-gameplaydecor-0",
+          "type": "GameplayDecor",
+          "x": 160,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-gameplaydecor-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "traffic-light"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-arrival"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "GameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 38,
+          "name": "level_10_exterior_urbano-gameplaydecor-3",
+          "type": "GameplayDecor",
+          "x": 2800,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-gameplaydecor-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "first-cover-line"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "GameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 39,
+          "name": "level_10_exterior_urbano-gameplaydecor-6",
+          "type": "GameplayDecor",
+          "x": 5440,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-gameplaydecor-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "central-resistance"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "GameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 40,
+          "name": "level_10_exterior_urbano-gameplaydecor-9",
+          "type": "GameplayDecor",
+          "x": 8080,
+          "y": 520,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-gameplaydecor-9"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "rear-guard"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "GameplayDecor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "FrontVehicles",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 41,
+          "name": "level_10_exterior_urbano-frontvehicles-2",
+          "type": "FrontVehicles",
+          "x": 1920,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontvehicles-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "initial-corner"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontVehicles"
+            }
+          ]
+        },
+        {
+          "id": 42,
+          "name": "level_10_exterior_urbano-frontvehicles-5",
+          "type": "FrontVehicles",
+          "x": 4560,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontvehicles-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "independencia-intersection"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontVehicles"
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "name": "level_10_exterior_urbano-frontvehicles-8",
+          "type": "FrontVehicles",
+          "x": 7200,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontvehicles-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "east-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontVehicles"
+            }
+          ]
+        },
+        {
+          "id": 44,
+          "name": "level_10_exterior_urbano-frontvehicles-11",
+          "type": "FrontVehicles",
+          "x": 9408,
+          "y": 620,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontvehicles-11"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-return"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontVehicles"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "FrontProps",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 45,
+          "name": "level_10_exterior_urbano-frontprops-1",
+          "type": "FrontProps",
+          "x": 1040,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontprops-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "duo-descent"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontProps"
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "name": "level_10_exterior_urbano-frontprops-4",
+          "type": "FrontProps",
+          "x": 3680,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontprops-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "metrobus-lane"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontProps"
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "name": "level_10_exterior_urbano-frontprops-7",
+          "type": "FrontProps",
+          "x": 6320,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontprops-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "west-flank"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontProps"
+            }
+          ]
+        },
+        {
+          "id": 48,
+          "name": "level_10_exterior_urbano-frontprops-10",
+          "type": "FrontProps",
+          "x": 8960,
+          "y": 720,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-frontprops-10"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "final-push"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "FrontProps"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Foreground",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 49,
+          "name": "level_10_exterior_urbano-foreground-0",
+          "type": "Foreground",
+          "x": 160,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-foreground-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "independencia-intersection-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "stopped-bus"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "vehicle-arrival"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Foreground"
+            }
+          ]
+        },
+        {
+          "id": 50,
+          "name": "level_10_exterior_urbano-foreground-3",
+          "type": "Foreground",
+          "x": 2800,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-foreground-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-signage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "crosswalk"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "first-cover-line"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Foreground"
+            }
+          ]
+        },
+        {
+          "id": 51,
+          "name": "level_10_exterior_urbano-foreground-6",
+          "type": "Foreground",
+          "x": 5440,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-foreground-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "urban-damage-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "barricade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "central-resistance"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Foreground"
+            }
+          ]
+        },
+        {
+          "id": 52,
+          "name": "level_10_exterior_urbano-foreground-9",
+          "type": "Foreground",
+          "x": 8080,
+          "y": 420,
+          "width": 192,
+          "height": 128,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-foreground-9"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "buenos-aires-street-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "apartment-facade"
+            },
+            {
+              "name": "sector",
+              "type": "string",
+              "value": "rear-guard"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "Foreground"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "LightingAnchors",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 53,
+          "name": "level_10_exterior_urbano-light-0",
+          "type": "light",
+          "x": 400,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-light-0"
+            }
+          ]
+        },
+        {
+          "id": 54,
+          "name": "level_10_exterior_urbano-light-1",
+          "type": "light",
+          "x": 1900,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-light-1"
+            }
+          ]
+        },
+        {
+          "id": 55,
+          "name": "level_10_exterior_urbano-light-2",
+          "type": "light",
+          "x": 3400,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-light-2"
+            }
+          ]
+        },
+        {
+          "id": 56,
+          "name": "level_10_exterior_urbano-light-3",
+          "type": "light",
+          "x": 4900,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-light-3"
+            }
+          ]
+        },
+        {
+          "id": 57,
+          "name": "level_10_exterior_urbano-light-4",
+          "type": "light",
+          "x": 6400,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-light-4"
+            }
+          ]
+        },
+        {
+          "id": 58,
+          "name": "level_10_exterior_urbano-light-5",
+          "type": "light",
+          "x": 7900,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-light-5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "AmbientZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 59,
+          "name": "level_10_exterior_urbano-ambientzones",
+          "type": "zone",
+          "x": 0,
+          "y": 0,
+          "width": 9600,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-ambientzones"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "ReflectionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 60,
+          "name": "level_10_exterior_urbano-reflectionzones",
+          "type": "zone",
+          "x": 0,
+          "y": 0,
+          "width": 9600,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-reflectionzones"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "OcclusionZones",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 61,
+          "name": "level_10_exterior_urbano-occlusionzones",
+          "type": "zone",
+          "x": 0,
+          "y": 0,
+          "width": 9600,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-occlusionzones"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Collision",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 62,
+          "name": "level_10_exterior_urbano-street-floor",
+          "type": "collision",
+          "x": 0,
+          "y": 1120,
+          "width": 9600,
+          "height": 160,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "level_10_exterior_urbano-street-floor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "OneWayPlatforms",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": []
+    },
+    {
+      "id": 20,
+      "name": "PlayerSpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 63,
+          "name": "alan-spawn",
+          "type": "spawn",
+          "x": 300,
+          "y": 1030,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "alan-spawn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "AllySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 64,
+          "name": "giovanna-spawn",
+          "type": "spawn",
+          "x": 380,
+          "y": 1030,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "giovanna-spawn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "EnemySpawns",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 65,
+          "name": "street_north",
+          "type": "enemy-spawn",
+          "x": 4500,
+          "y": 150,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "street_north"
+            }
+          ]
+        },
+        {
+          "id": 66,
+          "name": "street_east",
+          "type": "enemy-spawn",
+          "x": 9250,
+          "y": 980,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "street_east"
+            }
+          ]
+        },
+        {
+          "id": 67,
+          "name": "street_west",
+          "type": "enemy-spawn",
+          "x": 80,
+          "y": 980,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "street_west"
+            }
+          ]
+        },
+        {
+          "id": 68,
+          "name": "street_rear",
+          "type": "enemy-spawn",
+          "x": 5000,
+          "y": 1030,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "street_rear"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "SpawnAreas",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": []
+    },
+    {
+      "id": 24,
+      "name": "Interactables",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": []
+    },
+    {
+      "id": 25,
+      "name": "Triggers",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": []
+    },
+    {
+      "id": 26,
+      "name": "Objectives",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 69,
+          "name": "eliminar_50_zombies_independencia",
+          "type": "objective",
+          "x": 500,
+          "y": 900,
+          "width": 8500,
+          "height": 220,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "eliminar_50_zombies_independencia"
+            },
+            {
+              "name": "label",
+              "type": "string",
+              "value": "BAJAS 0 / 50"
+            },
+            {
+              "name": "killTarget",
+              "type": "int",
+              "value": 50
+            },
+            {
+              "name": "requiredClues",
+              "type": "int",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Checkpoints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 70,
+          "name": "before-vehicle-descent",
+          "type": "checkpoint",
+          "x": 250,
+          "y": 900,
+          "width": 300,
+          "height": 220,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "before-vehicle-descent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Pickups",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 71,
+          "name": "ammo-west-once",
+          "type": "pickup",
+          "x": 2800,
+          "y": 1030,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "ammo-west-once"
+            }
+          ]
+        },
+        {
+          "id": 72,
+          "name": "medkit-center-once",
+          "type": "pickup",
+          "x": 5900,
+          "y": 1030,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "medkit-center-once"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Exits",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 73,
+          "name": "return-to-final-vehicle",
+          "type": "exit",
+          "x": 9000,
+          "y": 880,
+          "width": 300,
+          "height": 240,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "return-to-final-vehicle"
+            },
+            {
+              "name": "lockedUntil",
+              "type": "string",
+              "value": "eliminar_50_zombies_independencia"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "CameraBounds",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 74,
+          "name": "camera-vehicle-arrival",
+          "type": "camera-bounds",
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-vehicle-arrival"
+            }
+          ]
+        },
+        {
+          "id": 75,
+          "name": "camera-duo-descent",
+          "type": "camera-bounds",
+          "x": 800,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-duo-descent"
+            }
+          ]
+        },
+        {
+          "id": 76,
+          "name": "camera-initial-corner",
+          "type": "camera-bounds",
+          "x": 1600,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-initial-corner"
+            }
+          ]
+        },
+        {
+          "id": 77,
+          "name": "camera-first-cover-line",
+          "type": "camera-bounds",
+          "x": 2400,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-first-cover-line"
+            }
+          ]
+        },
+        {
+          "id": 78,
+          "name": "camera-metrobus-lane",
+          "type": "camera-bounds",
+          "x": 3200,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-metrobus-lane"
+            }
+          ]
+        },
+        {
+          "id": 79,
+          "name": "camera-independencia-intersection",
+          "type": "camera-bounds",
+          "x": 4000,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-independencia-intersection"
+            }
+          ]
+        },
+        {
+          "id": 80,
+          "name": "camera-central-resistance",
+          "type": "camera-bounds",
+          "x": 4800,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-central-resistance"
+            }
+          ]
+        },
+        {
+          "id": 81,
+          "name": "camera-west-flank",
+          "type": "camera-bounds",
+          "x": 5600,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-west-flank"
+            }
+          ]
+        },
+        {
+          "id": 82,
+          "name": "camera-east-flank",
+          "type": "camera-bounds",
+          "x": 6400,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-east-flank"
+            }
+          ]
+        },
+        {
+          "id": 83,
+          "name": "camera-rear-guard",
+          "type": "camera-bounds",
+          "x": 7200,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-rear-guard"
+            }
+          ]
+        },
+        {
+          "id": 84,
+          "name": "camera-final-push",
+          "type": "camera-bounds",
+          "x": 8000,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-final-push"
+            }
+          ]
+        },
+        {
+          "id": 85,
+          "name": "camera-vehicle-return",
+          "type": "camera-bounds",
+          "x": 8640,
+          "y": 0,
+          "width": 960,
+          "height": 1280,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "camera-vehicle-return"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "name": "NavigationHints",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": true,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 86,
+          "name": "nav-vehicle-arrival",
+          "type": "navigation",
+          "x": 400,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-vehicle-arrival"
+            }
+          ]
+        },
+        {
+          "id": 87,
+          "name": "nav-duo-descent",
+          "type": "navigation",
+          "x": 1200,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-duo-descent"
+            }
+          ]
+        },
+        {
+          "id": 88,
+          "name": "nav-initial-corner",
+          "type": "navigation",
+          "x": 2000,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-initial-corner"
+            }
+          ]
+        },
+        {
+          "id": 89,
+          "name": "nav-first-cover-line",
+          "type": "navigation",
+          "x": 2800,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-first-cover-line"
+            }
+          ]
+        },
+        {
+          "id": 90,
+          "name": "nav-metrobus-lane",
+          "type": "navigation",
+          "x": 3600,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-metrobus-lane"
+            }
+          ]
+        },
+        {
+          "id": 91,
+          "name": "nav-independencia-intersection",
+          "type": "navigation",
+          "x": 4400,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-independencia-intersection"
+            }
+          ]
+        },
+        {
+          "id": 92,
+          "name": "nav-central-resistance",
+          "type": "navigation",
+          "x": 5200,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-central-resistance"
+            }
+          ]
+        },
+        {
+          "id": 93,
+          "name": "nav-west-flank",
+          "type": "navigation",
+          "x": 6000,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-west-flank"
+            }
+          ]
+        },
+        {
+          "id": 94,
+          "name": "nav-east-flank",
+          "type": "navigation",
+          "x": 6800,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-east-flank"
+            }
+          ]
+        },
+        {
+          "id": 95,
+          "name": "nav-rear-guard",
+          "type": "navigation",
+          "x": 7600,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-rear-guard"
+            }
+          ]
+        },
+        {
+          "id": 96,
+          "name": "nav-final-push",
+          "type": "navigation",
+          "x": 8400,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-final-push"
+            }
+          ]
+        },
+        {
+          "id": 97,
+          "name": "nav-vehicle-return",
+          "type": "navigation",
+          "x": 9200,
+          "y": 1000,
+          "width": 64,
+          "height": 64,
+          "rotation": 0,
+          "visible": true,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "nav-vehicle-return"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "BackgroundReference",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "visible": false,
+      "opacity": 1,
+      "x": 0,
+      "y": 0,
+      "objects": [],
       "properties": [
         {
           "name": "editorOnly",
@@ -56,1223 +4766,14 @@
       ]
     },
     {
-      "id": 3,
-      "name": "Background",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 29,
-          "name": "context-wall",
-          "type": "visual",
-          "x": 0,
-          "y": 860,
-          "width": 9600,
-          "height": 420,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "wall-damaged"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "background"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "salida-banco"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -50
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-29"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 31,
-      "name": "DistantArchitecture",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 30,
-          "name": "distant-depth",
-          "type": "visual",
-          "x": 768,
-          "y": 780,
-          "width": 8064,
-          "height": 260,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "exit-door"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "distantArchitecture"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "salida-banco"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -40
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-30"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "name": "RearArchitecture",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 5,
-      "name": "Architecture",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 31,
-          "name": "salida-banco-architecture",
-          "type": "visual",
-          "x": 840,
-          "y": 950,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "exit-door"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "architecture"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "salida-banco"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-31"
-            }
-          ]
-        },
-        {
-          "id": 32,
-          "name": "calle-bloqueada-architecture",
-          "type": "visual",
-          "x": 3240,
-          "y": 950,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "wall-damaged"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "architecture"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "calle-bloqueada"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-32"
-            }
-          ]
-        },
-        {
-          "id": 33,
-          "name": "combate-architecture",
-          "type": "visual",
-          "x": 5640,
-          "y": 950,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "security-bars"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "architecture"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "combate"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-33"
-            }
-          ]
-        },
-        {
-          "id": 34,
-          "name": "evacuacion-architecture",
-          "type": "visual",
-          "x": 8040,
-          "y": 950,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "service-door"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "architecture"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "evacuacion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-34"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "name": "RearProps",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 41,
-          "name": "upper-services",
-          "type": "visual",
-          "x": 2688,
-          "y": 850,
-          "width": 220,
-          "height": 64,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "pipe-bundle"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "rearProp"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "calle-bloqueada"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -5
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-41"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "name": "GameplayDecor",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 35,
-          "name": "salida-banco-decor-1",
-          "type": "visual",
-          "x": 1040,
-          "y": 1134,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "bank-signage"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "salida-banco"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-35"
-            }
-          ]
-        },
-        {
-          "id": 36,
-          "name": "calle-bloqueada-decor-2",
-          "type": "visual",
-          "x": 2640,
-          "y": 1162,
-          "width": 180,
-          "height": 48,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "debris"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "calle-bloqueada"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-36"
-            }
-          ]
-        },
-        {
-          "id": 37,
-          "name": "combate-decor-3",
-          "type": "visual",
-          "x": 4240,
-          "y": 1162,
-          "width": 180,
-          "height": 48,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "blood-smear"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "combate"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-37"
-            }
-          ]
-        },
-        {
-          "id": 38,
-          "name": "evacuacion-decor-4",
-          "type": "visual",
-          "x": 5840,
-          "y": 1134,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "broken-furniture"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "evacuacion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-38"
-            }
-          ]
-        },
-        {
-          "id": 39,
-          "name": "evacuacion-decor-5",
-          "type": "visual",
-          "x": 7440,
-          "y": 1162,
-          "width": 180,
-          "height": 48,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "paper-cluster"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "evacuacion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-39"
-            }
-          ]
-        },
-        {
-          "id": 40,
-          "name": "evacuacion-decor-6",
-          "type": "visual",
-          "x": 9040,
-          "y": 1134,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "exit-sign"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "evacuacion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-40"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "name": "FrontProps",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 42,
-          "name": "route-damage",
-          "type": "visual",
-          "x": 5568,
-          "y": 1185,
-          "width": 180,
-          "height": 40,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "floor-damage"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "frontProp"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "combate"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 6
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-42"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 9,
-      "name": "Foreground",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 43,
-          "name": "foreground-left",
-          "type": "visual",
-          "x": 192,
-          "y": 980,
-          "width": 90,
-          "height": 260,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "foreground-column"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "foreground"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "salida-banco"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-43"
-            }
-          ]
-        },
-        {
-          "id": 44,
-          "name": "foreground-right",
-          "type": "visual",
-          "x": 8448,
-          "y": 1010,
-          "width": 150,
-          "height": 230,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "assetKey",
-              "type": "string",
-              "value": "foreground-bars"
-            },
-            {
-              "name": "visualRole",
-              "type": "string",
-              "value": "foreground"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "evacuacion"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-44"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 10,
-      "name": "LightingAnchors",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 48,
-          "name": "practical-light-1",
-          "type": "light-anchor",
-          "x": 2112,
-          "y": 890,
-          "width": 1,
-          "height": 1,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "lightAnchorId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-light-1"
-            },
-            {
-              "name": "tint",
-              "type": "string",
-              "value": "0xffd27a"
-            },
-            {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-48"
-            }
-          ]
-        },
-        {
-          "id": 49,
-          "name": "practical-light-2",
-          "type": "light-anchor",
-          "x": 4992,
-          "y": 890,
-          "width": 1,
-          "height": 1,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "lightAnchorId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-light-2"
-            },
-            {
-              "name": "tint",
-              "type": "string",
-              "value": "0xb9d8ff"
-            },
-            {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-49"
-            }
-          ]
-        },
-        {
-          "id": 50,
-          "name": "practical-light-3",
-          "type": "light-anchor",
-          "x": 7680,
-          "y": 890,
-          "width": 1,
-          "height": 1,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "lightAnchorId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-light-3"
-            },
-            {
-              "name": "tint",
-              "type": "string",
-              "value": "0xffd27a"
-            },
-            {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-50"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 34,
-      "name": "OcclusionZones",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 47,
-          "name": "localized-darkness",
-          "type": "occlusion-zone",
-          "x": 6528,
-          "y": 880,
-          "width": 1536,
-          "height": 300,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "alpha",
-              "type": "float",
-              "value": 0.18
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-47"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": 33,
-      "name": "ReflectionZones",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 46,
-          "name": "wet-floor",
-          "type": "reflection-zone",
-          "x": 3360,
-          "y": 1150,
-          "width": 2880,
-          "height": 70,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "reflectionStrength",
-              "type": "float",
-              "value": 0.28
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-46"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 32,
-      "name": "AmbientZones",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 45,
-          "name": "ambient-main",
-          "type": "ambient-zone",
-          "x": 0,
-          "y": 0,
-          "width": 9600,
-          "height": 1280,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "tint",
-              "type": "string",
-              "value": "0x18212a"
-            },
-            {
-              "name": "alpha",
-              "type": "float",
-              "value": 0.22
-            },
-            {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-visual-45"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 12,
-      "name": "Collision",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 11,
-          "name": "floor",
-          "type": "floor",
-          "x": 0,
-          "y": 1186,
-          "width": 9600,
-          "height": 74,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-floor"
-            },
-            {
-              "name": "collisionCategory",
-              "type": "string",
-              "value": "World"
-            },
-            {
-              "name": "collisionMask",
-              "type": "string",
-              "value": "Player|Ally|Enemy|Projectile"
-            },
-            {
-              "name": "sensor",
-              "type": "bool",
-              "value": false
-            },
-            {
-              "name": "floorId",
-              "type": "string",
-              "value": "floor-30"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 13,
-      "name": "OneWayPlatforms",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 14,
       "name": "Stairs",
       "type": "objectgroup",
       "draworder": "topdown",
-      "opacity": 1,
       "visible": true,
-      "objects": []
-    },
-    {
-      "id": 16,
-      "name": "PlayerSpawns",
-      "type": "objectgroup",
-      "draworder": "topdown",
       "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 15,
-          "name": "default-spawn",
-          "type": "default-spawn",
-          "x": 220,
-          "y": 1100,
-          "width": 40,
-          "height": 72,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-spawn-default"
-            },
-            {
-              "name": "spawnId",
-              "type": "string",
-              "value": "default"
-            },
-            {
-              "name": "floorId",
-              "type": "string",
-              "value": "floor-30"
-            },
-            {
-              "name": "elevation",
-              "type": "float",
-              "value": 0
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 17,
-      "name": "AllySpawns",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 18,
-      "name": "EnemySpawns",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 19,
-      "name": "SpawnAreas",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 20,
-      "name": "Interactables",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 21,
-      "name": "Triggers",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 23,
-      "name": "Objectives",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 22,
-          "name": "eliminar_50_zombies_independencia",
-          "type": "eliminar_50_zombies_independencia",
-          "x": 380,
-          "y": 1004,
-          "width": 48,
-          "height": 48,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "eliminar_50_zombies_independencia"
-            },
-            {
-              "name": "objectiveId",
-              "type": "string",
-              "value": "eliminar_50_zombies_independencia"
-            },
-            {
-              "name": "targetId",
-              "type": "string",
-              "value": "exit-level_10_exterior_urbano"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 24,
-      "name": "Checkpoints",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 25,
-      "name": "Pickups",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": []
-    },
-    {
-      "id": 27,
-      "name": "Exits",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 26,
-          "name": "exit-level_10_exterior_urbano",
-          "type": "exit-level_10_exterior_urbano",
-          "x": 9420,
-          "y": 1066,
-          "width": 100,
-          "height": 120,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "exit-level_10_exterior_urbano"
-            },
-            {
-              "name": "interactionId",
-              "type": "string",
-              "value": "exit-level_10_exterior_urbano"
-            },
-            {
-              "name": "connectorId",
-              "type": "string",
-              "value": "exit-level_10_exterior_urbano"
-            },
-            {
-              "name": "targetNodeId",
-              "type": "string",
-              "value": "lvl10-cin02-cierre-duo-final-en-san-telmo"
-            },
-            {
-              "name": "targetConnectorId",
-              "type": "string",
-              "value": "default"
-            },
-            {
-              "name": "enabledByObjectiveId",
-              "type": "string",
-              "value": "eliminar_50_zombies_independencia"
-            },
-            {
-              "name": "sensor",
-              "type": "bool",
-              "value": true
-            },
-            {
-              "name": "prompt",
-              "type": "string",
-              "value": "Usar salida"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 29,
-      "name": "CameraBounds",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
-      "objects": [
-        {
-          "id": 28,
-          "name": "camera-bounds",
-          "type": "camera-bounds",
-          "x": 0,
-          "y": 0,
-          "width": 9600,
-          "height": 1260,
-          "rotation": 0,
-          "visible": true,
-          "properties": [
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_10_exterior_urbano-camera"
-            },
-            {
-              "name": "editorOnly",
-              "type": "bool",
-              "value": false
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 30,
-      "name": "NavigationHints",
-      "type": "objectgroup",
-      "draworder": "topdown",
-      "opacity": 1,
-      "visible": true,
+      "x": 0,
+      "y": 0,
       "objects": []
     }
   ],
@@ -1280,7 +4781,7 @@
     {
       "name": "schemaVersion",
       "type": "int",
-      "value": 1
+      "value": 2
     },
     {
       "name": "nodeId",
@@ -1300,22 +4801,67 @@
     {
       "name": "locationId",
       "type": "string",
-      "value": "level10_exterior_urbano"
+      "value": "avenida_independencia"
+    },
+    {
+      "name": "targetNodeId",
+      "type": "string",
+      "value": "lvl10-cin02-cierre-duo-final-en-san-telmo"
+    },
+    {
+      "name": "defaultCameraZoom",
+      "type": "float",
+      "value": 1.34
+    },
+    {
+      "name": "gravityScale",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "environmentProfile",
+      "type": "string",
+      "value": "independencia-exterior"
+    },
+    {
+      "name": "environmentAtlasIds",
+      "type": "string",
+      "value": "independencia-intersection-kit,buenos-aires-street-kit,urban-damage-kit,urban-signage-kit"
+    },
+    {
+      "name": "vehicleId",
+      "type": "string",
+      "value": "garage-survivor-utility-01"
+    },
+    {
+      "name": "combatProfileId",
+      "type": "string",
+      "value": "street-horde"
+    },
+    {
+      "name": "combatExpected",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "checkpointPolicy",
+      "type": "string",
+      "value": "full-objective-reset"
     },
     {
       "name": "locationLabel",
       "type": "string",
-      "value": "level_10_exterior_urbano"
+      "value": "Avenida Independencia"
     },
     {
       "name": "floorId",
       "type": "string",
-      "value": "floor-30"
+      "value": "exterior-final-avenue"
     },
     {
       "name": "floorLabel",
       "type": "string",
-      "value": "Piso canónico 30"
+      "value": "Avenida Independencia"
     },
     {
       "name": "canonicalIndex",
@@ -1330,48 +4876,28 @@
     {
       "name": "exitConnectorId",
       "type": "string",
-      "value": "exit-level_10_exterior_urbano"
-    },
-    {
-      "name": "targetNodeId",
-      "type": "string",
-      "value": "lvl10-cin02-cierre-duo-final-en-san-telmo"
-    },
-    {
-      "name": "defaultCameraZoom",
-      "type": "float",
-      "value": 1.34
-    },
-    {
-      "name": "gravityScale",
-      "type": "float",
-      "value": 1
+      "value": "return-to-final-vehicle"
     },
     {
       "name": "referencePhotoPath",
-      "type": "file",
-      "value": "public/ground-floor-rivadavia-sector.jpg"
+      "type": "string",
+      "value": ""
     },
     {
       "name": "runtimeBackgroundPath",
-      "type": "file",
+      "type": "string",
       "value": ""
     },
     {
       "name": "supportsVerticalCamera",
       "type": "bool",
-      "value": true
+      "value": false
     },
     {
       "name": "musicProfile",
       "type": "string",
-      "value": "campaign-default"
-    },
-    {
-      "name": "environmentProfile",
-      "type": "string",
-      "value": "level10_exterior_urbano"
+      "value": "finale-exterior"
     }
   ],
-  "backgroundcolor": "#111827"
+  "backgroundcolor": "#263641"
 }

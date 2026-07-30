@@ -4,6 +4,7 @@ import {
 } from './sceneShared';
 import { GameDifficulty, InitialRunSetup, PlayableProtagonist, saveInitialRunSetup } from '../run/InitialRunSetup';
 import { clearRunForNewGame } from './sceneShared';
+import { loadCampaignCompletion } from './sceneShared';
 import { getAudioManager } from '../audio/AudioManager';
 import { SceneFlowManager } from './SceneFlowManager';
 import { controlManager } from '../input/ControlManager';
@@ -133,7 +134,7 @@ export class MainMenuScene extends Phaser.Scene {
         action: () => this.openSetupFlow()
       },
       {
-        label: 'Continuar',
+        label: loadCampaignCompletion() ? 'Campaña completada' : 'Continuar',
         action: () => this.continueRun()
       },
       {

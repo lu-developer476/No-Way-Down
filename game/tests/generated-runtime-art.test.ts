@@ -11,7 +11,7 @@ test('generated production art is ignored and no longer configured for LFS',()=>
  assert.equal(existsSync(resolve(repo,'.gitattributes'))?readFileSync(resolve(repo,'.gitattributes'),'utf8').includes('production-art'):false,false);
 });
 test('all expected runtime raster files are valid deterministic RGBA outputs',()=>{
- assert.equal(config.assets.length,36);for(const asset of config.assets){const bytes=readFileSync(resolve(repo,asset.path));assert.deepEqual([...bytes.subarray(0,8)],[137,80,78,71,13,10,26,10]);assert.equal(bytes[25],6);assert.equal(createHash('sha256').update(bytes).digest('hex'),asset.sha256)}
+ assert.equal(config.assets.length,48);for(const asset of config.assets){const bytes=readFileSync(resolve(repo,asset.path));assert.deepEqual([...bytes.subarray(0,8)],[137,80,78,71,13,10,26,10]);assert.equal(bytes[25],6);assert.equal(createHash('sha256').update(bytes).digest('hex'),asset.sha256)}
 });
 test('every human and infected owns a distinct generated sheet',()=>{
  const expected=['alan','giovanna','nahir','damian','celestino','hernan','yamil','lorena','selene','zombie-guard','zombie-civil','zombie-advanced'];

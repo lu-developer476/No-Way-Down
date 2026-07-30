@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "paseo-colon-metrobus-kit",
+  "frameSize": 64,
+  "palette": [
+    "#16151b",
+    "#473c42",
+    "#765c4d",
+    "#a98762",
+    "#d4bf91"
+  ],
+  "frames": [
+    {
+      "frameId": "exclusive-lane",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "platform",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "shelter",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "sign-support",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "traffic-light",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "fence",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "stopped-bus",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "wide-sidewalk",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "high-rise",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "side-access",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "curb",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "drain",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "damaged-pavement",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  ]
+}

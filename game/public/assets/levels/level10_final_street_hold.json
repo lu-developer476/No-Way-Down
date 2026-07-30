@@ -8,13 +8,15 @@
   "objectiveLabel": "Alan y Giovanna deben cubrirse y eliminar 50 zombies para continuar.",
   "killTarget": 50,
   "survivors": {
-    "protagonistId": "protagonist_main",
-    "allyId": "ally_black_hair"
+    "protagonistId": "alan",
+    "allyId": "giovanna"
   },
   "timer": {
     "durationMs": 300000,
     "warningThresholdMs": 60000,
-    "format": "mm:ss"
+    "format": "mm:ss",
+    "meaning": "phase-pressure-and-warning-only",
+    "defeatOnExpiry": false
   },
   "spawnPhases": [
     {
@@ -65,5 +67,10 @@
     "killTarget": 50
   },
   "combatProfileId": "street-horde",
-  "combatExpected": true
+  "combatExpected": true,
+  "checkpointPolicy": {
+    "id": "before-vehicle-descent",
+    "reload": "full-objective-reset",
+    "partialProgressPersisted": false
+  }
 }

@@ -1,0 +1,1 @@
+{"schemaVersion":1,"profiles":{"independencia":{"loops":["wind","damaged-traffic-light","small-fire","metal","distant-moans","urban-echo"],"oneshots":["engine","gunshots"],"completionTransition":"post-battle-silence"},"san-telmo":{"loops":["narrow-wind","shutters","cables","radio-static","distant-infected"],"oneshots":["wood","footsteps"],"shutdown":"stop-all-loops"}}}

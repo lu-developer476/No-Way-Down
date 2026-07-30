@@ -7,7 +7,7 @@ import { inflateSync } from 'node:zlib';
 const repo = resolve(import.meta.dirname, '../..');
 const game = resolve(repo, 'game');
 const config = JSON.parse(readFileSync(resolve(game, 'config/generated-production-art.json'), 'utf8'));
-const allowedRoots = ['characters', 'zombies', 'weapons', 'ui', 'environments'].map((part) => `game/public/assets/production-art/${part}/`);
+const allowedRoots = ['characters', 'zombies', 'weapons', 'ui', 'environments', 'vehicles', 'cinematics'].map((part) => `game/public/assets/production-art/${part}/`);
 const failures = [];
 const discovered = [];
 const walk = (dir) => {

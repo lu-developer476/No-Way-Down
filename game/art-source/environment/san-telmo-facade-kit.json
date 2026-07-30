@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "san-telmo-facade-kit",
+  "frameSize": 64,
+  "palette": [
+    "#16151b",
+    "#473c42",
+    "#765c4d",
+    "#a98762",
+    "#d4bf91"
+  ],
+  "frames": [
+    {
+      "frameId": "old-facade",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "low-house",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "iron-balcony",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "tall-door",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "shuttered-window",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "cornice",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "brick-wall",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "worn-plaster",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "closed-bar",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "passage",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "visible-patio",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "terrace",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "lantern",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "awning",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "recent-survivor-mark",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  ]
+}

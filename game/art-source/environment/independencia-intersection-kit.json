@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "independencia-intersection-kit",
+  "frameSize": 64,
+  "palette": [
+    "#0d1820",
+    "#21404b",
+    "#4d6b68",
+    "#9a784e",
+    "#d9b86c"
+  ],
+  "frames": [
+    {
+      "frameId": "crosswalk",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "traffic-light",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "avenue-sign-support",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "corner-shop",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "closed-shutter",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "barricade",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "evacuation-debris",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "playable-cover",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "enemy-entry",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "foreground-awning",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  ]
+}

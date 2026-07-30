@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "final-survivor-vehicle",
+  "palette": [
+    "#101820",
+    "#304552",
+    "#69828c",
+    "#b69b73",
+    "#d4c8a9"
+  ],
+  "vehicleId": "garage-survivor-utility-01",
+  "visualFrame": "survivor-utility-side",
+  "damageState": "garage-worn",
+  "fuelState": "reserve",
+  "doorState": "closed",
+  "occupantAnchors": {
+    "alan": {
+      "x": 0.38,
+      "y": 0.42
+    },
+    "giovanna": {
+      "x": 0.62,
+      "y": 0.42
+    }
+  },
+  "headlightAnchors": [
+    {
+      "x": 0.91,
+      "y": 0.61
+    }
+  ],
+  "wheelAnchors": [
+    {
+      "x": 0.25,
+      "y": 0.82
+    },
+    {
+      "x": 0.75,
+      "y": 0.82
+    }
+  ],
+  "cameraAnchor": {
+    "x": 0.5,
+    "y": 0.45
+  },
+  "frames": [
+    {
+      "frameId": "survivor-utility-side",
+      "floorContact": 56,
+      "wheelBase": 32,
+      "collisionReference": "final-vehicle-cover",
+      "foregroundMask": "vehicle-cabin",
+      "doorAnchor": {
+        "x": 0.62,
+        "y": 0.55
+      },
+      "trunkAnchor": {
+        "x": 0.08,
+        "y": 0.5
+      },
+      "coverProfile": "medium-full",
+      "damagedVariant": "survivor-utility-damaged",
+      "burntVariant": "survivor-utility-burnt"
+    },
+    {
+      "frameId": "survivor-utility-damaged"
+    },
+    {
+      "frameId": "survivor-utility-burnt"
+    }
+  ]
+}

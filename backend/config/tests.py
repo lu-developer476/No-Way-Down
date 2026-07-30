@@ -13,7 +13,7 @@ class FrontendRoutingTests(TestCase):
         self.assertEqual(payload['status'], 'ok')
         self.assertEqual(
             set(payload),
-            {'status', 'application', 'environment', 'backendSha', 'frontendSha', 'renderCommit', 'branch', 'buildId', 'builtAt', 'canonicalNodeCount'},
+            {'status', 'application', 'environment', 'backendSha', 'frontendSha', 'sourceSha', 'deployCommit', 'renderCommit', 'repositoryProvider', 'branch', 'buildId', 'builtAt', 'canonicalNodeCount'},
         )
         serialized = response.content.lower()
         for sensitive in (b'secret', b'token', b'password', b'database_url', b'internal path'):

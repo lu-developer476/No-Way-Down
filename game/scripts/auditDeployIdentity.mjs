@@ -14,7 +14,10 @@ if (existsSync(infoPath)) {
   try { info = JSON.parse(readFileSync(infoPath, 'utf8')); } catch { failures.push('dist/build-info.json is invalid JSON'); }
 }
 if (info) {
-  if (!/^[0-9a-f]{40}$/i.test(info.frontendSha)) failures.push('frontendSha must be a 40-character hexadecimal SHA');
+  if (!/^[0-9a-f]{40}$/i.test(info.sourceSha)) failures.push('sourceSha must be a 40-character hexadecimal SHA');
+  if (info.frontendSha !== info.sourceSha) failures.push('frontendSha must equal sourceSha');
+  if (!/^[0-9a-f]{40}$/i.test(info.deployCommit)) failures.push('deployCommit must be a 40-character hexadecimal SHA');
+  if (!['github', 'gitlab', 'unknown'].includes(info.repositoryProvider)) failures.push('repositoryProvider is invalid');
   if (process.env.NWD_BUILD_SHA && info.frontendSha !== process.env.NWD_BUILD_SHA) failures.push(`frontendSha ${info.frontendSha} does not match NWD_BUILD_SHA ${process.env.NWD_BUILD_SHA}`);
   if (info.canonicalNodeCount !== 35) failures.push(`canonicalNodeCount must be 35, received ${info.canonicalNodeCount}`);
   if (!info.buildId || !info.builtAt) failures.push('buildId and builtAt must identify the current build');

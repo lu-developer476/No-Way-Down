@@ -34,7 +34,8 @@
     "audit:production-art-v2": "node scripts/auditProductionArtV2.mjs",
     "audit:upper-floor-production": "node scripts/auditUpperFloorProduction.mjs",
     "audit:lower-basement-garage": "node scripts/auditLowerBasementGarageProduction.mjs",
-    "audit:final-exterior-campaign": "node scripts/auditFinalExteriorCampaign.mjs"
+    "audit:final-exterior-campaign": "node scripts/auditFinalExteriorCampaign.mjs",
+    "audit:gitlab-mirror": "node scripts/auditGitLabMirror.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

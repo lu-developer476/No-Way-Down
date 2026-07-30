@@ -4,7 +4,7 @@
   "width": 263,
   "infinite": false,
   "nextlayerid": 39,
-  "nextobjectid": 55,
+  "nextobjectid": 115,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",
@@ -64,40 +64,65 @@
       "visible": true,
       "objects": [
         {
-          "id": 33,
-          "name": "context-wall",
-          "type": "visual",
+          "id": 55,
+          "name": "desc-bg",
+          "type": "environment",
           "x": 0,
-          "y": 764,
-          "width": 8416,
-          "height": 420,
-          "rotation": 0,
+          "y": 0,
+          "width": 8400,
+          "height": 1180,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "desc-bg"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-damaged"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "damaged-cladding"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -30
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "background"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "subsuelo-2"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -50
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-33"
             }
           ]
         }
@@ -112,40 +137,65 @@
       "visible": true,
       "objects": [
         {
-          "id": 34,
-          "name": "distant-depth",
-          "type": "visual",
-          "x": 673,
-          "y": 684,
-          "width": 7069,
-          "height": 260,
-          "rotation": 0,
+          "id": 56,
+          "name": "deep-shaft",
+          "type": "environment",
+          "x": 0,
+          "y": 0,
+          "width": 8000,
+          "height": 900,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "deep-shaft"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-damaged"
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "dark-void"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": -20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "distantArchitecture"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "subsuelo-2"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": -40
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-34"
             }
           ]
         }
@@ -158,7 +208,620 @@
       "draworder": "topdown",
       "opacity": 1,
       "visible": true,
-      "objects": []
+      "objects": [
+        {
+          "id": 57,
+          "name": "sector-wall-0",
+          "type": "environment",
+          "x": 220,
+          "y": 350,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "concrete-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "id": 58,
+          "name": "sector-wall-1",
+          "type": "environment",
+          "x": 1100,
+          "y": 430,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "concrete-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "id": 59,
+          "name": "sector-wall-2",
+          "type": "environment",
+          "x": 2000,
+          "y": 520,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "concrete-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "3"
+            }
+          ]
+        },
+        {
+          "id": 60,
+          "name": "sector-wall-3",
+          "type": "environment",
+          "x": 2920,
+          "y": 610,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "concrete-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "4"
+            }
+          ]
+        },
+        {
+          "id": 61,
+          "name": "sector-wall-4",
+          "type": "environment",
+          "x": 3820,
+          "y": 700,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "concrete-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "5"
+            }
+          ]
+        },
+        {
+          "id": 62,
+          "name": "sector-wall-5",
+          "type": "environment",
+          "x": 4740,
+          "y": 790,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "concrete-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "6"
+            }
+          ]
+        },
+        {
+          "id": 63,
+          "name": "sector-wall-6",
+          "type": "environment",
+          "x": 5680,
+          "y": 880,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "fractured-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "7"
+            }
+          ]
+        },
+        {
+          "id": 64,
+          "name": "sector-wall-7",
+          "type": "environment",
+          "x": 6660,
+          "y": 944,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "fractured-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "8"
+            }
+          ]
+        },
+        {
+          "id": 65,
+          "name": "sector-wall-8",
+          "type": "environment",
+          "x": 7656,
+          "y": 944,
+          "width": 760,
+          "height": 240,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "sector-wall-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "fractured-wall"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 5
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "9"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 5,
@@ -169,20 +832,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 35,
-          "name": "subsuelo-2-architecture",
-          "type": "visual",
-          "x": 736,
-          "y": 854,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
+          "id": 66,
+          "name": "landing-0",
+          "type": "environment",
+          "x": 220,
+          "y": 350,
+          "width": 640,
+          "height": 48,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-0"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "wall-damaged"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "drain"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -190,37 +893,72 @@
               "value": "architecture"
             },
             {
-              "name": "sector",
+              "name": "sectorId",
               "type": "string",
-              "value": "subsuelo-2"
+              "value": "1"
             },
             {
-              "name": "depth",
+              "name": "floorContactY",
               "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-35"
+              "value": 350
             }
           ]
         },
         {
-          "id": 36,
-          "name": "tunel-humedo-architecture",
-          "type": "visual",
-          "x": 2840,
-          "y": 854,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
+          "id": 67,
+          "name": "landing-1",
+          "type": "environment",
+          "x": 1100,
+          "y": 430,
+          "width": 640,
+          "height": 48,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-1"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "security-bars"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "drain"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -228,37 +966,72 @@
               "value": "architecture"
             },
             {
-              "name": "sector",
+              "name": "sectorId",
               "type": "string",
-              "value": "tunel-humedo"
+              "value": "2"
             },
             {
-              "name": "depth",
+              "name": "floorContactY",
               "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-36"
+              "value": 430
             }
           ]
         },
         {
-          "id": 37,
-          "name": "servicios-architecture",
-          "type": "visual",
-          "x": 4944,
-          "y": 854,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
+          "id": 68,
+          "name": "landing-2",
+          "type": "environment",
+          "x": 2000,
+          "y": 520,
+          "width": 640,
+          "height": 48,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-2"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "service-door"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "drain"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -266,37 +1039,72 @@
               "value": "architecture"
             },
             {
-              "name": "sector",
+              "name": "sectorId",
               "type": "string",
-              "value": "servicios"
+              "value": "3"
             },
             {
-              "name": "depth",
+              "name": "floorContactY",
               "type": "int",
-              "value": -15
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-37"
+              "value": 520
             }
           ]
         },
         {
-          "id": 38,
-          "name": "descenso-architecture",
-          "type": "visual",
-          "x": 7048,
-          "y": 854,
-          "width": 340,
-          "height": 210,
-          "rotation": 0,
+          "id": 69,
+          "name": "landing-3",
+          "type": "environment",
+          "x": 2920,
+          "y": 610,
+          "width": 640,
+          "height": 48,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-3"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "stairs-end"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "drain"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -304,19 +1112,379 @@
               "value": "architecture"
             },
             {
-              "name": "sector",
+              "name": "sectorId",
               "type": "string",
-              "value": "descenso"
+              "value": "4"
+            },
+            {
+              "name": "floorContactY",
+              "type": "int",
+              "value": 610
+            }
+          ]
+        },
+        {
+          "id": 70,
+          "name": "landing-4",
+          "type": "environment",
+          "x": 3820,
+          "y": 700,
+          "width": 640,
+          "height": 48,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "drain"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -15
+              "value": 10
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "5"
+            },
+            {
+              "name": "floorContactY",
+              "type": "int",
+              "value": 700
+            }
+          ]
+        },
+        {
+          "id": 71,
+          "name": "landing-5",
+          "type": "environment",
+          "x": 4740,
+          "y": 790,
+          "width": 640,
+          "height": 48,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-38"
+              "value": "landing-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "drain"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "6"
+            },
+            {
+              "name": "floorContactY",
+              "type": "int",
+              "value": 790
+            }
+          ]
+        },
+        {
+          "id": 72,
+          "name": "landing-6",
+          "type": "environment",
+          "x": 5680,
+          "y": 880,
+          "width": 640,
+          "height": 48,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-grate"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "7"
+            },
+            {
+              "name": "floorContactY",
+              "type": "int",
+              "value": 880
+            }
+          ]
+        },
+        {
+          "id": 73,
+          "name": "landing-7",
+          "type": "environment",
+          "x": 6660,
+          "y": 970,
+          "width": 640,
+          "height": 48,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-grate"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "8"
+            },
+            {
+              "name": "floorContactY",
+              "type": "int",
+              "value": 970
+            }
+          ]
+        },
+        {
+          "id": 74,
+          "name": "landing-8",
+          "type": "environment",
+          "x": 7776,
+          "y": 1080,
+          "width": 640,
+          "height": 48,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "landing-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-grate"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 10
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "architecture"
+            },
+            {
+              "name": "sectorId",
+              "type": "string",
+              "value": "9"
+            },
+            {
+              "name": "floorContactY",
+              "type": "int",
+              "value": 1080
             }
           ]
         }
@@ -331,40 +1499,569 @@
       "visible": true,
       "objects": [
         {
-          "id": 45,
-          "name": "upper-services",
-          "type": "visual",
-          "x": 2356,
-          "y": 754,
-          "width": 220,
+          "id": 75,
+          "name": "pipe-0",
+          "type": "environment",
+          "x": 330,
+          "y": 260,
+          "width": 64,
           "height": 64,
-          "rotation": 0,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-0"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "pipe-bundle"
+              "value": "lower-basement-kit"
             },
             {
-              "name": "visualRole",
+              "name": "frame",
               "type": "string",
-              "value": "rearProp"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "tunel-humedo"
+              "value": "pipe"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": -5
+              "value": 12
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 76,
+          "name": "pipe-1",
+          "type": "environment",
+          "x": 1210,
+          "y": 340,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-45"
+              "value": "pipe-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 77,
+          "name": "pipe-2",
+          "type": "environment",
+          "x": 2110,
+          "y": 430,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 78,
+          "name": "pipe-3",
+          "type": "environment",
+          "x": 3030,
+          "y": 520,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 79,
+          "name": "pipe-4",
+          "type": "environment",
+          "x": 3930,
+          "y": 610,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 80,
+          "name": "pipe-5",
+          "type": "environment",
+          "x": 4850,
+          "y": 700,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 81,
+          "name": "pipe-6",
+          "type": "environment",
+          "x": 5790,
+          "y": 790,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "large-pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 82,
+          "name": "pipe-7",
+          "type": "environment",
+          "x": 6770,
+          "y": 880,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "large-pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 83,
+          "name": "pipe-8",
+          "type": "environment",
+          "x": 7930,
+          "y": 990,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "pipe-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "large-pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
             }
           ]
         }
@@ -379,230 +2076,569 @@
       "visible": true,
       "objects": [
         {
-          "id": 39,
-          "name": "subsuelo-2-decor-1",
-          "type": "visual",
-          "x": 912,
-          "y": 1038,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
+          "id": 84,
+          "name": "floor-sign-0",
+          "type": "environment",
+          "x": 100,
+          "y": 314,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-0"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "pipe-bundle"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-sign"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "subsuelo-2"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-39"
             }
           ]
         },
         {
-          "id": 40,
-          "name": "tunel-humedo-decor-2",
-          "type": "visual",
-          "x": 2314,
-          "y": 1038,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
+          "id": 85,
+          "name": "floor-sign-1",
+          "type": "environment",
+          "x": 980,
+          "y": 394,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-1"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "humidity"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-sign"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "tunel-humedo"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-40"
             }
           ]
         },
         {
-          "id": 41,
-          "name": "servicios-decor-3",
-          "type": "visual",
-          "x": 3717,
-          "y": 1066,
-          "width": 180,
-          "height": 48,
-          "rotation": 0,
+          "id": 86,
+          "name": "floor-sign-2",
+          "type": "environment",
+          "x": 1880,
+          "y": 484,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-2"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "wet-strip"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-sign"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "servicios"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-41"
             }
           ]
         },
         {
-          "id": 42,
-          "name": "descenso-decor-4",
-          "type": "visual",
-          "x": 5120,
-          "y": 1038,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
+          "id": 87,
+          "name": "floor-sign-3",
+          "type": "environment",
+          "x": 2800,
+          "y": 574,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-3"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "cable-tray"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-sign"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "descenso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-42"
             }
           ]
         },
         {
-          "id": 43,
-          "name": "descenso-decor-5",
-          "type": "visual",
-          "x": 6522,
-          "y": 1038,
-          "width": 180,
-          "height": 76,
-          "rotation": 0,
+          "id": 88,
+          "name": "floor-sign-4",
+          "type": "environment",
+          "x": 3700,
+          "y": 664,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-4"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "emergency-light"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-sign"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "gameplayDecor"
-            },
-            {
-              "name": "sector",
-              "type": "string",
-              "value": "descenso"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 2
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-43"
             }
           ]
         },
         {
-          "id": 44,
-          "name": "descenso-decor-6",
-          "type": "visual",
-          "x": 7925,
-          "y": 1066,
-          "width": 180,
-          "height": 48,
-          "rotation": 0,
+          "id": 89,
+          "name": "floor-sign-5",
+          "type": "environment",
+          "x": 4620,
+          "y": 754,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-5"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "debris"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "floor-sign"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
               "type": "string",
               "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 90,
+          "name": "floor-sign-6",
+          "type": "environment",
+          "x": 5560,
+          "y": 844,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-6"
             },
             {
-              "name": "sector",
+              "name": "assetKey",
               "type": "string",
-              "value": "descenso"
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "evacuation-mark"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": 2
+              "value": 12
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 91,
+          "name": "floor-sign-7",
+          "type": "environment",
+          "x": 6540,
+          "y": 934,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-44"
+              "value": "floor-sign-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "evacuation-mark"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
+            }
+          ]
+        },
+        {
+          "id": 92,
+          "name": "floor-sign-8",
+          "type": "environment",
+          "x": 7700,
+          "y": 1044,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "floor-sign-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "evacuation-mark"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 12
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "gameplayDecor"
             }
           ]
         }
@@ -617,20 +2653,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 46,
-          "name": "route-damage",
-          "type": "visual",
-          "x": 4881,
-          "y": 1089,
-          "width": 180,
-          "height": 40,
-          "rotation": 0,
+          "id": 93,
+          "name": "final-heavy-door",
+          "type": "environment",
+          "x": 8120,
+          "y": 1024,
+          "width": 96,
+          "height": 160,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "final-heavy-door"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "floor-damage"
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "heavy-door"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 20
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -638,19 +2714,14 @@
               "value": "frontProp"
             },
             {
-              "name": "sector",
+              "name": "connectorId",
               "type": "string",
-              "value": "servicios"
+              "value": "escalera-subsuelo-3"
             },
             {
-              "name": "depth",
-              "type": "int",
-              "value": 6
-            },
-            {
-              "name": "runtimeId",
+              "name": "direction",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-46"
+              "value": "down"
             }
           ]
         }
@@ -665,20 +2736,60 @@
       "visible": true,
       "objects": [
         {
-          "id": 47,
-          "name": "foreground-left",
-          "type": "visual",
-          "x": 168,
-          "y": 884,
-          "width": 90,
-          "height": 260,
-          "rotation": 0,
+          "id": 94,
+          "name": "rail-0",
+          "type": "environment",
+          "x": 470,
+          "y": 350,
+          "width": 180,
+          "height": 100,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-0"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-column"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -686,37 +2797,67 @@
               "value": "foreground"
             },
             {
-              "name": "sector",
-              "type": "string",
-              "value": "subsuelo-2"
-            },
-            {
-              "name": "depth",
-              "type": "int",
-              "value": 80
-            },
-            {
-              "name": "runtimeId",
-              "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-47"
+              "name": "collision",
+              "type": "bool",
+              "value": false
             }
           ]
         },
         {
-          "id": 48,
-          "name": "foreground-right",
-          "type": "visual",
-          "x": 7406,
-          "y": 914,
-          "width": 150,
-          "height": 230,
-          "rotation": 0,
+          "id": 95,
+          "name": "rail-1",
+          "type": "environment",
+          "x": 1350,
+          "y": 430,
+          "width": 180,
+          "height": 100,
           "visible": true,
+          "rotation": 0,
           "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-1"
+            },
             {
               "name": "assetKey",
               "type": "string",
-              "value": "foreground-bars"
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "visualRole",
@@ -724,19 +2865,485 @@
               "value": "foreground"
             },
             {
-              "name": "sector",
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 96,
+          "name": "rail-2",
+          "type": "environment",
+          "x": 2250,
+          "y": 520,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
               "type": "string",
-              "value": "descenso"
+              "value": "rail-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
             },
             {
               "name": "depth",
               "type": "int",
-              "value": 80
+              "value": 40
             },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 97,
+          "name": "rail-3",
+          "type": "environment",
+          "x": 3170,
+          "y": 610,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-48"
+              "value": "rail-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 98,
+          "name": "rail-4",
+          "type": "environment",
+          "x": 4070,
+          "y": 700,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 99,
+          "name": "rail-5",
+          "type": "environment",
+          "x": 4990,
+          "y": 790,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 100,
+          "name": "rail-6",
+          "type": "environment",
+          "x": 5930,
+          "y": 880,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 101,
+          "name": "rail-7",
+          "type": "environment",
+          "x": 6910,
+          "y": 970,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "name": "rail-8",
+          "type": "environment",
+          "x": 8070,
+          "y": 1080,
+          "width": 180,
+          "height": 100,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "rail-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "lower-basement-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "technical-foreground"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 40
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "foreground"
+            },
+            {
+              "name": "collision",
+              "type": "bool",
+              "value": false
             }
           ]
         }
@@ -751,101 +3358,614 @@
       "visible": true,
       "objects": [
         {
-          "id": 52,
-          "name": "practical-light-1",
-          "type": "light-anchor",
-          "x": 1852,
-          "y": 794,
-          "width": 1,
-          "height": 1,
-          "rotation": 0,
+          "id": 103,
+          "name": "emergency-0",
+          "type": "environment",
+          "x": 220,
+          "y": 180,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
             {
-              "name": "lightAnchorId",
+              "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-light-1"
+              "value": "emergency-0"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "tint",
               "type": "string",
-              "value": "0xffd27a"
+              "value": "#ffffff"
             },
             {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
             },
             {
-              "name": "runtimeId",
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-52"
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
             }
           ]
         },
         {
-          "id": 53,
-          "name": "practical-light-2",
-          "type": "light-anchor",
-          "x": 4376,
-          "y": 794,
-          "width": 1,
-          "height": 1,
-          "rotation": 0,
+          "id": 104,
+          "name": "emergency-1",
+          "type": "environment",
+          "x": 1100,
+          "y": 260,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
             {
-              "name": "lightAnchorId",
+              "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-light-2"
+              "value": "emergency-1"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "tint",
               "type": "string",
-              "value": "0xb9d8ff"
+              "value": "#ffffff"
             },
             {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
             },
             {
-              "name": "runtimeId",
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-53"
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
             }
           ]
         },
         {
-          "id": 54,
-          "name": "practical-light-3",
-          "type": "light-anchor",
-          "x": 6733,
-          "y": 794,
-          "width": 1,
-          "height": 1,
-          "rotation": 0,
+          "id": 105,
+          "name": "emergency-2",
+          "type": "environment",
+          "x": 2000,
+          "y": 350,
+          "width": 64,
+          "height": 64,
           "visible": true,
+          "rotation": 0,
           "properties": [
             {
-              "name": "lightAnchorId",
+              "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-light-3"
+              "value": "emergency-2"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
             },
             {
               "name": "tint",
               "type": "string",
-              "value": "0xffd27a"
+              "value": "#ffffff"
             },
             {
-              "name": "qualityTier",
-              "type": "string",
-              "value": "balanced"
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
             },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
+            }
+          ]
+        },
+        {
+          "id": 106,
+          "name": "emergency-3",
+          "type": "environment",
+          "x": 2920,
+          "y": 440,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-54"
+              "value": "emergency-3"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
+            }
+          ]
+        },
+        {
+          "id": 107,
+          "name": "emergency-4",
+          "type": "environment",
+          "x": 3820,
+          "y": 530,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "emergency-4"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
+            }
+          ]
+        },
+        {
+          "id": 108,
+          "name": "emergency-5",
+          "type": "environment",
+          "x": 4740,
+          "y": 620,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "emergency-5"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
+            }
+          ]
+        },
+        {
+          "id": 109,
+          "name": "emergency-6",
+          "type": "environment",
+          "x": 5680,
+          "y": 710,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "emergency-6"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
+            }
+          ]
+        },
+        {
+          "id": 110,
+          "name": "emergency-7",
+          "type": "environment",
+          "x": 6660,
+          "y": 800,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "emergency-7"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
+            }
+          ]
+        },
+        {
+          "id": 111,
+          "name": "emergency-8",
+          "type": "environment",
+          "x": 7820,
+          "y": 910,
+          "width": 64,
+          "height": 64,
+          "visible": true,
+          "rotation": 0,
+          "properties": [
+            {
+              "name": "runtimeId",
+              "type": "string",
+              "value": "emergency-8"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "industrial-lighting-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "emergency-on"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 25
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "lighting"
+            },
+            {
+              "name": "lightProfile",
+              "type": "string",
+              "value": "timed-descent-emergency"
             }
           ]
         }
@@ -860,25 +3980,70 @@
       "visible": true,
       "objects": [
         {
-          "id": 51,
-          "name": "localized-darkness",
-          "type": "occlusion-zone",
-          "x": 5723,
-          "y": 784,
-          "width": 1347,
-          "height": 300,
-          "rotation": 0,
+          "id": 114,
+          "name": "pipe-occlusion",
+          "type": "environment",
+          "x": 5200,
+          "y": 730,
+          "width": 300,
+          "height": 220,
           "visible": true,
+          "rotation": 0,
           "properties": [
-            {
-              "name": "alpha",
-              "type": "float",
-              "value": 0.18
-            },
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-51"
+              "value": "pipe-occlusion"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "large-pipe"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 38
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "occlusion"
+            },
+            {
+              "name": "fadeAlpha",
+              "type": "float",
+              "value": 0.45
             }
           ]
         }
@@ -893,25 +4058,70 @@
       "visible": true,
       "objects": [
         {
-          "id": 50,
-          "name": "wet-floor",
-          "type": "reflection-zone",
-          "x": 2946,
-          "y": 1054,
-          "width": 2525,
-          "height": 70,
-          "rotation": 0,
+          "id": 113,
+          "name": "flood-reflection",
+          "type": "environment",
+          "x": 7300,
+          "y": 1035,
+          "width": 1000,
+          "height": 60,
           "visible": true,
+          "rotation": 0,
           "properties": [
-            {
-              "name": "reflectionStrength",
-              "type": "float",
-              "value": 0.28
-            },
             {
               "name": "runtimeId",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-50"
+              "value": "flood-reflection"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "flooded-floor"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 8
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
+            },
+            {
+              "name": "alpha",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "tint",
+              "type": "string",
+              "value": "#ffffff"
+            },
+            {
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
+              "type": "string",
+              "value": "reflection"
+            },
+            {
+              "name": "localized",
+              "type": "bool",
+              "value": true
             }
           ]
         }
@@ -926,35 +4136,70 @@
       "visible": true,
       "objects": [
         {
-          "id": 49,
-          "name": "ambient-main",
-          "type": "ambient-zone",
-          "x": 0,
-          "y": 0,
-          "width": 8416,
-          "height": 1184,
-          "rotation": 0,
+          "id": 112,
+          "name": "steam-zone",
+          "type": "environment",
+          "x": 6500,
+          "y": 860,
+          "width": 1200,
+          "height": 260,
           "visible": true,
+          "rotation": 0,
           "properties": [
             {
-              "name": "tint",
+              "name": "runtimeId",
               "type": "string",
-              "value": "0x18212a"
+              "value": "steam-zone"
+            },
+            {
+              "name": "assetKey",
+              "type": "string",
+              "value": "subsoil-three-kit"
+            },
+            {
+              "name": "frame",
+              "type": "string",
+              "value": "steam-vent"
+            },
+            {
+              "name": "depth",
+              "type": "int",
+              "value": 8
+            },
+            {
+              "name": "anchor",
+              "type": "string",
+              "value": "0.5,1"
             },
             {
               "name": "alpha",
               "type": "float",
-              "value": 0.22
+              "value": 1.0
             },
             {
-              "name": "qualityTier",
+              "name": "tint",
               "type": "string",
-              "value": "balanced"
+              "value": "#ffffff"
             },
             {
-              "name": "runtimeId",
+              "name": "scrollFactorX",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "scrollFactorY",
+              "type": "float",
+              "value": 1.0
+            },
+            {
+              "name": "visualRole",
               "type": "string",
-              "value": "level_8_pasillo_subsuelo2_escaleras_subsuelo3-visual-49"
+              "value": "ambient"
+            },
+            {
+              "name": "effect",
+              "type": "string",
+              "value": "steam"
             }
           ]
         }
@@ -1476,12 +4721,12 @@
     {
       "name": "floorId",
       "type": "string",
-      "value": "floor-18"
+      "value": "subsoil-2-to-3"
     },
     {
       "name": "floorLabel",
       "type": "string",
-      "value": "Piso canónico 18"
+      "value": "Subsuelo 2 → Subsuelo 3"
     },
     {
       "name": "canonicalIndex",
@@ -1537,6 +4782,36 @@
       "name": "environmentProfile",
       "type": "string",
       "value": "level8_pasillo_subsuelo2_escaleras_subsuelo3"
+    },
+    {
+      "name": "environmentKitIds",
+      "type": "string",
+      "value": "lower-basement-kit,subsoil-three-kit,industrial-lighting-kit"
+    },
+    {
+      "name": "compositionSignature",
+      "type": "string",
+      "value": "timed-descent-nine-elevation-sectors"
+    },
+    {
+      "name": "productionComposition",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "lightingProfile",
+      "type": "string",
+      "value": "timed-descent-emergency"
+    },
+    {
+      "name": "minimapProfile",
+      "type": "string",
+      "value": "multi-height-descent"
+    },
+    {
+      "name": "descentSectorCount",
+      "type": "int",
+      "value": 9
     }
   ],
   "backgroundcolor": "#111827"

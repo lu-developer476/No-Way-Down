@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "garage-vehicle-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#0c1015",
+    "#26323d",
+    "#506276",
+    "#8b3735",
+    "#c9a96a"
+  ],
+  "frames": [
+    {
+      "frameId": "sedan",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "hatchback",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "van",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "pickup",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "security-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "abandoned-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "damaged-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "burned-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "chassis",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "open-door",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "open-hood",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "open-trunk",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "wheel",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "broken-glass",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true
+    }
+  ]
+}

@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "security-exit-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#10161b",
+    "#34434a",
+    "#64767c",
+    "#b4443f",
+    "#d6d6b4"
+  ],
+  "frames": [
+    {
+      "frameId": "control-post",
+      "category": "post",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "turnstile",
+      "category": "turnstile",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "card-reader",
+      "category": "reader",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "emergency-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "security-gate",
+      "category": "gate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "exit-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "evacuation-map",
+      "category": "map",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "camera",
+      "category": "camera",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "monitor",
+      "category": "monitor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "glass-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "barrier",
+      "category": "barrier",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "key-box",
+      "category": "box",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "electrical-control",
+      "category": "control",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "manual-lock",
+      "category": "lock",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "security-barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "blocked-sector",
+      "category": "sector",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    }
+  ]
+}

@@ -1,0 +1,592 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "parking-garage-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#101419",
+    "#303a42",
+    "#59636a",
+    "#b28b40",
+    "#dad4b9"
+  ],
+  "frames": [
+    {
+      "frameId": "garage-column",
+      "category": "column",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": true
+    },
+    {
+      "frameId": "garage-beam",
+      "category": "beam",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "ramp",
+      "category": "ramp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "concrete-floor",
+      "category": "floor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "parking-line",
+      "category": "line",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "sector-number",
+      "category": "number",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "parking-barrier",
+      "category": "barrier",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "guard-booth",
+      "category": "booth",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "garage-gate",
+      "category": "gate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "ventilation",
+      "category": "ventilation",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "garage-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "garage-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "parking-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "garage-stairs",
+      "category": "stairs",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "elevator",
+      "category": "elevator",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "garage-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "wheel-stop",
+      "category": "stop",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "convex-mirror",
+      "category": "mirror",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "cone",
+      "category": "cone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "fence",
+      "category": "fence",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "chain",
+      "category": "chain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "oil-stain",
+      "category": "stain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "garage-puddle",
+      "category": "puddle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "smoke",
+      "category": "smoke",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": true,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "column-foreground",
+      "category": "foreground",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    }
+  ]
+}

@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "utility-corridor-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#0d1519",
+    "#293b40",
+    "#4c6265",
+    "#ac7040",
+    "#c1b78c"
+  ],
+  "frames": [
+    {
+      "frameId": "service-corridor",
+      "category": "corridor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "technical-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "service-duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "service-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "cable-rack",
+      "category": "rack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "utility-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "numbered-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "service-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "tool-board",
+      "category": "board",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "locker",
+      "category": "locker",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "utility-cart",
+      "category": "cart",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "utility-crate",
+      "category": "crate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "extinguisher",
+      "category": "extinguisher",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "flooded-section",
+      "category": "section",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "damaged-section",
+      "category": "section",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "utility-foreground",
+      "category": "foreground",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    }
+  ]
+}

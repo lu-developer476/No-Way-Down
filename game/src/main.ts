@@ -34,6 +34,17 @@ declare global {
 window.__NWD_BUILD__ = buildInfo;
 console.info('[NoWayDown] Build', buildInfo);
 
+if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('buildInfo') === '1') {
+  void fetch('/api/build-info/', { cache: 'no-store' }).then((response) => response.json()).then((backend: { backendSha?: string }) => {
+    const mismatch = Boolean(backend.backendSha && backend.backendSha !== buildInfo.frontendSha);
+    const panel = document.createElement('pre');
+    panel.id = 'nwd-build-info';
+    panel.textContent = [`frontend ${buildInfo.frontendSha.slice(0, 7)}`, `backend ${(backend.backendSha ?? 'unknown').slice(0, 7)}`, `buildId ${buildInfo.buildId}`, buildInfo.builtAt, mismatch ? 'BUILD MISMATCH' : 'BUILD MATCH'].join('\n');
+    Object.assign(panel.style, { position: 'fixed', top: '8px', left: '8px', zIndex: '10000', background: '#111', color: mismatch ? '#ff5252' : '#8cff98', padding: '8px' });
+    document.body.append(panel);
+  });
+}
+
 if (!appContainer || !unsupportedScreen) {
   throw new Error('Missing required game container elements');
 }

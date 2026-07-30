@@ -1,12 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { chmodSync, cpSync, mkdtempSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { chmodSync, cpSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
 const sourceAudit = resolve(import.meta.dirname, '../scripts/auditNoBinaryDiff.mjs');
-const { getDetectedMimeType, isAllowedTextMimeType, isForbiddenMimeType } = await import('../scripts/auditNoBinaryDiff.mjs');
+const {
+  auditTextSource, containsBinaryWriteCall, containsEmbeddedBinaryPayload,
+  containsForbiddenGeneratorImport, containsImageEncodingCall, containsScreenshotCall,
+  getDetectedMimeType, isAllowedTextMimeType, isForbiddenMimeType,
+  resolveDiffBase,
+} = await import('../scripts/auditNoBinaryDiff.mjs');
 const git = (repo: string, ...args: string[]) => execFileSync('git', args, { cwd: repo, encoding: 'utf8' }).trim();
 
 function repository() {
@@ -40,15 +45,7 @@ test('uses a valid NWD_DIFF_BASE and permits a textual change', () => withReposi
   writeFileSync(join(root, 'allowed.txt'), 'text change\n');
   const result = audit(root, { NWD_DIFF_BASE: base });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /from NWD_DIFF_BASE/);
-}));
-
-test('uses origin/main when no local main branch exists', () => withRepository((root) => {
-  const base = git(root, 'rev-parse', 'HEAD');
-  git(root, 'update-ref', 'refs/remotes/origin/main', base);
-  const result = audit(root);
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /from origin\/main/);
+  assert.match(result.stdout, new RegExp(`base=${base}`));
 }));
 
 test('uses HEAD^ in a detached checkout without main', () => withRepository((root) => {
@@ -58,13 +55,13 @@ test('uses HEAD^ in a detached checkout without main', () => withRepository((roo
   git(root, 'checkout', '--detach');
   const result = audit(root);
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /from HEAD\^/);
+  assert.match(result.stdout, /event=local/);
 }));
 
 test('uses the empty tree for a single-commit history and a clean working tree', () => withRepository((root) => {
   const result = audit(root);
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stderr, /empty tree/);
+  assert.match(result.stdout, /base=4b825dc/);
 }));
 
 test('rejects a modified file with a binary extension', () => withRepository((root) => {
@@ -75,14 +72,14 @@ test('rejects a modified file with a binary extension', () => withRepository((ro
   writeFileSync(join(root, fixture), 'modified textual fixture\n');
   const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /binary extension changed/);
+  assert.match(result.stderr, /ruleId=binary-extension/);
 }));
 
 test('rejects an untracked file with a binary extension', () => withRepository((root) => {
   writeFileSync(join(root, ['added', 'webp'].join('.')), 'text fixture, not real binary data\n');
   const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /binary extension changed \(A\)/);
+  assert.match(result.stderr, /ruleId=binary-extension/);
 }));
 
 test('allows the documented textual MIME types', () => {
@@ -135,7 +132,7 @@ test('inspects Python and shell source for forbidden patterns', () => {
     writeFileSync(join(root, path), contents);
     const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /forbidden binary-generation pattern/);
+    assert.match(result.stderr, /ruleId=(?:pillow-import|ffmpeg)/);
   });
 });
 
@@ -143,7 +140,7 @@ test('rejects NUL content', () => withRepository((root) => {
   writeFileSync(join(root, 'nul.txt'), Buffer.from([0x74, 0x65, 0x78, 0x74, 0]));
   const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /NUL content detected/);
+  assert.match(result.stderr, /ruleId=nul-byte/);
 }));
 
 test('rejects a binary numstat entry without a binary fixture', () => withRepository((root) => {
@@ -155,7 +152,7 @@ test('rejects a binary numstat entry without a binary fixture', () => withReposi
   writeFileSync(join(root, 'binary-marked.txt'), 'entirely textual change\n');
   const result = audit(root, { NWD_DIFF_BASE: base });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /binary numstat entry/);
+  assert.match(result.stderr, /ruleId=binary-numstat/);
 }));
 
 test('uses fallback checks and warns when file(1) is unavailable', () => withRepository((root) => {
@@ -165,7 +162,7 @@ test('uses fallback checks and warns when file(1) is unavailable', () => withRep
     writeFileSync(join(root, 'allowed.txt'), 'text change\n');
     const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD'), PATH: bin });
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stderr, /file\(1\) is unavailable/);
+    assert.match(result.stderr, /file\(1\) unavailable/);
   } finally { rmSync(bin, { recursive: true, force: true }); }
 }));
 
@@ -190,4 +187,116 @@ test('requests MIME output and never classifies human text-executable descriptio
     assert.equal(execFileSync('wc', ['-l', calls], { encoding: 'utf8' }).trim().split(/\s+/)[0], '3');
     assert.match(execFileSync('cat', [calls], { encoding: 'utf8' }), /--brief --mime-type/);
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('allows legitimate export, audio, rendering, metadata, and documentation text', () => {
+  const allowed = [
+    ['profile.ts', 'export interface AudioProfile { audioLoops: string[] }'],
+    ['profile.ts', "export const profile = { audioLoops: ['wind'] }"],
+    ['camera.ts', 'const renderDistance = 800'],
+    ['sprite.ts', 'sprite.renderOrder = 3'],
+    ['metadata.ts', 'export type PngMetadata = { path: string }'],
+    ['README.md', '<!-- render audio profile and export png documentation -->'],
+    ['settings.json', '{"audio": true, "render": "webgl", "export": false}'],
+    ['minified.ts', "export const profile={audioLoops:['wind']};export const renderOrder=1"],
+    ['level.tmj', '{"type":"map","properties":[{"name":"audio","value":"wind"}]}'],
+    ['icon.svg', '<svg xmlns="http://www.w3.org/2000/svg"><text>render audio png</text></svg>'],
+  ];
+  for (const [path, source] of allowed) assert.equal(auditTextSource(path, source), null, `${path}: ${source}`);
+});
+
+test('allows the LowerBasementLightingProfiles textual source fixture', () => {
+  const fixture = readFileSync(resolve(import.meta.dirname, '../src/config/LowerBasementLightingProfiles.ts'), 'utf8');
+  assert.equal(auditTextSource('game/src/config/LowerBasementLightingProfiles.ts', fixture), null);
+});
+
+test('rejects concrete binary writes, encoders, and screenshots with actionable locations', () => {
+  const rejected = [
+    ['write.ts', 'writeFileSync("output.png", data)', 'binary-write'],
+    ['write.ts', 'writeFile("output.jpg", data)', 'binary-write'],
+    ['write.ts', 'fs.promises.writeFile("output.webp", data)', 'binary-write'],
+    ['canvas.ts', 'canvas.toDataURL()', 'canvas-encoding'],
+    ['canvas.ts', 'canvas.toBlob()', 'canvas-encoding'],
+    ['browser.ts', 'page.screenshot()', 'screenshot'],
+    ['browser.py', 'save_screenshot()', 'screenshot'],
+    ['image.ts', 'new PNG()', 'png-constructor'],
+    ['image.ts', 'Image.save("x")', 'image-object-write'],
+    ['image.ts', 'Image.write("x")', 'image-object-write'],
+  ];
+  for (const [path, source, ruleId] of rejected) {
+    const issue = auditTextSource(path, source);
+    assert.equal(issue?.ruleId, ruleId, source);
+    assert.equal(issue?.path, path);
+    assert.equal(issue?.line, 1);
+    assert.ok((issue?.column ?? 0) > 0);
+    assert.ok(issue?.fragment);
+  }
+  assert.equal(containsBinaryWriteCall('writeFileSync("output.png", data)'), true);
+  assert.equal(containsImageEncodingCall('canvas.toBlob()'), true);
+  assert.equal(containsScreenshotCall('page.screenshot()'), true);
+});
+
+test('rejects embedded image payloads and forbidden generator tools', () => {
+  for (const source of ['data:image/png;base64,AAAA', 'iVBORw0KGgoAAAANSUhEUgAAAAE']) {
+    assert.equal(containsEmbeddedBinaryPayload(source), true);
+    assert.ok(auditTextSource('game/src/payload.ts', source));
+  }
+  for (const source of ['from PIL import Image', 'import PIL', 'ImageMagick', 'ffmpeg -i input output.mp4']) {
+    assert.equal(containsForbiddenGeneratorImport('game/src/tool.py', source), true);
+    assert.ok(auditTextSource('game/src/tool.py', source));
+  }
+  assert.equal(containsForbiddenGeneratorImport('game/scripts/art/generator.py', 'from PIL import Image'), false);
+  assert.equal(auditTextSource('game/scripts/art/generator.py', 'from PIL import Image'), null);
+});
+
+function fakeResolver(refs: Record<string, string | null>, mergeBases: Record<string, string> = {}) {
+  return (...rawArgs: unknown[]) => {
+    const args = [...rawArgs];
+    const options = typeof args.at(-1) === 'object' ? args.pop() as { optional?: boolean } : {};
+    const [command, ...values] = args as string[];
+    if (command === 'rev-parse' && values[0] === 'HEAD') return refs.HEAD;
+    if (command === 'rev-parse' && values[0] === '--verify') {
+      const ref = values[1].replace(/\^\{commit\}$/, '');
+      const value = refs[ref];
+      if (value) return value;
+      if (options.optional) return null;
+      throw new Error(`missing ${ref}`);
+    }
+    if (command === 'merge-base') return mergeBases[`${values[0]}:${values[1]}`] ?? values[0];
+    throw new Error(`unexpected git call: ${args.join(' ')}`);
+  };
+}
+
+test('resolves the real pull request base and merge-base', () => {
+  const git = fakeResolver({ HEAD: 'head', prbase: 'base' }, { 'base:head': 'common' });
+  assert.deepEqual(resolveDiffBase({ env: { GITHUB_EVENT_NAME: 'pull_request', GITHUB_BASE_SHA: 'prbase' }, git }),
+    { event: 'pull_request', head: 'head', base: 'base', mergeBase: 'common', firstCommit: false });
+});
+
+test('resolves push, merge commit, and squash merge from the event before SHA', () => {
+  for (const label of ['push', 'merge commit', 'squash merge']) {
+    const git = fakeResolver({ HEAD: `head-${label}`, before: `before-${label}` });
+    const result = resolveDiffBase({ env: { GITHUB_EVENT_NAME: 'push', GITHUB_EVENT_BEFORE: 'before' }, git });
+    assert.equal(result.base, `before-${label}`);
+    assert.equal(result.mergeBase, `before-${label}`);
+  }
+});
+
+test('uses an explicit fetched base in a shallow checkout', () => {
+  const git = fakeResolver({ HEAD: 'shallow-head', fetched: 'fetched-base', 'HEAD^': null });
+  const result = resolveDiffBase({ env: { GITHUB_EVENT_NAME: 'pull_request', NWD_DIFF_BASE: 'fetched' }, git });
+  assert.equal(result.base, 'fetched-base');
+});
+
+test('falls back from an invalid event base to the real previous commit', () => {
+  const git = fakeResolver({ HEAD: 'head', invalid: null, 'HEAD^': 'parent' });
+  const result = resolveDiffBase({ env: { GITHUB_EVENT_NAME: 'push', GITHUB_EVENT_BEFORE: 'invalid' }, git });
+  assert.equal(result.base, 'parent');
+});
+
+test('uses the empty tree only for an actual first commit', () => {
+  const git = fakeResolver({ HEAD: 'only-commit', 'HEAD^': null });
+  const result = resolveDiffBase({ env: { GITHUB_EVENT_NAME: 'push', GITHUB_EVENT_BEFORE: '0000000000000000' }, git });
+  assert.equal(result.firstCommit, true);
+  assert.equal(result.base, '4b825dc642cb6eb9a060e54bf8d69288fbee4904');
 });

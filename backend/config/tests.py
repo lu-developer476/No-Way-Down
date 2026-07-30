@@ -13,7 +13,7 @@ class FrontendRoutingTests(TestCase):
         self.assertEqual(payload['status'], 'ok')
         self.assertEqual(
             set(payload),
-            {'status', 'application', 'environment', 'backendSha', 'frontendSha', 'buildId'},
+            {'status', 'application', 'environment', 'backendSha', 'frontendSha', 'renderCommit', 'branch', 'buildId', 'builtAt', 'canonicalNodeCount'},
         )
         serialized = response.content.lower()
         for sensitive in (b'secret', b'token', b'password', b'database_url', b'internal path'):
@@ -30,6 +30,35 @@ class FrontendRoutingTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers['Content-Type'], 'text/html')
         self.assertIn(b'No Way Down', b''.join(response.streaming_content))
+        self.assertEqual(response.headers['Cache-Control'], 'no-store, no-cache, must-revalidate')
+        self.assertEqual(response.headers['Pragma'], 'no-cache')
+        self.assertEqual(response.headers['Expires'], '0')
+        self.assertIn('X-NWD-Frontend-SHA', response.headers)
+
+    def test_frontend_build_info_is_not_cached(self):
+        with TemporaryDirectory() as temp_dir:
+            dist_dir = Path(temp_dir)
+            (dist_dir / 'build-info.json').write_text('{"frontendSha":"abc"}', encoding='utf-8')
+            with override_settings(FRONTEND_DIST_DIR=dist_dir, WHITENOISE_ROOT=dist_dir):
+                response = self.client.get('/build-info.json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers['Cache-Control'], 'no-store, no-cache, must-revalidate')
+
+    def test_backend_build_info_is_not_cached(self):
+        response = self.client.get('/api/build-info/')
+        self.assertEqual(response.headers['Cache-Control'], 'no-store, no-cache, must-revalidate')
+        self.assertIn('X-NWD-Backend-SHA', response.headers)
+        self.assertIn('X-NWD-Frontend-SHA', response.headers)
+
+    def test_hashed_vite_assets_keep_long_cache(self):
+        with TemporaryDirectory() as temp_dir:
+            dist_dir = Path(temp_dir)
+            (dist_dir / 'assets').mkdir()
+            (dist_dir / 'assets' / 'index-AbCdEf12.js').write_text('console.log("ok")', encoding='utf-8')
+            with override_settings(FRONTEND_DIST_DIR=dist_dir, WHITENOISE_ROOT=dist_dir):
+                response = self.client.get('/assets/index-AbCdEf12.js')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers['Cache-Control'], 'public, max-age=31536000, immutable')
 
     def test_api_health_still_returns_json(self):
         response = self.client.get('/api/health/')

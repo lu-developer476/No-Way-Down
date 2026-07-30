@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Text-only production browser gate for the canonical runtime."""
 from __future__ import annotations
-import json, os, pathlib, unittest, urllib.error, urllib.request
+import json, os, pathlib, re, unittest, urllib.error, urllib.request
 from datetime import datetime, timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -10,13 +10,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 BASE_URL=os.getenv('E2E_BASE_URL','http://127.0.0.1:8000').rstrip('/')
 RESULTS=pathlib.Path(__file__).resolve().parents[1]/'test-results'
-EXPECTED_KEYS={'sha','shortSha','builtAt','mode','version'}
+EXPECTED_KEYS={'frontendSha','branch','buildId','builtAt','canonicalNodeCount','generatedArtCount','packageVersion','sha','shortSha','mode','version'}
 FORBIDDEN=('uncaught','unhandled','failed to load resource','fataltransition','campaign load error','json.parse')
 
 def http_get(path):
  try:
-  with urllib.request.urlopen(BASE_URL+path,timeout=20) as response:return response.status,response.headers.get('Content-Type',''),response.read()
- except urllib.error.HTTPError as error:return error.code,error.headers.get('Content-Type',''),error.read()
+  with urllib.request.urlopen(BASE_URL+path,timeout=20) as response:return response.status,response.headers,response.read()
+ except urllib.error.HTTPError as error:return error.code,error.headers,error.read()
 
 class ProductionE2E(unittest.TestCase):
  @classmethod
@@ -71,11 +71,11 @@ class ProductionE2E(unittest.TestCase):
  def get_menu_state(self):
   return self.js("""const state=window.__NWD_GAME__?.registry?.get('mainMenuState');if(!state||typeof state!=='object')return null;return {ready:state.ready===true,selectedIndex:Number.isInteger(state.selectedIndex)?state.selectedIndex:null,selectedAction:typeof state.selectedAction==='string'?state.selectedAction:null,setupVisible:state.setupVisible===true,setupStep:typeof state.setupStep==='string'?state.setupStep:null,canContinue:state.canContinue===true}""") or {}
  def get_build_info(self):
-  return self.js("""const build=window.__NWD_BUILD__;if(!build||typeof build!=='object')return null;return {sha:typeof build.sha==='string'?build.sha:null,shortSha:typeof build.shortSha==='string'?build.shortSha:null,builtAt:typeof build.builtAt==='string'?build.builtAt:null,mode:typeof build.mode==='string'?build.mode:null,version:typeof build.version==='string'?build.version:null}""")
+  return self.js("""const build=window.__NWD_BUILD__;if(!build||typeof build!=='object')return null;return {sha:build.sha,shortSha:build.shortSha,builtAt:build.builtAt,mode:build.mode,version:build.version,frontendSha:build.frontendSha,branch:build.branch,buildId:build.buildId,canonicalNodeCount:build.canonicalNodeCount,generatedArtCount:build.generatedArtCount,packageVersion:build.packageVersion}""")
  def get_runtime_diagnostics(self):
   return self.js("""const diagnostics=window.__NWD_RUNTIME_DIAGNOSTICS__;if(!diagnostics)return null;return {nodeId:typeof diagnostics.nodeId==='string'?diagnostics.nodeId:null,runtimeLevelId:typeof diagnostics.runtimeLevelId==='string'?diagnostics.runtimeLevelId:null,physicsEngine:typeof diagnostics.physicsEngine==='string'?diagnostics.physicsEngine:null,matterBodyCount:Number.isFinite(diagnostics.matterBodyCount)?diagnostics.matterBodyCount:0,tiledMapPath:typeof diagnostics.tiledMapPath==='string'?diagnostics.tiledMapPath:null,currentObjective:typeof diagnostics.currentObjective==='string'?diagnostics.currentObjective:null,playerCount:Number.isFinite(diagnostics.playerCount)?diagnostics.playerCount:0,gameplayReady:diagnostics.gameplayReady===true,fatalError:diagnostics.fatalError?String(diagnostics.fatalError):null}""")
  def get_api_build_info(self):
-  status,ctype,body=http_get('/api/build-info/'); self.assertEqual(status,200); self.assertEqual(ctype.split(';')[0],'application/json'); return json.loads(body)
+  status,headers,body=http_get('/api/build-info/'); self.assertEqual(status,200); self.assertEqual(headers.get_content_type(),'application/json'); return json.loads(body)
  def clear_indexed_db(self):
   result=self.browser.execute_async_script("""const done=arguments[arguments.length-1];if(typeof indexedDB.databases!=='function'){done(true);return}indexedDB.databases().then(databases=>Promise.all(databases.filter(database=>typeof database.name==='string').map(database=>new Promise((resolve,reject)=>{const request=indexedDB.deleteDatabase(database.name);request.onsuccess=()=>resolve(true);request.onerror=()=>reject(new Error(`Could not delete ${database.name}`));request.onblocked=()=>reject(new Error(`Deletion blocked for ${database.name}`))})))).then(()=>done(true)).catch(error=>done({ok:false,message:String(error)}))""")
   if result is not True: self.fail(f'IndexedDB cleanup failed: {result}')
@@ -91,10 +91,16 @@ class ProductionE2E(unittest.TestCase):
   self.assertTrue(moved); self.wait.until(lambda _:self.js_boolean("const scene=window.__NWD_GAME__?.scene?.getScene('LevelScene');return scene?.runtime?.exitReady===true")); self.body().send_keys('e'); self.wait_for_node(next_node)
   if next_runtime: self.wait_for_scene('LevelScene'); self.wait_for_gameplay_ready(); self.wait_for_runtime(next_runtime)
  def test_01_routes_and_build_identity(self):
-  status,ctype,_=http_get('/'); self.assertEqual(status,200); self.assertIn('text/html',ctype); build=self.get_build_info(); self.assertEqual(set(build),EXPECTED_KEYS); self.assertTrue(all(isinstance(build[key],str) for key in EXPECTED_KEYS)); self.assertEqual(datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat(),datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat()); api=self.get_api_build_info(); expected=os.getenv('E2E_EXPECTED_SHA')
-  if expected: self.assertEqual(build['sha'],expected); self.assertEqual(api['backendSha'],expected)
-  if build['sha']!='unknown' and api['backendSha']!='unknown': self.assertEqual(build['sha'],api['backendSha'])
-  (RESULTS/'build-info.json').write_text(json.dumps({'frontend':build,'backend':api},indent=2))
+  status,root_headers,html=http_get('/'); self.assertEqual(status,200); self.assertEqual(root_headers.get_content_type(),'text/html'); build=self.get_build_info(); self.assertEqual(set(build),EXPECTED_KEYS); self.assertEqual(datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat(),datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat()); api=self.get_api_build_info(); info_status,_,info_body=http_get('/build-info.json'); self.assertEqual(info_status,200); artifact=json.loads(info_body); expected=os.getenv('E2E_EXPECTED_SHA')
+  identities={'/api/build-info/':api.get('backendSha'),'/build-info.json':artifact.get('frontendSha'),'/':root_headers.get('X-NWD-Frontend-SHA'),'window.__NWD_BUILD__':build.get('frontendSha')}
+  if expected:
+   for source,served in identities.items():
+    if served!=expected:self.fail(f'Expected {expected}, production serves {served} ({source})')
+  self.assertEqual(artifact,build); self.assertNotIn('BUILD MISMATCH',self.browser.find_element('tag name','body').text)
+  asset_urls=re.findall(rb'(?:src|href)="(/assets/[^"]+)"',html); self.assertTrue(asset_urls)
+  for url in asset_urls:
+   asset_status,_,asset_body=http_get(url.decode()); self.assertEqual(asset_status,200); self.assertTrue(asset_body)
+  (RESULTS/'build-info.json').write_text(json.dumps({'frontend':build,'artifact':artifact,'backend':api,'identities':identities},indent=2))
  def test_02_canonical_transitions(self):
   self.start_first_level(); diag=self.get_runtime_diagnostics(); self.assertEqual(diag['physicsEngine'],'matter'); self.assertGreater(diag['matterBodyCount'],0); self.assertTrue(diag['tiledMapPath']); self.assertTrue(diag['currentObjective']); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); self.advance_level('lvl01-cin01-cierre-contextual'); self.wait_for_scene('CinematicScene'); self.wait_for_scene('LevelScene',False); self.assertEqual(self.get_registry_number('campaignCursor'),3)
  def test_03_reload_returns_to_clean_main_menu(self):

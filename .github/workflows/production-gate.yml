@@ -22,6 +22,8 @@ jobs:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PUSH_BEFORE_SHA: ${{ github.event.before }}
         run: |
+          echo "event=$EVENT_NAME"
+          echo "head SHA=$(git rev-parse HEAD)"
           if [[ "$EVENT_NAME" == "pull_request" ]]; then
             candidate="$PR_BASE_SHA"
           else
@@ -29,7 +31,8 @@ jobs:
           fi
           if [[ -n "$candidate" && ! "$candidate" =~ ^0+$ ]] && git rev-parse --verify "${candidate}^{commit}" >/dev/null 2>&1; then
             echo "NWD_DIFF_BASE=$candidate" >> "$GITHUB_ENV"
-            echo "Using event commit $candidate as NWD_DIFF_BASE"
+            echo "base SHA=$candidate"
+            echo "merge-base=$(git merge-base "$candidate" HEAD)"
           elif git rev-parse --verify 'HEAD^^{commit}' >/dev/null 2>&1; then
             echo "NWD_DIFF_BASE=$(git rev-parse HEAD^)" >> "$GITHUB_ENV"
             echo "Event base is unavailable; using HEAD^ as NWD_DIFF_BASE"
@@ -51,8 +54,11 @@ jobs:
       - run: npm run audit:runtime-reachability --prefix game
       - run: npm run audit:dead-code --prefix game
       - run: npm test --prefix game
+      - run: npx tsc --noEmit -p game/tsconfig.json
       - run: npm run build --prefix game
       - run: test -f game/dist/index.html
+      - run: test -f game/dist/build-info.json
+      - run: npm run audit:deploy-identity --prefix game
       - run: npm run audit:dist-production-art --prefix game
       - run: python backend/manage.py test
       - run: npm run test:e2e:production --prefix game

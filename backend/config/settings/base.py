@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from config.cache_headers import add_frontend_cache_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -9,6 +10,7 @@ load_dotenv(BASE_DIR / '.env')
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 FRONTEND_DIST_DIR = BASE_DIR.parent / 'game' / 'dist'
 WHITENOISE_ROOT = FRONTEND_DIST_DIR
+WHITENOISE_ADD_HEADERS_FUNCTION = add_frontend_cache_headers
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-unsafe-key')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'

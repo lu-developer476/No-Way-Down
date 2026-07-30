@@ -1,8 +1,17 @@
 import os
+import json
 
 from django.conf import settings
 from django.http import FileResponse, HttpResponse, JsonResponse
 from django.views import View
+
+def _set_no_cache(response, frontend_sha=None):
+    response['Cache-Control'] = 'no-store, no-cache, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    if frontend_sha:
+        response['X-NWD-Frontend-SHA'] = frontend_sha
+    return response
 
 
 class FrontendIndexView(View):
@@ -23,7 +32,16 @@ class FrontendIndexView(View):
         if resolved_index.parent != resolved_dist:
             return HttpResponse('Invalid frontend build path.', status=500, content_type='text/plain; charset=utf-8')
 
-        return FileResponse(resolved_index.open('rb'), content_type='text/html')
+        return _set_no_cache(FileResponse(resolved_index.open('rb'), content_type='text/html'), _build_sha())
+
+
+def frontend_build_info(request):
+    """Serve the generated frontend identity without allowing stale caches."""
+    path = settings.FRONTEND_DIST_DIR / 'build-info.json'
+    if not path.is_file():
+        return JsonResponse({'detail': 'Frontend build identity not found.'}, status=503)
+    response = FileResponse(path.open('rb'), content_type='application/json')
+    return _set_no_cache(response, _build_sha())
 
 
 def api_not_found(request, path=''):
@@ -32,7 +50,7 @@ def api_not_found(request, path=''):
 
 
 def _build_sha():
-    for name in ('NWD_BUILD_SHA', 'GITHUB_SHA', 'RENDER_GIT_COMMIT'):
+    for name in ('NWD_BUILD_SHA', 'RENDER_GIT_COMMIT', 'GITHUB_SHA'):
         value = os.getenv(name, '').strip()
         if value:
             return value
@@ -42,11 +60,24 @@ def _build_sha():
 def build_info(request):
     """Expose only non-sensitive deploy identity used by production smoke tests."""
     sha = _build_sha()
-    return JsonResponse({
+    frontend_info = {}
+    try:
+        frontend_info = json.loads((settings.FRONTEND_DIST_DIR / 'build-info.json').read_text(encoding='utf-8'))
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        pass
+    frontend_sha = os.getenv('NWD_FRONTEND_SHA', frontend_info.get('frontendSha', sha))
+    response = JsonResponse({
         'status': 'ok',
         'application': 'No Way Down',
         'environment': os.getenv('DJANGO_ENV', 'development'),
         'backendSha': sha,
-        'frontendSha': os.getenv('NWD_FRONTEND_SHA', sha),
-        'buildId': os.getenv('RENDER_DEPLOY_ID', os.getenv('NWD_BUILT_AT', 'unknown')),
+        'frontendSha': frontend_sha,
+        'renderCommit': os.getenv('RENDER_GIT_COMMIT', ''),
+        'branch': os.getenv('NWD_BRANCH', os.getenv('RENDER_GIT_BRANCH', frontend_info.get('branch', 'local'))),
+        'buildId': os.getenv('RENDER_DEPLOY_ID', frontend_info.get('buildId', os.getenv('NWD_BUILT_AT', 'unknown'))),
+        'builtAt': os.getenv('NWD_BUILT_AT', frontend_info.get('builtAt', 'unknown')),
+        'canonicalNodeCount': frontend_info.get('canonicalNodeCount', 35),
     })
+    _set_no_cache(response, frontend_sha)
+    response['X-NWD-Backend-SHA'] = sha
+    return response

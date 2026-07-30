@@ -344,3 +344,43 @@ test('uses the empty tree only for an actual first commit', () => {
   assert.equal(result.firstCommit, true);
   assert.equal(result.base, '4b825dc642cb6eb9a060e54bf8d69288fbee4904');
 });
+
+test('ignores untracked directories and ignored virtual environments', () => withRepository((root) => {
+  writeFileSync(join(root, '.gitignore'), '.venv/\ncache/\n');
+  git(root, 'add', '.gitignore'); git(root, 'commit', '-m', 'ignore environments');
+  mkdirSync(join(root, '.venv/lib'), { recursive: true });
+  mkdirSync(join(root, 'cache'), { recursive: true });
+  writeFileSync(join(root, '.venv/lib/local.txt'), 'local');
+  writeFileSync(join(root, 'cache/local.txt'), 'local');
+  const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
+  assert.equal(result.status, 0, result.stderr);
+}));
+
+test('rejects a changed symlink without following its target directory', () => withRepository((root) => {
+  mkdirSync(join(root, 'target'));
+  symlinkSync('target', join(root, 'link'));
+  const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /ruleId=changed-symlink/);
+  assert.doesNotMatch(result.stderr, /EISDIR|ELOOP/);
+}));
+
+test('handles a deleted file without reading the missing path', () => withRepository((root) => {
+  const base = git(root, 'rev-parse', 'HEAD');
+  rmSync(join(root, 'allowed.txt'));
+  const result = audit(root, { NWD_DIFF_BASE: base });
+  assert.equal(result.status, 0, result.stderr);
+  assert.doesNotMatch(result.stderr, /ENOENT/);
+}));
+
+test('rejects a changed gitlink', () => withRepository((root) => {
+  const child = mkdtempSync(join(tmpdir(), 'nwd-gitlink-'));
+  try {
+    git(child, 'init'); git(child, 'config', 'user.email', 'audit@example.invalid'); git(child, 'config', 'user.name', 'Audit Test');
+    writeFileSync(join(child, 'file.txt'), 'child'); git(child, 'add', '.'); git(child, 'commit', '-m', 'child');
+    execFileSync('git', ['-c', 'protocol.file.allow=always', 'submodule', 'add', child, 'module'], { cwd: root });
+    const result = audit(root, { NWD_DIFF_BASE: git(root, 'rev-parse', 'HEAD') });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /ruleId=changed-gitlink/);
+  } finally { rmSync(child, { recursive: true, force: true }); }
+}));

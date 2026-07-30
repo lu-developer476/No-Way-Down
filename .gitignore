@@ -15,3 +15,8 @@ game/public/assets/production-art/**/*.png
 game/.generated-art/
 game/test-results/
 game/dist/
+
+.venv/
+venv/
+env/
+.python-version.local

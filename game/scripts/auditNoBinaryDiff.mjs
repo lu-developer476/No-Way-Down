@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, lstatSync, readFileSync, readlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -110,12 +110,34 @@ function runAudit() {
     const [added, removed, path] = row.split('\t');
     if ((added === '-' || removed === '-') && !isApprovedPng(path)) failures.push(`ruleId=binary-numstat file=${path} line=1 column=1 fragment=${added}\t${removed}`);
   }
+  const classifyPath = (path) => {
+    const indexEntry = git('ls-files', '-s', '--', path, { optional: true });
+    if (indexEntry?.startsWith('160000 ')) return { kind: 'gitlink' };
+    try {
+      const stat = lstatSync(resolve(root, path));
+      if (stat.isSymbolicLink()) return { kind: 'symlink', target: readlinkSync(resolve(root, path)) };
+      if (stat.isDirectory()) return { kind: 'directory' };
+      if (stat.isFile()) return { kind: 'file' };
+      return { kind: 'unsupported' };
+    } catch (error) {
+      if (error?.code === 'ENOENT' || error?.code === 'ELOOP') return { kind: 'missing', error: error.code };
+      return { kind: 'unsupported', error: error?.code || error?.message };
+    }
+  };
   for (const row of changes) {
     const [status, ...paths] = row.split('\t');
     if (status.startsWith('D')) continue;
     const path = paths.at(-1);
     if (isApprovedPng(path)) continue;
-    const bytes = readFileSync(resolve(root, path));
+    const pathType = classifyPath(path);
+    if (pathType.kind === 'gitlink') { failures.push(`ruleId=changed-gitlink file=${path} line=1 column=1 fragment=gitlink`); continue; }
+    if (pathType.kind === 'symlink') { failures.push(`ruleId=changed-symlink file=${path} line=1 column=1 fragment=${JSON.stringify(pathType.target)}`); continue; }
+    if (pathType.kind === 'directory') { failures.push(`ruleId=unexpected-directory-path file=${path} line=1 column=1 fragment=directory`); continue; }
+    if (pathType.kind === 'missing') { failures.push(`ruleId=missing-changed-path file=${path} line=1 column=1 fragment=${pathType.error}`); continue; }
+    if (pathType.kind !== 'file') { failures.push(`ruleId=unsupported-path-type file=${path} line=1 column=1 fragment=${pathType.error || pathType.kind}`); continue; }
+    let bytes;
+    try { bytes = readFileSync(resolve(root, path)); }
+    catch (error) { failures.push(`ruleId=unreadable-changed-path file=${path} line=1 column=1 fragment=${error?.code || error?.message}`); continue; }
     inspected += 1;
     if (bytes.includes(0)) failures.push(`ruleId=nul-byte file=${path} line=1 column=1 fragment=NUL byte`);
     try { const mime = getDetectedMimeType(resolve(root, path)); if (isForbiddenMimeType(mime)) failures.push(`ruleId=binary-mime file=${path} line=1 column=1 fragment=${mime}`); }

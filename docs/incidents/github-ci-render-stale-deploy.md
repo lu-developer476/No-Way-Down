@@ -57,3 +57,25 @@ Render **puede** estar conectado a GitLab, pero no debe asumirse sin evidencia. 
 ### Verificación operativa posterior al merge
 
 El workflow exclusivo de pushes a `main` y ejecuciones manuales crea el snapshot, hace un push fast-forward, vuelve a obtener la punta remota y valida tree y trailer. Su artifact textual registra el source SHA/tree y el snapshot SHA/tree. La identidad de build conserva `RENDER_GIT_COMMIT` como commit de despliegue, pero obtiene primero `Source-GitHub-SHA` del trailer para publicar la identidad canónica del código.
+
+## Actualización posterior al PR #431: build del snapshot y carrera del smoke
+
+El PR #431 reparó el mirror: GitLab recibió correctamente el snapshot `d6062a04f5a40133730a8cc0fb25ae64f00b6a53`, cuyo trailer `Source-GitHub-SHA` identifica el source de GitHub `91b0a2fde4cb09302aa5de316c24d349af03af52`. El problema posterior no era el transporte a GitLab ni la estrategia de snapshots.
+
+GitHub CI invocaba `npx tsc --noEmit -p game/tsconfig.json` desde la raíz, donde no hay un package de TypeScript. `npx` resolvió y descargó el paquete ajeno `tsc@2.0.4`, que respondió “This is not the tsc command you are looking for”. El typecheck canónico es ahora `npm run typecheck --prefix game`, que resuelve TypeScript 5 desde `game/node_modules/.bin/tsc` sin instalar paquetes durante el check.
+
+Render, por su parte, ejecutaba una auditoría de diferencias basada en `HEAD^`. El primer snapshot sanitizado puede ser un root commit sin padre; la base cayó al árbol vacío `4b825dc642cb6eb9a060e54bf8d69288fbee4904` y convirtió los 6123 paths del árbol en supuestas altas. Además, `.venv` no estaba ignorado y el auditor intentó leer un directorio como archivo, causando `EISDIR`.
+
+La solución separa responsabilidades. GitHub conserva `audit:no-binary-diff` para cambios de PRs y pushes a `main`; esa auditoría clasifica ahora archivos, directorios, symlinks, gitlinks y ausencias antes de leer. Render ejecuta antes de instalar dependencias `audit:deploy-source-tree`, que recorre únicamente `git ls-files -z`, valida trailers y tree, rechaza LFS, gitlinks, symlinks, entornos rastreados y PNG generados, y conserva las verificaciones específicas de assets protegidos y los 35 nodos del manifiesto. `.venv/`, `venv/`, `env/` y `.python-version.local` están ignorados y los entornos no rastreados nunca forman parte de la auditoría del árbol.
+
+El orden de Render es: resolver e imprimir identidad; auditar el árbol rastreado; instalar Python y Node; ejecutar las auditorías de contenido; ejecutar el typecheck local; limpiar y construir `dist`; verificar index, build-info, identidad y arte de distribución; y ejecutar `collectstatic`.
+
+El E2E productivo también estaba ubicado en el gate anterior al deploy y podía comparar producción con un SHA que Render todavía no había publicado. El gate previo conserva auditorías, tests, typecheck, build, verificaciones de `dist` y tests backend, pero no consulta producción. El smoke posterior escucha la finalización exitosa de `Mirror main snapshot to GitLab` para `main`, hace checkout de `workflow_run.head_sha`, espera que `/api/build-info/` publique ese source SHA tanto en backend como frontend y recién entonces inicia el browser.
+
+### Identidades que no deben confundirse
+
+- **Source SHA de GitHub:** commit canónico de código, por ejemplo `91b0a2fde4cb09302aa5de316c24d349af03af52`.
+- **Snapshot SHA de GitLab:** commit sanitizado que lleva los trailers; en el incidente fue `d6062a04f5a40133730a8cc0fb25ae64f00b6a53`.
+- **Commit desplegado:** identidad del commit recibido por el proveedor de Render; para este despliegue coincide con el snapshot anterior.
+- **Tree SHA:** identidad del árbol, que debe coincidir entre source GitHub y snapshot aunque sus commits difieran.
+- **SHA visible en producción:** `sourceSha`/`frontendSha` servido por build-info; debe ser el source SHA de GitHub, mientras `deployCommit` conserva el snapshot desplegado.

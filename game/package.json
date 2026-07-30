@@ -7,6 +7,7 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "npm run audit:campaign && npm run audit:protected-assets && npm run audit:generated-production-art && npm run audit:character-hud-production && npm run audit:tiled && tsc --noEmit && vite build && node scripts/auditDeployIdentity.mjs && node scripts/auditDistProductionArt.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "test:e2e:production": "bash scripts/runProductionE2E.sh",
     "audit:campaign": "node scripts/auditCanonicalCampaign.mjs",
     "audit:protected-assets": "node scripts/auditProtectedAssets.mjs",
@@ -35,7 +36,10 @@
     "audit:upper-floor-production": "node scripts/auditUpperFloorProduction.mjs",
     "audit:lower-basement-garage": "node scripts/auditLowerBasementGarageProduction.mjs",
     "audit:final-exterior-campaign": "node scripts/auditFinalExteriorCampaign.mjs",
-    "audit:gitlab-mirror": "node scripts/auditGitLabMirror.mjs"
+    "audit:gitlab-mirror": "node scripts/auditGitLabMirror.mjs",
+    "audit:deploy-source-tree": "node scripts/auditDeploySourceTree.mjs",
+    "wait:production-sha": "node scripts/waitForProductionSha.mjs",
+    "audit:deployment-workflows": "node scripts/auditDeploymentWorkflows.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

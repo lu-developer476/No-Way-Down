@@ -55,7 +55,7 @@ export class CinematicScene extends Phaser.Scene {
     const cinematicPath = flowNode.cinematicPath;
     this.renderCinematic(cinematicPath);
 
-    if (flowNode.id === 'campaign-end') {
+    if ((this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined)?.id === 'campaign-end') {
       persistCampaignCompleted();
       this.registry.set('campaignCompleted', true);
     }
@@ -130,6 +130,13 @@ export class CinematicScene extends Phaser.Scene {
       const beats = cinematic.beats;
 
       this.add.rectangle(width / 2, height / 2, width, height, 0x020617, 1);
+      if ((this.registry.get('activeCampaignNode') as CampaignFlowNode | undefined)?.id === 'campaign-end') {
+        this.add.text(width / 2, 105, beats[0].beat, { color: '#f8fafc', fontFamily: RETRO_PIXEL_FONT, fontSize: '48px', fontStyle: 'bold' }).setOrigin(.5);
+        this.add.text(width / 2, 205, beats.slice(1, 4).map((b) => b.beat).join('\n\n'), { color: '#f6d365', fontFamily: RETRO_PIXEL_FONT, fontSize: '20px', align: 'center', lineSpacing: 8 }).setOrigin(.5, 0);
+        this.add.text(width / 2, height - 54, beats[4].beat, { color: '#f8fafc', fontFamily: RETRO_PIXEL_FONT, fontSize: '16px' }).setOrigin(.5);
+        addRetroScreenOverlay(this, 3);
+        return;
+      }
       this.add.rectangle(width / 2, 80, width - 96, 82, 0x100913, 0.92).setStrokeStyle(3, 0xf6d365, 1);
       this.add.text(width / 2, 64, 'CINEMÁTICA // PIXEL CUTSCENE', { color: '#f8fafc', fontFamily: RETRO_PIXEL_FONT, fontSize: '26px', fontStyle: 'bold' }).setOrigin(0.5);
       this.add.text(width / 2, height / 2, beats.map((b) => `• ${b.beat}`).join('\n'), {

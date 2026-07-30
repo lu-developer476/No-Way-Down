@@ -165,16 +165,20 @@ def write_all(base, metadata=False):
   rel=f'assets/production-art/zombies/{cid}.png'; sheet(spec,ZOMBIE_ANIMS,True).save(base/'game/public'/rel,format='PNG',compress_level=9); entries.append(metadata_entry(cid,rel,ZOMBIE_ANIMS,spec[4]))
  manifest={'schemaVersion':1,'frameWidth':FW,'frameHeight':FH,'footLine':FOOT,'visualOrigin':{'x':40,'y':104},'characters':entries}
  if metadata: (art/'characters/character_art_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
- # The bank kit is a deterministic indexed mosaic sourced from its reviewed JSON catalog.
- env=art/'environments'; env.mkdir(parents=True,exist_ok=True)
- for source_path in sorted((ROOT/'game/art-source/environment').glob('*-kit.json')):
-  kit=json.loads(source_path.read_text()); atlas=Image.new('RGBA',(512,512),(0,0,0,0)); draw=ImageDraw.Draw(atlas)
-  for i,item in enumerate(kit['frames']):
-   x=(i%8)*64; y=(i//8)*64; colors=kit['palette']; draw.rectangle((x+2,y+2,x+61,y+61),fill=colors[(i%(len(colors)-1))+1]); draw.line((x+3,y+10+(i%5)*7,x+60,y+10+(i%5)*7),fill=colors[0],width=3); draw.line((x+10+(i%4)*9,y+3,x+10+(i%4)*9,y+60),fill=colors[-1],width=2); draw.rectangle((x+6+(i%3)*5,y+44,x+55,y+57),fill=colors[(i+2)%len(colors)])
-  atlas.save(env/f"{kit.get('atlasId', source_path.stem)}.png")
+ # Every environment/vehicle/cinematic atlas is generated offline from reviewed text catalogs.
+ for source_folder, output_folder in (('environment','environments'),('vehicles','vehicles'),('cinematics','cinematics')):
+  env=art/output_folder; env.mkdir(parents=True,exist_ok=True)
+  for source_path in sorted((ROOT/f'game/art-source/{source_folder}').glob('*.json')):
+   if source_path.name.endswith('manifest.json'): continue
+   kit=json.loads(source_path.read_text())
+   if not isinstance(kit.get('frames'),list) or not kit.get('frames'): continue
+   atlas=Image.new('RGBA',(512,512),(0,0,0,0)); draw=ImageDraw.Draw(atlas)
+   for i,item in enumerate(kit['frames']):
+    x=(i%8)*64; y=(i//8)*64; colors=kit['palette']; draw.rectangle((x+2,y+2,x+61,y+61),fill=colors[(i%(len(colors)-1))+1]); draw.line((x+3,y+10+(i%5)*7,x+60,y+10+(i%5)*7),fill=colors[0],width=3); draw.line((x+10+(i%4)*9,y+3,x+10+(i%4)*9,y+60),fill=colors[-1],width=2); draw.rectangle((x+6+(i%3)*5,y+44,x+55,y+57),fill=colors[(i+2)%len(colors)])
+   atlas.save(env/f"{kit.get('atlasId', source_path.stem)}.png")
  for path in sorted(art.rglob('*.png')):
   data=path.read_bytes(); rel=path.relative_to(base).as_posix(); category=path.parent.name; rows=10 if category=='characters' else (5 if category=='zombies' else 1); width=int.from_bytes(data[16:20],'big');height=int.from_bytes(data[20:24],'big')
-  assets.append({'path':rel,'category':category,'generator':GENERATOR,'width':width,'height':height,'frameWidth':FW if category in ('characters','zombies') else (64 if category=='environments' else 48),'frameHeight':FH if category in ('characters','zombies') else (64 if category=='environments' else 48),'animationRows':rows,'sha256':hashlib.sha256(data).hexdigest(),'fileSize':len(data),'alphaRequired':True,'purpose':'Runtime character animation' if category in ('characters','zombies') else 'Gameplay HUD portrait'})
+  assets.append({'path':rel,'category':category,'generator':GENERATOR,'width':width,'height':height,'frameWidth':FW if category in ('characters','zombies') else (64 if category in ('environments','vehicles','cinematics') else 48),'frameHeight':FH if category in ('characters','zombies') else (64 if category in ('environments','vehicles','cinematics') else 48),'animationRows':rows,'sha256':hashlib.sha256(data).hexdigest(),'fileSize':len(data),'alphaRequired':True,'purpose':'Runtime character animation' if category in ('characters','zombies') else 'Generated runtime production art'})
  config={'schemaVersion':1,'maxFileSize':1048576,'generator':GENERATOR,'assets':assets}
  if metadata: (base/'game/config/generated-production-art.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n')
 

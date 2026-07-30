@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "abandoned-traffic-kit",
+  "frameSize": 64,
+  "palette": [
+    "#101820",
+    "#304552",
+    "#69828c",
+    "#b69b73",
+    "#d4c8a9"
+  ],
+  "frames": [
+    {
+      "frameId": "sedan",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "hatchback",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "unbranded-taxi",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "utility-van",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "city-bus",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "minibus",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "pickup",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "generic-emergency",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "crashed-vehicle",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "burnt-vehicle",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "open-door-vehicle",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "plaza-de-mayo-distant-kit",
+  "frameSize": 64,
+  "palette": [
+    "#101820",
+    "#304552",
+    "#69828c",
+    "#b69b73",
+    "#d4c8a9"
+  ],
+  "frames": [
+    {
+      "frameId": "institutional-skyline",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "historic-dome",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "tree-line",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "street-lamp",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "wide-sidewalk",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "evacuation-fence",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "stopped-bus",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "distant-smoke",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "frameId": "abandoned-traffic",
+      "visualRole": "exterior",
+      "collisionRole": "tiled-only",
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  ]
+}

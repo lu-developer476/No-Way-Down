@@ -71,6 +71,11 @@ export class CampaignQaNavigator {
     [['◀', () => this.move(-1)], ['▶', () => this.move(1)], ['↻', () => this.reload()], ['Menú', () => this.close()]].forEach(([label, action]) => {
       const button = document.createElement('button'); button.textContent = String(label); button.onclick = action as () => void; controls.append(button);
     });
+    const finaleActions = ['start-combat', 'kills-0', 'kills-1', 'kills-49', 'spawn-final-enemy', 'test-reload', 'test-final-cinematic', 'test-radio', 'test-campaign-end', 'clear-qa-completion'];
+    finaleActions.forEach((action) => {
+      const button = document.createElement('button'); button.textContent = action; button.dataset.finaleQa = action;
+      button.onclick = () => window.dispatchEvent(new CustomEvent('nwd:finale-qa', { detail: { action } })); controls.append(button);
+    });
     document.body.append(root); this.root = root; this.updateStatus();
   }
 

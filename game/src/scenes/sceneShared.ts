@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
+import { loadInitialRunSetup } from '../run/InitialRunSetup';
 
 export interface Checkpoint {
   x: number;
@@ -45,7 +46,7 @@ export interface TransitionView {
 
 export const MAX_PLAYER_SEPARATION_PX = 320;
 export const LOCAL_PROGRESS_STORAGE_KEY = 'nwd.progress.local-player';
-export const CAMPAIGN_COMPLETION_STORAGE_KEY = 'nwd.campaign.completed';
+export const CAMPAIGN_COMPLETION_STORAGE_KEY = 'nwd.campaign.completion';
 
 export type ProgressSceneKey = 'LevelScene' | 'UpperFloorScene';
 export function normalizeProgressSceneKey(value: unknown): ProgressSceneKey | null {
@@ -63,20 +64,39 @@ interface LocalProgressLike {
 }
 
 export interface CampaignCompletion {
-  version: 1; completed: true; finalNodeId: 'campaign-end'; completedAt: string;
+  schemaVersion: 1; campaignId: 'no_way_down'; completed: true; completedAt: string;
+  protagonistId: 'alan' | 'giovanna'; difficultyId: 'complejo' | 'pesadilla';
+  finalNodeId: 'campaign-end'; canonicalNodeCount: 35; buildSha: string;
 }
 
 export function persistCampaignCompleted(now = new Date()): CampaignCompletion {
-  const completion: CampaignCompletion = { version: 1, completed: true, finalNodeId: 'campaign-end', completedAt: now.toISOString() };
+  const existing = loadCampaignCompletion();
+  if (existing) return existing;
+  const setup = loadInitialRunSetup();
+  const completion: CampaignCompletion = {
+    schemaVersion: 1, campaignId: 'no_way_down', completed: true,
+    completedAt: now.toISOString(), protagonistId: setup?.protagonist ?? 'alan',
+    difficultyId: setup?.difficulty ?? 'complejo', finalNodeId: 'campaign-end',
+    canonicalNodeCount: 35, buildSha: window.__NWD_BUILD__?.sha ?? 'development'
+  };
   localStorage.setItem(CAMPAIGN_COMPLETION_STORAGE_KEY, JSON.stringify(completion));
   localStorage.removeItem(LOCAL_PROGRESS_STORAGE_KEY);
   return completion;
 }
 
+export function loadCampaignCompletion(): CampaignCompletion | null {
+  const raw = localStorage.getItem(CAMPAIGN_COMPLETION_STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as CampaignCompletion;
+    return parsed.schemaVersion === 1 && parsed.completed === true && parsed.finalNodeId === 'campaign-end' ? parsed : null;
+  } catch { return null; }
+}
+
 /** Clears only campaign/run data; audio, controls and other general settings remain untouched. */
 export function clearRunForNewGame(): void {
   localStorage.removeItem(LOCAL_PROGRESS_STORAGE_KEY);
-  localStorage.removeItem(CAMPAIGN_COMPLETION_STORAGE_KEY);
+  // Completion is historical. A new game clears only the active run.
 }
 
 export function getScenePlayerId(): string {

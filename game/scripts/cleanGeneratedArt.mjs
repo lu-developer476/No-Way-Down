@@ -2,7 +2,7 @@ import { existsSync, readdirSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
 const game=resolve(import.meta.dirname,'..');
 const root=resolve(game,'public/assets/production-art');
-for(const folder of ['characters','zombies','weapons','ui','environments']){
+for(const folder of ['characters','zombies','weapons','ui','environments','vehicles','cinematics']){
  const dir=resolve(root,folder); if(!existsSync(dir))continue;
  for(const entry of readdirSync(dir,{withFileTypes:true})) if(entry.isFile()&&entry.name.endsWith('.png'))rmSync(resolve(dir,entry.name));
 }

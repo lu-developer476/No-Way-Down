@@ -4,10 +4,20 @@
   "runtimePath": "assets/levels/runtime/level_10_llegada_san_telmo.runtime.json",
   "objective": "Llegar al punto seguro y observar las señales del barrio.",
   "completion": {
-    "type": "explicit_exit",
-    "exitId": "san-telmo-desenlace"
+    "type": "observations_and_explicit_exit",
+    "requiredClues": 4,
+    "radioId": "radio-san-telmo",
+    "exitId": "san-telmo-desenlace",
+    "singleUnlock": true
   },
   "nextNodeId": "lvl10-cin03-desenlace-abierto",
   "combatProfileId": "san-telmo-approach",
-  "combatExpected": true
+  "combatExpected": true,
+  "encounters": {
+    "maxTotalEnemies": 10,
+    "maxActiveEnemies": 8,
+    "spawnPolicy": "small-hidden-corner-groups",
+    "blocksRadio": false
+  },
+  "vehicleId": "garage-survivor-utility-01"
 }

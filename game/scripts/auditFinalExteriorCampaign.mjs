@@ -1,0 +1,14 @@
+import fs from 'node:fs'; import path from 'node:path'; import { execFileSync } from 'node:child_process';
+const root=path.resolve(import.meta.dirname,'..'), read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const fail=m=>{throw new Error(`[final-exterior] ${m}`)}, ok=(v,m)=>{if(!v)fail(m)};
+const manifest=read('public/assets/campaign/canonical_campaign_manifest.json');
+const expected=['lvl10-cin01-traslado-silencioso-plaza-de-mayo','lvl10-esc01-combate-50-bajas-en-via-publica','lvl10-cin02-cierre-duo-final-en-san-telmo','lvl10-esc03-llegada-a-san-telmo','lvl10-cin03-desenlace-abierto','campaign-end'];
+const start=manifest.nodes.findIndex(n=>n.id===expected[0]); ok(manifest.nodes.length===35,'manifest must retain 35 nodes');ok(JSON.stringify(manifest.nodes.slice(start,start+6).map(n=>n.id))===JSON.stringify(expected),'final sequence changed');
+const maps=['level_10_exterior_urbano','level_10_llegada_san_telmo'].map(n=>read(`public/assets/tiled/maps/${n}.tmj`));const text=maps.map(JSON.stringify);for(const banned of ['bank-signage','wall-damaged','wall-clean','service-door','office-lit','exit-door','pipe-bundle','security-bars','stairs.jpg'])ok(!text.some(t=>t.includes(banned)),`exterior contains ${banned}`);
+const props=o=>Object.fromEntries((o.properties??[]).map(p=>[p.name,p.value]));ok(props(maps[0]).environmentAtlasIds!==props(maps[1]).environmentAtlasIds,'street identities must differ');
+const layer=(m,n)=>m.layers.find(l=>l.name===n);ok(JSON.stringify(layer(maps[0],'EnemySpawns').objects.map(o=>o.name).sort())===JSON.stringify(['street_east','street_north','street_rear','street_west']),'spawn IDs differ');
+const hold=read('public/assets/levels/level10_final_street_hold.json');ok(hold.killTarget===50&&hold.survivors.protagonistId==='alan'&&hold.survivors.allyId==='giovanna','final combat canon changed');
+const radio=layer(maps[1],'Interactables').objects.find(o=>o.name==='radio-san-telmo');ok(radio&&props(radio).unlockExitId==='san-telmo-desenlace','visible radio gate missing');
+const generated=read('config/generated-production-art.json').assets.map(a=>a.path);for(const id of ['plaza-de-mayo-distant-kit','paseo-colon-metrobus-kit','independencia-intersection-kit','buenos-aires-street-kit','san-telmo-facade-kit','san-telmo-street-kit','urban-damage-kit','urban-signage-kit','exterior-lighting-kit'])ok(generated.some(p=>p.endsWith(`/${id}.png`)),`atlas undeclared: ${id}`);
+const changedPng=execFileSync('git',['status','--porcelain'],{cwd:path.join(root,'..'),encoding:'utf8'}).split('\n').filter(line=>/\.png$/i.test(line));ok(changedPng.length===0,'PNG files are present in the change set');ok(!fs.existsSync(path.join(root,'../.gitattributes')),'Git LFS configuration exists');
+console.log('Final exterior campaign audit passed: six canonical nodes, 35 total nodes, unique 50-kill objective, exterior-only maps, radio gate, generated text-only atlases, no changed PNG/LFS.');

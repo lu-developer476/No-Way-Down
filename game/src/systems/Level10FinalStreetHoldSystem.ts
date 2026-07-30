@@ -50,6 +50,10 @@ export interface Level10FinalStreetHoldSnapshot {
   killTarget: number;
   kills: number;
   remainingKills: number;
+  objectiveInstanceId: string;
+  spawnedCount: number;
+  aliveCount: number;
+  remainingSpawnBudget: number;
   currentPhaseId?: string;
   survivors: string[];
   startedAt?: number;
@@ -106,6 +110,9 @@ export class Level10FinalStreetHoldSystem {
   private elapsedMs = 0;
   private currentPhaseId?: string;
   private kills = 0;
+  private spawnedCount = 0;
+  private objectiveInstanceId = '';
+  private readonly objectiveEnemies = new Map<string, { countedForObjective: boolean; deathCommitted: boolean }>();
   private startedPhaseIds = new Set<string>();
   private readonly lastSpawnByPhaseId = new Map<string, number>();
 
@@ -153,6 +160,9 @@ export class Level10FinalStreetHoldSystem {
     this.failedAt = undefined;
     this.elapsedMs = 0;
     this.kills = 0;
+    this.spawnedCount = 0;
+    this.objectiveInstanceId = `${this.config.objectiveId}:${now}`;
+    this.objectiveEnemies.clear();
     this.currentPhaseId = undefined;
     this.lastSpawnByPhaseId.clear();
     this.startedPhaseIds.clear();
@@ -193,12 +203,28 @@ export class Level10FinalStreetHoldSystem {
     this.callbacks.onTimerTick?.(snapshot);
   }
 
-  registerZombieKill(count = 1, now = Date.now()): boolean {
-    if (this.state !== 'active' || count <= 0) {
+  registerZombieSpawn(enemyRuntimeId: string, objectiveInstanceId = this.objectiveInstanceId): boolean {
+    if (this.state !== 'active' || objectiveInstanceId !== this.objectiveInstanceId
+      || !enemyRuntimeId.trim() || this.spawnedCount >= this.config.killTarget
+      || this.objectiveEnemies.has(enemyRuntimeId)) return false;
+    this.objectiveEnemies.set(enemyRuntimeId, { countedForObjective: true, deathCommitted: false });
+    this.spawnedCount += 1;
+    return true;
+  }
+
+  registerZombieKill(enemyRuntimeId: string | number = 1, now = Date.now(), objectiveInstanceId = this.objectiveInstanceId): boolean {
+    if (this.state !== 'active' || objectiveInstanceId !== this.objectiveInstanceId) {
       return false;
     }
-
-    this.kills = Math.min(this.config.killTarget, this.kills + count);
+    // Numeric calls remain compatible with older integrations, but are converted to unique runtime IDs.
+    const id = typeof enemyRuntimeId === 'number' ? `legacy-enemy-${this.kills + 1}` : enemyRuntimeId;
+    if (!this.objectiveEnemies.has(id)) {
+      if (!this.registerZombieSpawn(id, objectiveInstanceId)) return false;
+    }
+    const enemy = this.objectiveEnemies.get(id)!;
+    if (!enemy.countedForObjective || enemy.deathCommitted) return false;
+    enemy.deathCommitted = true;
+    this.kills += 1;
     const snapshot = this.getSnapshot();
     this.callbacks.onKillProgress?.(snapshot);
 
@@ -258,6 +284,10 @@ export class Level10FinalStreetHoldSystem {
       killTarget: this.config.killTarget,
       kills: this.kills,
       remainingKills,
+      objectiveInstanceId: this.objectiveInstanceId,
+      spawnedCount: this.spawnedCount,
+      aliveCount: [...this.objectiveEnemies.values()].filter((enemy) => !enemy.deathCommitted).length,
+      remainingSpawnBudget: Math.max(0, this.config.killTarget - this.spawnedCount),
       currentPhaseId: this.currentPhaseId,
       survivors: this.getSurvivorIds(),
       startedAt: this.startedAt,
@@ -267,6 +297,7 @@ export class Level10FinalStreetHoldSystem {
   }
 
   private dispatchSpawnRequests(): void {
+    if (this.spawnedCount >= this.config.killTarget) return;
     const activePhases = this.config.spawnPhases.filter((phase) => this.elapsedMs >= phase.startAtMs);
     const currentPhase = activePhases[activePhases.length - 1];
 
@@ -291,13 +322,16 @@ export class Level10FinalStreetHoldSystem {
     this.lastSpawnByPhaseId.set(currentPhase.id, this.elapsedMs);
 
     const spawnPointId = this.pickSpawnPoint(currentPhase.spawnPointIds);
+    const count = Math.min(currentPhase.enemiesPerSpawn, this.config.killTarget - this.spawnedCount);
     const request: Level10FinalStreetSpawnRequest = {
       holdId: this.config.holdId,
       phaseId: currentPhase.id,
       spawnPointId,
-      count: currentPhase.enemiesPerSpawn
+      count
     };
-
+    for (let index = 0; index < count; index += 1) {
+      this.registerZombieSpawn(`${this.objectiveInstanceId}:${this.spawnedCount + 1}`);
+    }
     this.callbacks.onSpawnRequested?.(request, this.getSnapshot());
   }
 

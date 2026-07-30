@@ -130,6 +130,20 @@
       "purpose": "Runtime character animation"
     },
     {
+      "path": "game/public/assets/production-art/cinematics/finale-cinematic-kit.png",
+      "category": "cinematics",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "7ebddb9319fba226753655f05a1c3f82f0f034ea5ae5bd7b956a8f89352b90b3",
+      "fileSize": 2207,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
+    },
+    {
       "path": "game/public/assets/production-art/environments/bank-interior-kit.png",
       "category": "environments",
       "generator": "game/scripts/art/generateProductionCharacters.py",
@@ -141,7 +155,7 @@
       "sha256": "4c96229acd048239923a4d706faf6c571c38a70096b60dcc8e1748427a340952",
       "fileSize": 4624,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/belongings-sector-kit.png",
@@ -155,7 +169,21 @@
       "sha256": "517ce63bdac857ce8614e17a1fdcc221ce0554096a9adc04b7991418e2f93169",
       "fileSize": 2491,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/buenos-aires-street-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "cb173e8153897d23cd92f0b2fa97003f394d9f7342fe0bf2ea5c2c9ea8e9926a",
+      "fileSize": 3428,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/damage-and-barricades-kit.png",
@@ -169,7 +197,7 @@
       "sha256": "04d6f71ae1516e499e8f9844ed3d8abf76f4c69a894238071b1c57b68a22579a",
       "fileSize": 2487,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/executive-office-kit.png",
@@ -183,7 +211,21 @@
       "sha256": "a8a5b5d4b56e09658e9c0021e0d4a5d40f6130c184de5ffb18608fa52b7f0d71",
       "fileSize": 2579,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/exterior-lighting-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "fd8c3a1371542a79a877dfa1cb6f108239ac249f15ad3b5bff51fc2a75d26bba",
+      "fileSize": 1913,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/garage-damage-kit.png",
@@ -197,7 +239,7 @@
       "sha256": "b79f51b21c22654ec50ed49691a03bf10134d5d7b842f335959e97b3bf08bade",
       "fileSize": 2574,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/garage-vehicle-kit.png",
@@ -211,7 +253,21 @@
       "sha256": "cb2f3087f9ee3c728109d541bf45a2625cf67b0c707998ac88c4d7352473c81b",
       "fileSize": 2579,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/independencia-intersection-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "0d1eac6f0cd9bafee3ec36a41a152262539ddaa70775f8d2673c2c981c89dc8e",
+      "fileSize": 2204,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/industrial-lighting-kit.png",
@@ -225,7 +281,7 @@
       "sha256": "1930629060e5ca14f3bf727e3d114632c65d5a6deaaa46a036e80a6261943207",
       "fileSize": 2304,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/lower-basement-kit.png",
@@ -239,7 +295,7 @@
       "sha256": "24ceb405657566631ea5af6be3a2783ee7f44dcfd2958bae335f56ad95b5537d",
       "fileSize": 3426,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/parking-garage-kit.png",
@@ -253,7 +309,63 @@
       "sha256": "d1bfaffc1b1d6b2ec1018c290baa45464aace9a994f7ceb4f617ff7542eb1638",
       "fileSize": 3621,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/paseo-colon-metrobus-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "5a5b8eeae526e5429d7c0cdb9e670cd7e1cefc0fbaff6a073835c02a5d94fdc2",
+      "fileSize": 2491,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/plaza-de-mayo-distant-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "81493cadd434579412b7395eb517452a1f0433fa6a10ba95e47adf987eb0be5d",
+      "fileSize": 2110,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/san-telmo-facade-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "daf1685a26f089c2fddee461de09682e6ac0ecd28cc555c00a8690a83eccdc30",
+      "fileSize": 2668,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/san-telmo-street-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "54816ffc40f10176257725b330ecaa95d2fe994da7b067948f27f2d798bc7cde",
+      "fileSize": 2867,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/security-exit-kit.png",
@@ -267,7 +379,7 @@
       "sha256": "fb1f9b38ca7e11a3cf00161aeaf5b7bc63cb16fdfb2784a4cbe3dee7532fe10a",
       "fileSize": 2679,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/stair-core-kit.png",
@@ -281,7 +393,7 @@
       "sha256": "98bc45101279c664aa92ae64cfb35330ddeda54a80fa489f805a60bbfcbb99f9",
       "fileSize": 2667,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/subsoil-three-kit.png",
@@ -295,7 +407,7 @@
       "sha256": "07ca838a26ccec032f9e550d4dbff38e31e90cbb1ddaf6b8b40ee34795cc98b4",
       "fileSize": 2680,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/upper-cafeteria-kit.png",
@@ -309,7 +421,7 @@
       "sha256": "b91943786d436ad1e9dda039ea2288d66e12c0f5cc5b0ac9bb28c0e68c6d7f47",
       "fileSize": 2681,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/upper-office-kit.png",
@@ -323,7 +435,35 @@
       "sha256": "555566b9b0cb3b222ad2c8ac545976fd4ec184a388e250c6b27a539c05c2676f",
       "fileSize": 3251,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/urban-damage-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "8a2fd2b9498a10d329d0bcf993ab637b44c15ea31449316f1834aa62779bb6fc",
+      "fileSize": 2872,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/environments/urban-signage-kit.png",
+      "category": "environments",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "3c3e2fae89cfd578bcd3e4ec79e8a17a1acc2c75f25eba00b6dd652d35f6da04",
+      "fileSize": 1920,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/environments/utility-corridor-kit.png",
@@ -337,7 +477,7 @@
       "sha256": "1489c221731e951946aefd9e7c2a1fe5c3d29434018ab18af1746aab2de4017b",
       "fileSize": 2681,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-alan.png",
@@ -351,7 +491,7 @@
       "sha256": "48d320171691d877e4308891d0b04d6b59e211b5de7081855cc17fe49cd55b7b",
       "fileSize": 365,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-celestino.png",
@@ -365,7 +505,7 @@
       "sha256": "f7d8ad70c5dda2005565334a5b2e14d63e3033bb74d4d42f7fa38ca35bf1a2be",
       "fileSize": 342,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-damian.png",
@@ -379,7 +519,7 @@
       "sha256": "b155cbe12041c29e91efc80e9c942e5d16a9622ca5b28f5076daba400a6bd0a5",
       "fileSize": 342,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-giovanna.png",
@@ -393,7 +533,7 @@
       "sha256": "4a287796267517b7721009f4275604d9359f04c5e840891ae74193dcd6667662",
       "fileSize": 344,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-hernan.png",
@@ -407,7 +547,7 @@
       "sha256": "b5a5a4f76f6904f82f61f6095cb301064e104d9b8751be33a36b3aabfc437d8d",
       "fileSize": 341,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-lorena.png",
@@ -421,7 +561,7 @@
       "sha256": "d976cea8b30d2f8308c777b8122777632e50094773c6e191000642871c908824",
       "fileSize": 343,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-nahir.png",
@@ -435,7 +575,7 @@
       "sha256": "90072c0f54c627382ea898cd33b87dc8db75a67e1a81437d946a1b7bed61aa98",
       "fileSize": 344,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-selene.png",
@@ -449,7 +589,7 @@
       "sha256": "d5e1a456f112d1cef5a75361aab0933606fe8e84c0530833ac28afa82fff5634",
       "fileSize": 341,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/ui/portrait-yamil.png",
@@ -463,7 +603,35 @@
       "sha256": "3b54852051b24f96cfd0952f2836b0769e9b5b779871d8daed4b781a403f08bf",
       "fileSize": 343,
       "alphaRequired": true,
-      "purpose": "Gameplay HUD portrait"
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/vehicles/abandoned-traffic-kit.png",
+      "category": "vehicles",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "e82c94c61d53c28ae47a96146d01ab1b4642123d784b4123cf81fae5396086f7",
+      "fileSize": 2307,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
+    },
+    {
+      "path": "game/public/assets/production-art/vehicles/final-survivor-vehicle.png",
+      "category": "vehicles",
+      "generator": "game/scripts/art/generateProductionCharacters.py",
+      "width": 512,
+      "height": 512,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "animationRows": 1,
+      "sha256": "86698728fb2802f38e7f255a690e0a8fc94c6d5a96f612d9e751b3f95970d8eb",
+      "fileSize": 1546,
+      "alphaRequired": true,
+      "purpose": "Generated runtime production art"
     },
     {
       "path": "game/public/assets/production-art/zombies/zombie-advanced.png",

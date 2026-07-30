@@ -2582,6 +2582,4117 @@
       "foreground": false,
       "wallMounted": true,
       "floorMounted": false
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "concrete-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "damaged-cladding",
+      "category": "cladding",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "fire-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "metal-gate",
+      "category": "gate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "valve",
+      "category": "valve",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "pump",
+      "category": "pump",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "electrical-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "crate",
+      "category": "crate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "pallet",
+      "category": "pallet",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "floor-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "industrial-lamp",
+      "category": "lamp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "emergency-lamp",
+      "category": "lamp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "damp-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "leak",
+      "category": "leak",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "puddle",
+      "category": "puddle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "drain",
+      "category": "drain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "cable",
+      "category": "cable",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "rubble",
+      "category": "rubble",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "grille",
+      "category": "grille",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "lower-basement-kit",
+      "frameId": "technical-foreground",
+      "category": "foreground",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 30,
+      "visualRole": "foreground",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "fractured-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "flooded-floor",
+      "category": "floor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "steam-vent",
+      "category": "vent",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "large-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "heavy-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "maintenance-bay",
+      "category": "bay",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "generator",
+      "category": "generator",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "floor-grate",
+      "category": "grate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "alarm",
+      "category": "alarm",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "red-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "evacuation-mark",
+      "category": "mark",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "blood-trail",
+      "category": "trail",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "obstacle",
+      "category": "obstacle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "deep-rubble",
+      "category": "rubble",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "narrow-passage",
+      "category": "passage",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "subsoil-three-kit",
+      "frameId": "dark-void",
+      "category": "void",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "control-post",
+      "category": "post",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "turnstile",
+      "category": "turnstile",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "card-reader",
+      "category": "reader",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "emergency-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "security-gate",
+      "category": "gate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "exit-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "evacuation-map",
+      "category": "map",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "camera",
+      "category": "camera",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "monitor",
+      "category": "monitor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "glass-panel",
+      "category": "panel",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "barrier",
+      "category": "barrier",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "key-box",
+      "category": "box",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "electrical-control",
+      "category": "control",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "manual-lock",
+      "category": "lock",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "security-barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "security-exit-kit",
+      "frameId": "blocked-sector",
+      "category": "sector",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "service-corridor",
+      "category": "corridor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "technical-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "service-duct",
+      "category": "duct",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "service-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "cable-rack",
+      "category": "rack",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "utility-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "numbered-door",
+      "category": "door",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "service-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "tool-board",
+      "category": "board",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "locker",
+      "category": "locker",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "utility-cart",
+      "category": "cart",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "utility-crate",
+      "category": "crate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "extinguisher",
+      "category": "extinguisher",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "flooded-section",
+      "category": "section",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "damaged-section",
+      "category": "section",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "utility-corridor-kit",
+      "frameId": "utility-foreground",
+      "category": "foreground",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 30,
+      "visualRole": "foreground",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-column",
+      "category": "column",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": true,
+      "defaultDepth": 30,
+      "visualRole": "foreground",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-beam",
+      "category": "beam",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "ramp",
+      "category": "ramp",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "concrete-floor",
+      "category": "floor",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "parking-line",
+      "category": "line",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "sector-number",
+      "category": "number",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "parking-barrier",
+      "category": "barrier",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "guard-booth",
+      "category": "booth",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-gate",
+      "category": "gate",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "ventilation",
+      "category": "ventilation",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "parking-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-stairs",
+      "category": "stairs",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "elevator",
+      "category": "elevator",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-wall",
+      "category": "wall",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "wheel-stop",
+      "category": "stop",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "convex-mirror",
+      "category": "mirror",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "cone",
+      "category": "cone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "fence",
+      "category": "fence",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "chain",
+      "category": "chain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "oil-stain",
+      "category": "stain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "garage-puddle",
+      "category": "puddle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "smoke",
+      "category": "smoke",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": true,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 30,
+      "visualRole": "foreground",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "parking-garage-kit",
+      "frameId": "column-foreground",
+      "category": "foreground",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": true,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 30,
+      "visualRole": "foreground",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "sedan",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "hatchback",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "van",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "pickup",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "security-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "abandoned-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "damaged-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "burned-vehicle",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "chassis",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "open-door",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "open-hood",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "open-trunk",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "wheel",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-vehicle-kit",
+      "frameId": "broken-glass",
+      "category": "vehicle",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": true,
+      "searchCandidate": true,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "crashed-vehicles",
+      "category": "vehicles",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "damage-barricade",
+      "category": "barricade",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": true,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "authored-collider-reference",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "scattered-glass",
+      "category": "glass",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "dark-stain",
+      "category": "stain",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "damage-smoke",
+      "category": "smoke",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "limited-fire",
+      "category": "fire",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "damage-rubble",
+      "category": "rubble",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "broken-pipe",
+      "category": "pipe",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "fallen-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "hanging-cable",
+      "category": "cable",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "tire-marks",
+      "category": "marks",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "bullet-impacts",
+      "category": "impacts",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "blocked-zone",
+      "category": "zone",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "garage-damage-kit",
+      "frameId": "damaged-sign",
+      "category": "sign",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "fluorescent-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "fluorescent-off",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "red-light-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "beacon-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "emergency-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "spotlight-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "illuminated-exit",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "broken-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "beacon-off",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "emergency-off",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
+    },
+    {
+      "atlasId": "industrial-lighting-kit",
+      "frameId": "fluorescent-flicker",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false,
+      "defaultDepth": 12,
+      "visualRole": "gameplayDecor",
+      "collisionRole": "visual-only",
+      "allowedRuntimeLevels": [
+        "level_8_pasillo_subsuelo2_escaleras_subsuelo3",
+        "level_9_verificacion_salidas",
+        "level_9_subsuelo3_garage_salida"
+      ]
     }
   ]
 }

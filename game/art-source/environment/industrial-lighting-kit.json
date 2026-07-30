@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "atlasId": "industrial-lighting-kit",
+  "pixelArt": true,
+  "frameSize": 64,
+  "columns": 8,
+  "palette": [
+    "#0b1014",
+    "#29353b",
+    "#5a676a",
+    "#c53e38",
+    "#eee3a4"
+  ],
+  "frames": [
+    {
+      "frameId": "fluorescent-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "fluorescent-off",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "red-light-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "beacon-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "emergency-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "spotlight-on",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "illuminated-exit",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "broken-light",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": true,
+      "floorMounted": false,
+      "ceilingMounted": true,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "beacon-off",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "emergency-off",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "default",
+        "damaged"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": false,
+      "lightEmitter": false,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    },
+    {
+      "frameId": "fluorescent-flicker",
+      "category": "light",
+      "width": 64,
+      "height": 64,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "variants": [
+        "on",
+        "off",
+        "flicker"
+      ],
+      "wallMounted": false,
+      "floorMounted": true,
+      "ceilingMounted": false,
+      "foreground": false,
+      "animated": true,
+      "lightEmitter": true,
+      "interactableCandidate": false,
+      "searchCandidate": false,
+      "coverCandidate": false
+    }
+  ]
+}

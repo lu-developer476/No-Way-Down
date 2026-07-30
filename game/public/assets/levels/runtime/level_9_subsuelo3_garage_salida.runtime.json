@@ -103,7 +103,13 @@
         "targetId": "mapa-garage",
         "objectiveEventType": "garage-clue-found",
         "consumesOnUse": true
-      }
+      },
+      "searchId": "garage-map-cache",
+      "interactionId": "recoger-mapa",
+      "lootProfileId": "canonical-garage-clue",
+      "oneTime": true,
+      "searched": false,
+      "feedback": "Punto revisado; no se puede volver a saquear."
     },
     {
       "id": "recoger-llaves",
@@ -118,7 +124,13 @@
         "targetId": "llaves-suv",
         "objectiveEventType": "garage-clue-found",
         "consumesOnUse": true
-      }
+      },
+      "searchId": "security-key-locker",
+      "interactionId": "recoger-llaves",
+      "lootProfileId": "canonical-garage-clue",
+      "oneTime": true,
+      "searched": false,
+      "feedback": "Punto revisado; no se puede volver a saquear."
     },
     {
       "id": "inspeccionar-sedan",
@@ -133,7 +145,13 @@
         "targetId": "sedan-supervivencia",
         "objectiveEventType": "vehicle-inspected",
         "consumesOnUse": true
-      }
+      },
+      "searchId": "sedan-trunk-search",
+      "interactionId": "inspeccionar-sedan",
+      "lootProfileId": "canonical-garage-clue",
+      "oneTime": true,
+      "searched": false,
+      "feedback": "Punto revisado; no se puede volver a saquear."
     },
     {
       "id": "abordar-sedan-accion",
@@ -163,6 +181,115 @@
         "y": 1040
       },
       "label": "abordar-sedan"
+    }
+  ],
+  "searchPersistence": {
+    "storage": "campaign-node-state",
+    "key": "garageSearchIds",
+    "restoreOnSceneCreate": true,
+    "preventDuplicateLoot": true
+  },
+  "garageSectors": [
+    "subsoil-access",
+    "security-control",
+    "vehicle-row",
+    "central-bay",
+    "damage-zone",
+    "resource-area",
+    "guard-booth",
+    "exterior-gate",
+    "canonical-exit"
+  ],
+  "vehicles": [
+    {
+      "vehicleId": "sedan-a",
+      "frame": "sedan",
+      "floorContactY": 1080,
+      "authoredColliderId": "sedan-a-collider",
+      "searchable": true,
+      "anchors": [
+        "wheelBase",
+        "floorContact",
+        "doorInteract",
+        "trunkInteract",
+        "hoodInteract",
+        "searchAnchor"
+      ]
+    },
+    {
+      "vehicleId": "hatchback-b",
+      "frame": "hatchback",
+      "floorContactY": 1080,
+      "authoredColliderId": "hatchback-b-collider",
+      "searchable": false,
+      "anchors": [
+        "wheelBase",
+        "floorContact",
+        "doorInteract",
+        "trunkInteract",
+        "hoodInteract",
+        "searchAnchor"
+      ]
+    },
+    {
+      "vehicleId": "van-c",
+      "frame": "van",
+      "floorContactY": 1080,
+      "authoredColliderId": "van-c-collider",
+      "searchable": false,
+      "anchors": [
+        "wheelBase",
+        "floorContact",
+        "doorInteract",
+        "trunkInteract",
+        "hoodInteract",
+        "searchAnchor"
+      ]
+    },
+    {
+      "vehicleId": "pickup-d",
+      "frame": "pickup",
+      "floorContactY": 1080,
+      "authoredColliderId": "pickup-d-collider",
+      "searchable": false,
+      "anchors": [
+        "wheelBase",
+        "floorContact",
+        "doorInteract",
+        "trunkInteract",
+        "hoodInteract",
+        "searchAnchor"
+      ]
+    },
+    {
+      "vehicleId": "security-e",
+      "frame": "security-vehicle",
+      "floorContactY": 1080,
+      "authoredColliderId": "security-e-collider",
+      "searchable": true,
+      "anchors": [
+        "wheelBase",
+        "floorContact",
+        "doorInteract",
+        "trunkInteract",
+        "hoodInteract",
+        "searchAnchor"
+      ]
+    },
+    {
+      "vehicleId": "burned-f",
+      "frame": "burned-vehicle",
+      "floorContactY": 1080,
+      "authoredColliderId": "burned-f-collider",
+      "searchable": false,
+      "anchors": [
+        "wheelBase",
+        "floorContact",
+        "doorInteract",
+        "trunkInteract",
+        "hoodInteract",
+        "searchAnchor"
+      ]
     }
   ]
 }

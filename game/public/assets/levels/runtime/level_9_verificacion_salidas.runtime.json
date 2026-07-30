@@ -105,7 +105,20 @@
         "targetId": "salida-a",
         "objectiveEventType": "exit-checked",
         "consumesOnUse": true
-      }
+      },
+      "exitId": "salida-a",
+      "runtimeId": "salida-a-security-door",
+      "position": {
+        "x": 1200,
+        "y": 1040
+      },
+      "visibleObjectRuntimeId": "salida-a-visible-door",
+      "initialState": "unchecked",
+      "result": "bloqueada",
+      "feedbackVisual": "status-lamp-and-door-tint",
+      "feedbackText": "SALIDA-A: bloqueada",
+      "objectiveId": "verificar-salidas",
+      "oneTime": true
     },
     {
       "id": "inspeccionar-salida-b",
@@ -120,7 +133,20 @@
         "targetId": "salida-b",
         "objectiveEventType": "exit-checked",
         "consumesOnUse": true
-      }
+      },
+      "exitId": "salida-b",
+      "runtimeId": "salida-b-security-door",
+      "position": {
+        "x": 2500,
+        "y": 1040
+      },
+      "visibleObjectRuntimeId": "salida-b-visible-door",
+      "initialState": "unchecked",
+      "result": "infectados",
+      "feedbackVisual": "status-lamp-and-door-tint",
+      "feedbackText": "SALIDA-B: infectados",
+      "objectiveId": "verificar-salidas",
+      "oneTime": true
     },
     {
       "id": "inspeccionar-salida-c",
@@ -135,7 +161,20 @@
         "targetId": "salida-c",
         "objectiveEventType": "exit-checked",
         "consumesOnUse": true
-      }
+      },
+      "exitId": "salida-c",
+      "runtimeId": "salida-c-security-door",
+      "position": {
+        "x": 3800,
+        "y": 1040
+      },
+      "visibleObjectRuntimeId": "salida-c-visible-door",
+      "initialState": "unchecked",
+      "result": "derrumbe",
+      "feedbackVisual": "status-lamp-and-door-tint",
+      "feedbackText": "SALIDA-C: derrumbe",
+      "objectiveId": "verificar-salidas",
+      "oneTime": true
     },
     {
       "id": "inspeccionar-salida-d",
@@ -150,7 +189,20 @@
         "targetId": "salida-d",
         "objectiveEventType": "exit-checked",
         "consumesOnUse": true
-      }
+      },
+      "exitId": "salida-d",
+      "runtimeId": "salida-d-security-door",
+      "position": {
+        "x": 5100,
+        "y": 1040
+      },
+      "visibleObjectRuntimeId": "salida-d-visible-door",
+      "initialState": "unchecked",
+      "result": "incendio",
+      "feedbackVisual": "status-lamp-and-door-tint",
+      "feedbackText": "SALIDA-D: incendio",
+      "objectiveId": "verificar-salidas",
+      "oneTime": true
     },
     {
       "id": "inspeccionar-salida-e",
@@ -165,7 +217,20 @@
         "targetId": "salida-e",
         "objectiveEventType": "exit-checked",
         "consumesOnUse": true
-      }
+      },
+      "exitId": "salida-e",
+      "runtimeId": "salida-e-security-door",
+      "position": {
+        "x": 6400,
+        "y": 1040
+      },
+      "visibleObjectRuntimeId": "salida-e-visible-door",
+      "initialState": "unchecked",
+      "result": "garage",
+      "feedbackVisual": "status-lamp-and-door-tint",
+      "feedbackText": "SALIDA-E: garage",
+      "objectiveId": "verificar-salidas",
+      "oneTime": true
     },
     {
       "id": "confirmar-salida-e-garage",
@@ -203,5 +268,12 @@
     "salida-c": "derrumbe",
     "salida-d": "incendio",
     "salida-e": "garage"
+  },
+  "verificationProgress": {
+    "hudLabel": "Salidas verificadas: {checked} / {total}",
+    "total": 5,
+    "uniqueBy": "exitId",
+    "continuationRequiresAll": true,
+    "continuationExitId": "salida-e-garage"
   }
 }

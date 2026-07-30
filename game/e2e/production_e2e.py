@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 BASE_URL=os.getenv('E2E_BASE_URL','http://127.0.0.1:8000').rstrip('/')
 RESULTS=pathlib.Path(__file__).resolve().parents[1]/'test-results'
-EXPECTED_KEYS={'frontendSha','branch','buildId','builtAt','canonicalNodeCount','generatedArtCount','packageVersion','sha','shortSha','mode','version'}
+EXPECTED_KEYS={'sourceSha','deployCommit','repositoryProvider','frontendSha','branch','buildId','builtAt','canonicalNodeCount','generatedArtCount','packageVersion','sha','shortSha','mode','version'}
 FORBIDDEN=('uncaught','unhandled','failed to load resource','fataltransition','campaign load error','json.parse')
 
 def http_get(path):
@@ -71,7 +71,7 @@ class ProductionE2E(unittest.TestCase):
  def get_menu_state(self):
   return self.js("""const state=window.__NWD_GAME__?.registry?.get('mainMenuState');if(!state||typeof state!=='object')return null;return {ready:state.ready===true,selectedIndex:Number.isInteger(state.selectedIndex)?state.selectedIndex:null,selectedAction:typeof state.selectedAction==='string'?state.selectedAction:null,setupVisible:state.setupVisible===true,setupStep:typeof state.setupStep==='string'?state.setupStep:null,canContinue:state.canContinue===true}""") or {}
  def get_build_info(self):
-  return self.js("""const build=window.__NWD_BUILD__;if(!build||typeof build!=='object')return null;return {sha:build.sha,shortSha:build.shortSha,builtAt:build.builtAt,mode:build.mode,version:build.version,frontendSha:build.frontendSha,branch:build.branch,buildId:build.buildId,canonicalNodeCount:build.canonicalNodeCount,generatedArtCount:build.generatedArtCount,packageVersion:build.packageVersion}""")
+  return self.js("""const build=window.__NWD_BUILD__;if(!build||typeof build!=='object')return null;return {sha:build.sha,shortSha:build.shortSha,builtAt:build.builtAt,mode:build.mode,version:build.version,sourceSha:build.sourceSha,frontendSha:build.frontendSha,deployCommit:build.deployCommit,repositoryProvider:build.repositoryProvider,branch:build.branch,buildId:build.buildId,canonicalNodeCount:build.canonicalNodeCount,generatedArtCount:build.generatedArtCount,packageVersion:build.packageVersion}""")
  def get_runtime_diagnostics(self):
   return self.js("""const diagnostics=window.__NWD_RUNTIME_DIAGNOSTICS__;if(!diagnostics)return null;return {nodeId:typeof diagnostics.nodeId==='string'?diagnostics.nodeId:null,runtimeLevelId:typeof diagnostics.runtimeLevelId==='string'?diagnostics.runtimeLevelId:null,physicsEngine:typeof diagnostics.physicsEngine==='string'?diagnostics.physicsEngine:null,matterBodyCount:Number.isFinite(diagnostics.matterBodyCount)?diagnostics.matterBodyCount:0,tiledMapPath:typeof diagnostics.tiledMapPath==='string'?diagnostics.tiledMapPath:null,currentObjective:typeof diagnostics.currentObjective==='string'?diagnostics.currentObjective:null,playerCount:Number.isFinite(diagnostics.playerCount)?diagnostics.playerCount:0,gameplayReady:diagnostics.gameplayReady===true,fatalError:diagnostics.fatalError?String(diagnostics.fatalError):null}""")
  def get_api_build_info(self):
@@ -92,10 +92,12 @@ class ProductionE2E(unittest.TestCase):
   if next_runtime: self.wait_for_scene('LevelScene'); self.wait_for_gameplay_ready(); self.wait_for_runtime(next_runtime)
  def test_01_routes_and_build_identity(self):
   status,root_headers,html=http_get('/'); self.assertEqual(status,200); self.assertEqual(root_headers.get_content_type(),'text/html'); build=self.get_build_info(); self.assertEqual(set(build),EXPECTED_KEYS); self.assertEqual(datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat(),datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat()); api=self.get_api_build_info(); info_status,_,info_body=http_get('/build-info.json'); self.assertEqual(info_status,200); artifact=json.loads(info_body); expected=os.getenv('E2E_EXPECTED_SHA')
-  identities={'/api/build-info/':api.get('backendSha'),'/build-info.json':artifact.get('frontendSha'),'/':root_headers.get('X-NWD-Frontend-SHA'),'window.__NWD_BUILD__':build.get('frontendSha')}
+  identities={'api.sourceSha':api.get('sourceSha'),'api.frontendSha':api.get('frontendSha'),'artifact.sourceSha':artifact.get('sourceSha'),'artifact.frontendSha':artifact.get('frontendSha'),'window.sourceSha':build.get('sourceSha'),'window.frontendSha':build.get('frontendSha')}
+  deploy_commit=api.get('deployCommit'); self.assertRegex(deploy_commit or '',r'^[0-9a-fA-F]{40}$'); self.assertEqual(artifact.get('deployCommit'),deploy_commit)
+  if deploy_commit!=api.get('sourceSha'): self.assertEqual(api.get('repositoryProvider'),'gitlab')
   if expected:
    for source,served in identities.items():
-    if served!=expected:self.fail(f'Expected {expected}, production serves {served} ({source})')
+    if served!=expected:self.fail(f"Expected GitHub source {expected}, production reports source {served}, deploy commit {deploy_commit}")
   self.assertEqual(artifact,build); self.assertNotIn('BUILD MISMATCH',self.browser.find_element('tag name','body').text)
   asset_urls=re.findall(rb'(?:src|href)="(/assets/[^"]+)"',html); self.assertTrue(asset_urls)
   for url in asset_urls:

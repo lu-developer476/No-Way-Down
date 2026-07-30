@@ -31,8 +31,20 @@ function audit(root: string, env: Record<string, string> = {}) {
   return spawnSync(process.execPath, ['game/scripts/auditNoBinaryDiff.mjs'], {
     cwd: root,
     encoding: 'utf8',
-    env: { ...process.env, ...env },
+    env: cleanAuditEnvironment(env),
   });
+}
+
+const AUDIT_EVENT_ENVIRONMENT_KEYS = [
+  'GITHUB_EVENT_NAME', 'GITHUB_EVENT_BEFORE', 'GITHUB_BASE_SHA', 'GITHUB_SHA',
+  'GITHUB_REF', 'GITHUB_REF_NAME', 'GITHUB_REF_TYPE', 'GITHUB_HEAD_REF',
+  'GITHUB_BASE_REF', 'GITHUB_ACTIONS', 'NWD_DIFF_BASE', 'NWD_DIFF_EVENT',
+];
+
+function cleanAuditEnvironment(overrides: Record<string, string> = {}): NodeJS.ProcessEnv {
+  const environment = { ...process.env };
+  for (const key of AUDIT_EVENT_ENVIRONMENT_KEYS) delete environment[key];
+  return { ...environment, NWD_DIFF_EVENT: 'local', ...overrides };
 }
 
 function withRepository(run: (root: string) => void) {
@@ -53,9 +65,33 @@ test('uses HEAD^ in a detached checkout without main', () => withRepository((roo
   git(root, 'add', 'allowed.txt');
   git(root, 'commit', '-m', 'second');
   git(root, 'checkout', '--detach');
-  const result = audit(root);
+  const base = git(root, 'rev-parse', 'HEAD^');
+  const result = audit(root, { NWD_DIFF_EVENT: 'local' });
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /event=local/);
+  assert.match(result.stdout, new RegExp(`base=${base}`));
+  assert.match(result.stdout, new RegExp(`merge-base=${base}`));
+  assert.match(result.stdout, /modified files \(1\): allowed\.txt/);
+}));
+
+test('uses GITHUB_EVENT_BEFORE for a push event', () => withRepository((root) => {
+  const base = git(root, 'rev-parse', 'HEAD');
+  writeFileSync(join(root, 'allowed.txt'), 'push change\n');
+  git(root, 'add', '.'); git(root, 'commit', '-m', 'push');
+  const result = audit(root, { GITHUB_EVENT_NAME: 'push', GITHUB_EVENT_BEFORE: base, NWD_DIFF_EVENT: '' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /event=push/);
+  assert.match(result.stdout, new RegExp(`base=${base} merge-base=${base}`));
+}));
+
+test('uses GITHUB_BASE_SHA for a pull_request event', () => withRepository((root) => {
+  const base = git(root, 'rev-parse', 'HEAD');
+  writeFileSync(join(root, 'allowed.txt'), 'pull request change\n');
+  git(root, 'add', '.'); git(root, 'commit', '-m', 'pull request');
+  const result = audit(root, { GITHUB_EVENT_NAME: 'pull_request', GITHUB_BASE_SHA: base, NWD_DIFF_EVENT: '' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /event=pull_request/);
+  assert.match(result.stdout, new RegExp(`base=${base} merge-base=${base}`));
 }));
 
 test('uses the empty tree for a single-commit history and a clean working tree', () => withRepository((root) => {
@@ -286,6 +322,14 @@ test('uses an explicit fetched base in a shallow checkout', () => {
   const git = fakeResolver({ HEAD: 'shallow-head', fetched: 'fetched-base', 'HEAD^': null });
   const result = resolveDiffBase({ env: { GITHUB_EVENT_NAME: 'pull_request', NWD_DIFF_BASE: 'fetched' }, git });
   assert.equal(result.base, 'fetched-base');
+});
+
+test('explicit base takes precedence over pull-request and push event bases', () => {
+  const git = fakeResolver({ HEAD: 'head', explicit: 'chosen', pr: 'pr-base', before: 'push-base' });
+  for (const env of [
+    { GITHUB_EVENT_NAME: 'pull_request', GITHUB_BASE_SHA: 'pr' },
+    { GITHUB_EVENT_NAME: 'push', GITHUB_EVENT_BEFORE: 'before' },
+  ]) assert.equal(resolveDiffBase({ env: { ...env, NWD_DIFF_BASE: 'explicit' }, git }).base, 'chosen');
 });
 
 test('falls back from an invalid event base to the real previous commit', () => {

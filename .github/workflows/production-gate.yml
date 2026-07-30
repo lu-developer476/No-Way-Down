@@ -46,6 +46,7 @@ jobs:
       - uses: browser-actions/setup-chrome@v1
       - run: npm ci --prefix game
       - run: pip install -r backend/requirements.txt -r game/e2e/requirements.txt
+      - run: npm run audit:gitlab-mirror --prefix game
       - run: npm run audit:no-binary-diff --prefix game
       - run: npm run audit:e2e-text-only --prefix game
       - run: npm run audit:protected-assets --prefix game

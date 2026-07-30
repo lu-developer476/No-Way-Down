@@ -50,7 +50,7 @@ def api_not_found(request, path=''):
 
 
 def _build_sha():
-    for name in ('NWD_BUILD_SHA', 'RENDER_GIT_COMMIT', 'GITHUB_SHA'):
+    for name in ('NWD_SOURCE_SHA', 'NWD_BUILD_SHA', 'GITHUB_SHA', 'RENDER_GIT_COMMIT'):
         value = os.getenv(name, '').strip()
         if value:
             return value
@@ -65,14 +65,14 @@ def build_info(request):
         frontend_info = json.loads((settings.FRONTEND_DIST_DIR / 'build-info.json').read_text(encoding='utf-8'))
     except (FileNotFoundError, json.JSONDecodeError, OSError):
         pass
-    frontend_sha = os.getenv('NWD_FRONTEND_SHA', frontend_info.get('frontendSha', sha))
+    source_sha = os.getenv('NWD_SOURCE_SHA', frontend_info.get('sourceSha', sha))
+    frontend_sha = os.getenv('NWD_FRONTEND_SHA', frontend_info.get('frontendSha', source_sha))
+    deploy_commit = os.getenv('NWD_DEPLOY_COMMIT', os.getenv('RENDER_GIT_COMMIT', frontend_info.get('deployCommit', sha)))
     response = JsonResponse({
-        'status': 'ok',
-        'application': 'No Way Down',
-        'environment': os.getenv('DJANGO_ENV', 'development'),
-        'backendSha': sha,
-        'frontendSha': frontend_sha,
-        'renderCommit': os.getenv('RENDER_GIT_COMMIT', ''),
+        'status': 'ok', 'application': 'No Way Down', 'environment': os.getenv('DJANGO_ENV', 'development'),
+        'backendSha': source_sha, 'frontendSha': frontend_sha, 'sourceSha': source_sha,
+        'deployCommit': deploy_commit, 'renderCommit': os.getenv('RENDER_GIT_COMMIT', deploy_commit),
+        'repositoryProvider': os.getenv('NWD_REPOSITORY_PROVIDER', frontend_info.get('repositoryProvider', 'unknown')),
         'branch': os.getenv('NWD_BRANCH', os.getenv('RENDER_GIT_BRANCH', frontend_info.get('branch', 'local'))),
         'buildId': os.getenv('RENDER_DEPLOY_ID', frontend_info.get('buildId', os.getenv('NWD_BUILT_AT', 'unknown'))),
         'builtAt': os.getenv('NWD_BUILT_AT', frontend_info.get('builtAt', 'unknown')),

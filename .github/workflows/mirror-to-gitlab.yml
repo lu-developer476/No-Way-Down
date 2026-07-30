@@ -1,81 +1,50 @@
-name: Mirror to GitLab
+name: Mirror main snapshot to GitLab
 
 on:
   push:
     branches:
-      - '**'
-    tags:
-      - '**'
+      - main
   workflow_dispatch:
 
 concurrency:
-  group: mirror-to-gitlab-${{ github.ref }}
+  group: mirror-main-to-gitlab
   cancel-in-progress: false
 
 jobs:
-  mirror:
-    name: Push GitHub ref to GitLab
+  publish-snapshot:
+    name: Publish sanitized main snapshot
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout full history
+      - name: Checkout GitHub main history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Mirror ref to existing GitLab repository
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - name: Install audit dependencies
+        run: npm ci --prefix game
+
+      - name: Audit mirror safety
+        run: npm run audit:gitlab-mirror --prefix game
+
+      - name: Publish and verify sanitized snapshot
         env:
+          GITHUB_SOURCE_SHA: ${{ github.sha }}
+          GITHUB_SOURCE_REF: ${{ github.ref }}
           GITLAB_MIRROR_URL: ${{ secrets.GITLAB_MIRROR_URL }}
-          GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_MIRROR_USERNAME: ${{ secrets.GITLAB_MIRROR_USERNAME }}
-        run: |
-          set -euo pipefail
+          GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          NWD_MIRROR_EVIDENCE_FILE: ${{ runner.temp }}/gitlab-mirror-evidence.txt
+        run: scripts/mirror-main-snapshot.sh
 
-          if [ -z "${GITLAB_MIRROR_URL}" ]; then
-            echo "Error: el secret GITLAB_MIRROR_URL es obligatorio y no puede estar vacío." >&2
-            exit 1
-          fi
-
-          if [ -z "${GITLAB_MIRROR_TOKEN}" ]; then
-            echo "Error: el secret GITLAB_MIRROR_TOKEN es obligatorio y no puede estar vacío." >&2
-            exit 1
-          fi
-
-          case "${GITLAB_MIRROR_URL}" in
-            https://*) ;;
-            *)
-              echo "Error: GITLAB_MIRROR_URL debe comenzar con https:// y terminar en .git." >&2
-              exit 1
-              ;;
-          esac
-
-          username="${GITLAB_MIRROR_USERNAME:-lu-developer476}"
-          auth_header="AUTHORIZATION: Basic $(printf "%s:%s" "${username}" "${GITLAB_MIRROR_TOKEN}" | base64 -w 0)"
-
-          git remote add gitlab "${GITLAB_MIRROR_URL}"
-
-          if ! git -c http.extraheader="${auth_header}" ls-remote --exit-code gitlab >/dev/null; then
-            echo "Error: no se pudo acceder al repositorio GitLab con GITLAB_MIRROR_URL, GITLAB_MIRROR_USERNAME y GITLAB_MIRROR_TOKEN." >&2
-            echo "Verificá que la URL HTTPS sea la de Clone with HTTPS y que el token tenga permiso write_repository." >&2
-            exit 1
-          fi
-
-          if [ "${GITHUB_REF_TYPE}" = "branch" ]; then
-            branch="${GITHUB_REF_NAME}"
-            echo "Replicando branch '${branch}' hacia GitLab."
-
-            git -c http.extraheader="${auth_header}" fetch gitlab \
-              "+refs/heads/${branch}:refs/remotes/gitlab/${branch}" || true
-
-            git -c http.extraheader="${auth_header}" push gitlab \
-              "HEAD:refs/heads/${branch}" \
-              --force-with-lease
-          elif [ "${GITHUB_REF_TYPE}" = "tag" ]; then
-            tag="${GITHUB_REF_NAME}"
-            echo "Replicando tag '${tag}' hacia GitLab."
-
-            git -c http.extraheader="${auth_header}" push gitlab \
-              "refs/tags/${tag}:refs/tags/${tag}"
-          else
-            echo "Error: tipo de referencia no soportado: ${GITHUB_REF_TYPE}." >&2
-            exit 1
-          fi
+      - name: Upload verified mirror evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitlab-main-snapshot-${{ github.sha }}
+          path: ${{ runner.temp }}/gitlab-mirror-evidence.txt
+          if-no-files-found: error

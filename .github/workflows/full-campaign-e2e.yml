@@ -1,0 +1,49 @@
+name: Full campaign E2E
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: full-campaign-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  static-audits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm, cache-dependency-path: game/package-lock.json}
+      - run: npm ci --prefix game
+      - run: npm run audit:e2e-text-only --prefix game
+      - run: npm run audit:full-campaign-certification --prefix game
+      - run: npm run typecheck --prefix game
+      - run: npm test --prefix game
+  campaign-shards:
+    needs: static-audits
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix: {shard: [0, 1, 2, 3]}
+    env:
+      E2E_CAMPAIGN_SHARD: ${{ matrix.shard }}
+      E2E_BASE_URL: http://127.0.0.1:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm, cache-dependency-path: game/package-lock.json}
+      - uses: browser-actions/setup-chrome@v1
+      - run: npm ci --prefix game
+      - run: pip install -r backend/requirements.txt selenium
+      - run: NWD_BUILD_SHA="$(git rev-parse HEAD)" npm run build --prefix game
+      - run: python backend/manage.py runserver 127.0.0.1:8000 > backend-${{ matrix.shard }}.log 2>&1 &
+      - run: python game/e2e/full_campaign_e2e.py | tee campaign-shard-${{ matrix.shard }}.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: campaign-shard-${{ matrix.shard }}-text
+          path: |
+            campaign-shard-${{ matrix.shard }}.log
+            backend-${{ matrix.shard }}.log

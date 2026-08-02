@@ -415,6 +415,15 @@ export class MainMenuScene extends Phaser.Scene {
         ?.setFillStyle(isSelected ? 0x1e293b : 0x020617, isSelected ? 0.9 : 0.7)
         .setStrokeStyle(1, isSelected ? 0xfde047 : 0x334155, isSelected ? 0.92 : 0.85);
     });
+    this.registry.set('mainMenuState', {
+      ready: true,
+      selectedIndex: this.selectedIndex,
+      selectedAction: ['newGame', 'continue', 'options', 'exit'][this.selectedIndex] ?? null,
+      setupVisible: this.setupPanel?.visible === true,
+      setupStep: this.setupPanel?.visible ? this.setupStep : 'closed',
+      canContinue: this.hasSavedProgress(),
+      campaignCompleted: Boolean(loadCampaignCompletion())
+    });
   }
 
   private layoutMenuOptions(): void {

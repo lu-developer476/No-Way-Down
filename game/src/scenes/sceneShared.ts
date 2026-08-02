@@ -61,6 +61,8 @@ interface LocalProgressLike {
   current_level?: unknown;
   checkpoint?: unknown;
   campaign_completed?: unknown;
+  save_version?: unknown;
+  campaign_snapshot?: { progress?: { flow_node_id?: unknown } };
 }
 
 export interface CampaignCompletion {
@@ -137,9 +139,11 @@ export function hasCompatibleLocalProgress(): boolean {
   try {
     const parsed = JSON.parse(raw) as LocalProgressLike;
     if (parsed.campaign_completed === true) return false;
+    if (parsed.save_version !== 2) return false;
     const sceneKey = normalizeProgressSceneKey(parsed.current_level);
     const checkpoint = typeof parsed.checkpoint === 'string' ? parseCheckpoint(parsed.checkpoint) : undefined;
-    return Boolean(sceneKey && checkpoint);
+    const nodeId = parsed.campaign_snapshot?.progress?.flow_node_id;
+    return Boolean(sceneKey && checkpoint && typeof nodeId === 'string' && nodeId.length > 0);
   } catch {
     return false;
   }

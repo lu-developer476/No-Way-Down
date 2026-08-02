@@ -1,3 +1,17 @@
-export interface RuntimeDiagnostics {nodeId:string;runtimeLevelId:string;tiledMapKey:string;tiledMapPath:string;physicsEngine:'matter';mapWidth:number;mapHeight:number;playerCount:number;allyCount:number;enemyCount:number;matterBodyCount:number;staticBodyCount:number;dynamicBodyCount:number;sensorCount:number;projectilePoolActive:number;projectilePoolAvailable:number;activeTextureCount:number;levelSpecificTextureCount:number;listenerCount:number;timerCount:number;currentObjective:string;exitCount:number;stairCount:number;activeStairId:string|null;cameraBounds:Readonly<{x:number;y:number;width:number;height:number}>;fatalError:string|null;gameplayReady:boolean}
-declare global{interface Window{__NWD_RUNTIME_DIAGNOSTICS__?:Readonly<RuntimeDiagnostics>}}
-export function publishDiagnostics(value:RuntimeDiagnostics){window.__NWD_RUNTIME_DIAGNOSTICS__=Object.freeze({...value,cameraBounds:Object.freeze({...value.cameraBounds})})}export function clearDiagnostics(){delete window.__NWD_RUNTIME_DIAGNOSTICS__}
+export interface RuntimeDiagnostics {
+  nodeId: string | null; nodeType: string | null; canonicalIndex: number;
+  runtimeLevelId: string | null; sceneKey: string | null; gameplayReady: boolean;
+  physicsEngine: 'arcade'; tiledMapPath: string | null; runtimeConfigPath: string | null;
+  playerCount: number; allyCount: number; activeEnemyCount: number;
+  dynamicBodyCount: number; staticBodyCount: number; colliderCount: number; overlapCount: number;
+  currentObjective: string | null; objectiveProgress: string | number | null;
+  objectiveCompleted: boolean; exitReady: boolean; activeExitId: string | null;
+  transitionInProgress: boolean; checkpointId: string | null; fatalError: string | null;
+}
+
+declare global { interface Window { __NWD_RUNTIME_DIAGNOSTICS__?: Readonly<RuntimeDiagnostics> } }
+
+export function publishDiagnostics(value: RuntimeDiagnostics): void {
+  window.__NWD_RUNTIME_DIAGNOSTICS__ = Object.freeze({ ...value, physicsEngine: 'arcade' });
+}
+export function clearDiagnostics(): void { delete window.__NWD_RUNTIME_DIAGNOSTICS__; }

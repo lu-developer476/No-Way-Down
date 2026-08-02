@@ -39,7 +39,8 @@
     "audit:gitlab-mirror": "node scripts/auditGitLabMirror.mjs",
     "audit:deploy-source-tree": "node scripts/auditDeploySourceTree.mjs",
     "wait:production-sha": "node scripts/waitForProductionSha.mjs",
-    "audit:deployment-workflows": "node scripts/auditDeploymentWorkflows.mjs"
+    "audit:deployment-workflows": "node scripts/auditDeploymentWorkflows.mjs",
+    "audit:full-campaign-certification": "node scripts/auditFullCampaignCertification.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

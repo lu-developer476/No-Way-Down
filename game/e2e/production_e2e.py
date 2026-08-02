@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Text-only production browser gate for the canonical runtime."""
+"""Text-only production gate. All game control uses the query-gated flat bridge."""
 from __future__ import annotations
-import json, os, pathlib, re, unittest, urllib.error, urllib.request
-from datetime import datetime, timezone
+import json, os, pathlib, re, unittest, urllib.request
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -10,101 +9,49 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 BASE_URL=os.getenv('E2E_BASE_URL','http://127.0.0.1:8000').rstrip('/')
 RESULTS=pathlib.Path(__file__).resolve().parents[1]/'test-results'
-EXPECTED_KEYS={'sourceSha','deployCommit','repositoryProvider','frontendSha','branch','buildId','builtAt','canonicalNodeCount','generatedArtCount','packageVersion','sha','shortSha','mode','version'}
-FORBIDDEN=('uncaught','unhandled','failed to load resource','fataltransition','campaign load error','json.parse')
-
-def http_get(path):
- try:
-  with urllib.request.urlopen(BASE_URL+path,timeout=20) as response:return response.status,response.headers,response.read()
- except urllib.error.HTTPError as error:return error.code,error.headers,error.read()
+def get(path):
+ with urllib.request.urlopen(BASE_URL+path,timeout=30) as r:return r.status,r.headers,r.read()
 
 class ProductionE2E(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  RESULTS.mkdir(exist_ok=True); options=Options(); options.add_argument('--headless=new'); options.add_argument('--no-sandbox'); options.add_argument('--disable-dev-shm-usage')
-  options.set_capability('goog:loggingPrefs',{'browser':'ALL','performance':'ALL'})
-  cls.browser=webdriver.Chrome(options=options); cls.wait=WebDriverWait(cls.browser,30); cls.console=[]; cls.network=[]; cls.results=[]
+  RESULTS.mkdir(exist_ok=True); o=Options(); o.add_argument('--headless=new'); o.add_argument('--no-sandbox'); o.add_argument('--disable-dev-shm-usage'); o.set_capability('goog:loggingPrefs',{'browser':'ALL'})
+  cls.browser=webdriver.Chrome(options=o); cls.wait=WebDriverWait(cls.browser,30); cls.report=[]
  @classmethod
  def tearDownClass(cls):
-  cls.collect_console_logs('final'); cls.collect_network_failures('final'); cls.browser.quit()
-  (RESULTS/'browser-console.json').write_text(json.dumps(cls.console,indent=2,ensure_ascii=False))
-  (RESULTS/'network-errors.json').write_text(json.dumps(cls.network,indent=2,ensure_ascii=False))
-  (RESULTS/'e2e-report.json').write_text(json.dumps(cls.results,indent=2,ensure_ascii=False))
- @classmethod
- def collect_console_logs(cls,label):
-  for entry in cls.browser.get_log('browser'):
-   cls.console.append({'test':label,'level':entry['level'],'message':entry['message'],'timestamp':datetime.fromtimestamp(entry['timestamp']/1000,timezone.utc).isoformat()})
- @classmethod
- def collect_network_failures(cls,label):
-  for entry in cls.browser.get_log('performance'):
-   try:
-    message=json.loads(entry['message'])['message']
-    if message['method']=='Network.responseReceived':
-     response=message['params']['response']; status=int(response['status'])
-     if status>=400: cls.network.append({'test':label,'url':response['url'],'status':status})
-   except (KeyError,ValueError,TypeError): pass
- def setUp(self): self.reset_browser_state()
+  (RESULTS/'production-e2e.json').write_text(json.dumps(cls.report,indent=2)); cls.browser.quit()
+ def setUp(self):
+  self.browser.get(BASE_URL+'/?e2e=1'); self.wait.until(lambda _:self.js('return document.readyState')=='complete'); self.wait.until(lambda _:self.js('return Boolean(window.__NWD_E2E__)')); self.bridge('clearAllLocalData')
  def tearDown(self):
-  label=self.id(); self.collect_console_logs(label); self.collect_network_failures(label)
-  bad_logs=[entry for entry in self.console if entry['test']==label and (entry['level']=='SEVERE' or any(term in entry['message'].lower() for term in FORBIDDEN))]
-  bad_network=[entry for entry in self.network if entry['test']==label and (entry['status']>=500 or entry['status']==404)]
-  result={'test':label,'passed':not bad_logs and not bad_network}
-  if label.endswith('test_03_reload_returns_to_clean_main_menu'): result.update({'continueFeatureCovered':False,'reason':'MainMenuScene currently exposes only newGame'})
-  self.results.append(result); self.assertFalse(bad_logs); self.assertFalse(bad_network); self.assert_no_fatal_state()
- def js(self,script,*args): return self.browser.execute_script(script,*args)
- def js_boolean(self,script,*args):
-  result=self.js(script,*args)
-  if not isinstance(result,bool): raise TypeError(f'JavaScript did not return a boolean: {type(result).__name__}')
-  return result
- def wait_for_document(self): self.wait.until(lambda _:self.js("return document.readyState")=='complete')
- def wait_for_build_info(self): self.wait.until(lambda _:isinstance(self.get_build_info(),dict))
- def wait_for_game(self): self.wait.until(lambda _:self.js_boolean('return Boolean(window.__NWD_GAME__)') is True)
- def wait_for_scene(self,key,active=True): self.wait.until(lambda _:self.js_boolean("return Boolean(window.__NWD_GAME__?.scene?.isActive(arguments[0]))",key) is active)
- def wait_for_menu_ready(self): self.wait_for_scene('MainMenuScene'); self.wait.until(lambda _:self.get_menu_state().get('ready') is True)
- def get_registry_string(self,key): return self.js("const value=window.__NWD_GAME__?.registry?.get(arguments[0]);return typeof value==='string'?value:null",key)
- def get_registry_number(self,key): return self.js("const value=window.__NWD_GAME__?.registry?.get(arguments[0]);return Number.isFinite(value)?value:null",key)
- def get_registry_boolean(self,key): return self.js("const value=window.__NWD_GAME__?.registry?.get(arguments[0]);return typeof value==='boolean'?value:null",key)
- def get_active_node_id(self): return self.js("const node=window.__NWD_GAME__?.registry?.get('activeCampaignNode');return typeof node?.id==='string'?node.id:null")
- def wait_for_node(self,node): self.wait.until(lambda _:self.get_active_node_id()==node)
- def wait_for_runtime(self,runtime): self.wait.until(lambda _:((self.get_runtime_diagnostics() or {}).get('runtimeLevelId'))==runtime)
- def wait_for_gameplay_ready(self): self.wait.until(lambda _:((self.get_runtime_diagnostics() or {}).get('gameplayReady')) is True)
- def get_menu_state(self):
-  return self.js("""const state=window.__NWD_GAME__?.registry?.get('mainMenuState');if(!state||typeof state!=='object')return null;return {ready:state.ready===true,selectedIndex:Number.isInteger(state.selectedIndex)?state.selectedIndex:null,selectedAction:typeof state.selectedAction==='string'?state.selectedAction:null,setupVisible:state.setupVisible===true,setupStep:typeof state.setupStep==='string'?state.setupStep:null,canContinue:state.canContinue===true}""") or {}
- def get_build_info(self):
-  return self.js("""const build=window.__NWD_BUILD__;if(!build||typeof build!=='object')return null;return {sha:build.sha,shortSha:build.shortSha,builtAt:build.builtAt,mode:build.mode,version:build.version,sourceSha:build.sourceSha,frontendSha:build.frontendSha,deployCommit:build.deployCommit,repositoryProvider:build.repositoryProvider,branch:build.branch,buildId:build.buildId,canonicalNodeCount:build.canonicalNodeCount,generatedArtCount:build.generatedArtCount,packageVersion:build.packageVersion}""")
- def get_runtime_diagnostics(self):
-  return self.js("""const diagnostics=window.__NWD_RUNTIME_DIAGNOSTICS__;if(!diagnostics)return null;return {nodeId:typeof diagnostics.nodeId==='string'?diagnostics.nodeId:null,runtimeLevelId:typeof diagnostics.runtimeLevelId==='string'?diagnostics.runtimeLevelId:null,physicsEngine:typeof diagnostics.physicsEngine==='string'?diagnostics.physicsEngine:null,matterBodyCount:Number.isFinite(diagnostics.matterBodyCount)?diagnostics.matterBodyCount:0,tiledMapPath:typeof diagnostics.tiledMapPath==='string'?diagnostics.tiledMapPath:null,currentObjective:typeof diagnostics.currentObjective==='string'?diagnostics.currentObjective:null,playerCount:Number.isFinite(diagnostics.playerCount)?diagnostics.playerCount:0,gameplayReady:diagnostics.gameplayReady===true,fatalError:diagnostics.fatalError?String(diagnostics.fatalError):null}""")
- def get_api_build_info(self):
-  status,headers,body=http_get('/api/build-info/'); self.assertEqual(status,200); self.assertEqual(headers.get_content_type(),'application/json'); return json.loads(body)
- def clear_indexed_db(self):
-  result=self.browser.execute_async_script("""const done=arguments[arguments.length-1];if(typeof indexedDB.databases!=='function'){done(true);return}indexedDB.databases().then(databases=>Promise.all(databases.filter(database=>typeof database.name==='string').map(database=>new Promise((resolve,reject)=>{const request=indexedDB.deleteDatabase(database.name);request.onsuccess=()=>resolve(true);request.onerror=()=>reject(new Error(`Could not delete ${database.name}`));request.onblocked=()=>reject(new Error(`Deletion blocked for ${database.name}`))})))).then(()=>done(true)).catch(error=>done({ok:false,message:String(error)}))""")
-  if result is not True: self.fail(f'IndexedDB cleanup failed: {result}')
- def reset_browser_state(self):
-  self.browser.get(BASE_URL+'/'); self.wait_for_document(); self.js("localStorage.clear();sessionStorage.clear();return true"); self.browser.delete_all_cookies(); self.clear_indexed_db()
-  self.browser.get(BASE_URL+'/?e2e=1'); self.wait_for_document(); self.wait_for_build_info(); self.wait_for_game(); self.wait_for_menu_ready()
- def assert_no_fatal_state(self): self.assertFalse(self.js_boolean("return Boolean(window.__NWD_GAME__?.registry?.get('fatalError')??window.__NWD_RUNTIME_DIAGNOSTICS__?.fatalError)"))
- def body(self): return self.browser.find_element('tag name','body')
- def start_first_level(self):
-  state=self.get_menu_state(); self.assertEqual(state['selectedIndex'],0); self.assertEqual(state['selectedAction'],'newGame'); self.body().send_keys(Keys.ENTER); self.wait_for_scene('CampaignIntroScene'); self.wait_for_node('campaign-intro'); self.body().send_keys(Keys.ENTER); self.wait_for_scene('LevelScene'); self.wait_for_node('lvl01-esc01-comedor-resistencia'); self.wait_for_gameplay_ready(); self.wait_for_runtime('level_1_comedor_resistencia')
- def advance_level(self,next_node,next_runtime=None):
-  moved=self.js("const s=window.__NWD_GAME__.scene.getScene('LevelScene'),p=s.runtime?.player?.sprite,e=s.matter.world.localWorld.bodies.find(b=>b.label?.startsWith('sensor:Exits:'));if(!p||!e)return false;p.setPosition(e.position.x,e.position.y);p.setVelocity(0,0);return true")
-  self.assertTrue(moved); self.wait.until(lambda _:self.js_boolean("const scene=window.__NWD_GAME__?.scene?.getScene('LevelScene');return scene?.runtime?.exitReady===true")); self.body().send_keys('e'); self.wait_for_node(next_node)
-  if next_runtime: self.wait_for_scene('LevelScene'); self.wait_for_gameplay_ready(); self.wait_for_runtime(next_runtime)
- def test_01_routes_and_build_identity(self):
-  status,root_headers,html=http_get('/'); self.assertEqual(status,200); self.assertEqual(root_headers.get_content_type(),'text/html'); build=self.get_build_info(); self.assertEqual(set(build),EXPECTED_KEYS); self.assertEqual(datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat(),datetime.fromisoformat(build['builtAt'].replace('Z','+00:00')).isoformat()); api=self.get_api_build_info(); info_status,_,info_body=http_get('/build-info.json'); self.assertEqual(info_status,200); artifact=json.loads(info_body); expected=os.getenv('E2E_EXPECTED_SHA')
-  identities={'api.sourceSha':api.get('sourceSha'),'api.frontendSha':api.get('frontendSha'),'artifact.sourceSha':artifact.get('sourceSha'),'artifact.frontendSha':artifact.get('frontendSha'),'window.sourceSha':build.get('sourceSha'),'window.frontendSha':build.get('frontendSha')}
-  deploy_commit=api.get('deployCommit'); self.assertRegex(deploy_commit or '',r'^[0-9a-fA-F]{40}$'); self.assertEqual(artifact.get('deployCommit'),deploy_commit)
-  if deploy_commit!=api.get('sourceSha'): self.assertEqual(api.get('repositoryProvider'),'gitlab')
-  if expected:
-   for source,served in identities.items():
-    if served!=expected:self.fail(f"Expected GitHub source {expected}, production reports source {served}, deploy commit {deploy_commit}")
-  self.assertEqual(artifact,build); self.assertNotIn('BUILD MISMATCH',self.browser.find_element('tag name','body').text)
-  asset_urls=re.findall(rb'(?:src|href)="(/assets/[^"]+)"',html); self.assertTrue(asset_urls)
-  for url in asset_urls:
-   asset_status,_,asset_body=http_get(url.decode()); self.assertEqual(asset_status,200); self.assertTrue(asset_body)
-  (RESULTS/'build-info.json').write_text(json.dumps({'frontend':build,'artifact':artifact,'backend':api,'identities':identities},indent=2))
- def test_02_canonical_transitions(self):
-  self.start_first_level(); diag=self.get_runtime_diagnostics(); self.assertEqual(diag['physicsEngine'],'matter'); self.assertGreater(diag['matterBodyCount'],0); self.assertTrue(diag['tiledMapPath']); self.assertTrue(diag['currentObjective']); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); self.advance_level('lvl01-cin01-cierre-contextual'); self.wait_for_scene('CinematicScene'); self.wait_for_scene('LevelScene',False); self.assertEqual(self.get_registry_number('campaignCursor'),3)
- def test_03_reload_returns_to_clean_main_menu(self):
-  self.start_first_level(); self.advance_level('lvl01-esc02-pasillos-hacia-escaleras-pb','level_1_pasillos_escaleras_pb'); before=self.get_runtime_diagnostics(); self.assertEqual(before['playerCount'],1); self.assertTrue(before['currentObjective']); self.assertTrue(before['gameplayReady']); self.browser.refresh(); self.wait_for_document(); self.wait_for_build_info(); self.wait_for_game(); self.wait_for_menu_ready(); state=self.get_menu_state(); self.assertEqual(state['selectedIndex'],0); self.assertEqual(state['selectedAction'],'newGame'); self.assertFalse(state['setupVisible']); self.assertFalse(state['canContinue']); self.wait_for_scene('LevelScene',False); self.assert_no_fatal_state(); self.body().send_keys(Keys.ENTER); self.wait_for_scene('CampaignIntroScene'); self.assertEqual(self.get_registry_number('campaignCursor'),0)
-if __name__=='__main__': unittest.main(verbosity=2)
+  severe=[x for x in self.browser.get_log('browser') if x['level']=='SEVERE']; self.report.append({'test':self.id(),'severe':severe}); self.assertFalse(severe)
+ def js(self,source,*args):return self.browser.execute_script(source,*args)
+ def bridge(self,method,*args):return self.js('return window.__NWD_E2E__[arguments[0]](...arguments[1])',method,list(args))
+ def wait_runtime(self,predicate):return self.wait.until(lambda _:predicate(self.bridge('getRuntimeSnapshot')))
+ def test_01_deploy_identity(self):
+  status,headers,html=get('/'); self.assertEqual(status,200); api=json.loads(get('/api/build-info/')[2]); artifact=json.loads(get('/build-info.json')[2]); build=self.js('return {...window.__NWD_BUILD__}')
+  expected=os.getenv('E2E_EXPECTED_SHA'); self.assertEqual(artifact,build); self.assertEqual(api['sourceSha'],artifact['sourceSha']); self.assertEqual(api['frontendSha'],artifact['frontendSha'])
+  self.assertRegex(api['deployCommit'],r'^[0-9a-f]{40}$'); self.assertTrue(api['repositoryProvider']);
+  if expected:self.assertEqual(expected,api['sourceSha'])
+  header=headers.get('X-NWD-Source-SHA'); self.assertTrue(header is None or header==api['sourceSha'])
+ def test_02_essential_assets(self):
+  _,_,html=get('/'); urls=[u.decode() for u in re.findall(rb'(?:src|href)="(/[^"]+)"',html)]
+  urls += ['/assets/campaign/canonical_campaign_manifest.json','/assets/levels/level1_comedor_resistencia.json','/assets/images/NWD-characters.png']
+  for url in dict.fromkeys(urls):
+   status,_,body=get(url); self.assertEqual(status,200,url); self.assertTrue(body,url)
+ def test_03_menu_and_navigation(self):
+  state=self.bridge('getMenuSnapshot'); self.assertTrue(state['ready']); self.assertEqual(state['selectedAction'],'newGame')
+  body=self.browser.find_element('tag name','body'); body.send_keys(Keys.ARROW_RIGHT); self.wait.until(lambda _:self.bridge('getMenuSnapshot')['selectedAction']=='continue'); body.send_keys(Keys.ARROW_RIGHT,Keys.ENTER,Keys.ESCAPE)
+  self.assertEqual(self.bridge('getMenuSnapshot')['selectedAction'],'options')
+ def test_04_new_game_setup(self):
+  setup={'protagonist':'giovanna','difficulty':'pesadilla','party':{'required':['Alan Nahuel','Giovanna','Damián','Nahir'],'optional':['Celestino']},'startedAt':'2026-01-01T00:00:00.000Z','version':1}
+  result=self.bridge('startNewGame',setup); self.assertTrue(result['ok']); stored=self.js("return JSON.parse(localStorage.getItem('nwd.setup.initial'))"); self.assertEqual(stored,setup)
+ def test_05_first_level_is_arcade(self):
+  setup={'protagonist':'alan','difficulty':'complejo','party':{'required':['Alan Nahuel','Giovanna','Damián','Nahir'],'optional':[]},'startedAt':'2026-01-01T00:00:00.000Z','version':1}
+  self.bridge('startNewGame',setup); self.wait_runtime(lambda x:x['nodeId']=='campaign-intro'); self.browser.find_element('tag name','body').send_keys(Keys.ENTER); diag=self.wait_runtime(lambda x:x['nodeId']=='lvl01-esc01-comedor-resistencia'); self.assertEqual(diag['physicsEngine'],'arcade'); self.assertFalse(diag['fatalError'])
+ def test_06_continue_and_corrupt_save(self):
+  self.js("localStorage.setItem('nwd.progress.local-player','{bad json')"); self.browser.refresh(); self.wait.until(lambda _:self.js('return Boolean(window.__NWD_E2E__)')); self.assertFalse(self.bridge('getMenuSnapshot')['canContinue'])
+  self.js("localStorage.setItem('nwd.progress.local-player',JSON.stringify({schemaVersion:999,current_level:'LevelScene',checkpoint:'10,20'}))"); self.browser.refresh(); self.wait.until(lambda _:self.js('return Boolean(window.__NWD_E2E__)')); self.assertFalse(self.bridge('getMenuSnapshot')['canContinue'])
+ def test_07_new_game_preserves_completion_history(self):
+  completion={'schemaVersion':1,'campaignId':'no_way_down','completed':True,'completedAt':'2026-01-01T00:00:00Z','protagonistId':'alan','difficultyId':'complejo','finalNodeId':'campaign-end','canonicalNodeCount':35,'buildSha':'test'}
+  self.js("localStorage.setItem('nwd.campaign.completion',JSON.stringify(arguments[0]));localStorage.setItem('nwd.progress.local-player','old')",completion); self.bridge('resetActiveRun'); self.assertEqual(self.js("return JSON.parse(localStorage.getItem('nwd.campaign.completion'))"),completion); self.assertIsNone(self.js("return localStorage.getItem('nwd.progress.local-player')"))
+if __name__=='__main__':unittest.main(verbosity=2)

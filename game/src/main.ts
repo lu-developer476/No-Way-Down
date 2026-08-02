@@ -10,6 +10,7 @@ import { UIScene } from './scenes/UIScene';
 import { UpperFloorScene } from './scenes/UpperFloorScene';
 import { buildInfo, NwdBuildInfo } from './buildInfo';
 import { ProductionArtGalleryScene } from './qa/ProductionArtGalleryScene';
+import { installProductionE2eBridge } from './qa/ProductionE2eBridge';
 
 const GAME_WIDTH = 960;
 const GAME_HEIGHT = 540;
@@ -121,6 +122,7 @@ const mountGame = () => {
   try {
     game = new Phaser.Game(config);
     window.__NWD_GAME__ = game;
+    installProductionE2eBridge(game);
   } catch (error) {
     console.error('[NoWayDown] Error iniciando Phaser.', error);
     showBlockingMessage(LOAD_ERROR_MESSAGE);
